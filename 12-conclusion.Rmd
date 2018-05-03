@@ -1,0 +1,556 @@
+# (PART) Part IV: Extensions {-}
+
+# Conclusion {#ch:conclusion}
+
+> The missing-data problem is different.
+> 
+> --- Thomas Permutt
+
+This closing chapter starts with a description of the limitations and
+pitfalls of multiple imputation. Section \[sec:reporting\] provides
+reporting guidelines for applications. Section \[sec:otherapps\] gives
+an overview of applications that were omitted from the book. Section
+\[sec:future\] contains some speculations about possible future
+developments.
+
+## Some dangers, some do’s and some don’ts {#sec:limitations}
+
+Any statistical technique has limitations and pitfalls, and multiple
+imputation is no exception. This books emphasizes the virtues of being
+flexible, but this comes at a price. The next sections outline some
+dangers, do’s and don’ts.
+
+### Some dangers
+
+The major danger of the technique is that it may provide nonsensical or
+even misleading results if applied without appropriate care or insight.
+Multiple imputation is not a simple technical fix for the missing data.
+Scientific and statistical judgment comes into play at various stages:
+during diagnosis of the missing data problem, in the setup of a good
+imputation model, during validation of the quality of the generated
+synthetic data and in combining the repeated analyses. While software
+producers attempt to set defaults that will work in a large variety of
+cases, we cannot simply hand over our scientific decisions to the
+software. We need to open the black box, and adjust the process when
+appropriate.
+
+The MICE algorithm is univariate optimal, but not necessarily
+multivariate optimal. There is no clear theoretical rationale for
+convergence of the multivariate algorithm. The main justification of the
+MICE algorithm rests on simulation studies. The research on this topic
+is intensifying. Even though the results obtained thus far are
+reassuring, at this moment it is not possible to outline in advance the
+precise conditions that would guarantee convergence for some set of
+conditionally specified models.
+
+Another danger occurs if the imputation model is uncongenial
+[@MENG1994; @SCHAFER2003]. Uncongeniality can occur if the imputation
+model is specified as more restrictive than the complete-data model, or
+if it fails to account for important factors in the missing data
+mechanism. Both types of omissions introduce biased and possibly
+inefficient estimates. The other side of the coin is that multiple
+imputation can be more efficient if the imputer uses information that is
+not accessible to the analyst. The statistical infererences may become
+more precise than those in maximum likelihood, a property known as
+*superefficiency* [@RUBIN1996].
+
+There are many data-analytic situations for which we do not yet know the
+appropriate way to generate imputations. For example, it is not yet
+clear how design factors of a complex sampling design, e.g., a
+stratified cluster sample, should be incorporated into the imputation
+model. Also, relatively little is known about how to impute nested and
+hierarchical data, or autocorrelated data that form time series. These
+problems are not inherent limitations of multiple imputation, but of
+course they may impede the practical application of the imputation
+techniques for certain types of data.
+
+### Some do’s {#sec:dos}
+
+Constructing good imputation models requires analytic skills. The
+following list of do’s summarizes some of the advice given in this book.
+
+-   Find out the reasons for the missing data;
+
+-   Include the outcome variable(s) in the imputation model;
+
+-   Include factors that govern the missingness in the imputation model;
+
+-   Impute categorical data by techniques for categorical data;
+
+-   Remove response indicators from the imputation model;
+
+-   Aim for a scope broad enough for all analyses;
+
+-   Set the random seed to enhance reproducible results;
+
+-   Break any direct feedback loops that arise in passive imputation;
+
+-   Inspect the trace lines for slow convergence;
+
+-   Inspect the imputed data;
+
+-   Evaluate whether the imputed data could have been real data if they
+    had not been missing;
+
+-   Take $m=5$ for model building, and increase afterward if needed;
+
+-   Specify simple MNAR models for sensitivity analysis;
+
+-   Impute by proper imputation methods;
+
+-   Impute by robust hot deck-like models like predictive mean matching;
+
+-   Reduce a large imputation model into smaller components;
+
+-   Transform statistics toward approximate normality before pooling;
+
+-   Assess critical assumptions about the missing data mechanism;
+
+-   Eliminate badly connected, uninteresting variables (low influx,
+    low outflux) from the imputation model;
+
+-   Take obvious features like non-negativity, functional relations and
+    skewed distributions in the data into account in the imputation
+    model;
+
+-   Use more flexible (e.g., nonlinear or nonparametric) imputation
+    models;
+
+-   Perform and pool the repeated analyses per dataset;
+
+-   Describe potential departures from MAR;
+
+-   Report accurately and concisely.
+
+### Some don’ts {#sec:donts}
+
+Do not:
+
+-   Use multiple imputation if simpler methods are valid;
+
+-   Take predictions as imputations;
+
+-   Impute blindly;
+
+-   Put too much faith in the defaults;
+
+-   Average the multiply imputed data;
+
+-   Create imputations using a model that is more restrictive than
+    needed;
+
+-   Uncritically accept imputations that are very different from the
+    observed data.
+
+## Reporting {#sec:reporting}
+
+Section \[sec:changingperspective\] noted that the attitude toward
+missing data is changing. Many aspects related to missing data could
+potentially affect the conclusions drawn for the statistical analysis,
+but not all aspects are equally important. This leads to the question:
+*What should be reported from an analysis with missing data?*
+
+Guidelines to report the results of a missing data analysis have been
+given by @STERNE2009, @ENDERS2010, @NRC2010 and @MACKINNON2010. These
+sources vary in scope and comprehensiveness, but they also exhibit a
+great deal of overlap and consensus. Section \[sec:guidelines\] combines
+some of the material found in the three sources.
+
+Reviewers or editors may be unfamiliar with, or suspicious of, newer
+approaches to handling missing data. Substantive researchers are
+therefore often wary about using advanced statistical methods in their
+reports. Though this concern is understandable,
+
+> $\dots$ resorting to flawed procedures in order to avoid criticism
+> from an uninformed reviewer or editor is a poor reason for avoiding
+> sophisticated missing data methodology [@ENDERS2010 p. 340]
+
+Until reviewers and referees become more familiar with the newer
+methods, a better approach is to add well-chosen and concise explanatory
+notes. On the other hand, editors and reviewers are increasingly
+expecting applied researchers to do multiple imputation, even when the
+authors had good reasons for not doing it (e.g., less than 5% incomplete
+cases) (Ian White, personal communication).
+
+The natural place to report about the missing data in a manuscript is
+the paragraph on the statistical methodology. As scientific articles are
+often subject to severe space constraints, part of the report may need
+to go into supplementary online materials instead of the main text.
+Since the addition of explanatory notes increases the number of words,
+there needs to be some balance between the material that goes into the
+main text and the supplementary material. In applications that requires
+novel methods, a separate paper may need to be written by the team’s
+statistician. For example, @VANBUUREN1999 explained the imputation
+methodology used in the substantive paper by @BOSHUIZEN1998. In general,
+the severity of the missing data problem and the method used to deal
+with the problem needs to be part of the main paper, whereas the precise
+modeling details could be relegated to the appendix or to a separate
+methodological paper.
+
+### Reporting guidelines {#sec:guidelines}
+
+The following list contains questions that need to be answered when
+using multiple imputation. Evaluate each question carefully, and report
+the answers.
+
+1.  *Amount of missing data:* What is the number of missing values for
+    each variable of interest? What is the number of cases with complete
+    data for the analyses of interest? If people drop out at various
+    time points, break down the number of participants per
+    occasion.\[lis:amount\]
+
+2.  *Reasons for missingness:* What is known about the reasons for
+    missing data? Are the missing data intentional? Are the reasons
+    possibly related to the outcome measurements? Are the reasons
+    related to other variables in the study?\[lis:reasons\]
+
+3.  *Consequences:* Are there important differences between individuals
+    with complete and incomplete data? Do these groups differ in mean or
+    spread on the key variables? What are the consequences if
+    complete-case analysis is used?\[lis:differences\]
+
+4.  *Method:* What method is used to account for missing data (e.g.,
+    complete-case analysis, multiple imputation)? Which assumptions were
+    made (e.g., missing at random)? How were multivariate missing data
+    handled?\[lis:method\]
+
+5.  *Software:* What multiple imputation software is used? Which
+    settings differ from the default?\[lis:software\]
+
+6.  *Number of imputed datasets:* How many imputed datasets were created
+    and analyzed? \[lis:number\]
+
+7.  *Imputation model:* Which variables were included in the imputation
+    model? Was any form of automatic variable predictor used? How were
+    non-normally distributed and categorical variables imputed? How were
+    design features (e.g., hierarchical data, complex samples,
+    sampling weights) taken into account?\[lis:model\]
+
+8.  *Derived variables:* How were derived variables (transformations,
+    recodes, indices, interaction terms, and so on) taken into
+    account?\[lis:derived\]
+
+9.  *Diagnostics:* How has convergence been monitored? How do the
+    observed and imputed data compare? Are imputations plausible in the
+    sense that they could have been plausibly measured if they had not
+    been missing? \[lis:diagnostics\]
+
+10. *Pooling:* How have the repeated estimates been combined (pooled)
+    into the final estimates? Have any statistics been transformed for
+    pooling?\[lis:pooling\]
+
+11. *Complete-case analysis:* Do multiple imputation and complete-case
+    analysis lead to similar similar conclusions? If not, what might
+    explain the difference?\[lis:listwise\]
+
+12. *Sensitivity analysis:* Do the variables included in the imputation
+    model make the missing at random assumption plausible? Are the
+    conclusions affected if imputations are generated under a plausible
+    nonignorable model?\[lis:sensitivity\]
+
+If space is limited, the main text can be restricted to a short summary
+of points \[lis:amount\], \[lis:reasons\], \[lis:method\],
+\[lis:software\], \[lis:number\] and \[lis:listwise\], whereas the
+remaining points are addressed in a appendix or online supplement.
+Section \[sec:template\] contains an example template.
+
+For clinical trials, reporting in the main text should be extended by
+point \[lis:sensitivity\], conform to recommendation 15 of @NRC2010.
+Moreover, the study protocol should specify the statistical methods for
+handling missing data in advance, and their associated assumptions
+should be stated in a way that can be understood by clinicians [@NRC2010
+recommendation 9].
+
+### Template {#sec:template}
+
+@ENDERS2010 [pp. 340–343] provides four useful templates for reporting
+the results of a missing data analysis. These templates include
+explanatory notes for uninformed editors and reviewers. It is
+straightforward to adapt the template text to other settings. Below I
+provide a template loosely styled after Enders that I believe captures
+the essentials needed to report multiple imputation in the statistical
+paragraph of the main text.
+
+> The percentage of missing values across the nine variables varied
+> between 0 and 34%. In total 1601 out of 3801 records (42%) were
+> incomplete. Many girls had no score because the nurse felt that the
+> measurement was “unnecessary,” or because the girl did not give
+> permission. Older girls had many more missing data. We used multiple
+> imputation to create and analyze 40 multiply imputed datasets.
+> Methodologists currently regard multiple imputation as a
+> state-of-the-art technique because it improves accuracy and
+> statistical power relative to other missing data techniques.
+> Incomplete variables were imputed under fully conditional
+> specification, using the default settings of the
+> `mice` 3.0.0 package
+> [@VANBUUREN2011B]. The parameters of substantive interest were
+> estimated in each imputed dataset separately, and combined using
+> Rubin’s rules. For comparison, we also performed the analysis on the
+> subset of complete cases.
+
+This text is about 135 words. If this is too long, then the sentences
+that begin with “Methodologists” and “For comparison” can be deleted. In
+the paragraphs that describe the results we can add the following
+sentence:
+
+> Table 1 gives the missing data rates of each variable.
+
+In addition, if complete-case analysis is included, then we need to
+summarize it. For example:
+
+> We obtained similar results when the analysis was restricted to the
+> complete cases only. Multiple imputation was generally more efficient
+> as can be seen from the shorter confidence intervals and lower
+> $p$-values in Table X.
+
+It is also possible that the two analyses lead to diametrically opposed
+conclusions. Since a well-executed multiple imputation is theoretically
+superior to complete-case analysis, we should give multiple imputation
+more weight. It would be comforting though to have an explanation of the
+discrepancy.
+
+The template texts can be adapted as needed. In addition obtain
+inspiration from good articles in your own field that apply multiple
+imputation.
+
+## Other applications {#sec:otherapps}
+
+Chapters \[ch:measurement\]–\[ch:longitudinal\] illustrated several
+applications of multiple imputation. This section briefly reviews some
+other applications. These underscore the general nature and broad
+applicability of multiple imputation.
+
+### Synthetic datasets for data protection
+
+Many governmental agencies make microdata available to the public. One
+of the major practical issues is that the identity of anonymous
+respondents can be disclosed through the data they provide. @RUBIN1993
+suggested publishing fully synthetic microdata instead of the real data,
+with the obvious advantage of zero disclosure risk. The released
+synthetic data should reproduce the essential features of confidential
+microdata.
+
+@RAGHUNATHAN2003 and @REITER2005 demonstrated the practical application
+of the idea. Real and synthetic records can be mixed, resulting in
+partially synthetic data. Recent advances can be found in @REITER2009,
+@DRECHSLER2010, @REITER2014 and @LOONG2017. @YU2017 present an
+application to protect confidentiality in the Californian Cancer
+Registry.
+
+### Analysis of coarsened data
+
+Many datasets contain data that are partially missing. Some values are
+known accurately, but others are only known to lie within a certain
+range. @HEITJAN1991B proposed a general theory for data coarsening
+processes that includes rounding, heaping, censoring and missing data as
+special cases. See also @GILL1997 for a slightly more extended model.
+@HEITJAN1990 provided an application where age is misreported, and the
+amount of misreporting increases with age itself. Such problems with the
+data can be handled by multiple imputation of true age, given reported
+age and other personal factors. @HEITJAN1993 discussed various other
+biomedical examples and an application to data from the Stanford Heart
+Transplant Program. Related work on measurement error is available from
+several sources
+[@BROWNSTONE1996; @GHOSHDASTIDAR2003; @YUCEL2005; @COLE2006; @GLICKMAN2008].
+@GOLDSTEIN2015 formulated joint models for three types of coarsened
+data.
+
+### File matching of multiple datasets
+
+Statistical file matching, or data fusion, attempts to integrate two or
+more datasets with different units observed on common variables.
+@RUBIN1986 considered file matching as a missing data problem, and
+suggested multiple imputation as a solution. @MORIARITY2003 developed
+modifications that were found to improve the procedure. Further relevant
+work can be found in the books by @RASSLER2002, @ORAZIO2006 and
+@HERZOG2007.
+
+The imputation techniques proposed to date were developed from the
+multivariate normal model. Application of the MICE algorithm under
+conditional independence is straightforward. @RASSLER2002 compared MICE
+to several alternatives, and found MICE to work well under normality and
+conditional independence. If the assumption of conditional independence
+does not hold, we may bring prior information into MICE by appending a
+third data file that contains records with data that embody the prior
+information. Sections \[sec:convergence\] and \[sec:impbridge\] put this
+idea into practice in a different context. This techique can perform
+file matching for mixed continuous-discrete data under any data coded
+prior.
+
+### Planned missing data for efficient designs
+
+Lengthy questionnaires increase the missing data rate and can make a
+study expensive. An alternative is to cut up a long questionnaire into
+separate forms, each of which is considerably shorter than the full
+version. The split questionnaire design [@RAGHUNATHAN1995] poses certain
+restrictions on the selection of the forms, thus enabling analysis by
+multiple imputation. @GELMAN1998 provide additional techniques for the
+related problem of analysis of multiple surveys. The loss of efficiency
+depends on the strengths of the relations between form and can be
+compensated for by a larger initial sample size. @GRAHAM2006 and
+@GRAHAM2012 are excellent resources for methodology based on planned
+missing data. @TODDLITTLE2013 and @RHEMTULLA2016 discuss applications in
+child development and educational research.
+
+### Adjusting for verification bias
+
+Partial verification bias in diagnostic accuracy studies may occur if
+not all patients are assessed by the reference test (golden standard).
+Bias occurs if the group of patients is selective, e.g., when only those
+that score on a previous test are measured. Multiple imputation has been
+suggested as a way to correct for this bias [@HAREL2006; @DEGROOT2008].
+The classic Begg-Greenes method may be used only if the missing data
+mechanism is known and simple. For more complex situations @DEGROOT2011
+and @NAAKTGEBOREN2016 recommend multiple imputation.
+
+## Future developments {#sec:future}
+
+Multiple imputation is not a finished product or algorithm. New
+applications call for innovative ways to implement the key ideas. This
+section identifies some areas where further research could be useful.
+
+### Derived variables {#derived-variables}
+
+Section \[sec:knowledge\] describes techniques to generate imputations
+for interactions, sum scores, quadratic terms and other derived
+variables. Many datasets contain derived variables of some form. The
+relations between the variables need to be maintained if imputations are
+to be plausible. There are no fail-safe methods for drawing imputations
+that preserve the proper interactions in the substantive models. One
+promising area of development is the rise of model-based forms of
+imputation that essentially take the substantive model as leading
+(cf. Section \[sec:modelbased\]). It would be interesting to study how
+well model-based techniques can cope with derived variables of various
+sorts.
+
+### Algorithms for blocks and batches
+
+In some applications it is useful to generalize the variable-by-variable
+scheme of the MICE algorithm to blocks. A block can contain just one
+variable, but also groups of variables. An imputation model is specified
+for each block, and the algorithm iterates over the blocks. Starting
+with `mice 3.0`, the user can specify blocks
+of variables that are structurally related, such as dummy variables,
+semi-continuous variables, bracketed responses, compositions, item
+subsets, and so on. It would be useful to obtain experience with the
+practical application of this facility, which could stimulate
+specification of the imputation model on a higher level of abstraction,
+and allow for mixes of joint and conditional models.
+
+Likewise, it may be useful to define batches, groups of records that
+form logical entities. For example, batches could consist of different
+populations, time points, classes, and so on. Imputation models can be
+defined per batch, and iteration takes place over the batches.
+@JAVARAS2003 proposed algorithms for blocks using joint modeling.
+@ZHU2016 discusses alternatives within an FCS context. The incorporation
+of blocks and batches will allow for tremendous flexibility in the
+specification of imputation models. Such techniques require a keen
+database administration strategy to ensure that the predictors needed at
+any point are completed.
+
+### Nested imputation
+
+In some applications it can be useful to generate different numbers of
+imputations for different variables. @RUBIN2003 described an application
+that used fewer imputations for variables that were expensive to impute.
+Alternatively, we may want to impute a dataset that has already been
+multiply imputed, for example, to impute some additional variables while
+preserving the original imputations. The technique of using different
+numbers of imputations is known as nested multiple imputation
+[@SHEN2000]. Nested multiple imputation also has potential applications
+for modeling different types of missing data [@HAREL2009]. Nested
+multiple imputation has theoretical advantages, but it would be good to
+develop a good understanding of its added value in typical use cases.
+
+### Better trials with dynamic treatment regimes
+
+Adaptive treatment designs follow patients over time, and can
+re-randomize them to alternate treatments conditional on previous
+outcomes. The design poses several challenges, and it is possible to
+address these in a coherent way by multiple imputation [@SHORTREED2014].
+As adaptive designs become more widely used, better methology with
+dynamic treatment regimes could result in huge savings, and at the same
+time, make designs more ethical.
+
+### Distribution-free pooling rules {#sec:free}
+
+Rubin’s theory is based on a convenient summary of the sampling
+distribution by the mean and the variance. There seems to be no
+intrinsic limitation in multiple imputation that would prevent it from
+working for more elaborate summaries. Suppose that we summarize the work
+for more elaborate summaries. Suppose that we summarize the distribution
+of the parameter estimates for each completed dataset by a dense set of
+quantiles. As before, there will be within- and between-variability as a
+result of the sampling and missing data mechanisms, respectively. The
+problem of how to combine these two types of distribution into the
+appropriate total distribution has not yet been solved. If we would be
+able to construct the total distribution, this would permit precise
+distribution-free statistical inference from incomplete data.
+
+### Improved diagnostic techniques
+
+The key problem in multiple imputation is how to generate good
+imputations. The ultimate criterion of a good imputation is that it is
+confidence proper with respect to the scientific parameters of interest.
+Diagnostic methods are intermediate tools to evaluate the plausibility
+of a set of imputations. Section \[sec:diagnostics\] discussed several
+techniques, but these may be laborious for datasets involving many
+variables. It would be useful to have informative summary measures that
+can signal whether “something is wrong” with the imputed data. Multiple
+measures are likely to be needed, each of which is sensitive to a
+particular aspect of the data.
+
+### Building block in modular statistics
+
+Multiple imputation requires a well-defined function of the population
+data, an adequate missing data mechanism, and an idea of the parameters
+that will be estimated from the imputed data. The technique is an
+attempt to separate the missing data problem from the complete-data
+problem, so that both can be addressed independently. This helps in
+simplifying statistical analyses that are otherwise difficult to
+optimize or interpret.
+
+The modular nature of multiple imputation helps our understanding. Aided
+by the vast computational possibilities, statistical models are becoming
+more and more complex nowadays, up to the point that the models outgrow
+the capabilities of our minds. The modular approach to statistics starts
+from a series of smaller models, each dedicated to a particular task.
+The main intellectual task is to arrange these models in a sensible way,
+and to link up the steps to provide an overall solution. Compared to the
+one-big-model-for-everything approach, the modular strategy may
+sacrifice some optimality. On the other hand, the analytic results are
+easier to track, as we can inspect what happened after each step, and
+thus easier to understand. And that is what matters in the end.
+
+## Exercises {#ex:ch:conclusion}
+
+1.  *Do’s:* Take the list of do’s in Section \[sec:dos\]. For each item
+    on the list, answer the following questions:
+
+    1.  Why is it on the list?
+
+    2.  Which is the most relevant section in the book?
+
+    3.  Can you order the list of elements from most important to least
+        important?
+
+    4.  What were your reasons for picking the top three?
+
+    5.  And why did you pick the bottom three?
+
+    6.  Could you make suggestions for new items that should be on the
+        list?
+
+2.  *Don’ts:* Repeat the previous exercise for the list of don’ts in
+    Section \[sec:donts\].
+
+3.  *Template:* Adapt the template for the
+    `mammalsleep` data in
+    `mice`. Be sure to include your major
+    assumptions and decisions.
+
+4.  *Nesting:* Develop an extension of the
+    `mids` object in
+    `mice` that allows for nested
+    multiple imputation. Try to build upon the existing
+    `mids` object.

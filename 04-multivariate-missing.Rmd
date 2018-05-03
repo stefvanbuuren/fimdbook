@@ -1,0 +1,1453 @@
+# Multivariate missing data {#ch:multivariate}
+
+> Conditional modeling allows enormous flexibility in dealing with practical problems.
+> 
+> --- Andrew Gelman, Trivellore Raghunathan
+
+Chapter \[ch:univariate\] dealt with univariate missing data. In
+practice, missing data may occur anywhere. This chapter discusses
+potential problems created by multivariate missing data, and outlines
+several approaches to deal with these issues.
+
+## Missing data pattern
+
+### Overview {#sec:patternoverview}
+
+Let the data be represented by the $n \times p$ matrix $Y$. In the
+presence of missing data $Y$ is partially observed. Notation $Y_j$ is
+the $j^\mathrm{th}$ column in $Y$, and $Y_{-j}$ indicates the complement
+of $Y_j$, that is, all columns in $Y$ except $Y_j$. The *missing data
+pattern* of $Y$ is the $n \times p$ binary response matrix $R$, as
+defined in Section \[sec:notation\].
+
+For both theoretical and practical reasons, it is useful to distinguish
+various types of missing data patterns:
+
+1.  *Univariate and multivariate*. A missing data pattern is said
+    to be univariate if there is only one variable with
+    missing data.
+
+2.  *Monotone and non-monotone (or general)*. A missing data
+    pattern is said to be *monotone* if the variables $Y_j$ can be
+    ordered such that if $Y_j$ is missing then all variables $Y_k$ with
+    $k>j$ are also missing. This occurs, for example, in longitudinal
+    studies with drop-out. If the pattern is not monotone, it is called
+    *non-monotone* or *general*.
+
+3.  *Connected and unconnected*. A missing data pattern is said to
+    be *connected* if any observed data point can be reached from any
+    other observed data point through a sequence of horizontal or
+    vertical moves (like the rook in chess).
+
+![Some missing data patterns in multivariate data. Gray is
+observed, red is missing.<span
+data-label="fig:patterns">](fig/ch4_patterns2-1){width="\maxwidth"}
+
+Figure \[fig:patterns\] illustrates various data patterns in
+multivariate data. Monotone patterns can occur as a result of drop-out
+in longitudinal studies. If a pattern is monotone, the variables can be
+sorted conveniently according to the percentage of missing data.
+Univariate missing data form a special monotone pattern. Important
+computational savings are possible if the data are monotone.
+
+All patterns displayed in Figure \[fig:patterns\] are connected. The
+file matching pattern is connected since it is possible to travel to all
+gray cells by horizontal or vertical moves. This pattern
+will become unconnected if we remove the first column. In contrast,
+after removing the first column from the general pattern in Figure
+\[fig:patterns\] it is still connected through the first two rows.
+
+Connected patterns are needed to identify unknown parameters. For
+example, in order to be able to estimate a correlation coefficient
+between two variables, they need to be connected, either directly by a
+set of cases that have scores on both, or indirectly through their
+relation with a third set of connected data. Unconnected patterns may
+arise in particular data collection designs, like data combination of
+different variables and samples, or potential outcomes.
+
+Missing data patterns of longitudinal data organized in the “long
+format” (cf. Section \[sec:longandwide\]) are more complex than the
+patterns in Figure \[fig:patterns\]. See @VANBUUREN2011 [p. 179] for
+some examples.
+
+### Summary statistics {#sec:mdpattern}
+
+The missing data pattern influences the amount of information that can
+be transferred between variables. Imputation can be more precise if
+other variables are non-missing for those cases that are to be imputed.
+The reverse is also true. Predictors are potentially more powerful if
+they have are non-missing in rows that are vastly incomplete. This
+section discusses various measures of the missing data pattern.
+
+The function `md.pattern()` in
+`mice` calculates the frequencies of the
+missing data patterns. For example, the frequency pattern of the dataset
+`pattern4` in Figure \[fig:patterns\] is
+
+`   `
+
+      A B C
+    2 1 1 1 0
+    3 1 1 0 1
+    1 1 0 1 1
+    2 0 0 1 2
+      2 3 3 8
+
+The columns `A`, `B`
+and `C` are either 0 (missing) or 1
+(observed). The first column provides the frequency of each pattern. The
+last column lists the number of missing entries per pattern. The bottom
+row provides the number of missing entries per variable, and the total
+number of missing cells. In practice,
+`md.pattern()` is primarily useful for
+datasets with a small number of columns.
+
+Alternative measures start from pairs of variables. A pair of variables
+$(Y_j,Y_k)$ can have four missingness patterns:
+
+1.  both $Y_j$ and $Y_k$ are observed (pattern
+    `rr`);
+
+2.  $Y_j$ is observed and $Y_k$ is missing (pattern
+    `rm`);
+
+3.  $Y_j$ is missing and $Y_k$ is observed (pattern
+    `mr`);
+
+4.  both $Y_j$ and $Y_k$ are missing (pattern
+    `mm`).
+
+For example, for the monotone pattern in Figure \[fig:patterns\] the
+frequencies are:
+
+`  `\
+
+    $rr
+      A B C
+    A 6 5 3
+    B 5 5 2
+    C 3 2 5
+
+    $rm
+      A B C
+    A 0 1 3
+    B 0 0 3
+    C 2 3 0
+
+    $mr
+      A B C
+    A 0 0 2
+    B 1 0 3
+    C 3 3 0
+
+    $mm
+      A B C
+    A 2 2 0
+    B 2 3 0
+    C 0 0 3
+
+Thus, for pair `(A,B)` there are five
+completely observed pairs (in `rr`), no pairs
+in which `A` is observed and
+`B` missing (in
+`rm`), one pair in which
+`A` is missing and
+`B` is observed (in
+`mr`) and two pairs with both missing
+`A` and `B`. Note
+that these numbers add up to the total sample size.
+
+The *proportion of usable cases* [@VANBUUREN1999] for imputing variable
+$Y_j$ from variable $Y_k$ is defined as
+$$I_{jk} = \frac{\sum_i^n (1-r_{ij})r_{ik}}{\sum_i^n 1-r_{ij}}$$ This
+quantity can be interpreted as the number of pairs $(Y_j,Y_k)$ with
+$Y_j$ missing and $Y_k$ observed, divided by the total number of missing
+cases in $Y_j$. The proportion of usable cases $I_{jk}$ equals 1 if
+variable $Y_k$ is observed in all records where $Y_j$ is missing. The
+statistic can be used to quickly select potential predictors $Y_k$ for
+imputing $Y_j$ based on the missing data pattern. High values of
+$I_{jk}$ are preferred. For example, we can calculate $I_{jk}$ in the
+dataset `pattern4` in Figure \[fig:patterns\]
+for all pairs $(Y_j, Y_k)$ by
+
+          A B C
+    A 0.000 0 1
+    B 0.333 0 1
+    C 1.000 1 0
+
+The first row contains $I_{\mathrm{AA}}=0$, $I_{\mathrm{AB}}=0$ and
+$I_{\mathrm{AC}} = 1$. This informs us that
+`B` is not relevant for imputing
+`A` since there are no observed cases in
+`B` where `A` is
+missing. However, `C` is observed for both
+missing entries in `A`, and may thus be a
+relevant predictor. The $I_{jk}$ statistic is an *inbound* statistic
+that measures how well the missing entries in variable $Y_j$ are
+connected to the rest of the data.
+
+The *outbound* statistic $O_{jk}$ measures how observed data in variable
+$Y_j$ connect to missing data in the rest of the data. The statistic is
+defined as
+$$O_{jk} = \frac{\sum_i^n r_{ij}(1-r_{ik})}{\sum_i^n r_{ij}}$$ This
+quantity is the number of observed pairs $(Y_j,Y_k)$ with $Y_j$ observed
+and $Y_k$ missing, divided by the total number of observed cases in
+$Y_j$. The quantity $O_{jk}$ equals 1 if variable $Y_j$ is observed in
+all records where $Y_k$ is missing. The statistic can be used to
+evaluate whether $Y_j$ is a potential predictor for imputing $Y_k$. We
+can calculate $O_{jk}$ in the dataset
+`pattern4` in Figure \[fig:patterns\] for all
+pairs $(Y_j, Y_k)$ by
+
+        A     B   C
+    A 0.0 0.167 0.5
+    B 0.0 0.000 0.6
+    C 0.4 0.600 0.0
+
+Thus `A` is potentially more useful to impute
+`C` (3 out of 6) than
+`B` (1 out of 6).
+
+### Influx and outflux {#sec:flux}
+
+The inbound and outbound statistics in the previous section are defined
+for variable pairs $(Y_j,Y_k)$. This section describes two overall
+measures of how each variable connects to others: influx and outflux.
+
+The *influx coefficient* $I_j$ is defined as
+$$I_j = \frac{\sum_j^p\sum_k^p\sum_i^n (1-r_{ij})r_{ik}}{\sum_k^p\sum_i^n r_{ik}}$$
+The coefficient is equal to the number of variable pairs $(Y_j,Y_k)$
+with $Y_j$ missing and $Y_k$ observed, divided by the total number of
+observed data cells. The value of $I_j$ depends on the proportion of
+missing data of the variable. Influx of a completely observed variable
+is equal to 0, whereas for completely missing variables we have $I_j=1$.
+For two variables with the same proportion of missing data, the variable
+with higher influx is better connected to the observed data, and might
+thus be easier to impute.
+
+The *outflux coefficient* $O_j$ is defined in an analogous way as
+$$O_j = \frac{\sum_j^p\sum_k^p\sum_i^n r_{ij}(1-r_{ik})}{\sum_k^p\sum_i^n 1-r_{ij}}$$
+The quantity $O_j$ is the number of variable pairs with $Y_j$ observed
+and $Y_k$ missing, divided by the total number of incomplete data cells.
+Outflux is an indicator of the potential usefulness of $Y_j$ for
+imputing other variables. Outflux depends on the proportion of missing
+data of the variable. Outflux of a completely observed variable is equal
+to 1, whereas outflux of a completely missing variable is equal to 0.
+For two variables having the same proportion of missing data, the
+variable with higher outflux is better connected to the missing data,
+and thus potentially more useful for imputing other variables.
+
+![Fluxplot: Outflux versus influx in the four missing data patterns from
+Figure \[fig:patterns\]. The influx of a variable quantifies how well
+its missing data connect to the observed data on other variables. The
+outflux of a variable quantifies how well its observed data connect to
+the missing data on other variables. In general, higher influx and
+outflux values are preferred.<span
+data-label="fig:fluxexample">](fig/ch4_figfourflux-1){width="\maxwidth"}
+
+The function `flux()` in
+`mice` calculates $I_j$ and $O_j$ for all
+variables. For example, for `pattern4` we
+obtain
+
+       pobs influx outflux
+    A 0.750  0.125   0.500
+    B 0.625  0.250   0.375
+    C 0.625  0.375   0.625
+
+The rows correspond to the variables. The columns contain the proportion
+of observed data, $I_j$ and $O_j$. Figure \[fig:fluxexample\] shows the
+influx-outflux pattern of the four patterns in Figure \[fig:patterns\]
+produced by `fluxplot()`. In general,
+variables that are located higher up in the display are more complete
+and thus potentially more useful for imputation. It is often (but not
+always) true that $I_j+O_j\leq 1$, so in practice variables closer to
+the subdiagonal are typically better connected than those farther away.
+The fluxplot can be used to spot variables that clutter the imputation
+model. Variables that are located in the lower regions (especially near
+the lower-left corner) *and* that are uninteresting for later analysis
+are better removed from the data prior to imputation.
+
+Influx and outflux are summaries of the missing data pattern intended to
+aid in the construction of imputation models. Keeping everything else
+constant, variables with high influx and outflux are preferred. Realize
+that outflux indicates the potential (and not actual) contribution to
+impute other variables. A variable with high $O_j$ may turn out to be
+useless for imputation if it is unrelated to the incomplete variables.
+On the other hand, the usefulness of a highly predictive variable is
+severely limited by a low $O_j$. More refined measures of usefulness are
+conceivable, e.g., multiplying $O_j$ by the average proportion of
+explained variance. Also, we could specialize to one or a few key
+variables to impute. Alternatively, analogous measures for $I_j$ could
+be useful. The further development of diagnostic summaries for the
+missing data pattern is a promising area for further investigation.
+
+## Issues in multivariate imputation {#sec:issues}
+
+Most imputation models for $Y_j$ use the remaining columns $Y_{-j}$ as
+predictors. The rationale is that conditioning on $Y_{-j}$ preserves the
+relations among the $Y_j$ in the imputed data. identified various
+practical problems that can occur in multivariate missing data:
+
+-   The predictors $Y_{-j}$ themselves can contain missing
+    values;
+
+-   “Circular” dependence can occur, where $Y_j^\mathrm{mis}$
+    depends on $Y_h^\mathrm{mis}$, and $Y_h^\mathrm{mis}$ depends on
+    $Y_j^\mathrm{mis}$ with $h \neq j$, because in general $Y_j$ and
+    $Y_h$ are correlated, even given other variables;
+
+-   Variables are often of different types (e.g., binary,
+    unordered, ordered, continuous), thereby making the application of
+    theoretically convenient models, such as the multivariate normal,
+    theoretically inappropriate;
+
+-   Especially with large $p$ and small $n$, collinearity or empty
+    cells can occur;
+
+-   The ordering of the rows and columns can be meaningful, e.g.,
+    as in longitudinal data;
+
+-   The relation between $Y_j$ and predictors $Y_{-j}$ can be
+    complex, e.g., nonlinear, or subject to censoring processes;
+
+-   Imputation can create impossible combinations, such as
+    pregnant fathers.
+
+This list is by no means exhaustive, and other complexities may appear
+for particular data. The next sections discuss three general strategies
+for imputing multivariate data:
+
+1.  *Monotone data imputation*. For monotone missing data
+    patterns, imputations are created by a sequence of univariate
+    methods;
+
+2.  *Joint modeling*. For general patterns, imputations are drawn
+    from a multivariate model fitted to the data;
+
+3.  *Fully conditional specification*, also known as *chained
+    equations* and *sequential regressions*. For general patterns, a
+    multivariate model is implicitly specified by a set of conditional
+    univariate models. Imputations are created by drawing from iterated
+    conditional models.
+
+## Monotone data imputation {#sec:monotone}
+
+### Overview {#sec:monoverview}
+
+Imputations of monotone missing data can be generated by specifying a
+sequence of univariate methods (one for each incomplete column),
+followed by drawing sequentially synthetic observations under each
+method. Suppose that variables $Y_1,\dots,Y_p$ are ordered into a
+monotone missing data pattern. The general recommended procedure is as
+follows [@RUBIN1987 p. 172]. The missing values of $Y_1$ are imputed
+from a (possibly empty) set of complete covariates $X$ ignoring
+$Y_2,\dots,Y_p$. Next, the missing values of $Y_2$ are imputed from
+$(Y_1,X)$ ignoring $Y_3,\dots,Y_p$, and so on. The procedure ends after
+$Y_p$ is imputed from $(X,Y_1,\dots,Y_{p-1})$. The univariate imputation
+methods as discussed in Chapter \[ch:univariate\] can be used as
+building blocks. For example, $Y_1$ can be imputed by logistic
+regression, $Y_2$ by predictive mean matching and so on.
+
+*Numerical example*. The first three columns of the data frame
+`nhanes2` in `mice`
+have a monotone missing data pattern. In terms of the above notation,
+$X$ contains the complete variable `age`,
+$Y_1$ is the variable `hyp` and $Y_2$ is the
+variable `bmi`. Monotone data imputation can
+be applied to generate $m=2$ complete datasets by:
+
+`   `\
+`   `
+
+       age hyp bmi
+    16   1   1   1  0
+    1    1   1   0  1
+    8    1   0   0  2
+         0   8   9 17
+
+`           `\
+`              `
+
+The `md.pattern()` function outputs the three
+available data patterns in `data`. There are
+16 complete rows, one row with missing `bmi`,
+and eight rows where both `bmi` and
+`hyp` are missing. The argument
+`visit = monotone` specifies that the visit
+sequence should be equal to the number of missing data per variable (so
+first `hyp` and then
+`bmi`). Since one iteration is enough, we use
+`maxit = 1` to limit the calculations. This
+code imputes `hyp` by logistic regression and
+`bmi` by predictive mean matching, the default
+methods for binary and continuous data, respectively.
+
+Monotone data imputation requires that the missing data pattern is
+monotone. In addition, there is a second, more technical requirement:
+the parameters of the imputation models should be *distinct* [@RUBIN1987
+pp. 174–178]. Let the $j^\mathrm{th}$ imputation model be denoted by
+$P({\mbox{$Y_j^\mathrm{mis}$}}|X,Y_1,\dots,Y_{p-1},\phi_j)$, where
+$\phi_j$ represents the unknown parameters of the imputation model. For
+valid likelihood inferences, $\phi_1,\dots,\phi_p$ should be distinct in
+the sense that the parameter space $\phi = (\phi_1,\dots,\phi_p)$ in the
+multivariate model for the data is the cross-product of the individual
+parameter spaces [@SCHAFER1997 p. 219]. For Bayesian inference, it is
+required that the prior density of all parameters $\pi(\phi)$ factors
+into $p$ independent densities $\pi(\phi) =
+\pi_1(\phi_1)\pi_2(\phi_2),\dots,\pi_p(\phi_p)$ [@SCHAFER1997 p. 224].
+In most applications these requirements are unlikely to limit the
+practical usefulness of the method because the parameters are typically
+unrelated and allowed to vary freely. We need to be aware, however, that
+monotone data imputation may fail if the parameters of imputation models
+for different $Y_j$ somehow depend on each other.
+
+### Algorithm {#sec:monalgorithm}
+
+Algorithm \[alg:monotone\] provides the main steps of monotone data
+imputation. We order the variables according to their missingness, and
+impute from left to right. In practice, a pair of “draw-impute” steps is
+executed by one of the univariate methods of Chapter \[ch:univariate\].
+Both Bayesian sampling and bootstrap imputation methods can be used, and
+can in fact be mixed. There is no need to iterate, and convergence is
+immediate. The algorithm is replicated $m$ times from different starting
+points to obtain $m$ multiply imputed datasets.
+
+Monotone data imputation is fast and flexible, but requires a monotone
+pattern. In practice, a dataset may be near-monotone, and may become
+monotone if a small fraction of the missing data were imputed. For
+example, some subjects may drop out of the study resulting in a monotone
+pattern. There could be some unplanned missing data that destroy the
+monotone pattern. In such cases it can be computationally efficient to
+impute the data in two steps. First, fill in the missing data in a small
+portion of the data to restore the monotone pattern, and then apply the
+monotone data imputation
+[@LI1988; @RUBIN1990; @LIU1993; @SCHAFER1997; @RUBIN2003]. There are
+often more ways to impute toward monotonicity, so a choice is necessary.
+@RUBIN1990 suggested ordering the variables according to the missing
+data rate.
+
+*Numerical example*. The `nhanes2` data in
+`mice` contains 3 out of 27 missing values
+that destroy the monotone pattern: one for
+`hyp` (in row 6) and two for
+`bmi` (in rows 3 and 6). The following
+algorithm first imputes these 3 values by a simple random sample, and
+then fills in the remaining missing data by monotone data multiple
+imputation.
+
+`   `\
+`   `\
+`    `\
+`       `\
+`                     `\
+`  `\
+`        `\
+`               `
+
+The primary advantage is speed. We need to make only two passes through
+the data. Since the method uses single imputation in the first step, it
+should be done only if the number of missing values that destroy the
+monotone pattern is small.
+
+Observe that the imputed values for the missing
+`hyp` data in row 3 could also depend on
+`bmi` and `chl`, but
+in the procedure both predictors are ignored. In principle, we can
+improve the method by incorporating `bmi` and
+`chl` into the model, and then iterate. We
+will explore this technique in more detail in Section \[sec:FCS\], but
+first we study the theoretically nice alternative.
+
+## Joint modeling {#sec:JM}
+
+### Overview {#overview-2}
+
+Joint modeling (JM) starts from the assumption that the data can be
+described by a multivariate distribution. Assuming ignorability,
+imputations are created as draws from the fitted distribution. The model
+can be based on any multivariate distribution. The multivariate normal
+distribution is most widely applied.
+
+The general idea is as follows. For a general missing data pattern,
+missing data can occur anywhere in $Y$, so in practice the distribution
+from which imputations are to be drawn varies from row to row. For
+example, if the missingness pattern of row $i$ is $r_{[i]}
+= (0, 0, 1, 1)$, then we need to draw imputations from the bivariate
+distribution
+$P_i({\mbox{$Y_1^\mathrm{mis}$}},{\mbox{$Y_2^\mathrm{mis}$}}|Y_3, Y_4, \phi_{1,2})$,
+whereas if $r_{[i']} = (0, 1, 1, 1)$ we need draws from the univariate
+distribution
+$P_{i'}({\mbox{$Y_1^\mathrm{mis}$}}|Y_1, Y_3, Y_4, \phi_1)$.
+
+### Continuous data
+
+Under the assumption of multivariate normality $Y\sim N(\mu,\Sigma)$,
+the $\phi$-parameters of these imputation models are functions of
+$\theta=(\mu, \Sigma)$ [@SCHAFER1997 p. 157]. The *sweep operator*
+transforms $\theta$ into $\phi$ by converting outcome variables into
+predictors, while the *reverse sweep operator* allows for the inverse
+operation [@BEATON1964]. The sweep operators allow rapid calculation of
+the $\phi$ parameters for imputation models that pertain to different
+missing data patterns. For reasons of efficiency, rows can be grouped
+along the missing data pattern. See @LITTLE2002 [pp. 148–156] and
+@SCHAFER1997 [pp. 157–163] for computational details.
+
+The $\theta$-parameters are usually unknown. For non-monotone missing
+data, however, it is generally difficult to estimate $\theta$ from
+$Y_\mathrm{obs}$ directly. The solution is to iterate imputation and
+parameter estimation using a general algorithm known as *data
+augmentation* [@TANNERWONG1987]. At step $t$, the algorithm draws
+$Y_\mathrm{mis}$ and $\theta$ by alternating the following steps:
+
+$$\begin{aligned}
+  \dot Y_\mathrm{mis}^t&\sim&P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}}, \dot\theta^{t-1})\\
+  \dot\theta^t&\sim&P(\theta|{\mbox{$Y_\mathrm{obs}$}}, \dot Y_\mathrm{mis}^t)\end{aligned}$$
+
+where imputations from
+$P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}}, \dot\theta^{t-1})$
+are drawn by the method as described in the previous section, and where
+draws from the parameter distribution
+$P(\theta|{\mbox{$Y_\mathrm{obs}$}}, \dot Y_\mathrm{mis}^t)$ are
+generated according to the method of @SCHAFER1997 [p. 184].
+
+Algorithm \[alg:joint\] lists the major steps needed to impute
+multivariate missing data under the normal model. Additional background
+can be found in @LI1988, @RUBIN1990 and @SCHAFER1997. @SONG2004
+generated multiple imputations under the common factor model. The
+performance of the method was found to be similar to that of the
+multivariate normal distribution, the main pitfall being the danger of
+setting the numbers of factors too low. @AUDIGIER2016 proposed an
+imputation method based on Bayesian principal components analysis, and
+suggested it as an alternative to regularize data with more columns than
+rows.
+
+@SCHAFER1997 [pp. 211–218] reported simulations that showed that
+imputations generated under the multivariate normal model are robust to
+non-normal data. @DEMIRTAS2008C confirmed this claim in a more extensive
+simulation study. The authors conclude that “imputation under the
+assumption of normality is a fairly reasonable tool, even when the
+assumption of normality is clearly violated; the fraction of missing
+information is high, especially when the sample size is relatively
+large.” It is often beneficial to transform the data before imputation
+toward normality, especially if the scientifically interesting
+parameters are difficult to estimate, like quantiles or variances. For
+example, we could apply a logarithmic transformation before imputation
+to remove skewness, and apply an exponential transformation after
+imputation to revert to the original scale. See @VONHIPPEL2013 for a
+cautionary note.
+
+Some work on automatic transformation methods for joint models is
+available. developed an iterative transformation-imputation algorithm
+that finds optimal transformations of the variables toward multivariate
+normality. The algorithm is iterative because the multiply imputed
+values contribute to define the transformation, and vice versa.
+Transformations toward normality have also been incorporated in
+`transcan()` and
+`aregImpute()` of the
+`Hmisc` package in
+`R` [@HARRELL2001].
+
+If a joint model is specified, it is nearly always the multivariate
+normal model. Alternatives like the $t$-distribution [@LIU1995] are
+hardly being developed or applied. The recent research effort in the
+area has focused on models for multilevel data. These developments are
+covered in a Chapter \[ch:multilevel\].
+
+### Categorical data {#sec:jmcategorical}
+
+The multivariate normal model is often applied to categorical data.
+suggested rounding off continuous imputed values in categorical data to
+the nearest category “to preserve the distributional properties as fully
+as possible and to make them intelligible to the analyst.” This advice
+was questioned by @HORTON2003, who showed that simple rounding may
+introduce bias in the estimates of interest, in particular for binary
+variables. @ALLISON2005 found that it is usually better not to round the
+data, and preferred methods specifically designed for categorical data,
+like logistic regression imputation or discriminant analysis imputation.
+@BERNAARDS2007 confirmed the results of @HORTON2003 for simple rounding,
+and proposed two improvements to simple rounding: *coin flip* and
+*adaptive rounding*. Their simulations showed that “adaptive rounding
+seemed to provide the best performance, although its advantage over
+simple rounding was sometimes slight.” Further work has been done by
+@YUCEL2008b, who proposed rounding such that the marginal distribution
+in the imputations is similar to that of the observed data.
+Alternatively, @DEMIRTAS2009B proposed two rounding methods based on
+logistic regression and an additional drawing step that makes rounding
+dependent on other variables in the imputation model. Another proposal
+is to model the indicators of the categorical variables [@LEE2012]. A
+single best rounding rule for categorical data has yet to be identified.
+@DEMIRTAS2010 encourages researchers to avoid rounding altogether, and
+apply methods specifically designed for categorical data.
+
+Several joint models for categorical variables have been proposed that
+do not rely on rounding. proposed several techniques to impute
+categorical data and mixed continuous-categorical data. Missing data in
+contingency tables can be imputed under the log-linear model. The model
+preserves higher-order interactions, and works best if the number of
+variables is small, say, up to six. Mixed continuous-categorical data
+can be imputed under the general location model originally developed by
+@OLKIN1961. This model combines the log-linear and multivariate normal
+models by fitting a restricted normal model to each cell of the
+contingency table. Further extensions have been suggested by @LIU1998
+and @PENG2004. @BELIN1999 pointed out some limitations of the general
+location model for a larger dataset with 16 binary and 18 continuous
+variables. Their study found substantial differences between the imputed
+and follow-up data, especially for the binary data.
+
+Alternative imputation methods based on joint models have been
+developed. maximized internal consistency by the $k$-means clustering
+algorithm, and outlined methods to generate multiple imputations. This
+is a single imputation method which artificially strengthens the
+relations in the data. The `MIMCA` imputation
+technique [@AUDIGIER2017] uses a similar underlying model, and derives
+variability in imputations by taking bootstrap samples under a chosen
+number of dimensions.
+
+@VANGINKEL2007 proposed *two-way imputation*, a technique for imputing
+incomplete categorical data by conditioning on the row and column sum
+scores of the multivariate data. This method has applications for
+imputing missing test item responses. @CHEN2011 proposed a class of
+models that specifies the conditional density by an odds ratio
+representation relative to the center of the distribution. This allows
+for separate models of the odds ratio function and the conditional
+density at the center.
+
+@VERMUNT2008 pioneered the use of the latent class analysis for imputing
+categorical data. The latent class (or finite mixture) model describes
+the joint distribution as the product of locally independent categorical
+variables. When the number of classes is large, the model can be used as
+a generic density estimation tool that captures the relations between
+the variables by a highly parameterized model. The relevant associations
+in the data need not to be specified a-priori, and the main modeling
+effort consists of setting the number of latent classes. Unlike the
+saturated log-linear models advocated by @SCHAFER1997, latent models can
+handle a large number of variables. surveyed several different
+implementations of the latent class model for imputation, both
+frequentistic [@VERMUNT2008; @VANDERPALM2016] and Bayesian [@SI2013],
+which differ in the ways to select the number of classes. proposed an
+extension to longitudinal data.
+
+Joint models for nested (multilevel) data have been intensively studied.
+Section \[sec:mljoint\] discusses these developments in more detail.
+
+## Fully conditional specification {#sec:FCS}
+
+### Overview {#overview-3}
+
+Fully conditional specification (FCS) imputes multivariate missing data
+on a variable-by-variable basis [@VANBUUREN2006; @VANBUUREN2007]. The
+method requires a specification of an imputation model for each
+incomplete variable, and creates imputations per variable in an
+iterative fashion.
+
+In contrast to joint modeling, FCS specifies the multivariate
+distribution $P(Y, X, R|\theta)$ through a set of conditional densities
+$P(Y_j | X, Y_{-j}, R, \phi_j)$. This conditional density is used to
+impute $Y_j$ given $X$, $Y_{-j}$ and $R$. Starting from simple random
+draws from the marginal distribution, imputation under FCS is done by
+iterating over the conditionally specified imputation models. The
+methods of Chapter \[ch:univariate\] may act as building blocks. FCS is
+a natural generalization of univariate imputation.
+
+@RUBIN1987 [pp. 160–166] subdivided the work needed to create
+imputations into three tasks. The *modeling task* chooses a specific
+model for the data, the *estimation task* formulates the posterior
+parameters distribution given the model and the *imputation task* takes
+a random draws for the missing data by drawing successively from
+parameter and data distributions. FCS directly specifies the conditional
+distributions from which draws should be made, and hence bypasses the
+need to specify a multivariate model for the data.
+
+The idea of conditionally specified models is quite old. Conditional
+probability distributions follow naturally from the theory of stochastic
+Markov chains [@BARTLETT1978 pp. 34–41, pp. 231–236]. In the context of
+spatial data, Besag preferred the use of conditional probability models
+over joint probability models, since “the conditional probability
+approach has greater intuitive appeal to the practising statistician”
+[@BESAG1974 p. 223].
+
+In the context of missing data imputation, similar ideas have surfaced
+under a variety of names: stochastic relaxation [@KENNICKELL1991],
+variable-by-variable imputation [@BRAND1999], switching regressions
+[@VANBUUREN1999], sequential regressions [@RAGHUNATHAN2001], ordered
+pseudo-Gibbs sampler [@HECKERMAN2001], partially incompatible MCMC
+[@RUBIN2003], iterated univariate imputation [@GELMAN2004], chained
+equations [@VANBUUREN2000] and fully conditional specification (FCS)
+[@VANBUUREN2006].
+
+### The MICE algorithm {#sec:MICE}
+
+There are several ways to implement imputation under conditionally
+specified models. Algorithm \[alg:mice\] describes one particular
+instance: the MICE algorithm [@VANBUUREN2000; @VANBUUREN2011B]. The
+algorithm starts with a random draw from the observed data, and imputes
+the incomplete data in a variable-by-variable fashion. One iteration
+consists of one cycle through all $Y_j$. The number of iterations $M$
+can often be low, say 5 or 10. The MICE algorithm generates multiple
+imputations by executing Algorithm \[alg:mice\] in parallel $m$ times.
+
+The MICE algorithm is a Markov chain Monte Carlo (MCMC) method, where
+the state space is the collection of all imputed values. More
+specifically, if the conditionals are compatible (cf. Section
+\[sec:compatibility\]), the MICE algorithm is a Gibbs sampler, a
+Bayesian simulation technique that samples from the conditional
+distributions in order to obtain samples from the joint distribution
+[@GELFAND1990; @CASELLA1992]. In conventional applications of the Gibbs
+sampler, the full conditional distributions are derived from the joint
+probability distribution [@GILKS1996B]. In the MICE algorithm, the
+conditional distributions are under direct control of the user, and so
+the joint distribution is only implicitly known, and may not actually
+exist. While the latter is clearly undesirable from a theoretical point
+of view (since we do not know the joint distribution to which the
+algorithm converges), in practice it does not seem to hinder useful
+applications of the method (cf. Section \[sec:compatibility\]).
+
+In order to converge to a stationary distribution, a Markov chain needs
+to satisfy three important properties [@ROBERTS1996; @TIERNEY1996]:
+
+-   *irreducible*, the chain must be able to reach all interesting
+    parts of the state space;
+
+-   *aperiodic*, the chain should not oscillate between different
+    states;
+
+-   *recurrence*, all interesting parts can be reached infinitely
+    often, at least from almost all starting points.
+
+Do these properties hold for the MICE algorithm? Irreducibility is
+generally not a problem since the user has large control over the
+interesting parts of the state space. This flexibility is actually the
+main rationale for FCS instead of a joint model.
+
+Periodicity is a potential problem, and can arise in the situation where
+imputation models are clearly inconsistent. A rather artificial example
+of an oscillatory behavior occurs when $Y_1$ is imputed by
+$Y_2\beta+\epsilon_1$ and $Y_2$ is imputed by $-Y_1\beta+\epsilon_2$ for
+some fixed, nonzero $\beta$. The sampler will oscillate between two
+qualitatively different states, so the correlation between $Y_1$ and
+$Y_2$ after imputing $Y_1$ will differ from that after imputing $Y_2$.
+In general, we would like the statistical inferences to be independent
+of the stopping point. A way to diagnose the *ping-pong* problem, or
+*order effect*, is to stop the chain at different points. The stopping
+point should not affect the statistical inferences. The addition of
+noise to create imputations is a safeguard against periodicity, and
+allows the sampler to “break out” more easily.
+
+Non-recurrence may also be a potential difficulty, manifesting itself as
+explosive or non-stationary behavior. For example, if imputations are
+made by deterministic functions, the Markov chain may lock up. Such
+cases can sometimes be diagnosed from the trace lines of the sampler.
+See Section \[sec:convergence\] for an example. As long as the
+parameters of imputation models are estimated from the data,
+non-recurrence is mild or absent.
+
+The required properties of the MCMC method can be translated into
+conditions on the eigenvalues of the matrix of transition probabilities
+[@MACKAY2003 pp. 372–373]. The development of practical tools that put
+these conditions to work for multiple imputation is still an ongoing
+research problem.
+
+### Compatibility$^\spadesuit$ {#sec:compatibility}
+
+Gibbs sampling is based on the idea that knowledge of the conditional
+distributions is sufficient to determine a joint distribution, if it
+exists. Two conditional densities $p(Y_1|Y_2)$ and $p(Y_2|Y_1)$ are said
+to be *compatible* if a joint distribution $p(Y_1,Y_2)$ exists that has
+$p(Y_1|Y_2)$ and $p(Y_2|Y_1)$ as its conditional densities. More
+precisely, the two conditional densities are compatible if and only if
+their density ratio $p(Y_1|Y_2)/p(Y_2|Y_1)$ factorizes into the product
+$u(Y_1)v(Y_2)$ for some integrable functions $u$ and $v$ [@BESAG1974].
+So, the joint distribution either exists and is unique, or does not
+exist.
+
+If the joint density itself is of genuine scientific interest, we should
+carefully evaluate the effect that imputations might have on the
+estimate of the distribution. For example, incompatible conditionals
+could produce a ridge (or spike) in an otherwise smooth density, and the
+location of the ridge may actually depend on the stopping point. If such
+is the case, then we should have a reason to favor a particular stopping
+point. Alternatively, we might try to reformulate the imputation model
+so that the order effect disappears.
+
+@ARNOLD1989 and @ARNOLD1999 provide necessary and sufficient conditions
+for the existence of a joint distribution given two conditional
+densities. @GELMAN1993 concentrate on the question whether an arbitrary
+mix of conditional and marginal distribution yields a unique joint
+distribution. @ARNOLD2002 describe near-compatibility in discrete data.
+
+Several papers are now available on the conditions under which
+imputations created by conditionally specified models are draws from the
+implicit joint distribution. According to @HUGHES2014, two conditions
+must hold for this to occur. First, the conditionals must be compatible,
+and second the margin must be noninformative. Suppose that $p(\phi_j)$
+is the prior distribution of the set of parameters that relate $Y_j$ to
+$Y_{-j}$, and that $p(\tilde\phi_j)$ is prior distribution of the set of
+parameters that describes that relations among the $Y_{-j}$. The
+noninformative margins condition states that if two sets of parameters
+are distinct (i.e., their joint parameter space is the product of their
+separate parameter spaces), and their joint distribution
+$p(\phi_j, \tilde\phi_j)$ are independent and factorizes as
+$p(\phi_j, \tilde\phi_j) = p(\phi_j)p(\tilde\phi_j)$. Independence is a
+property of the prior distributions, whereas distinctness is a property
+of the model. @HUGHES2014 show that distinctness holds for the saturated
+multinomial distribution with a Dirichlet prior, so imputations from
+this joint distribution can be achieved by a set of conditionally
+specified models. However, for the log-linear model with only two-way
+factor interaction (and no higher-order terms) distinctness only holds
+for a maximum of three variables. The noninformative marginal condition
+is sufficient, but not necessary. In most practical cases we are unable
+to show that the noninformative marginal condition holds, but we can
+stop the algorithms at different points and inspect the estimates for
+order effect. Simulations by @HUGHES2014 show that such order effects
+exist, but in general they are small. @LIU2013 made the same division in
+the parameter space of compatible models, and showed that imputation
+created by conditional specification is asymptotically equivalent to
+full Bayesian imputation for an assumed joint model. Asymptotic
+equivelance assumes infinite $m$ and infinite $n$, and holds when the
+joint model is misspecified. The order effect disappear with increasing
+sample size. @ZHU2015 observed that the parameters of the conditionally
+specified models typically span a larger space than the space occupied
+by the implied joint model. A set of imputation models is *possibly
+compatible* if the conditional density for each variable $j$ according
+to some joint distribution is a special case of the corresponding
+imputation model for $j$. If the parameters of the joint model can be
+separated, then iteration over the possible compatible conditional
+imputation models will provide draws from the conditional densities of
+the implied joint distribution.
+
+Several methods for identifying compatibility from actual data have been
+developed
+[@TIAN2009; @IP2009; @WANG2010A; @CHEN2011B; @YAO2014; @KUO2017].
+However, the application of these methods is challenging because of the
+many possible choices of conditional models. What happens when the joint
+distribution does not exist? The MICE algorithm is ignorant of the
+non-existence of the joint distribution, and happily produces
+imputations whether the joint distribution exists or not. Can the
+imputed data be trusted when we cannot find a joint distribution
+$p(Y_1,Y_2)$ that has $p(Y_1|Y_2)$ and $p(Y_2|Y_1)$ as its conditionals?
+
+Incompatibility easily arises if deterministic functions of the data are
+imputed along with their originals. For example, the imputation model
+may contain interaction terms, data summaries or nonlinear functions of
+the data. Such terms introduce feedback loops and impossible
+combinations into the system, which can invalidate the imputations
+[@VANBUUREN2011B]. It is important to diagnose this behavior and
+eliminate feedback loops from the system. Chapter \[ch:practice\]
+describes the tools to do this.
+
+described a small simulation study using strongly incompatible models.
+The adverse effects on the estimates after multiple imputation were only
+minimal in the cases studied. Though FCS is only guaranteed to work if
+the conditionals are compatible, these simulations suggested that the
+results may be robust against violations of compatibility. @LI2012
+presented three examples of problems with MICE. However, their examples
+differ from the usual sequential regression setup in various ways, and
+do not undermine the validity of the approach [@ZHU2015]. @LIU2013
+pointed out that application of incompatible conditional models cannot
+provide imputations from any joint model. However, they also found that
+Rubin’s rules provide consistent point estimates for incompatible models
+under fairly general conditions, as long as each conditional model was
+correctly specified. @ZHU2015 showed that incompatibility does not need
+to lead to divergence. While there is no joint model to converge to, the
+algorithm can still converge. The key in achieving convergence is that
+the imputation models should closely model the data. For example,
+include the skewness of the residuals, or ideally, generate the
+imputations from the underlying (but usually unknown) mechanism that
+generated the data.
+
+The interesting point is that the last two papers have shifted the
+perspective from the user’s joint model to the data producer’s data
+generating model. With incompatible models, the most important condition
+is the validity of each conditional model. As long as the conditional
+models are able to replay the missing data according to the mechanism
+that generated the data, we might not be overly concerned with issues of
+compatibility.
+
+In the majority of cases, scientific interest will focus on quantities
+that are more remote to the joint density, such as regression weights,
+factor loadings, prevalence estimates and so on. In such cases, the
+joint distribution is more like a nuisance factor that has no intrinsic
+value.
+
+Apart from potential feedback problems, it appears that incompatibility
+seems like a relatively minor problem in practice, especially if the
+missing data rate is modest and the imputation models fit the data well.
+In order to evaluate these aspects, we need to inspect convergence and
+assess the fit of the imputations.
+
+### Congeniality or compatibility? {#sec:congeniality}
+
+@MENG1994 introduced the concept of *congeniality* to refer to the
+relation between the imputation model and the analysis model. Some
+recent papers have used the term *compatibility* to refer to essentially
+the same concept, and this alternative use of the term compatibility may
+generate confusion. This section explains the two different meanings
+attached to the compatibility.
+
+Compatibility refers to the property that the conditionally specified
+models together specify some joint distribution from which imputations
+are to be drawn. Compatibility is a theoretical requirement of the Gibbs
+sampler. The evidence obtained thus far indicated that mutual
+incompatibility of conditionals will only have a minor impact on the
+final inferences, as long as the conditional models are well specified
+to fit the data. See Section \[sec:compatibility\] for more detail.
+
+Another use of compatibility refers to the relation between the
+substantive model and the imputation model. It is widely accepted that
+the imputation model should be more general than the substantive model.
+@MENG1994 stated that the analysis procedure should be congenial to the
+imputation model, where congeniality is a property of the analysis
+procedure. @BARTLETT2015 connected congeniality to compatibility by
+extending the joint distribution of the imputation model to include the
+substantive model. @BARTLETT2015 reasoned that an imputation model is
+congenial to the substantive model if the two models are compatible. In
+that case, a joint model exists whose conditionals include both the
+imputation and substantive model. Models that are incompatible may lead
+to biased estimates of parameters in the substantive model. Hence,
+incompatibility is a bad thing that should be prevented. Technically
+speaking, the use of the term compatibility is correct, but the
+interpretation and implications of this form of incompatibility are very
+different, and in fact close in spirit to Meng’s congeniality.
+
+This book reserves the term *compatibility* to refer to the property of
+the imputation model whether its parts make up a joint distribution
+(irrespective of an analysis model), and use the term *congeniality* to
+refer to the relation between the imputation model and the substantive
+model.
+
+### Model-based and data-based imputation {#sec:modelbased}
+
+This section highlights an interesting new development for setting up
+imputation models.
+
+Observe that @BARTLETT2015 reversed the direction of of the relation
+between the imputation and substantive models. @MENG1994 takes a given
+imputation model, and then asks whether the analysis model is congenial
+to it, whereas @BARTLETT2015 start from the complete-data model, and ask
+whether the imputation model is congenial/compatible. These are
+complementary perspectives, leading to different strategies in setting
+up imputation models. If there is a strong scientific model, then it is
+natural to use model-based imputation, which puts the substantive model
+in the driver’s seat, and ensures that the distribution from which
+imputations are generated is compatible to the substantive model. The
+challenge here is to create imputations that remain faithful to the
+data, and do not amplify aspects assumed in the model that are not
+supported by the data. If there is weak scientific theory, or if a wide
+range of models is fitted, then apply data-based imputation, where
+imputations are generated that closely represent the features of the
+data, without any particular analysis model in mind. Then the challenge
+is to create imputations that will accommodate for a wide range of
+substantive models.
+
+The model-based approach is theoretically well grounded, and procedures
+are available for substantive models based on normal regression,
+discrete outcomes and proportional hazards. Related work can be found in
+@WU2010, @GOLDSTEIN2014, @ERLER2016, @ERLER2018 and @ZHANG2017. Some
+simulations showed promising results [@GRUND2018]. Implementations in
+`R` are available as the
+`smcfcs` package [@BARTLETT2018], and the
+`mdmb` package [@ROBITZSCH2018], as well as
+`Blimp` [@ENDERS2018]. One potential drawback
+is that the imputations might be specific to the model at hand, and need
+to be redone if the model changes. Another potential issue could be the
+calculations needed, which requires the use of rejection samplers. There
+is not yet much experience with such practicalities, but a method that
+approaches the imputation problem “from the other side” is an
+interesting and potentially useful addition to the imputer’s toolbox.
+
+### Number of iterations {#sec:howlarget}
+
+When $m$ sampling streams are calculated in parallel, monitoring
+convergence is done by plotting one or more statistics of interest in
+each stream against iteration number $t$. Common statistics to be
+plotted are the mean and standard deviation of the synthetic data, as
+well as the correlation between different variables. The pattern should
+be free of trend, and the variance within a chain should approximate the
+variance between chains.
+
+In practice, a low number of iterations appears to be enough. @BRAND1999
+and [@VANBUUREN1999] set the number of iterations $M$ quite low, usually
+somewhere between 5 to 20 iterations. This number is much lower than in
+other applications of MCMC methods, which often require thousands of
+iterations.
+
+Why can the number of iterations in MICE be so low? First of all,
+realize that the imputed data ${\mbox{$\dot Y_\mathrm{mis}$}}$ form the
+only memory in the the MICE algorithm. Chapter \[ch:univariate\]
+explained that imputed data can have a considerable amount of random
+noise, depending on the strength of the relations between the variables.
+Applications of MICE with lowly correlated data therefore inject a lot
+of noise into the system. Hence, the autocorrelation over $t$ will be
+low, and convergence will be rapid, and in fact immediate if all
+variables are independent. Thus, the incorporation of noise into the
+imputed data has pleasant side-effect of speeding up convergence.
+Reversely, situations to watch out for occur if:
+
+-   the correlations between the $Y_j$’s are high;
+
+-   the missing data rates are high; or
+
+-   constraints on parameters across different
+    variables exist.
+
+The first two conditions directly affect the amount of autocorrelation
+in the system. The latter condition becomes relevant for customized
+imputation models. We will see some examples in Section
+\[sec:convergence\].
+
+In the context of missing data imputation, our simulations have shown
+that unbiased estimates and appropriate coverage usually requires no
+more than just five iterations. It is, however, important not to rely
+automatically on this result as some applications can require
+considerably more iterations.
+
+### Example of slow convergence {#sec:slowconvergence}
+
+Consider a small simulation experiment with three variables: one
+complete covariate $X$ and two incomplete variables $Y_1$ and $Y_2$. The
+data consist of draws from the multivariate normal distribution with
+correlations $\rho(X,Y_1)=
+\rho(X,Y_2)=0.9$ and $\rho(Y_1,Y_2) = 0.7$. The variables are ordered as
+$[X, Y_1, Y_2]$. The complete pattern is $R_1=(1, 1, 1)$. Missing data
+are randomly created in two patterns: $R_2=(1, 0, 1)$ and
+$R_3=(1, 1, 0)$. Variables $Y_1$ and $Y_2$ are jointly observed on
+$n_{(1,1,1)}$ complete cases. The following code defines the function to
+generate the incomplete data.
+
+`       `\
+`                         `\
+`                                      `\
+`                                         ``)) {`\
+`  `\
+`    `\
+`    `\
+`         `\
+`       `\
+`       `\
+`       `\
+`       `\
+`  `\
+
+As an imputation model, we specified compatible linear regressions
+$Y_1= \beta_{1,0} + \beta_{1,2}Y_2 + \beta_{1,3}X +
+\epsilon_1$ and $Y_2= \beta_{2,0} + \beta_{2,1}Y_1 + \beta_{2,3}X +
+\epsilon_2$ to impute $Y_1$ and $Y_2$. The following code defines the
+function used for imputation.
+
+`        `\
+`                         ``) {`\
+`        `\
+`     ``maxit) {`\
+`           `\
+`                                 `\
+`            `\
+`       `\
+`  `\
+`     `\
+
+The difficulty in this particular problem is that the correlation
+$\rho(Y_1,Y_2)$ under the conditional independence of $Y_1$ and $Y_2$
+given $X$ is equal to $0.9 \times 0.9 = 0.81$, whereas the true value
+equals $0.7$. It is thus of interest to study how the correlation
+$\rho(Y_1,Y_2)$ develops over the iterations, but this is not a standard
+function in `mice()`. As an alternative, the
+`impute()` function repeatedly calls
+`mice.mids()` with
+`maxit = 1`, and calculates $\rho(Y_1, Y_2)$
+after each iteration from the complete data.
+
+The following code defines six scenarios where the number of complete
+cases is varied as $n_{(1,1,1)} \in \{1000, 500, 250, 100, 50, 0\}$,
+while holding the total sample size constant at $n = 10000$. The
+proportion of complete rows thus varies between 10% and 0%.
+
+`  `\
+`         `\
+`                      `\
+`                    `\
+`           ``) {`\
+`    `\
+`        `\
+`                  `\
+`                 `\
+`        `\
+`                     `\
+`     ``(ns)) {`\
+`      `\
+`          `\
+`         `\
+`  `\
+`  `\
+
+The `simulate()` function code collects the
+correlations $\rho(Y_1,Y_2)$ per iteration in the data frame
+`s`. Now call the function with
+
+`       `
+
+![Correlation between $Y_1$ and $Y_2$ in the imputed data per iteration
+in five independent runs of the MICE algorithm for six levels of missing
+data. The true value is 0.7. The figure illustrates that convergence can
+be slow for high percentages of missing data.<span
+data-label="fig:conv">](fig/ch4_slowplot-1){width="\maxwidth"}
+
+Figure \[fig:conv\] shows the development of $\rho(Y_1,Y_2)$ calculated
+on the completed data after every iteration of the MICE algorithm. At
+iteration 1, $\rho(Y_1,Y_2)$ is approximately 0.81, the value expected
+under independence of $Y_1$ and $Y_2$, conditional on $X$. The influence
+of the complete records with both $Y_1$ and $Y_2$ observed percolates
+into the imputations, so that the chains slowly move into the direction
+of the population value of 0.7. The speed of convergence heavily depends
+on the number of missing cases. For 90% or 95% missing data, the streams
+are essentially flat after about 15–20 iterations. As the percentage of
+missing data increases, more and more iterations are needed before the
+true correlation of 0.7 trickles through. In the extreme cases with 100%
+missing data, the correlation $\rho(Y_1,Y_2)$ cannot be estimated due to
+lack of information in the data. In this case, the different streams do
+not converge at all, and wander widely within the Cauchy–Schwarz bounds
+(0.6 to 1.0 here). But even here we could argue that the sampler has
+essentially converged. We could stop at iteration 200 and take the
+imputations from there. From a Bayesian perspective, this still would
+yield an essentially correct inference about $\rho(Y_1,Y_2)$, being that
+it could be anywhere within the Cauchy–Schwarz bounds. So even in this
+pathological case with 100% missing data, the results look sensible as
+long as we account for the wide variability.
+
+The lesson we can learn from this simulation is that we should be
+careful about convergence in missing data problems with high
+correlations and high missing data rates. At the same time, observe that
+we really have to push the MICE algorithm to its limits to see the
+effect. Over 99% of real data will have lower correlations and lower
+missing data rates. Of course, it never hurts to do a couple of extra
+iterations, but my experience is that good results can often be obtained
+with a small number of iterations.
+
+### Performance {#performance}
+
+Each conditional density has to be specified separately, so FCS requires
+some modeling effort on the part of the user. Most software provides
+reasonable defaults for standard situations, so the actual effort
+required may be small. A number of simulation studies provide evidence
+that FCS generally yields estimates that are unbiased and that possess
+appropriate coverage
+[@BRAND1999; @RAGHUNATHAN2001; @BRAND2003; @TANG2005; @VANBUUREN2006; @HORTON2007; @YU2007].
+
+## FCS and JM
+
+### Relations between FCS and JM
+
+FCS is related to JM in some special cases. If $P(X, Y)$ has a
+multivariate normal model distribution, then all conditional densities
+are linear regressions with a constant normal error variance. So, if
+$P(X, Y)$ is multivariate normal then $P(Y_j | X, Y_{-j})$ follows a
+linear regression model. The reverse is also true: If the imputation
+models $P(Y_j | X, Y_{-j})$ are all linear with constant normal error
+variance, then the joint distribution will be multivariate normal. See
+@ARNOLD1999 [p. 186] for a description of the precise conditions. Thus,
+imputation by FCS using all linear regressions is identical to
+imputation under the multivariate normal model.
+
+Another special case occurs for binary variables with only two-way
+interactions in the log-linear model. In the special case $p=3$ suppose
+that $Y_1,\dots,Y_3$ are modeled by the log-linear model that has the
+three-way interaction term set to zero. It is known that the
+corresponding conditional distribution $P(Y_1|Y_2,Y_3)$ is the logistic
+regression model $\log(P(Y_1)/1-P(Y_1)) = \beta_0 +
+\beta_2Y_2 + \beta_3Y_3$ [@GOODMAN1970]. Analogous definitions exist for
+$P(Y_2|Y_1,Y_3)$ and $P(Y_3|Y_1,Y_2)$. This means that if we use
+logistic regressions for $Y_1$, $Y_2$ and $Y_3$, we are effectively
+imputing under the multivariate “no three-way interaction” log-linear
+model. @HUGHES2014 showed that this relation does not extend to more
+than three variables.
+
+### Comparisons
+
+FCS cannot use computational shortcuts like the sweep operator, so the
+calculations per iterations are more intensive than under JM. Also, JM
+has better theoretical underpinnings.
+
+On the other hand, FCS allows tremendous flexibility in creating
+multivariate models. One can easily specify models that are outside any
+known standard multivariate density $P(X, Y, R|\theta)$. FCS can use
+specialized imputation methods that are difficult to formulate as a part
+of a multivariate density $P(X, Y, R |\theta)$. Imputation methods that
+preserve unique features in the data, e.g., bounds, skip patterns,
+interactions, bracketed responses and so on can be incorporated. It is
+possible to maintain constraints between different variables in order to
+avoid logical inconsistencies in the imputed data that would be
+difficult to do as part of a multivariate density $P(X, Y, R |\theta)$.
+
+@LEE2010 found that JM performs as well as FCS, even in the presence of
+binary and ordinal variables. These authors also observed substantial
+improvements for skewed variables by transforming the variable to
+symmetry (for JM) or by using predictive mean matching (for FCS).
+@KROPKO2014 found that JM and FCS performed about equally well for
+continuous and binary variable, but FCS outperforms JM on every metric
+when the variable of interest is categorical. With predictive mean
+matching, FCS outperforms JM “for every metric and variable type,
+including the continuous variable.” @SEAMAN2016 compared FCS to a
+restricted general location model. As expected, the latter model is more
+efficient when correctly specified, but the gains are small unless the
+relations between the variables are very strong. As FCS was found to be
+more robust under misspecification, the authors advise FCS over JM.
+
+### Illustration
+
+The Fourth Dutch Growth Study by @FREDRIKS2000B collected data on 14500
+Dutch children between 0 and 21 years. The development of secondary
+pubertal characteristics was measured by the so-called Tanner stages,
+which divides the continuous process of maturation into discrete stages
+for the ages between 8 and 21 years. Pubertal stages of boys are defined
+for genital development (`gen`: five ordered
+stages G1–G5), pubic hair development (`phb`:
+six ordered stages P1–P6) and testicular volume
+(`tv`: 1–25ml).
+
+We analyze the subsample of 424 boys in the age range 8–21years using
+the `boys` data in
+`mice`. There were 180 boys (42%) for which
+scores for genital development were missing. The missingness was
+strongly related to age, rising from about 20% at ages 9–11 years to 60%
+missing data at ages 17–20 years.
+
+The data consist of three complete covariates: age
+(`age`), height
+(`hgt`) and weight
+(`wgt`), and three incomplete outcomes
+measuring maturation. The following code block creates $m = 10$
+imputations by the normal model, by predictive mean matching and by the
+proportional odds model.
+
+`        `\
+`   `\
+`  `\
+`  `\
+`  `\
+`   `\
+\
+\
+`           `\
+`             `\
+`           `\
+`              `\
+`           `
+
+![Joint modeling: Imputed data for genital development (Tanner stages
+G1–G5) under the multivariate normal model. The panels are labeled by
+the imputation numbers 0–5, where 0 is the observed data and 1–5 are
+five multiply imputed datasets.<span
+data-label="fig:jm">](fig/ch4_pubfigjm-1){width="\maxwidth"}
+
+![Fully conditional specification: Imputed data of genital development
+(Tanner stages G1–G5) under the proportional odds model.<span
+data-label="fig:fcs">](fig/ch4_pubfigfcs-1){width="\maxwidth"}
+
+Figure \[fig:jm\] plots the results of the first five imputations from
+the normal model. It was created by the following statement:
+
+`        `\
+`            `\
+`             `
+
+The figure portrays how genital development depends on age for both the
+observed and imputed data. The spread of the synthetic values in Figure
+\[fig:jm\] is larger than the observed data range. The observed data are
+categorical while the synthetic data vary continuously. Note that there
+are some negative values in the imputations. If we are to do categorical
+data analysis on the imputed data, we need some form of rounding to make
+the synthetic values comparable with the observed values.
+
+Imputations for the proportonal odds model in Figure \[fig:fcs\] differ
+markedly from those in Figure \[fig:jm\]. This model yields imputations
+that are categorical, and hence no rounding is needed.
+
+![Probability of achieving stages G2–G5 of genital developmental by age
+(in years) under four imputation methods ($m=10$).<span
+data-label="fig:jmfcs">](fig/ch4_pubfig2-1){width="\maxwidth"}
+
+The complete-data model describes the probability of achieving each
+Tanner stage as a nonlinear function of age according to the model
+proposed in @VANBUUREN2009A. The calculations are done with
+`gamlss` [@STASINOPOULOS2007]. Under the
+assumption of ignorability, analysis of the complete cases will not be
+biased, so the complete-case analysis provides a handle to the
+appropriate solution. The gray  lines in Figure
+\[fig:jmfcs\] indicate the model fitted on the complete cases, whereas
+the thin black lines correspond to the analyses of the 10 imputed
+datasets.
+
+The different panels of Figure \[fig:jmfcs\] corresponds to different
+imputation methods. The panel labeled *JM: multivariate normal* contains
+the model fitted to the unprocessed imputed data produced under the
+multivariate normal model. There is a large discrepancy between the
+complete-case analysis and the models fitted to the imputed data,
+especially for the older boys. The fit improves in the panel labeled
+*JM: rounded*, where imputed data are rounded to the nearest category.
+There is considerable misfit, and the behavior of the imputed data
+around the age of 10years is a bit curious. The panel labeled *FCS:
+predictive mean matching* applied Algorithm \[alg:pmm\] as a component
+of the MICE algorithm. Though this technique improves upon the previous
+two methods, some discrepancies for the older boys remain. The panel
+labeled *FCS: proportional odds* displays the results after applying the
+method for ordered categorical data as discussed in Section
+\[sec:categorical\]. The imputed data essentially agree with the
+complete-case analysis, perhaps apart from some minor deviations around
+the probability level of 0.9.
+
+Figure \[fig:jmfcs\] shows clear differences between FCS and JM when
+data are categorical. Although rounding may provide reasonable results
+in particular datasets, it seems that it does more harm than good here.
+There are many ways to round, rounding may require unrealistic
+assumptions and it will attenuate correlations. @HORTON2003, @AKE2005
+and @ALLISON2005 recommend against rounding when data are categorical.
+See Section \[sec:jmcategorical\]. @HORTON2003 expected that bias
+problems of rounding would taper off if variables have more than two
+categories, but the analysis in this section suggests that JM may also
+be biased for categorical data with more than two categories. Even
+though it may sound a bit trivial, my recommendation is: Impute
+categorical data by methods for categorical data.
+
+## MICE extensions
+
+The MICE algorithm listed in box \[alg:mice\] can be extended in several
+ways.
+
+### Skipping imputations and overimputation
+
+By default, the MICE algorithm imputes the missing data, and leaves the
+observed data untouched. In some cases it may also be useful to skip
+imputation of certain cells. For example, we wish to skip imputation of
+quality of life for the deceased, or not impute customer satisfaction
+for people who did not buy the product. The primary difficulty with this
+option is that it creates missing data in the predictors, so the imputer
+should either remove the predictor from all imputation models, or have
+the missing values propagated through the algorithm. Another use case
+involves imputing cells with observed data, a technique called
+*overimputation*. For example, it may be useful to evaluate whether the
+observed point data fit the imputation model. If all is well, we expect
+the observed data point in the center of the multiple imputations. The
+primary difficulty with this option is to ensure that only the observed
+data (and not the imputed data) are used as an outcome in the imputation
+model. Version `3.0` of
+`mice` includes the
+`where` argument, a matrix with with logicals
+that has the same dimensions as the data, that indicates where in the
+data the imputations should be created. This matrix can be used to
+specify for each cell whether it should be imputed or not. The default
+is that the missing data are imputed.
+
+### Blocks of variables, hybrid imputation {#sec:blockvar}
+
+An important difference between JM and FCS is that JM imputes all
+variables at once, whereas FCS imputes each variable separately. JM and
+FCS are the extremes scenarios of the much wider range of *hybrid
+imputation models*. In actual data analysis sets of variables are often
+connected in some way. Examples are:
+
+-   A set of scale items and its total score;
+
+-   A variable with one or more transformations;
+
+-   Two variables with one or more interaction terms;
+
+-   A block of normally distributed $Z$-scores;
+
+-   Compositions that add up to a total;
+
+-   Set of variables that are collected together.
+
+Instead of specifying the steps for each variable separately, it is more
+user-friendly to impute these as a block. Version
+`3.0` of `mice`
+includes a new `block` argument that
+partitions the complete set of variables into blocks. All variables
+within the same block are jointly imputed, which provides a strategy to
+specify hybrids of JM and FCS. The joint models need to be open to
+accept external covariates. One possibility is to use predictive mean
+matching to impute multivariate nonresponse, where the donor values for
+the variables within the block come from the same donor [@LITTLE1988].
+The main algorithm in `mice 3.0` iterates over
+the blocks rather than the variables. By default, each variable is its
+own block, which gives the familiar behavior.
+
+### Blocks of units, monotone blocks {#sec:blockunit}
+
+Another way to partition the data is to define blocks of units. One
+weakness of the algorithm in box \[alg:mice\] is that it may become
+unstable when many of the predictors are imputed. @ZHU2016 developed a
+solution called “Block sequential regression multivariate imputation”,
+where units are partitioned into blocks according to the missing data
+pattern. The imputation model for a given variable is modified for each
+block, such that only the observed data with the block can serve as
+predictor. The method generalizes the monotone block approach of
+@LI2014.
+
+### Tile imputation {#sec:tile}
+
+The block-wise partitioning methods are complementary strategies to
+multivariate imputation. The methods in Section \[sec:blockvar\]
+partition the columns and apply one model to many outcomes, whereas the
+methods in Section \[sec:blockunit\] partition the rows and apply many
+models to one outcome. These operations can be freely combined into a
+whole new class of algorithms based on *tiles*, i.e., combinations of
+row and column partitions. This is a vast and yet unexplored field. I
+expect that it will be possible to develop imputation algorithms that
+are user-friendly, stable and automatic. A major new application of such
+tile algorithm will be in the imputation of combined data. The problem
+of automatic detection of “optimal tiles” provides both enormous
+challenges and substantial pay-offs.
+
+## Conclusion
+
+Multivariate missing data lead to analytic problems caused by mutual
+dependencies between incomplete variables. The missing data pattern
+provides important information for the imputation model. The influx and
+outflux measures are useful to sift out variables that cannot contribute
+to the imputations. For general missing data patterns, both JM and FCS
+approaches can be used to impute multivariate missing data. JM is the
+model of choice if the data conform to the modeling assumptions because
+it has better theoretical properties. The FCS approach is much more
+flexible, easier to understand and allows for imputations close to the
+data. Automatic tile imputation algorithms with simultaneous partitions
+of rows and columns of the data form a vast and unexplored field.
+
+## Exercises {#ex:ch:multivariate}
+
+1.  *MAR*. Repeat Exercise 3.1 for a multivariate missing
+    data mechanism.
+
+2.  *Convergence*. Figure \[fig:conv\] shows that convergence can take
+    longer for very high amounts of missing data. This exercise studies
+    an even more extreme situation.
+
+    1.  The default argument `ns` of the
+        `simulate()` function in Section
+        \[sec:slowconvergence\] defines six scenarios with different
+        missing data patterns. Define a $6 \times 4$ matrix
+        `ns2`, where patterns $R_2$ and $R_3$
+        are replaced by pattern $R_4 = (1,0,0)$. How many more missing
+        values are there in each scenario?
+
+    2.  For the new scenarios, do you expect convergence to be slower or
+        faster? Explain.
+
+    3.  Change the scenario in which all data in $Y_1$ and $Y_2$ are
+        missing so that there are 20 complete cases. Then run
+
+        `         `
+
+        and create a figure similar to Figure \[fig:conv\].
+
+    4.  Compare your figure with Figure \[fig:conv\]. Are there any
+        major differences? If so, which?
+
+    5.  Did the figure confirm your idea about convergence speed you had
+        formulated in (b)?
+
+    6.  How would you explain the behavior of the trace lines?
+
+3.  *Binary data*. Perform the simulations of Section
+    \[sec:slowconvergence\] with binary $Y_1$ and $Y_2$. Use the odds
+    ratio instead of the correlation to measure the association between
+    $Y_1$ and $Y_2$. Does the same conclusion hold?

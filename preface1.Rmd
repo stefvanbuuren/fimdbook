@@ -1,0 +1,84 @@
+# Preface to first edition {#preface-to-first-edition .unnumbered}
+
+We are surrounded by missing data. Problems created by missing data in
+statistical analysis have long been swept under the carpet. These times
+are now slowly coming to an end. The array of techniques for dealing
+with missing data has expanded considerably during the last decades.
+This book is about one such method: multiple imputation.
+
+Multiple imputation is one of the great ideas in statistical science.
+The technique is simple, elegant and powerful. It is simple because it
+fills the holes in the data with plausible values. It is elegant because
+the uncertainty about the unknown data is coded in the data itself. And
+it is powerful because it can solve “other” problems that are actually
+missing data problems in disguise.
+
+Over the last 20 years, I have applied multiple imputation in a wide
+variety of projects. I believe the time is ripe for multiple imputation
+to enter mainstream statistics. Computers and software are now potent
+enough to do the required calculations with little effort. What is still
+missing is a book that explains the basic ideas and that shows how these
+ideas can be put into practice. My hope is that this book can fill this
+gap.
+
+The text assumes familiarity with basic statistical concepts and
+multivariate methods. The book is intended for two audiences:
+
+-   (bio)statisticians, epidemiologists and methodologists in the social
+    and health sciences;
+
+-   substantive researchers who do not call themselves statisticians,
+    but who possess the necessary skills to understand the principles
+    and to follow the recipes.
+
+In writing this text, I have tried to avoid mathematical and technical
+details as much as possible. Formulas are accompanied by a verbal
+statement that explains the formula in layperson terms. I hope that
+readers less concerned with the theoretical underpinnings will be able
+to pick up the general idea. The more technical material is marked by a
+club sign $^\spadesuit$, and can be skipped on first
+reading.
+
+I used various parts of the book to teach a graduate course on
+imputation techniques at the University of Utrecht. The basics are in
+Chapters 1–4. Lecturing this material takes about 10 hours. The lectures
+were interspersed with sessions in which the students worked out the
+exercises from the book.
+
+This book owes much to the ideas of Donald Rubin, the originator of
+multiple imputation. I had the privilege of being able to talk, meet and
+work with him on many occasions. His clear vision and deceptively simple
+ideas have been a tremendous source of inspiration. I am also indebted
+to Jan van Rijckevorsel for bringing me into contact with Donald Rubin,
+and for establishing the scientific climate at TNO in which our work on
+missing data techniques could prosper.
+
+Many people have helped realize this project. I thank Nico van Meeteren
+and Michael Holewijn of TNO for their trust and support. I thank Peter
+van der Heijden of Utrecht University for his support. I thank Rob
+Calver and the staff at Chapman & Hall/CRC for their help and advice.
+Many colleagues have commented on part or all of the manuscript:
+Hendriek Boshuizen, Elise Dusseldorp, Karin Groothuis-Oudshoorn, Michael
+Hermanussen, Martijn Heymans, Nicholas Horton, Shahab Jolani, Gerko
+Vink, Ian White and the research master students of the Spring 2011
+class. Their comments have been very valuable for detecting and
+eliminating quite a few glitches. I happily take the blame for the
+remaining errors and vagaries.
+
+The major part of the manuscript was written during a six-month
+sabbatical leave. I spent four months in Krukö, Sweden, a small village
+of just eight houses. I thank Frank van den Nieuwenhuijzen and Ynske de
+Koning for making their wonderful green house available to me. It was
+the perfect tranquil environment that, apart from snowplowing, provided
+a minimum of distractions. I also spent two months at the residence of
+Michael Hermanussen and Beate Lohse-Hermanussen in Altenhof, Germany. I
+thank them for their hospitality, creativity and wit. It was a wonderful
+time.
+
+Finally, I thank my family, in particular my beloved wife Eveline, for
+their warm and ongoing support, and for allowing me to devote time,
+often nights and weekends, to work on this book. Eveline liked to tease
+me by telling people that I was writing “a book that no one
+understands.” I fear that her statement is accurate, at least for 99% of
+the people. My hope is that you, my dear reader, will belong to the
+remaining 1%.

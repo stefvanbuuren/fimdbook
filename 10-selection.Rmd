@@ -1,0 +1,584 @@
+# Selection issues {#ch:selection}
+
+> There are known knowns. These are things we know that we know.
+> There are known unknowns. That is to say, there are things that we
+> know we don’t know. But there are also unknown unknowns. There are
+> things we don’t know we don’t know.
+>
+> --- Donald Rumsfeld
+
+This chapter changes the perspective to the rows of the data matrix. An
+important consequence of nonresponse and missing data is that the
+remaining sample may not be representative any more. Multiple imputation
+of entire blocks of variables (Section \[sec:selective\]) can be useful
+to adjust for selective loss of cases in panel and cohort studies.
+Section \[sec:nonresponse\] takes this idea a step further by appended
+and imputing new synthetic records to the data. This can also work for
+cross-sectional studies.
+
+## Correcting for selective drop-out {#sec:selective}
+
+Panel attrition is a problem that plagues all studies in which the same
+people are followed over time. People who leave the study are called
+*drop-outs*. The persons who drop out may be systematically different
+from those who remain, thus providing an opportunity for bias. This
+section assumes that the drop-out mechanism is MAR and that the
+parameters of the complete-data model and the response mechanism are
+distinct (cf. Section \[sec:ignorable\]). Techniques for nonignorable
+drop-outs are described by @LITTLE1995, @DIGGLE2002, @DANIELS2008 and
+@WU2010.
+
+### POPS study: 19 years follow-up
+
+The Project on Preterm and Small for Gestational Age Infants (POPS) is
+an ongoing collaborative study in the Netherlands on the long-term
+effect of prematurity and dysmaturity on medical, psychological and
+social outcomes. The cohort was started in 1983 and enrolled 1338
+infants with a gestational age below 32 weeks or with a birth weight of
+below 1500 grams [@VERLOOVE1986]. Of this cohort, 312 infants died in
+the first 28 days, and another 67 children died between the ages of 28
+days and 19 years, leaving 959 survivors at the age of 19 years.
+Intermediate outcome measures from earlier follow-ups were available for
+89% of the survivors at age 14 ($n=854$), 77% at age 10 ($n=712$), 84%
+at age 9($n=813$), 96% at age 5 ($n=927$) and 97% at age 2($n=946$).
+
+To study the effect of drop-out, @HILLE2005 divided the 959 survivors
+into three response groups:
+
+1.  *Full responders* were examined at an outpatient clinic and
+    completed the questionnaires ($n=596$);
+
+2.  *Postal responders* only completed the mailed questionnaires
+    ($n=109$);
+
+3.  *Nonresponders* did not respond to any of the mailed requests or
+    telephone calls, or could not be traced ($n=254$).
+
+### Characterization of the drop-out
+
+Of the 254 nonresponders, 38 children (15%) did not comply because they
+were “physically or mentally unable to participate in the assessment.”
+About half of the children (132, 52%) refused to participate. No reason
+for drop-out was known for 84 children (33%).
+
+lrrrrrrrr & & & &\
+& & & &\
+$n$&959&&596&&109&&254\
+\
+ Boy &497&(51.8)&269&(45.1)&60&(55.0)&168&(66.1)\
+ Girl &462&(48.2)&327&(54.9)&49&(45.0)&86&(33.9)\
+\
+ Dutch&812&(84.7)&524&(87.9)&96&(88.1)&192&(75.6)\
+ Non-Dutch&147&(15.3)&72&(12.1)&13&(11.9)&62&(24.4)\
+\
+ Low &437&(49.9)&247&(43.0)&55&(52.9)&135&(68.2)\
+ Medium&299&(34.1)&221&(38.5)&31&(29.8)&47&(23.7)\
+ High&140&(16.0)&106&(18.5)&18&(17.3)&16&(8.1)\
+\
+ Low&398&(42.2)&210&(35.5)&48&(44.4)&140&(58.8)\
+ Medium&290&(30.9)&193&(32.6)&31&(28.7)&66&(27.7)\
+ High&250&(26.7)&189&(31.9)&29&(26.9)&32&(13.4)\
+\
+ Normal&480&(50.8)&308&(51.7)&42&(38.5)&130&(54.2)\
+ Impairment&247&(26.1)&166&(27.9)&36&(33.0)&45&(18.8)\
+ Mild&153&(16.2)&101&(16.9)&16&(14.7)&36&(15.0)\
+ Severe&65&(6.9)&21&(3.5)&15&(13.8)&29&(12.1)\
+
+Table \[tab:pops\] lists some of the major differences between the three
+response groups. Compared to the postal and nonresponders, the full
+response group consists of more girls, contains more Dutch children, has
+higher educational and social economic levels and has fewer handicaps.
+Clearly, the responders form a highly selective subgroup in the total
+cohort.
+
+Differential drop-out from the less healthy children leads to an obvious
+underestimate of disease prevalence. For example, the incidence of
+handicaps would be severely underestimated if based on data from the
+full responders only. In addition, selective drop-out could bias
+regression parameters in predictive models if the reason for drop-out is
+related to the outcome of interest. This may happen, for example, if we
+try to predict handicaps at the age of 19 years from the full responders
+only. Thus, statistical parameters may be difficult to interpret in the
+presence of selective drop-out.
+
+### Imputation model {#sec:popsmodel}
+
+The primary interest of the investigators focused on 14 different
+outcomes at 19 years: cognition, hearing, vision, neuromotor
+functioning, ADHD, respiratory symptoms, height, BMI, health status
+(Health Utilities Index Mark 3), perceived health (London Handicap
+Scale), coping, self-efficacy, educational attainment and occupational
+activities. Since it is inefficient to create a multiply imputed dataset
+for each outcome separately, the goal is to construct one set of imputed
+data that is used for all analyses.
+
+For each outcome, the investigator created a list of potentially
+relevant predictors according to the predictor selection strategy set
+forth in Section \[sec:predictors\]. In total, this resulted in a set of
+85 unique variables. Only four of these were completely observed for all
+959 children. Moreover, the information provided by the investigators
+was coded (in Microsoft Excel) as an $85 \times 85$ predictor matrix
+that is used to define the imputation model.
+
+![The $85 \times 85$ predictor matrix used in the POPS study. The gray
+parts signal the column variables that are used to impute the row
+variable.<span
+data-label="fig:POPSpredictor">](ch10_predictormatrix.pdf){width="\textwidth"}
+
+Figure \[fig:POPSpredictor\] shows a miniature version of the predictor
+matrix. The dark cell indicates that the column variable is used to
+impute the row variable. Note the four complete variables with rows
+containing only zeroes. There are three blocks of variables. The first
+nine variables (Set 1:
+`geslacht`–`sga`)
+are potential confounders that should be controlled for in all analyses.
+The second set of variables (Set 2:
+`grad.t`–`sch910r`)
+are variables measured at intermediate time points that appear in
+specific models. The third set of variables (Set 3:
+`iq`–`occrec`) are
+the incomplete outcomes of primary interest collected at the age of 19
+years. The imputation model is defined such that:
+
+1.  All variables in Set 1 are used as predictors to impute Set 1, to
+    preserve relations between them;
+
+2.  All variables in Set 1 are used as predictors to impute Set 3,
+    because all variables in Set 1 appear in the complete-data models of
+    Set 3;
+
+3.  All variables in Set 3 are used as predictors to impute Set 3, to
+    preserve the relation between the variables measured at age 19;
+
+4.  Selected variables in Set 2 that appear in complete-data models are
+    used as predictors to impute specific variables in Set 3;
+
+5.  Selected variables in Set 3 are “mirrored” to impute incomplete
+    variables in Set 2, so as to maintain consistency between Set 2 and
+    Set 3 variables;
+
+6.  The variable `geslacht` (sex) is included
+    in all imputation models.
+
+This setup of the predictor matrix avoids fitting unwieldy imputation
+models, while maintaining the relations of scientific interest.
+
+### A solution “that does not look good” {#sec:degenerate}
+
+The actual imputations can be produced by
+
+`       `\
+`                  `
+
+![Trace lines of the MICE algorithm for the variable
+`a10u` illustrating problematic
+convergence.<span
+data-label="fig:popstrace">](fig/ch10_poptracefig-1){width="\maxwidth"}
+
+The number of iterations is set to 20 because the trace lines from the
+MICE algorithm show strong initial trends and slow mixing.
+
+Figure \[fig:popstrace\] plots the trace lines of the binary variable
+`a10u`, an indicator of visual disabilities.
+The behavior of these trace lines looks suspect, especially for
+`a10u`. The mean of
+`a10u` (left side) of the imputed values
+converges to a value near 1.9, while the standard deviation (right side)
+drops below that variability that is found in the data. Since the
+categories are coded as `1 = no problem` and
+`2 = problem`, a value of 1.9 actually implies
+that 90% of the nonresponders would have a problem. The observed
+prevalence of `a10u` in the full responders is
+only 1.5%, so 90% is clearly beyond any reasonable value.
+
+In addition, `iq` and
+`coping` move into remote territories. Figure
+\[fig:popsbwplot1\] illustrates that the imputed values for
+`iq` appear unreasonably low, whereas for
+`coping` they appear unreasonably high. What
+is happening here?
+
+![Distributions (observed and imputed) of IQ and coping score at 19
+years in the POPS study for the imputation model in Figure
+\[fig:POPSpredictor\].<span
+data-label="fig:popsbwplot1">](fig/ch10_popsbwplot1-1){width="\maxwidth"}
+
+The phenomenon we see illustrates a weakness (or feature) of the MICE
+algorithm that manifests itself when the imputation model is
+overparametrized relative to the available information. The source of
+the problem lies in the imputation of the variables in Set 3, the
+measurements at 19 years. We specified that all variables in Set 3
+should impute each other, with the idea of preserving the multivariate
+relations between these variables. For 254 out of 959 children (26.5%),
+we do not have any information at age 19. The MICE algorithm starts out
+by borrowing information from the group of responders, and then quickly
+finds out that it can create imputations that are highly correlated.
+However, the imputed values do not look at all like the observed data,
+and are more like multivariate outliers that live in an extreme part of
+the data space.
+
+There are several ways to alleviate the problem. The easiest approach is
+to remove the 254 nonresponders from the data. This is a sensible
+approach if the analysis focuses on determinants of 19-year outcomes,
+but it is not suitable for making inferences on the marginal outcome
+distribution of the entire cohort. A second approach is to simplify the
+model. Many of the 19-year outcomes are categorical, and we reduce the
+number of parameters drastically by applying predictive mean matching to
+these outcomes. A third approach would be to impute all outcomes as a
+block. This would find potential donors among the observed data, and
+impute all outcomes simultaneously. This removes the risk of
+artificially inflating the relations among outcomes, and is a promising
+alternative. Finally, the approach we follow here is to simplify the
+imputation model by removing the gray block in the lower-right part of
+Figure \[fig:POPSpredictor\]. The relation between the outcomes would
+then only be maintained through their relation with predictors measured
+at other time points. It is easy to change and rerun the model as:
+
+`   `\
+`       `\
+`                  `
+
+These statements produce imputations with marginal distributions much
+closer to the observed data. Also, the trace lines now show normal
+behavior (not shown). Convergence occurs rapidly in about 5–10
+iterations.
+
+![Distributions (observed and imputed) of IQ and coping score at 19
+years in the POPS study for the simplified imputation model.<span
+data-label="fig:popsbwplot2">](fig/ch10_popsbwplot2-1){width="\maxwidth"}
+
+Figure \[fig:popsbwplot2\] displays the distributions of IQ and coping.
+The nonrespondents have slightly lower IQ scores, but not as extreme as
+in Figure \[fig:popsbwplot1\]. There are now hardly any differences in
+coping.
+
+### Results
+
+Table \[tab:popsprev\] provides estimates of the percentage of three
+health problems, both uncorrected and corrected for selective drop-out.
+As expected, all estimates are adjusted upward. Note that the prevalence
+of visual problems tripled to 4.7% after correction. While this increase
+is substantial, it is well within the range of odds ratios of 2.6 and
+4.4 reported by @HILLE2005. The adjustment shows that prevalence
+estimates in the whole group can be substantially higher than in the
+group of full responders. @HILLE2007 provide additional and more
+detailed results.
+
+4.5pt
+
+                               $n_{\rm obs}$                $n$
+  -------------------------- --------------- ----- ------------ ----- ----- ------------
+  Severe visual handicap                 690   1.4    (0.5–2.3)   959   4.7   (1.0–10.9)
+  Asthma, bronchitis, CARA               690   8.0   (5.9–10.0)   959   9.2   (6.9–11.2)
+  ADHD                                   666   4.7    (3.1–6.3)   959   5.7   (3.8–10.8)
+
+  : Estimated percentage (95% CI) of three health problems at 19 years
+  in the POPS study, uncorrected and corrected for selective
+  drop-out.<span data-label="tab:popsprev">
+
+### Conclusion
+
+Many studies are plagued by selective drop-out. Multiple imputation
+provides an intuitive way to adjust for drop-out, thus enabling
+estimation of statistics relative to the entire cohort rather than the
+subgroup. The method assumes MAR. The formulation of the imputation
+model requires some care. Section \[sec:popsmodel\] outlines a simple
+strategy to specify the predictor matrix to fit an imputation model for
+multiple uses. This methodology is easily adapted to other studies.
+
+Section \[sec:degenerate\] illustrates that multiple imputation is not
+without dangers. The imputations produced by the initial model were far
+off, which underlines the importance of diagnostic evaluation of the
+imputed data. A disadvantage of the approach taken to alleviate the
+problem is that it preserves the relations between the variables in Set
+3 only insofar as they are related through their common predictors.
+These relations may thus be attenuated. Some alternatives were
+highlighted, and an especially promising one is to impute blocks of
+variables (cf. Section \[sec:blockvar\]). Whatever is done, it is
+important to diagnose aberrant algorithmic behavior, and decide on an
+appropriate strategy to prevent it given the scientific questions at
+hand.
+
+## Correcting for nonresponse {#sec:nonresponse}
+
+This section describes how multiple imputation can be used to “make a
+sample representative.” Weighting to known population totals is widely
+used to correct for nonresponse [@BETHLEHEM2002; @SARNDAL2005].
+Imputation is an alternative to weighting. Imputation provides
+fine-grained control over the correction process. Provided that the
+imputation method is confidence proper, estimation of the correct
+standard errors can be done using Rubin’s rules. Note however that this
+is not without controversy: @MARKER2002 [p. 332] criticize multiple
+imputation as “difficult to apply,” “to require massive amounts of
+computation,” and question its performance for clustered datasets and
+unplanned analyses. Weighting and multiple imputation can also be
+combined, as was done in the NHANES III imputation project
+[@KHARE1993; @SCHAFER1996].
+
+This section demonstrates an application in the situation where the
+nonresponse is assumed to depend on known covariates, and where the
+distribution of covariates in the population is known. The sample is
+augmented by a set of artificial records, the outcomes in this set are
+multiply imputed and the whole set is analyzed. Though the application
+assumes random sampling, it should not be difficult to extend the basic
+ideas to more complex sampling designs.
+
+### Fifth Dutch Growth Study
+
+The Fifth Dutch Growth Study is a cross-sectional nationwide study of
+height, weight and other anthropometric measurements among children 0–21
+years living in the Netherlands [@SCHONBECK2013]. The goal of the study
+is to provide updated growth charts that are representative for healthy
+children. The study is an update of similar studies performed in the
+Netherlands in 1955, 1965, 1980 and 1997. A strong secular trend in
+height has been observed over the last 150 years, making the Dutch
+population the tallest in the world [@FREDRIKS2000B]. The growth studies
+yield essential information needed to calibrate the growth charts for
+monitoring childhood growth and development. One of the parameters of
+interest is *final height*, the mean height of the population when fully
+grown around the age of 20 years.
+
+The survey took place between May 2008 and October 2009. The sample was
+stratified into five regions: North (Groningen, Friesland, Drenthe),
+East (Overijssel, Gelderland, Flevoland), West (Noord-Holland,
+Zuid-Holland, Utrecht), South (Zeeland, Noord-Brabant, Limburg) and the
+four major cities (Amsterdam, Rotterdam, The Hague, Utrecht City). The
+way in which the children were sampled depended on age. Up to 8 years of
+age, measurements were performed during regular periodical health
+examinations. Children older than 9 years were sampled from the
+population register, and received a personal invitation from the local
+health care provider.
+
+The total population was stratified into three ethnic subpopulations.
+Here we consider only the subpopulation of Dutch descent. This group
+consists of all children whose biological parents are born in the
+Netherlands. Children with growth-related diseases were excluded. The
+planned sample size for the Dutch subpopulation was equal to 14782.
+
+### Nonresponse
+
+During data collection, it quickly became evident that the response in
+children older than 15 years was extremely poor, and sometimes fell even
+below 20%. Though substantial nonresponse was caused by lack of
+perceived interest by the children, we could not rule out the
+possibility of selective nonresponse. For example, overweight children
+may have been less inclined to participate. The data collection method
+was changed in November 2008 so that all children with a school class
+were measured. Once a class was selected, nonresponse of the pupils was
+very generally small. In addition, children were measured by special
+teams at two high schools, two universities and a youth festival. The
+sample was supplemented with data from two studies from Amsterdam and
+Zwolle.
+
+### Comparison to known population totals
+
+The realized sample size was $n = 10030$ children aged 0–21 years (4829
+boys, 5201 girls). The nonresponse and the changes in the design may
+have biased the sample. If the sample is to be representative for the
+Netherlands, then the distribution of measured covariates like age, sex,
+region or educational level should conform to known population totals.
+Such population totals are based on administrative sources and are
+available in STATLINE, the online publication system of Statistics
+Netherlands.
+
+4.5pt
+
+  -------- ------------ -------- ------------ -------- ------------ --------
+
+  Region     Population   Sample   Population   Sample   Population   Sample
+  North              12        7           12       11           12        4
+  East               24       28           24       11           24       55
+  South              23       27           24       31           25       21
+  West               21       26           20       26           20       15
+  City               20       12           19       22           19        4
+  -------- ------------ -------- ------------ -------- ------------ --------
+
+  : Distribution of the population and the sample over five geographical
+  regions by age. Numbers are column percentages. Source: Fifth Dutch
+  Growth Study [@SCHONBECK2013].<span data-label="tab:cbs">
+
+Table \[tab:cbs\] compares the proportion of children within five
+geographical regions in the Netherlands per January 1, 2010, with the
+proportions in the sample. Geography is known to be related to height,
+with the 20-year-olds in the North being about 3cm taller in the North
+[@FREDRIKS2000B]. There are three age groups. In the youngest children,
+the population and sample proportions are reasonably close in the East,
+South and West, but there are too few children from the North and the
+major cities. For children aged 10–13 years, there are too few children
+from the North and East. In the oldest children, the sample
+underrepresents the North and the major cities, and overrepresents the
+East.
+
+### Augmenting the sample {#sec:augmentsample}
+
+  -------- --------------- --------------- --------------- --------------- --------------- ---------------
+
+  Region     $n_{\rm obs}$   $n_{\rm imp}$   $n_{\rm obs}$   $n_{\rm imp}$   $n_{\rm obs}$   $n_{\rm imp}$
+  North                389             400             200              75             143             200
+  East                1654               0             207             300             667               0
+  South               1591               0             573               0             767               0
+  West                1530               0             476               0             572               0
+  City                 696             600             401               0             164             400
+  Total               5860            1000            1857             375            2313             600
+  -------- --------------- --------------- --------------- --------------- --------------- ---------------
+
+  : Number of observed and imputed children in the sample by
+  geographical regions and age. Source: Fifth Dutch Growth Study
+  [@SCHONBECK2013].<span data-label="tab:vlgaugment">
+
+The idea is to augment the sample in such a way that it will be
+nationally representative, followed by multiple imputation of the
+outcomes of interest. Table \[tab:vlgaugment\] lists the number of the
+measured children. The table also reports the number of children needed
+to bring the sample close to the population distribution.
+
+In total 1975 records are appended to the 10030 records of children who
+were measured. The appended data contain three complete covariates:
+region, sex and age in years. For example, for the combination
+(`North`,
+`0–9 years`) $n_{\rm imp} = 400$ new records
+are created as follows. All 400 records have the region category
+`North`. The first 200 records are boys and
+the last 200 records are girls. Age is drawn uniformly from the range
+0–9 years. The outcomes of interest, like height and weight, are set to
+missing. Similar blocks of records are created for the other five
+categories of interest, resulting in a total of 1975 new records with
+complete covariates and missing outcomes.
+
+The following `R` code creates a dataset of
+1975 records, with four complete covariates
+(`id`, `reg`,
+`sex`, `age`) and
+four missing outcomes (`hgt`,
+`wgt`, `hgt.z`,
+`wgt.z`). The outcomes
+`hgt.z` and `wgt.z`
+are standard deviation scores (SDS), or $Z$-scores, derived from
+`hgt` and `wgt`,
+respectively, standardized for age and sex relative to the Dutch
+references [@FREDRIKS2000B].
+
+`       `\
+`       `\
+`  `\
+`     `\
+`   `\
+`    `\
+`       `\
+`       `\
+\
+`  `\
+`  `\
+`   `\
+`  `\
+`                             `\
+`  `
+
+### Imputation model {#imputation-model}
+
+![Height SDS by age and region of Dutch children. Source: Fifth Dutch
+Growth Study ($n=10030$).<span
+data-label="fig:sdsbyregion">](fig/ch10_vlgfigsdsbyregion-1){width="\maxwidth"}
+
+Regional differences in height are not constant across age, and tend to
+be more pronounced in older children. Figure \[fig:sdsbyregion\]
+displays mean height standard deviation scores by age and region.
+Children from the North are generally the tallest, while those from the
+South are shortest, but the difference varies somewhat with age.
+Children from the major cities are short at early ages, but relatively
+tall in the oldest age groups. Imputation should preserve these features
+in the data, so we need to include at least the age by region
+interaction into the imputation model. In addition, we incorporate the
+interaction between SDS and age, so that the relation between height and
+weight could differ across age. The following specification uses the new
+`formulas` argument of
+`mice` to specify the interaction terms. This
+setup eliminates the need for passive imputation.
+
+`           `\
+`                       `\
+`                      `\
+`                       `\
+`          `\
+`                    `
+
+Height SDS and weight SDS are is approximately normally distributed with
+a mean of zero and a standard deviation of 1, so we use the linear
+normal model method `norm` rather the
+`pmm`. If necessary, absolute values in
+centimeters (cm) and kilograms (kg) can be calculated after imputation.
+
+![Mean height SDS by age for regions `North`
+and `City`, in the observed data ($n=10030$)
+(blue) and 10 augmented datasets that correct for the nonresponse
+($n=12005$).<span
+data-label="fig:vlginspect">](fig/ch10_vlginspect-1){width="\maxwidth"}
+
+Figure \[fig:vlginspect\] displays mean height SDS per year for regions
+`North` and `City`
+in the original and augmented data. The 10 imputed datasets show
+patterns in mean height SDS similar to those in the observed data.
+Because of the lower sample size, the means for region
+`North` are more variable than
+`City`. Observe also that the rising pattern
+in `City` is reproduced in the imputed data.
+No imputations were generated for the ages 10–13 years, which explains
+that the means of the imputed and observed data coincide. The
+imputations tend to smooth out sharp peaks at higher ages due to the low
+number of data points.
+
+### Influence of nonresponse on final height {#sec:finalheight}
+
+![Final height estimates in Dutch boys and girls from the original
+sample ($n=10030$) and 10 augmented samples ($n=12005$) that correct for
+the nonresponse.<span
+data-label="fig:finalheight">](fig/ch10_vlgplotfinalheight-1){width="\maxwidth"}
+
+Figure \[fig:finalheight\] displays the mean of fitted height
+distribution of the original and the 10 imputed datasets. Since children
+from the shorter population in the South are overrepresented, the
+estimates of final height from the sample (183.6cm for boys, 170.6cm for
+girls) are biased downward. The estimates calculated from the imputed
+data vary from 183.6 to 184.1cm (boys) and 170.6 to 171.1cm (girls).
+Thus, correcting for the nonresponse leads to final height estimates
+that are about 2mm higher.
+
+### Discussion
+
+The application as described here only imputes height and weight in
+Dutch children. It is straightforward to extend the method to impute
+additional outcomes, like waist or hip circumference.
+
+The method can only correct for covariates whose distributions are known
+in both the sample and population. It does not work if nonresponse
+depends on factors for which we have no population distribution.
+However, if we have possession of nonresponse forms for a representative
+sample, we may use any covariates common to the responders and
+nonresponders to correct for the nonresponse using a similar
+methodology. The correction will be more successful if these covariates
+are related to the reasons for the nonresponse.
+
+There are no accepted methods yet to calculate the number of extra
+records needed. Here we used 1975 new records to augment the existing
+10030 records, about 16% of the total. This number of artificial records
+brought the covariate distribution in the augmented sample close to the
+population distribution without the need to discard any of the existing
+records. When the imbalance grows, we may need a higher percentage of
+augmentation. The estimates will then be based on a larger fraction of
+missing information, and may thus become unstable. Alternatively, we
+could sacrifice some of the existing records by taking a random
+subsample of strata that are overrepresented, but discarding data is
+likely to lead it less efficient estimates. It would be interesting to
+compare the methodology to traditional weighting approaches.
+
+## Exercises {#ex:ch:selection}
+
+1.  *90th centile*. Repeat the analysis in Section \[sec:finalheight\]
+    for final height. Study the effect of omitting the interaction
+    effect from the imputation model. Are the effects on the 90th
+    centile the same as for the mean?
+
+2.  *How many records?* Section \[sec:augmentsample\] describes an
+    application in which incomplete records are appended to create a
+    representative sample. Develop a general strategy to determine the
+    number of records needed to append.

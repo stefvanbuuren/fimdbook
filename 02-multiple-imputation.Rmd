@@ -1,0 +1,1639 @@
+# Multiple imputation {#ch:mi}
+
+> Imputing one value for a missing datum cannot be correct in general, 
+> because we don’t know what value to impute with certainty (if we did, 
+> it wouldn’t be missing).
+> 
+> --- Donald B. Rubin
+
+## Historic overview {#sec:historic}
+
+### Imputation
+
+The English verb “to impute” comes from the Latin *imputo*, which means
+to reckon, attribute, make account of, charge, ascribe. In the Bible,
+the word “impute” is a translation of the Hebrew verb ${h\bar{a}shab}$,
+which appears about 120 times in the Old Testament in various meanings
+[@RENN2005]. The noun “imputation” has a long history in taxation. The
+concept “imputed income” was used in the 19th century to denote income
+derived from property, such as land and housing. In the statistical
+literature, imputation means “filling in the data.” Imputation in this
+sense is first mentioned in 1957 in the work of the U.S. Census Bureau
+[@USCENSUS1957].
+
+Imputation is not alien to human nature. @YUVAL2014 presented a world
+map, created in 1459 in Europe, that imputes fictitious continents in
+geographies that had yet to be discovered. One century later, the world
+map looked like a series of coastlines, with huge white spots for the
+inner lands, and these were all systematically explored during the later
+centuries. It’s only when you can admit your own ignorance that you can
+start learning.
+
+@ALLAN1930 were the first to develop a statistical method to replace a
+missing value. They provided two formulae for estimating the value of a
+single missing observation, and advised filling in the estimate in the
+data. They would then proceed as usual, but deduct one degree of freedom
+to correct for the missing data. @YATES1933 generalized this work to
+more than one missing observation, and thus planted the seeds via a long
+and fruitful chain of intermediates that led up to the now classic EM
+algorithm [@DEMPSTER1977]. Interestingly, the term “imputation” was not
+used by Dempster et al. or by any of their predecessors; it only gained
+widespread use after the monumental work of the Panel on Incomplete Data
+in 1983. Volume 2 devoted about 150 pages to an overview of the
+state-of-the-art of imputation technology [@MADOW1983B]. This work is
+not widely known, but it was the predecessor to the first edition of
+@LITTLE1987, a book that established the term firmly in the mainstream
+statistical literature.
+
+### Multiple imputation {#multiple-imputation}
+
+Multiple imputation is now accepted as the best general method to deal
+with incomplete data in many fields, but this was not always the case.
+Multiple imputation was developed by Donald B. Rubin in the 1970’s. It
+is useful to know a bit of its remarkable history, as some of the issues
+in multiple imputation may resurface in contemporary applications. This
+section details historical observations that provide the necessary
+background.
+
+The birth of multiple imputation has been documented by Fritz Scheuren
+[@SCHEUREN2005]. Multiple imputation was developed as a solution to a
+practical problem with missing income data in the March Income
+Supplement to the Current Population Survey (CPS). In 1977, Scheuren was
+working on a joint project of the Social Security Administration and the
+U.S. Census Bureau. The Census Bureau was then using (and still does
+use) a *hot deck* imputation procedure. Scheuren signaled that the
+variance could not be properly calculated, and asked Rubin what might be
+done instead. Rubin came up with the idea of using multiple versions of
+the complete dataset, something he had already explored in the early
+1970s [@RUBIN1994]. The original 1977 report introducing the idea was
+published in 2004 in the history corner of the *American Statistician*
+[@RUBIN2004]. According to Scheuren: “The paper is the beginning point
+of a truly revolutionary change in our thinking on the topic of
+missingness” [@SCHEUREN2004 p. 291].
+
+Rubin observed that imputing *one* value (single imputation) for the
+missing value could not be correct in general. He needed a model to
+relate the unobserved data to the observed data, and noted that even for
+a given model the imputed values could not be calculated with certainty.
+His solution was simple and brilliant: create multiple imputations that
+reflect the uncertainty of the missing data. The 1977 report explains
+how to choose the models and how to derive the imputations. A low number
+of imputations, say five, would be enough.
+
+The idea to create multiple versions of the data must have seemed
+outrageous at that time. Drawing imputations from a distribution,
+instead of estimating the “best” value, was a drastic departure from
+everything that had been done before. Rubin’s original proposal did not
+include formulae for calculating combined estimates, but instead
+stressed the study of variation because of uncertainty in the imputed
+values. The idea was rooted in the Bayesian framework for inference,
+quite different from the dominant randomization-based framework in
+survey statistics. Moreover, there were practical issues involved in the
+technique, the larger datasets, the extra works to create the model and
+the repeated analysis, software issues, and so on. These issues have all
+been addressed by now, but in 1983 Dempster and Rubin wrote: “Practical
+implementation is still in the developmental state” [@DEMPSTER1983 p.
+8].
+
+@RUBIN1987 provided the methodological and statistical footing for the
+method. Though several improvements have been made since 1987, the book
+was really ahead of its time and discusses the essentials of modern
+imputation technology. It provides the formulas needed to combine the
+repeated complete-data estimates (now called Rubin’s rules), and
+outlines the conditions under which statistical inference under multiple
+imputation will be valid. Furthermore, pp. 166–170 provide a description
+of Bayesian sampling algorithms that could be used in practice.
+
+Tests for combinations of parameters were developed by @LI1991, @LI1991B
+and @MENG1992. Technical improvements for the degrees of freedom were
+suggested by @BARNARD1999A and @REITER2007. Iterative algorithms for
+multivariate missing data with general missing data patterns were
+proposed by Rubin (1987, p. 192) @SCHAFER1997, @VANBUUREN1999,
+@RAGHUNATHAN2001 and @KING2001.
+
+In the 1990s, multiple imputation came under fire from various sides.
+The most severe criticism was voiced by @FAY1992. Fay pointed out that
+the validity of multiple imputation can depend on the form of subsequent
+analysis. He produced “counterexamples” in which multiple imputation
+systematically understated the true covariance, and concluded that
+“multiple imputation is inappropriate as a general purpose methodology.”
+@MENG1994 pointed out that Fay’s imputation models omitted important
+relations that were needed in the analysis model, an undesirable
+situation that he labeled *uncongenial*. Related issues on the interplay
+between the imputation model and the complete-data model have been
+discussed by @RUBIN1996 and @SCHAFER2003.
+
+Several authors have shown that Rubin’s estimate of the variance can be
+biased [@WANG1998; @ROBINS2000; @NIELSEN2003; @KIM2006]. If there is
+bias, the estimate is usually too large. @RUBIN2003 emphasized that
+variance estimation is only an intermediate goal for making confidence
+intervals, and generally not a parameter of substantive interest. He
+also noted that observed bias does not seem to affect the coverage of
+these intervals across a wide range of cases of practical interest.
+
+The tide turned around 2005. Reviews started to appear that criticize
+insufficient reporting practice of the missing data in diverse fields
+(cf. Section \[sec:changingperspective\]). Nowadays multiple imputation
+is almost universally accepted, and in fact acts as the benchmark
+against which newer methods are being compared. The major statistical
+packages have all implemented modules for multiple imputation, so
+effectively the technology is implemented, almost three decades after
+Dempster and Rubin’s remark.
+
+### The expanding literature on multiple imputation
+
+![Multiple imputation at age 40. Number of publications (log) on
+multiple imputation during the period 1977–2017 according to three
+counting methods. Data source: <https://www.scopus.com> (accessed Jan
+14, 2018).<span
+data-label="fig:publications">](fig/ch2_publications-1){width="\maxwidth"}
+
+Figure \[fig:publications\] contains three time series with counts on
+the number of publications on multiple imputation during the period
+1977–2017. Counts were made in three ways. The rightmost series
+corresponds to the number of publications per year that featured the
+search term “multiple imputation” in the title. These are often
+methodological articles in which new adaptations are being developed.
+The series in the middle is the number of publication that featured
+“multiple imputation” in the title, abstract or key words in Scopus on
+the same search data. This set includes a growing group of papers that
+contain applications. The leftmost series is the number of publications
+in a collection of early publications available at
+`http://www.multiple-imputation.com`. This
+collection covers essentially everything related to multiple imputation
+from its inception in 1977 up to the year 2001. This group also includes
+chapters in books, dissertations, conference proceedings, technical
+reports and so on.
+
+Note that the vertical axis is set in the logarithm. Perhaps the most
+interesting series is the middle series counting the applications. The
+pattern is approximately linear, meaning that the number of applications
+is growing at an exponential rate.
+
+Several books devoted to missing data saw the light since the first
+edition of this book appeared in 2012. Building upon Schafer’s work,
+@GRAHAM2012 provides many insightful solutions for practical issues in
+imputation. @CARPENTER2013 propose methodological advances on important
+aspects of multiple imputation. @MALLINCKROTH2013 and @OKELLY2014
+concentrate on the missing data problem in clinical trials, @ZHOU2014
+target health sciences, whereas @KIM2013 is geared towards official
+statistics. The *Handbook of Missing Data Methodology*
+[@MOLENBERGHS2015] presents a broad and up-to-date technical overview of
+the field of missing data. @RAGHU2015 describes a variety of
+applications in social sciences and health using sequential regression
+multivariate imputation .
+
+In addition to papers and books, high-quality software is now available
+to ease application of multiple imputation in practice. @RESVAN2015
+signal a wide adoption of multiple imputation, but warn that reporting
+is often substandard. Many more researchers have realized the full
+generality of the missing data problem. Effectively, missing data has
+now transformed into one of the great academic growth industries.
+
+## Concepts in incomplete data {#sec:idconcepts}
+
+### Incomplete-data perspective
+
+Many statistical techniques address some kind of incomplete-data
+problem. Suppose that we are interested in knowing the mean income $Q$
+in a given population. If we take a sample from the population, then the
+units not in the sample will have missing values because they will not
+be measured. It is not possible to calculate the population mean right
+away since the mean is undefined if one or more values are missing. The
+incomplete-data perspective is a conceptual framework for analyzing data
+as a missing data problem.
+
+Estimating a mean from a population is a well known problem that can
+also be solved without a reference to missing data. It is nevertheless
+sometimes useful to think what we would have done had the data been
+complete, and what we could do to arrive at complete data. The
+incomplete-data perspective is general, and covers the sampling problem,
+the counterfactual model of causal inference, statistical modeling of
+the missing data, and statistical computation techniques. The books by
+@GELMAN2004C [ch. 7] and @GELMAN2004B provide in-depth discussions of
+the generality and richness of the incomplete data perspective.
+@LITTLE2013 lists ten powerful ideas for the statistical scientist. His
+final advice reads as:
+
+> My last simple idea is overarching: statistics is basically a missing
+> data problem! Draw a picture of what’s missing and find a good model
+> to fill it in, along with a suitable (hopefully well calibrated)
+> method to reflect uncertainty.
+
+### Causes of missing data
+
+There is a broad distinction between two types of missing data:
+*intentional* and *unintentional* missing data. Intentional missing data
+are planned by the data collector. For example, the data of a unit can
+be missing because the unit was excluded from the sample. Another form
+of intentional missing data is the use of different versions of the same
+instrument for different subgroups, an approach known as matrix
+sampling. See @GONZALEZ2007 or @GRAHAM2012 [Section 4] for an overview.
+Also, missing data that occur because of the routing in a questionnaire
+are intentional, as well as data (e.g., survival times) that are
+censored data at some time because the event (e.g., death) has not yet
+taken place. A related term in a multilevel context is systematically
+missing data. This term refers to variables that are missing for all
+individuals in a cluster because the variable was not measured in that
+cluster.[@RESCHE2016]
+
+Though often foreseen, unintentional missing data are unplanned and not
+under the control of the data collector. Examples are: the respondent
+skipped an item, there was an error in the data transmission causing
+data to be missing, some of the objects dropped out before the study
+could be completed resulting in partially complete data, and the
+respondent was sampled but refused to cooperate. A related term in a
+multilevel context is sporadically missing data. This terms is used for
+variables with missing values for some but not all individuals in a
+cluster.
+
+Another important distinction is *item nonresponse* versus *unit
+nonresponse*. Item nonresponse refers to the situation in which the
+respondent skipped one or more items in the survey. Unit nonresponse
+occurs if the respondent refused to participate, so all outcome data are
+missing for this respondent. Historically, the methods for item and unit
+nonresponse have been rather different, with unit nonresponse primarily
+addressed by weighting methods, and item nonresponse primarily addressed
+by edit and imputation techniques.
+
+                     Intentional       Unintentional
+  ------------------ ----------------- ----------------
+  Unit nonresponse   Sampling          Refusal
+                                       Self-selection
+  Item nonresponse   Matrix sampling   Skip question
+                     Branching         Coding error
+
+  : Examples of reasons for missingness for combinations of
+  intentional/unintentional missing data with item/unit
+  nonresponse.<span data-label="tab:intentional">
+
+Table \[tab:intentional\] cross-classifies both distinctions, and
+provides some typical examples in each of the four cells. The
+distinction between intentional/unintentional missing data is the more
+important one. The item/unit nonresponse distinction says *how much*
+information is missing, while the distinction between intentional and
+unintentional missing data says *why* some information is missing.
+Knowing the reasons why data are incomplete is a first step toward the
+solution.
+
+### Notation {#sec:notation}
+
+The notation used in this book will be close to that of @RUBIN1987 and
+@SCHAFER1997, but there are some exceptions. The symbol $m$ is used to
+indicate the number of multiple imputations. Compared to @RUBIN1987 the
+subscript $m$ is dropped from most of the symbols. In @RUBIN1987, $Y$
+and $R$ represent the data of the population, whereas in this book $Y$
+refers to data of the sample, similar to @SCHAFER1997. @RUBIN1987 uses
+$X$ to represent the completely observed covariates in the population.
+Here we assume that the covariates are possibly part of $Y$, so there is
+not always a symbolic distinction between complete covariates and
+incomplete data. The symbol $X$ is used to indicate the set of
+predictors in various types of models.
+
+Let $Y$ denote the $n \times p$ matrix containing the data values on $p$
+variables for all $n$ units in the sample. We define the *response
+indicator* $R$ as an $n \times p$ 0–1 matrix. The elements of $Y$ and
+$R$ are denoted by $y_{ij}$ and $r_{ij}$, respectively, where
+$i=1,\dots,n$ and $j=1,\dots,p$. If $y_{ij}$ is observed, then
+$r_{ij} = 1$, and if $y_{ij}$ is missing, then $r_{ij} = 0$.
+
+This book is restricted to the case where $R$ is completely known, i.e.,
+we know where the missing data are. This covers many applications of
+practical interest, but not all. For example, some questionnaires
+present a list of diseases and ask the respondent to place a “tick” at
+each disease that applies. If there is a “yes” we know that the field is
+not missing. However, if the field is not ticked, it could be because
+the person didn’t have the disease (a genuine “no”) or because the
+respondent skipped the question (a missing value). There is no way to
+tell the difference from the data, so these are *unknown unknowns*. In
+order to make progress in cases like these, we need additional
+assumptions about the response behavior.
+
+The observed data are collectively denoted by $Y_\mathrm{obs}$. The
+missing data are collectively denoted as $Y_\mathrm{mis}$, and contain
+all elements $y_{ij}$ where $r_{ij}=0$. When taken together
+$Y=({\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})$ contain the
+hypothetically complete data. The part $Y_\mathrm{mis}$ has real values,
+but the values themselves are masked from us, where $R$ indicates which
+values are masked. In their book, @LITTLE2002 [p. 8] make the following
+key assumption:
+
+> Missingness indicators hide the true values that are meaningful for
+> analysis.
+
+While this statement may seem obvious and uncomplicated, there are
+practical situations where it may not hold. In a trial where we are
+interested in both survival and quality of life, we may have missing
+values in either outcome. If we know that a person is alive, then an
+unknown quality of life outcome is simply missing because the quality of
+life score is defined for that person, but for some reason we haven’t
+been able to see it. But if the person has died, quality of life becomes
+undefined, and that’s the reason why we don’t see it. It wouldn’t make
+much sense to try to impute something that is undefined. A more sensible
+option is to stratify the analysis according to whether the concept is
+defined or not. The situation becomes more complex if we do not know the
+person’s survival status. See @RUBIN2000 for an analysis. In order to
+evade such complexities, we assume that $Y$ contains values that are all
+defined, and that $R$ indicates what we actually see.
+
+If $Y={\mbox{$Y_\mathrm{obs}$}}$ (i.e., if the sample data are
+completely observed) and if we know the mechanism of how the sample was
+created, then it is possible to make a valid estimate of the population
+quantities of interest. For a simple random sample, we could just take
+the sample mean $\hat Q$ as an unbiased estimate of the population mean
+$Q$. We will assume throughout this book that we know how to do the
+correct statistical analysis on the complete data $Y$. If we cannot do
+this, then there is little hope that we can solve the more complex
+problem of analyzing $Y_\mathrm{obs}$. This book addresses the problem
+of what to do if $Y$ is observed incompletely. Incompleteness can
+incorporate intentional missing data, but also unintentional forms like
+refusals, self-selection, skipped questions, missed visits and so on.
+
+Note that every unit in the sample has a row in $Y$. If no data have
+been obtained for a unit $i$ (presumably because of unit nonresponse),
+the $i^\mathrm{th}$ record will contain only the sample number and
+perhaps administrative data from the sampling frame. The remainder of
+the record will be missing.
+
+A variable without any observed values is called a latent variable.
+Latent variables are often used to define concepts that are difficult to
+measure. Latent variables are theoretical constructs and not part of the
+manifest data, so they are typically not imputed. @MISLEVY1991 showed
+how latent variable can be imputed, and provided several illustrative
+applications.
+
+### MCAR, MAR and MNAR again {#sec:MCARreprise}
+
+Section \[sec:MCAR\] introduced MCAR, MAR and MNAR. This section
+provides more precise definitions.
+
+The matrix $R$ stores the locations of the missing data in $Y$. The
+distribution of $R$ may depend on
+$Y=({\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})$, either by
+design or by happenstance, and this relation is described by the
+*missing data model*. Let $\psi$ contain the parameters of the missing
+data model, then the general expression of the missing data model is
+$\Pr(R|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}},\psi)$.
+
+The data are said to be MCAR if
+$$\Pr(R=0|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}},\psi) = \Pr(R=0|\psi)$$
+so the probability of being missing depends only on some parameters
+$\psi$, the overall probability of being missing. The data are said to
+be MAR if
+$$\Pr(R=0|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}},\psi) = \Pr(R=0|{\mbox{$Y_\mathrm{obs}$}},\psi)$$
+so the missingness probability may depend on observed information,
+including any design factors. Finally, the data are MNAR if
+$$\Pr(R=0|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}},\psi)$$
+does not simplify, so here the probability to be missing also depends on
+unobserved information, including $Y_\mathrm{mis}$ itself.
+
+As explained in Chapter 1, simple techniques usually only work under
+MCAR, but this assumption is very restrictive and often unrealistic.
+Multiple imputation can handle both MAR and MNAR.
+
+Several tests have been proposed to test MCAR versus MAR. These tests
+are not widely used, and their practical value is unclear. See
+@ENDERS2010 [pp. 17–21] for an evaluation of two procedures. It is not
+possible to test MAR versus MNAR since the information that is needed
+for such a test is missing.
+
+*Numerical illustration*. We simulate three archetypes of MCAR, MAR and
+MNAR. The data $Y=(Y_1,Y_2)$ are drawn from a standard bivariate normal
+distribution with a correlation between $Y_1$ and $Y_2$ equal to 0.5.
+Missing data are created in $Y_2$ using the missing data model
+$$\Pr(R_2=0)=\psi_0+\frac{e^{Y_1}}{1+e^{Y_1}}\psi_1+\frac{e^{Y_2}}{1+e^{Y_2}}\psi_2$$
+with different parameters settings for $\psi=(\psi_0,\psi_1,\psi_2)$.
+For MCAR we set $\psi_\mathrm{MCAR}=(0.5,0,0)$, for MAR we set
+$\psi_\mathrm{MAR}=(0,1,0)$ and for MNAR we set
+$\psi_\mathrm{MNAR}=(0,0,1)$. Thus, we obtain the following models:
+$$\begin{aligned}
+  \mathrm{MCAR}&:&\mathrm{}\Pr(R_2=0) = 0.5\\
+  \mathrm{MAR}&:&\mathrm{logit}(\Pr(R_2=0)) = Y_1\\
+  \mathrm{MNAR}&:&\mathrm{logit}(\Pr(R_2=0)) = Y_2\end{aligned}$$ where
+$\mathrm{logit}(p)=\log(p/(1-p))$ for any $0 < p < 1$ is the logit
+function. In practice, it is more convenient to work with the inverse
+logit (or logistic) function inverse
+$\mathrm{logit}^{-1}(x) = \exp(x)/(1+\exp(x))$, which transforms a
+continuous $x$ to the interval $\langle 0,1\rangle$. In
+`R`, it is straightforward to draw random
+values under these models as
+
+`       `\
+\
+`  `\
+`       `\
+`                           `\
+`      `\
+`        `\
+`       `
+
+![Distribution of $Y_\mathrm{obs}$ and $Y_\mathrm{mis}$ under three
+missing data models.<span data-label="fig:mcarmar">](fig/ch2_marplot-1){width="\maxwidth"}
+
+Figure \[fig:mcarmar\] displays the distribution of $Y_\mathrm{obs}$ and
+$Y_\mathrm{mis}$ under the three missing data models. As expected, these
+are similar under MCAR, but become progressively more distinct as we
+move to the MNAR model.
+
+### Ignorable and nonignorable$^\spadesuit$ {#sec:ignorable}
+
+The example in the preceding section specified parameters $\psi$ for
+three missing data models. The $\psi$-parameters have no intrinsic
+scientific value and are generally unknown. It would simplify the
+analysis if we could just ignore these parameters. The practical
+importance of the distinction between MCAR, MAR and MNAR is that it
+clarifies the conditions under which we can accurately estimate the
+scientifically interesting parameters without the need to know $\psi$.
+
+The actually observed data consist of $Y_\mathrm{obs}$ and $R$. The
+joint density function $f({\mbox{$Y_\mathrm{obs}$}}, R|\theta,\psi)$ of
+$Y_\mathrm{obs}$ and $R$ together depends on parameters $\theta$ for the
+full data $Y$ that are of scientific interest, and parameters $\psi$ for
+the response indicator $R$ that are seldom of interest. The joint
+density is proportional to the likelihood of $\theta$ and $\psi$, i.e.,
+$$l(\theta,\psi|{\mbox{$Y_\mathrm{obs}$}},R) \propto f({\mbox{$Y_\mathrm{obs}$}}, R|\theta,\psi)$$
+The question is: When can we determine $\theta$ without knowing $\psi$,
+or equivalently, the mechanism that created the missing data? The answer
+is given in @LITTLE2002 [p. 119]:
+
+> The missing data mechanism is ignorable for likelihood inference if:
+>
+> 1.  MAR: the missing data are missing at random; and
+>
+> 2.  Distinctness: the parameters $\theta$ and $\psi$ are
+>     distinct, in the sense that the joint parameter space of
+>     $(\psi,\theta)$ is the product of the parameter space of $\theta$
+>     and the parameter space of $\psi$.
+>
+For valid Bayesian inference, the latter condition is slightly stricter:
+$\theta$ and $\psi$ should be a priori independent:
+$p(\theta,\psi) = p(\theta)p(\psi)$ [@LITTLE2002 p. 120]. The MAR
+requirement is generally considered to be the more important condition.
+@SCHAFER1997 [p. 11] says that in many situations the condition on the
+parameters is “intuitively reasonable, as knowing $\theta$ will provide
+little information about $\psi$ and vice-versa.” We should perhaps be
+careful in situations where the scientific interest focuses on the
+missing data process itself. For all practical purposes, the missing
+data model is said to be “ignorable” if MAR holds.
+
+Note that the label “ignorable” does not mean that we can be entirely
+careless about the missing data. For inferences to be valid, we need to
+condition on those factors that influence the missing data rate. For
+example, in the MAR example of Section \[sec:MCARreprise\] the
+missingness in $Y_2$ depends on $Y_1$. A valid estimate of the mean of
+$Y_2$ cannot be made without $Y_1$, so we should include $Y_1$ somehow
+into the calculations for the mean of $Y_2$.
+
+### Implications of ignorability {#sec:ignorability}
+
+The concept of ignorability plays an important role in the construction
+of imputation models. In imputation, we want to draw synthetic
+observations from the posterior distribution of the missing data, given
+the observed data and given the process that generated the missing data.
+The distribution is denoted as
+$P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}},R)$. If the
+nonresponse is ignorable, then this distribution does not depend on $R$
+[@RUBIN1987 Result 2.3], i.e.,
+$$P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}}, R) = P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})$$
+The implication is that
+$$P(Y|{\mbox{$Y_\mathrm{obs}$}}, R=1) = P(Y|{\mbox{$Y_\mathrm{obs}$}}, R=0)$$
+so the distribution of the data $Y$ is the same in the response and
+nonresponse groups. Thus, if the missing data model is ignorable we can
+model the posterior distribution $P(Y|{\mbox{$Y_\mathrm{obs}$}}, R=1)$
+from the observed data, and use this model to create imputations for the
+missing data. Vice versa, techniques that (implicitly) assume equivalent
+distributions assume ignorability and thus MAR. On the other hand, if
+the nonresponse is nonignorable, we find
+$$P(Y|{\mbox{$Y_\mathrm{obs}$}}, R=1) \not= P(Y|{\mbox{$Y_\mathrm{obs}$}}, R=0)$$
+so then we should incorporate $R$ into the model to create imputations.
+
+The assumption of ignorability is often sensible in practice, and
+generally provides a natural starting point. If, on the other hand, the
+assumption is not reasonable (e.g., when data are censored), we may
+specify $P(Y|{\mbox{$Y_\mathrm{obs}$}}, R=0)$ different from
+$P(Y|{\mbox{$Y_\mathrm{obs}$}},
+R=1)$. The specification of $P(Y|{\mbox{$Y_\mathrm{obs}$}}, R=0)$ needs
+assumptions external to the data since, by definition, the information
+needed to estimate any regression weights for $R$ is missing.
+
+*Example*. Suppose that a growth study measures body weight in kg
+($Y_2$) and gender ($Y_1$: 1 = boy, 0 = girl) of 15-year-old children,
+and that some of the body weights are missing. We can model the weight
+distribution for boys and girls separately for those with observed
+weights, i.e., $P(Y_2 | Y_1=1, R_2=1)$ and $P(Y_2 | Y_1=0, R_2=1)$. If
+we assume that the response mechanism is ignorable, then imputations for
+a boy’s weight can be drawn from $P(Y_2 | Y_1=1, R_2=1)$ since it will
+equal $P(Y_2 | Y_1=1, R_2=0)$. The same can be done for the girls. This
+procedure leads to correct inferences on the combined sample of boys and
+girls, even if boys have substantially more missing values, or if the
+body weights of the boys and girls are very different.
+
+The procedure outlined above is not appropriate if, within the boys or
+the girls, the occurrence of the missing data is related to body weight.
+For example, some of the heavier children may not want to be weighed,
+resulting in more missing values for the obese. It will be clear that
+assuming $P(Y_2 | Y_1, R_2=0) = P(Y_2 | Y_1, R_2=1)$ will underestimate
+the prevalence of overweight and obesity. In this case, it may be more
+realistic to specify $P(Y_2| Y_1, R_2=0)$ such that imputation accounts
+for the excess body weights in the children that were not weighed. There
+are many ways to do this. In all these cases the response mechanism will
+be nonignorable.
+
+The assumption of ignorability is essentially the belief on the part of
+the user that the available data are sufficient to correct for the
+effects of the missing data. The assumption cannot be tested on the data
+itself, but it can be checked against suitable external validation data.
+
+There are two main strategies that we may pursue if the response
+mechanism is not ignorable. The first is to expand the data, and assume
+ignorability on the expanded data [@COLLINS2001]. See also Section
+\[sec:whenignorable\] for more details. In the above example, overweight
+children may simply not want anybody to know their weight, but perhaps
+have no objection if their waist circumference $Y_3$ is measured. As
+$Y_3$ predicts $Y_2$, $R_2$ or both, the ignorability assumption
+$P(Y_2 |Y_1, Y_3, R_2=0) = P(Y_2 |Y_1, Y_3,
+R_2=1)$ is less stringent, and hence more realistic.
+
+The second strategy is to formulate the model for $P(Y_2 |Y_1, R_2=0)$
+different from $P(Y_2 |Y_1, R_2=1)$, describing which body weights would
+have been observed if they had been measured. Such a model could simply
+add some extra kilos to the imputed values, but of course we need to be
+able to justify our choice in light of what we know about the data. See
+Section \[sec:nonignorableoverview\] for a more detailed discussion of
+the idea. In general, the formulation of nonignorable models should be
+driven by knowledge about the process that created the missing data. Any
+such methods need to be explained and justified as part of the
+statistical analysis.
+
+## Why and when multiple imputation works {#sec:whyandwhen}
+
+### Goal of multiple imputation {#sec:migoal}
+
+A *scientific estimand* $Q$ is a quantity of scientific interest that we
+can calculate if we would observe the entire population. For example, we
+could be interested in the mean income of the population. In general,
+$Q$ can be expressed as a known function of the population data. If we
+are interested in more than one quantity, $Q$ will be a vector. Note
+that $Q$ is a property of the population, so it does not depend on any
+design characteristics. Examples of scientific estimands include the
+population mean, the population (co)variance or correlation, and
+population factor loadings and regression coefficients, as well as these
+quantities calculated within known strata of the population. Examples of
+quantities that are not scientific estimands are sample means, standard
+errors and test statistics.
+
+We can only calculate $Q$ if the population data are fully known, but
+this is almost never the case. The goal of multiple imputation is to
+find an *estimate* $\hat Q$ that is *unbiased* and *confidence valid*
+[@RUBIN1996]. We explain these concepts below.
+
+Unbiasedness means that the average $\hat Q$ over all possible samples
+$Y$ from the population is equal to $Q$. The formula is
+$$E(\hat Q|Y) = Q  \label{eq:unbiasedness}$$ The explanation of
+confidence validity requires some additional symbols. Let $U$ be the
+estimated variance-covariance matrix of $\hat
+Q$. This estimate is *confidence valid* if the average of $U$ over all
+possible samples is equal or larger than the variance of $\hat Q$. The
+formula is $$E(U|Y) \geq V(\hat Q|Y) \label{eq:confidenceproper}$$ where
+the function $V(\hat Q|Y)$ denotes the variance caused by the sampling
+process. A statistical test with a stated nominal rejection rate of 5%
+should reject the null hypothesis in at most 5% of the cases when in
+fact the null hypothesis is true. A procedure is said to be confidence
+valid if this holds.
+
+In summary, the goal of multiple imputation is to obtain estimates of
+the scientific estimand in the population. This estimate should on
+average be equal to the value of the population parameter. Moreover, the
+associated confidence intervals and hypothesis tests should achieve at
+least the stated nominal value.
+
+### Three sources of variation$^\spadesuit$ {#sec:threesources}
+
+The actual value of $Q$ is unknown if some of the population data are
+unknown. Suppose we make an estimate $\hat Q$ of $Q$. The amount of
+uncertainty in $\hat Q$ about the true population value $Q$ depends on
+what we know about $Y_\mathrm{mis}$. If we would be able to re-create
+$Y_\mathrm{mis}$ perfectly, then we can calculate $Q$ with certainty.
+However, such perfect re-creation is almost never unachievable. In other
+cases, we need to summarize the distribution of $Q$ under varying
+$Y_\mathrm{mis}$. The possible values of $Q$ given our knowledge of the
+data $Y_\mathrm{obs}$ are captured by the posterior distribution
+$P(Q|{\mbox{$Y_\mathrm{obs}$}})$. In itself,
+$P(Q|{\mbox{$Y_\mathrm{obs}$}})$ is often intractable, but it can be
+decomposed into two parts that are easier to solve as follows:
+
+$$P(Q|{\mbox{$Y_\mathrm{obs}$}}) = \int{P(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})} d{\mbox{$Y_\mathrm{mis}$}}\label{eq:Qdecomp}$$
+
+Here, $P(Q|{\mbox{$Y_\mathrm{obs}$}})$ is the posterior distribution of
+$Q$ given the observed data ${\mbox{$Y_\mathrm{obs}$}}$. This is the
+distribution that we would like to know.
+$P(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})$ is the
+posterior distribution of $Q$ in the hypothetically complete data, and
+$P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})$ is the
+posterior distribution of the missing data given the observed data.
+
+The interpretation of Equation \[eq:Qdecomp\] is most conveniently done
+from right to left. Suppose that we use
+$P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})$ to draw
+imputations for ${\mbox{$Y_\mathrm{mis}$}}$, denoted as
+$\dot Y_\mathrm{mis}$. We can then use
+$P(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$\dot Y_\mathrm{mis}$}})$ to
+calculate the quantity of interest $Q$ from the imputed data
+($Y_\mathrm{obs}$,$\dot Y_\mathrm{mis}$). We repeat these two steps with
+new draws ${\mbox{$\dot Y_\mathrm{mis}$}}$, and so on. Equation
+\[eq:Qdecomp\] says that the actual posterior distribution of $Q$ is
+equal to the average over the repeated draws of $Q$. This result is
+important since it expresses $P(Q|{\mbox{$Y_\mathrm{obs}$}})$, which is
+generally difficult, as a combination of two simpler posteriors from
+which draws can be made.
+
+It can be shown that the posterior mean of
+$P(Q|{\mbox{$Y_\mathrm{obs}$}})$ is equal to
+$$E(Q|{\mbox{$Y_\mathrm{obs}$}})=E(E[Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}}]|{\mbox{$Y_\mathrm{obs}$}})$$
+the average of the posterior means of $Q$ over the repeatedly imputed
+data. This equation suggests the following procedure for combining the
+results of repeated imputations. Suppose that $\hat Q_l$ is the estimate
+of the $\ell^\mathrm{th}$ repeated imputation, then the combined
+estimate is equal to $$\bar Q = \frac{1}{m}\sum_{\ell=1}^m \hat Q_\ell
+\label{eq:poolQ}$$ where $\hat Q_\ell$ contains $k$ parameters and is
+represented as a $k \times 1$ column vector.
+
+The posterior variance of $P(Q|{\mbox{$Y_\mathrm{obs}$}})$ is the sum of
+two variance components:
+$$V(Q|{\mbox{$Y_\mathrm{obs}$}})=E[V(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})|{\mbox{$Y_\mathrm{obs}$}}] + V[E(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})|{\mbox{$Y_\mathrm{obs}$}}]\label{eq:varDecomp}$$
+This equation is well known in statistics, but can be difficult to grasp
+at first. The first component is the average of the repeated
+complete-data posterior variances of $Q$. This is called the
+within-variance. The second component is the variance between the
+complete-data posterior means of $Q$. This is called the between
+variance. Let $\bar U_\infty$ and $B_\infty$ denote the estimated within
+and between components for an infinitely large number of imputations
+$m=\infty$. Then $T_\infty = \bar U_\infty + B_\infty$ is the posterior
+variance of $Q$.
+
+Equation \[eq:varDecomp\] suggests the following procedure to estimate
+$T_\infty$ for finite $m$. We calculate the average of the complete-data
+variances as $$\bar U = \frac{1}{m}\sum_{\ell=1}^m \bar U_\ell
+  \label{eq:within}$$ where the term $\bar U_\ell$ is the
+variance-covariance matrix of $\hat Q_\ell$ obtained for the
+$\ell^\mathrm{th}$ imputation. The standard unbiased estimate of the
+variance between the $m$ complete-data estimates is given by
+$$B = \frac{1}{m-1}\sum_{\ell=1}^m (\hat Q_\ell-\bar Q)(\hat Q_\ell-\bar Q)'
+  \label{eq:between}$$ where $\bar Q$ is calculated by Equation
+\[eq:poolQ\].
+
+It is tempting to conclude that the total variance $T$ is equal to the
+sum of $\bar U$ and $B$, but that would be incorrect. We need to
+incorporate the fact that $\bar Q$ itself is estimated using finite $m$,
+and thus only approximates $\bar Q_\infty$. @RUBIN1987 [eq. 3.3.5] shows
+that the contribution to the variance of this factor is systematic and
+equal to $B_\infty/m$. Since $B$ approximates $B_\infty$, we may write
+$$\begin{aligned}
+  T & = & \bar U + B + B/m \nonumber \\
+      & = & \bar U + \left(1+\frac{1}{m}\right)B\label{eq:poolT}\end{aligned}$$
+for the total variance of $\bar Q$, and hence of $(Q-\bar Q)$ if
+$\bar Q$ is unbiased. The procedure to combine the repeated-imputation
+results by Equations \[eq:poolQ\] and \[eq:poolT\] is referred to as
+Rubin’s rules.
+
+In summary, the total variance $T$ stems from three sources:
+
+1.  $\bar U$, the variance caused by the fact that we are taking a
+    sample rather than observing the entire population. This is the
+    conventional statistical measure of variability;
+
+2.  $B$, the extra variance caused by the fact that there are
+    missing values in the sample;
+
+3.  $B/m$, the extra simulation variance caused by the fact that
+    $\bar Q$ itself is estimated for finite $m$.
+
+The addition of the latter term is critical to make multiple imputation
+work at low values of $m$. Not including it would result in $p$-values
+that are too low, or confidence intervals that are too short.
+Traditional choices for $m$ are $m=3$, $m=5$ and $m=10$. The current
+advice is to set $m$ higher, e.g., $m=50$ (cf.Section \[sec:howmany\]).
+The larger $m$ gets, the smaller the effect of simulation error on the
+total variance.
+
+@STEELE2010 investigated alternatives for obtaining estimates of $T$
+using mixtures of normals. Under multivariate normality and for low $m$,
+these methods yield slightly more efficient estimates of $T$. The
+behavior of these methods is not known when normality is violated. Since
+application of the procedure is more complex than Rubin’s rules, it is
+used sparingly.
+
+### Proper imputation {#sec:proper}
+
+In order to yield valid statistical inferences, the imputed values
+should possess certain characteristics. Procedures that yield such
+imputations are called *proper* [@RUBIN1987 pp. 118–128]. Section
+\[sec:migoal\] described two conditions needed for a valid estimate of
+$Q$. These requirements apply simultaneously to both the sampling and
+the nonresponse model. An analogous set of requirements exists if we
+zoom in on procedures that deal exclusively with the response model. The
+important theoretical result is: If the imputation method is proper and
+if the complete-data model is valid in the sense of Section
+\[sec:migoal\], the whole procedure is valid [@RUBIN1987 p. 119].
+
+  --------------------- ------------------- ----------------------------------------------------------- ------------------- ------------
+    Incomplete Sample                                             Complete Sample                                            Population
+    $Y_\mathrm{obs}$                         $Y=({\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})$
+        $\bar Q$         $\Longrightarrow$                           $\hat Q$                            $\Longrightarrow$      $Q$
+        $\bar U$         $\Longrightarrow$                      $U\doteq V(\hat Q)$
+   $B\doteq V(\bar Q)$
+  --------------------- ------------------- ----------------------------------------------------------- ------------------- ------------
+
+  : Role of symbols at three analytic levels and the relations between
+  them. The relation $\Longrightarrow$ means “is an estimate of.” The
+  relation $\doteq$ means “is asymptotically equal to.”<span
+  data-label="tab:misymbols">
+
+Recall from Section \[sec:migoal\] that the goal of multiple imputation
+is to find an estimate $\hat Q$ of $Q$ with correct statistical
+properties. At the level of the sample, there is uncertainty about $Q$.
+This uncertainty is captured by $U$, the estimated variance-covariance
+of $\hat Q$ in the sample. If we have no missing data in the sample, the
+pair $(\hat Q, U)$ contains everything we know about $Q$.
+
+If we have incomplete data, we can distinguish three analytic levels:
+the population, the sample and the incomplete sample. The problem of
+estimating $Q$ in the population by $\hat Q$ from the sample is a
+traditional statistical problem. The key idea of the solution is to
+accompany $\hat Q$ by an estimate of its variability under repeated
+sampling $U$ according to the sampling model.
+
+Now suppose that we want to go from the incomplete sample to the
+complete sample. At the sample level we can distinguish two estimands,
+instead of one: $\hat Q$ and $U$. Thus, the role of the single estimand
+$Q$ at the population level is taken over by the estimand pair
+$(\hat Q, U)$ at the sample level. Table \[tab:misymbols\] provides an
+overview of the three different analytic levels involved, the quantities
+defined at each level and their relations. Note that $\hat Q$ is both an
+estimate (of $Q$) as well as an estimand (of $\bar Q$). Also, $U$ has
+two roles.
+
+Imputation is the act of converting an incomplete sample into a complete
+sample. Imputation of data should, at the very least, lead to adequate
+estimates of both $\hat Q$ and $U$. Three conditions define whether an
+imputation procedure is considered proper. We use the slightly
+simplified version given by @BRAND1999 [p. 89] combined with @RUBIN1987.
+An imputation procedure is said to be *confidence proper* for
+complete-data statistics $(\hat Q,U)$ if at large $m$ all of the
+following conditions hold approximately: $$\begin{aligned}
+  E(\bar Q|Y) &=& \hat Q \label{eq:proper1} \\
+  E(\bar U|Y) &= & U \label{eq:proper2} \\
+  \left(1+\frac{1}{m}\right) E(B|Y) & \geq & V(\bar Q) \label{eq:proper3}\end{aligned}$$
+The hypothetically complete sample data $Y$ is now held fixed, and the
+response indicator $R$ varies according to a specified model.
+
+The first requirement is that $\bar Q$ is an unbiased estimate of
+$\hat Q$. This means that, when averaged over the response indicators
+$R$ sampled under the assumed response model, the multiple imputation
+estimate $\bar Q$ is equal to $\hat Q$, the estimate calculated from the
+hypothetically complete data in the realized sample.
+
+The second requirement is that $\bar U$ is an unbiased estimate of $U$.
+This means that, when averaged over the response indicator $R$ sampled
+under the assumed response model, the estimate $\bar U$ of the sampling
+variance of $\hat Q$ is equal to $U$, the sampling variance estimate
+calculated from the hypothetically complete data in the realized sample.
+
+The third requirement is that $B$ is a confidence valid estimate of the
+variance due to missing data. Equation \[eq:proper3\] implies that the
+extra inferential uncertainty about $\hat Q$ due to missing data is
+correctly reflected. On average, the estimate $B$ of the variance due to
+missing data should be equal to $V(\bar Q)$, the variance observed in
+the multiple imputation estimator $\bar Q$ over different realizations
+of the response mechanism. This requirement is analogous to Equation
+\[eq:confidenceproper\] for confidence valid estimates of $U$.
+
+If we replace $\geq$ in Equation \[eq:proper3\] by $>$, then the
+procedure is said to be *proper*, a stricter version. In practice, being
+confidence proper is enough to obtain valid inferences.
+
+Note a procedure may be proper for the estimand pair $(\hat Q, U)$,
+while being improper for another pair $(\hat Q', U')$. Also, a procedure
+may be proper with respect to one response mechanism $P(R)$, but
+improper for an alternative mechanism $P(R')$.
+
+It is not always easy to check whether a certain procedure is proper.
+Section \[sec:evaluation\] describes simulation-based tools for checking
+the adequacy of imputations for valid statistical inference. Chapter
+\[ch:univariate\] provides examples of proper and improper procedures.
+
+### Scope of the imputation model
+
+Imputation models vary in their scope. Models with a narrow scope are
+proper with respect to specific estimand $(\hat Q, U)$ and particular
+response mechanism, e.g., a particular proportion of nonresponse. Models
+with a broad scope are proper with respect to a wide range of estimates
+$\hat Q$, e.g., subgroup means, correlations, ratios and so on, and
+under a large variety of response mechanisms.
+
+The scope is related to the setting in which the data are collected. The
+following list distinguishes three typical situations:
+
+-   *Broad*. Create one set of imputations to be used for all projects
+    and analyses. A broad scope is appropriate for publicly released
+    data, cohort data and registers, where different people use the data
+    for different purposes.
+
+-   *Intermediate*. Create one set of imputations per project and use
+    this set for all analyses. An intermediate scope is appropriate for
+    analyses that estimate relatively similar quantities. The imputer
+    and analyst can be different persons.
+
+-   *Narrow*. A separate imputed dataset is created for each analysis.
+    The imputer and analyst are typically the same person. A narrow
+    scope is appropriate if the imputed data are used only to estimate
+    the same quantity. Different analyses require different imputations.
+
+In general, imputations created under a broad scope can be applied more
+widely, and preferable for that reason. On the other hand, if we have a
+strong scientific model for the data, or if the parameters of interest
+have high-stakes consequences then using a narrow scope is better
+because the imputation model can be informed by the complete-data model,
+thus making sure that all interactions, non-linearities and
+distributional details are adequately met. In practice the correct model
+is often unknown. Therefore the techniques discussed in this book will
+emphasize imputations for the broader scope. Whatever is chosen, it is
+the responsibility of the imputer to indicate the scope of the generated
+imputations.
+
+### Variance ratios$^\spadesuit$ {#sec:varianceratios}
+
+For scalar $Q$, the ratio
+$$\lambda = \frac{B+B/m}{T} \label{eq:lambda}$$ can be interpreted as
+the proportion of the variation attributable to the missing data. It is
+equal to zero if the missing data do not add extra variation to the
+sampling variance, an exceptional situation that can occur only if we
+can perfectly re-create the missing data. The maximum value is equal to
+1, which occurs only if all variation is caused by the missing data.
+This is equally unlikely to occur in practice since it means that there
+is no information at all. If $\lambda$ is high, say $\lambda>0.5$, the
+influence of the imputation model on the final result is larger than
+that of the complete-data model.
+
+The ratio $$r = \frac{B+B/m}{\bar U}$$ is called the *relative increase
+in variance due to nonresponse* [@RUBIN1987 eq. 3.1.7]. The quantity is
+related to $\lambda$ by $r = \lambda/(1-\lambda)$.
+
+Another related measure is the *fraction of information about $Q$
+missing due to nonresponse* [@RUBIN1987 eq. 3.1.10]. This measure is
+defined by $$\gamma = \frac{r+2/(\nu+3)}{1+r}\label{eq:gammama}$$ This
+measure needs an estimate of the degrees of freedom $\nu$, and will be
+discussed in Section \[sec:df\]. The interpretations of $\gamma$ and
+$\lambda$ are similar, but $\gamma$ is adjusted for the finite number of
+imputations. Both statistics are related by
+$$\gamma = \frac{\nu+1}{\nu+3}\lambda+\frac{2}{\nu+3}\label{eq:gammamb}$$
+The literature often confuses $\gamma$ and $\lambda$, and erroneously
+labels $\lambda$ as the fraction of missing information. The values of
+$\lambda$ and $\gamma$ are almost identical for large $\nu$, but they
+could notably differ for low $\nu$.
+
+If $Q$ is a vector, it is sometimes useful to calculate a compromise
+$\lambda$ over all elements in $\bar Q$ as
+$$\bar\lambda = \left(1+\frac{1}{m}\right)\mathrm{tr}(BT^{-1})/k \label{eq:barlambda}$$
+where $k$ is the dimension of $\bar Q$, and where $B$ and $T$ are now $k
+\times k$ matrices. The compromise expression for $r$ is equal to
+$$\bar r = \left(1+\frac{1}{m}\right)\mathrm{tr}(B\bar U^{-1})/k \label{eq:barrm}$$
+the average relative increase in variance.
+
+The quantities $\lambda$, $r$ and $\gamma$ as well as their multivariate
+analogues $\bar\lambda$ and $\bar r$ are indicators of the severity of
+the missing data problem. Fractions of missing information up to 0.2 can
+be interpreted as “modest,” 0.3 as “moderately large” and 0.5 as “high”
+[@LI1991B]. High values indicate a difficult problem in which the final
+statistical inferences are highly dependent on the way in which the
+missing data were handled. Note that estimates of $\lambda$, $r$ and
+$\gamma$ may be quite variable for low $m$ (cf. Section
+\[sec:howmany\]).
+
+### Degrees of freedom$^\spadesuit$ {#sec:df}
+
+The degrees of freedom is the number of observations after accounting
+for the number of parameters in de model. The calculation of the degrees
+of freedom cannot be the same as for the complete data because part of
+the data is missing. The “old” formula [@RUBIN1987 eq. 3.1.6] for the
+degrees of freedom can be written concisely as $$\begin{aligned}
+  \nu_\mathrm{old} & = & (m-1)\left(1+\frac{1}{r^2}\right)  \nonumber\\
+  & = & \frac{m-1}{\lambda^2}\label{eq:oldnu}\end{aligned}$$ with $r$
+and $\lambda$ defined as in Section \[sec:varianceratios\]. The lowest
+possible value is $\nu_\mathrm{old} = m-1$, which occurs if essentially
+all variation is attributable to the nonresponse. The highest value
+$\nu_\mathrm{old}=\infty$ indicates that all variation is sampling
+variation, either because there were no missing data, or because we
+could re-create them perfectly.
+
+@BARNARD1999A noted that Equation \[eq:oldnu\] can produce values that
+are larger than the sample size in the complete data, a situation that
+is “clearly inappropriate.” They developed an adapted version for small
+samples that is free of the problem. Let $\nu_\mathrm{com}$ be the
+degrees of freedom of $\bar Q$ in the hypothetically complete data. In
+models that fit $k$ parameters on data with a sample size of $n$ we may
+set $\nu_\mathrm{com}=n-k$. The estimated observed data degrees of
+freedom that accounts for the missing information is
+$$\nu_\mathrm{obs} = \frac{\nu_\mathrm{com}+1}{\nu_\mathrm{com}+3}\nu_\mathrm{com}(1-\lambda)$$
+The adjusted degrees of freedom to be used for testing in multiple
+imputation can be written concisely as $$\nu =
+  \frac{\nu_\mathrm{old} \nu_\mathrm{obs}}
+  {\nu_\mathrm{old}+\nu_\mathrm{obs}} \label{eq:newnu}$$ The quantity
+$\nu$ is always less than or equal to $\nu_\mathrm{com}$. If
+$\nu_\mathrm{com}=\infty$, then Equation \[eq:newnu\] reduces to
+\[eq:oldnu\]. If $\lambda=0$ then $\nu=\nu_\mathrm{com}$, and if
+$\lambda=1$ we find $\nu=0$. Distributions with zero degrees of freedom
+are nonsensical, so for $\nu<1$ we should refrain from any testing due
+to lack of information.
+
+Alternative corrections were proposed by @REITER2007 and @LIPSITZ2002.
+@WAGSTAFF2011 compared the four methods, and concluded that the
+sample-sample methods by Barnard-Rubin and Reiter performed
+satisfactory.
+
+### Numerical example
+
+Many quantities introduced in the previous sections can be obtained by
+the `pool()` function in
+`mice`. The following code
+imputes the `nhanes` dataset, fits a simple
+linear model and pools the results:
+
+\
+`           `\
+`     `\
+`  `\
+
+    Class: mipo    m = 10
+                estimate  ubar     b    t dfcom   df   riv lambda
+    (Intercept)    30.50 3.408 1.454 5.01    23 12.4 0.469  0.319
+    age            -2.13 0.906 0.238 1.17    23 15.1 0.289  0.224
+                  fmi
+    (Intercept) 0.408
+    age         0.310
+
+The column `estimate` is the value of $\bar Q$
+as defined in Equation \[eq:poolQ\]. Columns
+`ubar`, `b` and
+`t` are the variance estimates from Equations
+\[eq:within\], \[eq:between\] and \[eq:poolT\], respectively. Column
+`dfcom` is the degrees of freedom is the
+hypothetically complete data $\nu_\mathrm{com}$, and
+`df` is the degrees of freedom after the
+Barnard-Rubin correction $\nu$. The last three columns are the relative
+increase in variance $r$, the proportion of variance to due nonresponse
+$\lambda$ and the fraction of missing information $\gamma$ per
+parameter.
+
+## Statistical intervals and tests {#sec:inference}
+
+### Scalar or multi-parameter inference?
+
+The ultimate objective of multiple imputation is to provide valid
+statistical estimates from incomplete data. For scalar $Q$, it is
+straightforward to calculate confidence intervals and $p$-values from
+multiply imputed data, the primary difficulty being the derivation of
+the appropriate degrees of freedom for the $t$- and $F$-distributions .
+Section \[sec:singlepar\] provides the relevant statistical procedures.
+
+If $Q$ is a vector, we have two options for analysis. The first option
+is to calculate confidence intervals and $p$-values for the individual
+elements in $Q$, and do all statistical tests per element. Such
+repeated-scalar inference is appropriate if we interpret each element as
+a separate, though perhaps related, model parameter. In this case, the
+test uses the fraction of missing information particular to each
+parameter.
+
+The alternative option is to perform one statistical test that involves
+the elements of $Q$ at once. This is appropriate in the context of
+multi-parameter or simultaneous inference, where we evaluate
+combinations of model parameters. Practical applications of such tests
+include the comparison of nested models and the testing of model terms
+that involved multiple parameters like regression estimates for dummy
+codings created from the same variable.
+
+All methods assume that, under repeated sampling and with complete data,
+the parameter estimates $\hat Q$ are normally distributed around the
+population value $Q$ as $$\hat Q \sim N(Q, U)$$ where $U$ is the
+variance-covariance matrix of $(Q-\hat Q)$ [@RUBIN1987 p. 75]. For
+scalar $Q$, the quantity $U$ reduces to $\sigma_m^2$, the variance of
+the estimate $\hat Q$ over repeated samples. Observe that $U$ is not the
+variance of the measurements.
+
+Several approaches for multi-parameter inference are available: Wald
+test, likelihood ratio test and $\chi^2$-test. These methods are more
+complex than single-parameter inference, and their treatment is
+therefore deferred to Section \[sec:pooling\]. The next section shows
+how confidence intervals and $p$-values for scalar parameters can be
+calculated from multiply imputed data.
+
+### Scalar inference {#sec:singlepar}
+
+Single parameter inference applies if $k=1$, or if $k>1$ and the test is
+repeated for each of the $k$ components. Since the total variance of $T$
+is not known a priori, $\bar Q$ follows a $t$-distribution rather than
+the normal. Univariate tests are based on the approximation
+$$\frac{Q-\bar Q}{\sqrt{T}} \sim t_\nu$$ where $t_\nu$ is the Student’s
+$t$-distribution with $\nu$ degrees of freedom, with $\nu$ defined by
+Equation \[eq:newnu\].
+
+The $100(1-\alpha)$% confidence interval of a $\bar Q$ is calculated as
+$$\bar Q \pm t_{\nu,1-\alpha/2}\sqrt{T}$$ where $t_{\nu,1-\alpha/2}$ is
+the quantile corresponding to probability $1-\alpha/2$ of $t_\nu$. For
+example, use $t_{10,0.975}=2.23$ for the 95% confidence interval with
+$\nu=10$.
+
+Suppose we test the null hypothesis $Q=Q_0$ for some specified value
+$Q_0$. We can find the $p$-value of the test as the probability
+$$P_s = \Pr\left[F_{1,\nu} > \frac{(Q_0 - \bar Q)^2}{T}\right]$$ where
+$F_{1,\nu}$ is an $F$ where $F_{1,\nu}$ is an $F$-distribution with 1
+and $\nu$ degrees of freedom.
+
+### Numerical example
+
+Wald tests and confidence intervals for individual elements of $Q$ are
+standard output of most statistical procedures. The
+`mice` package provides such
+output by running the `summary()` function on
+the `mipo` object created by
+`pool()`:
+
+`   `
+
+                estimate std.error statistic   df        p.value
+    (Intercept)    30.50      2.24     13.63 12.4 0.000000000694
+    age            -2.13      1.08     -1.97 15.1 0.067575739870
+                2.5 % 97.5 %
+    (Intercept) 25.65 35.362
+    age         -4.43  0.174
+
+The `estimate` and
+`df` columns are identical to the previous
+display. In addition, we get the standard error of the estimate, the
+Wald statistics, its associated $p$-value, and the nominal 95th percent
+confidence interval per parameter. In this toy example
+`age` is not a statistically significant
+predictor of `bmi` at a type I error rate of 5
+percent. We may change the nominal length of the confidence intervals by
+the `conf.level` argument. It is possible to
+obtain all output by
+`summary(est, all, conf.int = TRUE)`.
+
+## How to evaluate imputation methods {#sec:evaluation}
+
+### Simulation designs and performance measures
+
+The advantageous properties of multiple imputation are only guaranteed
+if the imputation method used to create the missing data is proper.
+Equations \[eq:proper1\]–\[eq:proper3\] describe the conditions needed
+for proper imputation.
+
+Checking the validity of statistical procedures is often done by
+simulation. There are generally two mechanisms that influence the
+observed data, the sampling mechanism and the missing data mechanism.
+Simulation can address sampling mechanism separately, the missing data
+mechanism separately, and both mechanisms combined. This leads to three
+general simulation designs.
+
+1.  *Sampling mechanism only*. The basic simulation steps are:
+    choose $Q$, take samples $Y^{(s)}$, fit the complete-data model,
+    estimate $\hat Q^{(s)}$ and $U^{(s)}$ and calculate the outcomes
+    aggregated over $s$.
+
+2.  *Sampling and missing data mechanisms combined*. The basic
+    simulation steps are: choose $Q$, take samples $Y^{(s)}$, generate
+    incomplete data $Y_{\mathrm obs}^{(s,t)}$, impute, estimate
+    $\hat Q^{(s,t)}$ and $T^{(s,t)}$ and calculate outcomes aggregated
+    over $s$ and $t$.
+
+3.  *Missing data mechanism only*. The basic simulation steps are:
+    choose $(\hat Q, U)$, generate incomplete data
+    $Y_{\mathrm obs}^{(t)}$, impute, estimate $(\bar Q, \bar U)^{(t)}$
+    and $B^{(t)}$ and calculate outcomes aggregated over $t$.
+
+A popular procedure for testing missing-data applications is design 2
+with settings $s=1,\dots,1000$ and $t = 1$. As this design does not
+separate the two mechanisms, any problems found may result from both the
+sampling and the missing-data mechanism. Design 1 does not address the
+missing data, and is primarily of interest to study whether any problems
+are attributable to the complete-data model. Design 3 addresses the
+missing-data mechanism only, and thus allows for a more detailed
+assessment of any problem caused by the imputation step. An advantage of
+this procedure is that no population model is needed. @BRAND2003
+describe this procedure in more detail.
+
+If we are primarily interested in determining the quality of imputation
+methods, we may simplify evaluation by defining the sample equal to the
+population, and set the within-variance $\bar U = 0$ in Equation
+\[eq:poolT\]. See @VINK2014 for a short exploration of the idea.
+
+### Evaluation criteria {#sec:evaluationcriteria}
+
+The goal of multiple imputation is to obtain statistically valid
+inferences from incomplete data. The quality of the imputation method
+should thus be evaluated with respect to this goal. There are several
+measures that may inform us about the statistical validity of a
+particular procedure. These are:
+
+1.  *Raw bias (RB) and percent bias (PB)*. The raw bias of the
+    estimate $\bar Q$ is defined as the difference between the expected
+    value of the estimate and truth: $\rm{RB} = \rm{E}(\bar Q) - Q$. RB
+    should be close to zero. Bias can also be expressed as percent bias:
+    $\rm{PB} = 100 \times |(\rm{E}(\bar Q) - Q) / Q|$. For acceptable
+    performance we use an upper limit for PB of 5%.
+    [@DEMIRTAS2008C]
+
+2.  *Coverage rate (CR)*. The coverage rate (CR) is the proportion
+    of confidence intervals that contain the true value. The actual rate
+    should be equal to or exceed the nominal rate. If CR falls below the
+    nominal rate, the method is too optimistic, leading to
+    false positives. A CR below 90 percent for a nominal 95 percent
+    interval indicates poor quality. A high CR (e.g., 0.99) may indicate
+    that confidence interval is too wide, so the method is inefficient
+    and leads to inferences that are too conservative. Inferences that
+    are “too conservative” are generally regarded a lesser sin than “too
+    optimistic”.
+
+3.  *Average width (AW)*. The average width of the confidence
+    interval is an indicator of statistical efficiency. The length
+    should be as small as possible, but not so small that the CR will
+    fall below the nominal level.
+
+4.  *Root mean squared error (RMSE)*. The
+    $\rm{RMSE} = \sqrt{(\rm{E}(\bar Q) - Q)^2}$ is a compromise between
+    bias and variance, and evaluates $\bar Q$ on both accuracy and
+    precision.
+
+If all is well, then RB should be close to zero, and the coverage should
+be near 0.95. Methods having no bias and proper coverage are called
+randomization-valid [@RUBIN1987]. If two methods are both
+randomization-valid, the method with the shorter confidence intervals is
+more efficient. While the RMSE is widely used, we will see in Section
+\[sec:true\] that it is not a suitable metric to evaluate multiple
+imputation methods.
+
+### Example {#sec:quantifyingbias}
+
+This section demonstrates the measures defined in Section
+\[sec:evaluationcriteria\] can be calculated using simulation. The
+process starts by specifying a model that is of scientific interest and
+that fixes $Q$. Pseudo-observations according to the model are
+generated, and part of these observations is deleted, resulting in an
+incomplete dataset. The missing values are then filled using the new
+imputation procedure, and Rubin’s rules are applied to calculate the
+estimates $\bar Q$ and $T$. The whole process is repeated a large number
+of times, say in 1000 runs, each starting from different random seeds.
+
+For the sake of simplicity, suppose scientific interest focuses on
+determining $\beta$ in the linear model
+$y_i = \alpha + x_i \beta + \epsilon_i$. Here
+$\epsilon_i \sim N(0, \sigma^2)$ are random errors uncorrelated with
+$x$. Suppose that the true values are $\alpha = 0$, $\beta = 1$ and
+$\sigma^2 = 1$. We have 50% random missing data in $x$, and compare two
+imputation methods: regression imputation (cf. Section \[sec:regimp\])
+and stochastic regression imputation (cf. Section \[sec:sri\]).
+
+It is convenient to create a series of small
+`R` functions. The
+`create.data()` function randomly draws
+artificial data from the specified linear model.
+
+`          `\
+`                          ``) {`\
+`   `\
+`    `\
+`           `\
+`     `\
+
+Next, we remove some data in order to make the data incomplete. Here we
+use a simple random missing data mechanism (MCAR) to generate
+approximately 50% missing values.
+
+`     ``){`\
+`     `\
+`       `\
+`  `\
+
+We then define a small test function that calls
+`mice()` and applies Rubin’s rules to the
+imputed data.
+
+`         ``) {`\
+`           `\
+`       `\
+`        `\
+`    `“`2.5 %`”` `“`97.5 %`”\
+
+The following function puts everything together:
+
+`    ``) {`\
+`        `\
+`     `\
+`                        `\
+`                         `“`2.5 %`”“`97.5 %`”\
+`    ``runs) {`\
+`       `\
+`      `\
+`         `\
+`                                   `\
+`         `\
+`  `\
+`  `\
+
+Performing 1000 simulations is now done by calling
+`simulate()`, thus
+
+`  `
+
+The means of the estimate, the lower and upper bounds of the confidence
+intervals per method, can be obtained by
+
+`     `
+
+                 estimate 2.5 % 97.5 %
+    norm.predict    1.343 1.065   1.62
+    norm.nob        0.995 0.648   1.34
+
+The function of the following code is to calculate the quality
+statistics as defined in Section \[sec:evaluationcriteria\].
+
+`  `\
+`     `\
+`        `\
+`   `“`2.5 %`”`       `“`97.5 %`”\
+`   `“`97.5 %`”`   `“`2.5 %`”\
+`     `\
+
+                     RB   PB    CR    AW  RMSE
+    norm.predict  0.343 34.3 0.364 0.555 0.409
+    norm.nob     -0.005  0.5 0.925 0.693 0.201
+
+The interpretation of the results is as follows. Regression imputation
+by method `norm.predict` produces severely
+biased estimates of $\beta$. The true $\beta$ is 1, but the average
+estimate after regression imputation is 1.343. Moreover, the true value
+is located within the confidence interval in only 36% of the cases, far
+below the nominal value of 95%. Hence, regression imputation is not
+randomization-valid for $\beta$, even under MCAR. Because of this, the
+estimates for AW and RMSE are not relevant. This example shows that
+statistical inference on incomplete data that were imputed by regression
+imputation can produce the wrong answer.
+
+The story for stochastic regression imputation is different. The
+`norm.nob` method is unbiased and has a
+coverage of 92.5%. The method is not randomization-valid, but it is
+near. The AW and RMSE serve as useful indicators, though both may be a
+little low as the confidence intervals appear somewhat short. Chapter
+\[ch:univariate\] shows how to make it fully randomization-valid.
+
+Of course, simulation studies do not guarantee fitness for a particular
+application. However, if simulation studies illustrate limitations in
+simple examples, we may expect these will also be present in
+applications.
+
+## Imputation is not prediction {#sec:true}
+
+In the world of simulation we have access to both the true and imputed
+values, so an obvious way to quantify the quality of a method is to see
+how well it can recreate the true data. The method that best recovers
+the true data “wins.” An early paper developing this idea is
+@GLEASON1975, but the literature is full of examples. The approach is
+simple and appealing. But will it also select the best imputation
+method?
+
+The answer is “No”. Suppose that we would measure discrepancy by the
+RMSE of the imputed values:
+$$\mathrm{RMSE} = \sqrt{\frac{1}{n_\mathrm{mis}}\sum_{i=1}^{n_\mathrm{mis}} ({\mbox{$y_i^\mathrm{mis}$}}- {\mbox{$\dot y_i$}})^2} \label{eq:recovery}$$
+where $y_i^\mathrm{mis}$ represents the true (removed) data value for
+unit $i$ and where $\dot y_i$ is imputed value for unit $i$. For
+multiply imputed data we calculate RMSE for each imputed dataset, and
+average these.
+
+It is well known that the minimum RMSE is attained by predicting the
+missing $\dot y_i$ by the linear model with the regression weights set
+to their least squares estimates. According to this reasoning the “best”
+method replaces each missing value by its most likely value under the
+model. However, this will find the same values over and over, and is
+single imputation. This method ignores the inherent uncertainty of the
+missing values (and acts as if they were known after all), resulting in
+biased estimates and invalid statistical inferences. Hence, the method
+yielding the lowest RMSE is bad for imputation. More generally, measures
+based on similarity between the true and imputed values do not separate
+valid from invalid imputation methods.
+
+Let us check this claim with a short simulation. The
+`rmse()` below calculates the RMSE from the
+true and multiply imputed data for missing data in variable
+`x`.
+
+`      ``) {`\
+`     `\
+`    `\
+`     ``m)) {`\
+`      `\
+`      `\
+`        `\
+`  `\
+`  `\
+
+The `simulate2()` function creates the same
+missing data as before.
+
+`    ``) {`\
+`        `\
+`     `\
+`                        `\
+`                        `\
+`    ``runs) {`\
+`       `\
+`      `\
+`            `\
+`                  `\
+`      `\
+`            `\
+`      `\
+`  `\
+`  `\
+
+`  `\
+`     `
+
+                  RMSE
+    norm.predict 0.725
+    norm.nob     1.025
+
+The simulation confirms that regression imputation is better at
+recreating the missing data. Remember from Section \[sec:regimp\] that
+regression imputation is fundamentally flawed. Its estimate of $\beta$
+is biased (even under MCAR) and the accompanying confidence interval is
+too short.
+
+The example demonstrates that the RMSE is not informative for evaluating
+imputation methods. Assessing the discrepancy between true data and the
+imputed data may seem a simple and attractive way to select the best
+imputation method. However, it is not useful to evaluate methods solely
+based on their ability to recreate the true data. On the contrary,
+selecting such methods may be harmful as these might increase the rate
+of false positives. Imputation is not prediction.
+
+## When not to use multiple imputation {#sec:when}
+
+Should we always use multiple imputation for the missing data? We
+probably could, but there are good alternatives in some situations.
+Section \[sec:doesnotcover\] already discussed some approaches not
+covered in this book, each of which has its merits. This section
+revisits complete-case analysis. Apart from being simple to apply, it
+can be a viable alternative to multiple imputation in particular
+situations.
+
+Suppose that the complete-data model is a regression with outcome $Y$
+and predictors $X$. If the missing data occur in $Y$ only, complete-case
+analysis and multiple imputation are equivalent, so then complete-case
+analysis is preferred since it is easier, more efficient and more robust
+[@VONHIPPEL2007]. This applies to the regression weights. Quantities
+that depend on the correct marginal distribution of $Y$, such as the
+mean or $R^2$, require the stronger MCAR assumption. Multiple imputation
+gains an advantage over complete-case analysis if additional predictors
+for $Y$ are available that are not part of $X$. The efficiency of
+complete-case analysis declines if $X$ contains missing values, which
+may result in inflated type II error rates. Complete-case analysis can
+perform quite badly under MAR and some MNAR cases [@SCHAFER2002], but
+there are two special cases where listwise deletation outperforms
+multiple imputation.
+
+The first special case occurs if the probability to be missing does not
+depend on $Y$. Under the assumption that the complete-data model is
+correct, the regression coefficients are free of bias
+[@LITTLE1992; @KING2001]. This holds for any type of regression
+analysis, and for missing data in both $Y$ and $X$. Since the missing
+data rate may depend on $X$, complete-case analysis will in fact work in
+a relevant class of MNAR models. @WHITE2010C confirmed the superiority
+of complete-case analysis by simulation. The differences were often
+small, and multiple imputation gained the upper hand as more predictive
+variables were included. The property is useful though in practice.
+
+The second special case holds only if the complete data model is
+logistic regression. Suppose that the missing data are confined to
+either a dichotomous $Y$ or to $X$, but not to both. Assuming that the
+model is correctly specified, the regression coefficients (except the
+intercept) from the complete-case analysis are unbiased if the
+probability to be missing depends only on $Y$ and not on $X$
+[@VACH1994]. This property provides the statistical basis of the
+estimation of the odds ratio from case-control studies in epidemiology.
+If missing data occur in both $Y$ and $X$ the property does not hold.
+
+At a minimum, application of listwise deletion should be a conscious
+decision of the analyst, and should preferably be accompanied by an
+explicit statement that the missing data fit in one of the three
+categories described above.
+
+Other alternatives to multiple imputation were briefly reviewed in
+Section \[sec:doesnotcover\], and may work well in particular
+applications. However, none of these is as general as multiple
+imputation.
+
+## How many imputations? {#sec:howmany}
+
+One of the distinct advantages of multiple imputation is that it can
+produce unbiased estimates with correct confidence intervals with a low
+number of imputed datasets, even as low as $m=2$. Multiple imputation is
+able to work with low $m$ since it enlarges the between-imputation
+variance $B$ by a factor $1/m$ before calculating the total variance in
+$T=\bar U+(1+m^{-1})B$.
+
+The classic advice is to use a low number of imputation, somewhere
+between 3 and 5 for moderate amounts of missing information. Several
+authors investigated the influence of $m$ on various aspects of the
+results. The picture emerging from this work is that it is often
+beneficial to set $m$ higher, somewhere in the range of 20–100
+imputations. This section reviews the relevant work in the area.
+
+The advice for low $m$ rests on the following argument. Multiple
+imputation is a simulation technique, and hence $\bar Q$ and its
+variance estimate $T$ are subject to simulation error. Setting
+$m=\infty$ causes all simulation error to disappear, so $T_{\infty}<T_m$
+if $m<\infty$. The question is when $T_{\infty}$ is close enough to
+$T_m$. [@RUBIN1987 p. 114] showed that the two variances are related by
+$$T_m=\left(1+\frac{\gamma_0}{m}\right)T_{\infty}$$ where $\gamma_0$ is
+the (true) population fraction of missing information. This quantity is
+equal to the expected fraction of observations missing if $Y$ is a
+single variable without covariates, and commonly less than this if there
+are covariates that predict $Y$. For example, for $\gamma_0=0.3$ (e.g.,
+a single variable with 30% missing) and $m=5$ we find that the
+calculated variance $T_m$ is $1+0.3/5 = 1.06$ times (i.e., 6%) larger
+than the ideal variance $T_{\infty}$. The corresponding confidence
+interval would thus be $\sqrt{1.06}=1.03$ (i.e., 3%) longer than the
+ideal confidence interval based on $m=\infty$. Increasing $m$ to 10 or
+20 would bring the factor down 1.5% and 0.7%, respectively. The argument
+is that “the additional resources that would be required to create and
+store more than a few imputations would not be well spent” [@SCHAFER1997
+p. 107], and “in most situations there is simply little advantage to
+producing and analyzing more than a few imputed datasets” [@SCHAFER1998
+p. 549].
+
+@ROYSTON2004B observed that the length of the confidence interval also
+depends on $\nu$, and thus on $m$ (cf. Equation \[eq:oldnu\]). He
+suggested to base the criterion for $m$ on the confidence coefficient
+$t_{\nu}\sqrt{T}$, and proposed that the coefficient of variation of
+$\ln(t_{\nu}\sqrt{T})$ should be smaller than 0.05. This effectively
+constrains the range of uncertainty about the confidence interval to
+roughly within 10%. This rule requires $m$ to be “at least 20 and
+possibly more.”
+
+@GRAHAM2007 investigated the effect of $m$ on the statistical power of a
+test for detecting a small effect size $(< 0.1)$. Their advice is to set
+$m$ high in applications where high statistical power is needed. For
+example, for $\gamma_0=0.3$ and $m=5$ the statistical power obtained is
+73.1% instead of the theoretical value of 78.4%. We need $m=20$ to
+increase the power to 78.2%. In order to have an attained power within
+1% of the theoretical power, then for fractions of missing information
+$\gamma$ = (0.1, 0.3, 0.5, 0.7, 0.9) we need to set $m$ = (20, 20, 40,
+100, $> 100$), respectively.
+
+@BODNER2008 explored the variability of three quantities under various
+$m$: the width of the 95% confidence interval, the $p$-value, and
+$\gamma_0$. Bodner selected $m$ such that the width of the 95%
+confidence interval is within 10% of its true value 95% of the time. For
+$\gamma_0$ = (0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9), he recommends $m$ =
+(3, 6, 12, 24, 59, 114, 258), respectively, using a linear rule. Since
+the true $\gamma_0$ is unknown, Bodner suggested the proportion of
+complete cases as a conservative estimate of $\gamma_0$. @VONHIPPEL2018
+showed that a relation between $m$ and $\gamma_0$ is better explained by
+a quadratic rule $$\label{eq:hippel}
+m = 1 + \frac{1}{2} \left(
+         \frac{\gamma_0}
+              {\mathrm{SD}(\sqrt{U_\ell})\mathrm{E}(\sqrt{U_\ell})}
+              \right)^2,$$ where $\mathrm{E}(\sqrt{U_\ell})$ and
+$\mathrm{SD}(\sqrt{U_\ell})$ are the mean and standard deviation of the
+standard errors calculated from the imputed datasets. The rule is used
+in a two-step procedure, where the first step estimates $\gamma_0$ and
+its 95% confidence interval. The upper limit of the confidence interval
+is then plugged into Equation \[eq:hippel\]. Compared to Bodner, the
+rule suggests somewhat lower $m$ if $\gamma_0 < 0.5$ and substantially
+higher $m$ if $\gamma_0 > 0.5$.
+
+The starting point of @WHITE2011 is that all essential quantities in the
+analysis should be reproducible within some limit, including confidence
+intervals, $p$-values and estimates of the fraction of missing
+information. They take a quote from @VONHIPPEL2009 as a rule of thumb:
+*the number of imputations should be similar to the percentage of cases
+that are incomplete*. This rule applies to fractions of missing
+information of up to 0.5. If $m \approx\, 100\lambda$, the following
+properties will hold for a parameter $\beta$:
+
+1.  The Monte Carlo error of $\hat\beta$ is approximately 10% of
+    its standard error;
+
+2.  The Monte Carlo error of the test statistic
+    $\hat\beta/\mathrm{se}(\hat\beta)$ is approximately 0.1;
+
+3.  The Monte Carlo error of the $p$-value is approximately 0.01
+    when the true $p$-value is 0.05.
+
+@WHITE2011 suggest these criteria provide an adequate level of
+reproducibility in practice. The idea of reproducibility is sensible,
+the rule is simple to apply, so there is much to commend it. The rule
+has now become the de-facto standard, especially in medical
+applications. One potential difficulty might be that the percentage of
+complete cases is sensitive to the number of variables in the data. If
+we extend the active dataset by adding more variables, then the
+percentage of complete cases can only drop. An alternative would be to
+use the average missing data rate as a less conservative estimate.
+
+Theoretically it is always better to use higher $m$, but this involves
+more computation and storage. Setting $m$ very high (say $m = 200$) may
+be useful for low-level estimands that are very uncertain, and for which
+we want to approximate the full distribution, or for parameters that are
+notoriously different to estimates, like variance components. On the
+other hand, setting $m$ high may not be worth the extra wait if the
+primary interest is on the point estimates (and not on standard errors,
+$p$-values, and so on). In that case using $m = 5-20$ will be enough
+under moderate missingness.
+
+Imputing a dataset in practice often involves trial and error to adapt
+and refine the imputation model. Such initial explorations do not
+require large $m$. It is convenient to set $m=5$ during model building,
+and increase $m$ only after being satisfied with the model for the
+“final” round of imputation. So if calculation is not prohibitive, we
+may set $m$ to the average percentage of missing data. The substantive
+conclusions are unlikely to change as a result of raising $m$ beyond
+$m=5$.
+
+## Exercises {#sec:exmi}
+
+1.  *Nomogram*. Construct a graphic representation of Equation
+    \[eq:gammamb\] that allows the user to convert $\lambda$ and
+    $\gamma$ for different values of $\nu$. What influence does $\nu$
+    have on the relation between $\lambda$ and $\gamma$?
+
+2.  *Models*. Explain the difference between the response model
+    and the imputation model.
+
+3.  *Listwise deletion*. In the `airquality`
+    data, predict `Ozone` from
+    `Wind` and
+    `Temp`. Now randomly delete the half of
+    the wind data above 10 mph, and randomly delete half of the
+    temperature data above 80$^\circ$F.
+
+    1.  Are the data MCAR, MAR or MNAR?
+
+    2.  Refit the model under listwise deletion. Do you notice a
+        change in the estimates? What happens to the standard
+        errors?
+
+    3.  Would you conclude that listwise deletion provides valid
+        results here?
+
+    4.  If you add a quadratic term to the model, would that alter
+        your conclusion?
+
+    \[ex:listwise\]
+
+4.  *Number of imputations*. Consider the
+    `nhanes` dataset in
+    `mice`.
+
+    1.  Use the functions `ccn()` to calculate
+        the number of complete cases. What percentage of the cases is
+        incomplete?
+
+    2.  Impute the data with `mice` using the
+        defaults with `seed=1`, predict
+        `bmi` from
+        `age`, `hyp`
+        and `chl` by the normal linear
+        regression model, and pool the results. What are the proportions
+        of variance due to the missing data for each parameter? Which
+        parameters appear to be most affected by the nonresponse?
+
+    3.  Repeat the analysis for `seed=2` and
+        `seed=3`. Do the conclusions remain
+        the same?
+
+    4.  Repeat the analysis with $m=50$ with the same seeds. Would you
+        prefer this analysis over those with $m=5$? Explain why.
+
+5.  *Number of imputations (continued)*. Continue with the data from the
+    previous exercise.
+
+    1.  Write an `R` function
+        that automates the calculations of the previous exercise. Let
+        `seed` run from 1 to 100 and let
+        `m` take on values
+        `m = c(3, 5, 10, 20, 30, 40, 50, 100, 200)`.
+
+    2.  Plot the estimated proportions of explained variance due to
+        missing data for the `age`-parameter
+        against $m$. Based on this graph, how many imputations would you
+        advise?
+
+    3.  Check White’s conditions 1 and 2 (cf. Section \[sec:howmany\]).
+        For which $m$ do these conditions true?
+
+    4.  Does this also hold for categorical data? Use the
+        `nhanes2` to study this.
+
+6.  *Automated choice of $m$*. Write an
+    `R` function that implements
+    the methods discussed in Section \[sec:howmany\].

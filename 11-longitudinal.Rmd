@@ -1,0 +1,1087 @@
+# Longitudinal data {#ch:longitudinal}
+
+> Failure of an imputation model does not damage the integrity of
+> the entire dataset, but only the portion that is imputed.
+> 
+> --- Joseph L. Schafer
+
+## Long and wide format {#sec:longandwide}
+
+Longitudinal data can be coded into “long” and “wide” formats. A wide
+dataset will have one record for each individual. The observations made
+at different time points are coded as different columns. In the wide
+format every measure that varies in time occupies a set of columns. In
+the long format there will be multiple records for each individual. Some
+variables that do not vary in time are identical in each record, whereas
+other variables vary across the records. The long format also needs a
+“time” variable that records the time in each record, and an “id”
+variable that groups the records from the same person.
+
+A simple example of the wide format is
+
+    id age Y1 Y2
+     1  14 28 22
+     2  12 34 16
+     3  ...
+
+In the long format, this dataset looks like
+
+    id age  Y
+     1  14 28
+     1  14 22
+     2  12 34
+     2  12 16
+     3  ...
+
+Note that the concepts of long and wide are general, and also apply to
+cross-sectional data. For example, we have seen the long format before
+in Section \[sec:badworkflowb\], where it referred to stacked imputed
+data that was produced by the `complete()`
+function. The basic idea is the same.
+
+Both formats have their advantages. If the data are collected on the
+same time points, the wide format has no redundancy or repetition.
+Elementary statistical computations like calculating means, change
+scores, age-to-age correlations between time points, or the $t$-test are
+easy to do in this format. The long format is better at handling
+irregular and missed visits. Also, the long format has an explicit time
+variable available that can be used for analysis. Graphs and statistical
+analyses are easier in the long format.
+
+Applied researchers often collect, store and analyze their data in the
+wide format. Classic ANOVA and MANOVA techniques for repeated measures
+and structural equation models for longitudinal data assume the wide
+format. Modern multilevel techniques and statistical graphs, however,
+work only from the long format. The distinction between the two formats
+is a first stumbling block for those new to longitudinal analysis.
+
+@SINGER2003 advise the data storing in both formats. The wide and the
+long formats can be easily converted in another by means of
+`gather()` and
+`spread()` functions on
+`tidyr` [@WICKHAM2017]. The wide-to-long
+conversion can usually be done without a problem. The long-to-wide
+conversion can be difficult. If individuals are seen at different times,
+direct conversion is impractical. The number of columns in the wide
+format becomes overly large, and each column contains many missing
+values. An ad hoc solution is to create homogeneous time groups, which
+then become the new columns in the wide format. Such regrouping will
+lead to loss of precision of the time variable. For some studies this
+need not be a problem, but for others it will.
+
+Multiple imputation is somewhat more convenient in the wide format.
+Apart from the fact that the columns are ordered in time, there is
+nothing special about the imputation problem. We may thus apply
+techniques for single level data to longitudinal data. Section
+\[sec:fdd\] discusses an imputation technique in the wide format in a
+clinical trial application with the goal of performing a statistical
+analysis according to the intention to treat (ITT) principle. The
+longitudinal character of the data helped specify the imputation model.
+
+Multiple imputation of the longitudinal data in the long form can be
+done by multilevel imputation techniques. See Chapter \[ch:multilevel\]
+for an overview. Section \[sec:rastering\] discusses multiple imputation
+in the long format. The application defines a common time raster for all
+persons. Multiple imputations are drawn for each raster point. The
+resulting imputed datasets can be converted to, and analyzed in, the
+wide format if desired. This approach is a more principled way to deal
+with the information loss problem discussed previously. The procedure
+aligns times to a common raster, hence the name *time raster imputation*
+(cf. Section \[sec:rastering\]).
+
+## SE Fireworks Disaster Study {#sec:fdd}
+
+On May 13, 2000, a catastrophic fireworks explosion occurred at SE
+Fireworks in Enschede, the Netherlands. The explosion killed 23 people
+and injured about 950. Around 500 houses were destroyed, leaving 1250
+people homeless. Ten thousand residents were evacuated.
+
+The disaster marked the starting point of a major operation to recover
+from the consequences of the explosion. Over the years, the neighborhood
+has been redesigned and rebuilt. Right after the disaster, the evacuees
+were relocated to improvised housing. Those in need received urgent
+medical care. A considerable number of residents showed signed of
+post-traumatic stress disorder (PTSD). This disorder is associated with
+flashback memories, avoidance of behaviors, places, or people that might
+lead to distressing memories, sleeping disorders and emotional numbing.
+When these symptoms persist and disrupt normal daily functioning,
+professional treatment is indicated.
+
+Amidst the turmoil in the aftermath, Mediant, the disaster health
+after-care center, embedded a randomized controlled trial comparing two
+treatments for anxiety-related disorders: eye movement desensitization
+and reprocessing (EMDR) [@SHAPIRO2001] and cognitive behavioral therapy
+(CBT) [@STALLARD2006]. CBT is the standard therapy. The data collection
+started within one year of the explosion, and lasted until the year 2004
+[@DEROOS2011]. The study included $n=52$ children 4–18 years, as well as
+their parents. Children were randomized to EMDR or CBT by a flip of the
+coin. Each group contained 26 children.
+
+The children received up to four individual sessions over a 4–8 week
+period, along with up to four parent sessions. Blind assessment took
+place pre-treatment (T1) and post-treatment (T2) and at 3 months
+follow-up (T3). The primary outcomes were the UCLA PTSD Reaction Index
+(PTSD-RI) [@STEINBERG2004], the Child Report of Post-traumatic Symptoms
+(CROPS) and the Parent Report of Post-traumatic Symptoms (PROPS)
+[@GREENWALD1999]. Treatment was stopped if children were asymptomatic
+according to participant and parent verbal report (both conditions), or
+if there was no remaining distress associated with the trauma memory, as
+indicated by a self-reported Subjective Units of Disturbance Scale
+(SUDS) of 0 (EMDR condition only).
+
+\[fdd:objective\] The objective of the study was to answer the following
+questions:
+
+-   Is one of these treatments more effective in reducing PTSD symptoms
+    at T2 and T3?
+
+-   Does the number of sessions needed to produce the therapeutic effect
+    differ between the treatments?
+
+### Intention to treat
+
+    id trt   pp     $Y^c_1$   $Y^c_2$   $Y^c_3$   $Y^p_1$   $Y^p_2$   $Y^p_3$   id trt   pp     $Y^c_1$   $Y^c_2$   $Y^c_3$   $Y^p_1$   $Y^p_2$   $Y^p_3$
+  ---- ----- ---- --------- --------- --------- --------- --------- --------- ---- ----- ---- --------- --------- --------- --------- --------- ---------
+     1 E     Y            –         –         –        36        35        38   32 E     N           28        17         8        40        42        33
+     2 C     N           45         –         –         –         –         –   33 E     N            –         –         –        38        22        25
+     3 E     N            –         –         –        13        19        13   34 E     N            –         –         –        17         –         –
+     4 C     Y            –         –         –        33        27        20   35 E     Y           50        20         –        19         1         5
+     5 E     Y           26         6         4        27        16        11   37 C     N           30         –        26        59         –        28
+     6 C     Y            8         1         2        32        15        13   38 C     Y            –         –         –        35        24        27
+     7 C     Y           41        26        31         –        39        39   39 E     N            –         –         –         –         –         –
+     8 C     N            –         –         –        24        13        35   40 E     Y           25         5         2        42        13        11
+    10 C     Y           35        27        14        48        23         –   41 E     Y           36        11         9        30         2         1
+    12 C     Y           28        15        13        45        33        36   43 E     N           17         –         –         –         –         –
+    13 E     Y            –         –         –        26        17        14   44 E     N           27         –         –        40         –         –
+    14 C     Y           33         8         9        37         7         3   45 C     Y           31        12        29        34        28        29
+    15 E     Y           43         –         7        25        27         1   46 C     Y            –         –         –        44        35        25
+    16 C     Y           50         8        35        39        21        34   47 C     Y            –         –         –        30        18        14
+    17 C     Y           31        21        10        32        21        19   48 E     Y           25        18         –        18        17         2
+    18 E     Y           30        17        16        47        28        34   49 C     N           24        23        16        44        29        34
+    19 E     Y           29         6         5        20        14        11   50 E     Y           31        13         9        34        18        13
+    20 E     Y           47        14        22        44        21        25   51 C     Y            –         –         –        52        13        13
+    21 C     Y           39        12        12        39         5        19   52 C     Y           30        35        28         –        44        50
+    23 C     Y           14        12         5        29         9         4   53 C     Y           19        33        21        36        21        21
+    24 E     N           27         –         –         –         –         –   54 C     N           43         –         –        48         –         –
+    25 E     Y            6        10         5        25        16        16   55 E     Y           64        42        35        44        31        16
+    28 C     Y            –         2         6        36        17        23   56 C     Y            –         –         –        37         6         9
+    29 E     Y           23        23        28        23        25        13   57 C     Y           31        12         –        32        26         –
+    30 E     Y            –         –         –        20        23        12   58 E     Y            –         –         –        49        28        25
+    31 C     N           15        24        26        33        36        38   59 E     Y           39         7         –        39         7         –
+
+  : SE Fireworks Disaster Study. The UCLA PTSD Reaction Index of 52
+  subjects, children and parents, randomized to EMDR or CBT.<span
+  data-label="tab:fdddata">
+
+Table \[tab:fdddata\] contains the outcome data of all subjects. The
+columns labeled $Y^c_t$ contain the child data, and the columns labeled
+$Y^p_t$ contain the parent data at time $t=(1,2,3)$. Children under the
+age of 6 years did not fill in the child form, so their scores are
+missing.
+
+Of the 52 initial participants 14 children (8 EMDR, 6 CBT) did not
+follow the protocol. The majority (11) of this group did not receive the
+therapy, but still provided outcome measurements. The three others
+received therapy, but failed to provide outcome measures. The combined
+group is labeled as “drop-out,” while the other group is called the
+“completers” or “per-protocol” group. Figure \[fig:fddpattern\] shows
+the missing data patterns for both groups.
+
+![Missing data patterns for the “per-protocol” group (left) and the
+“drop-out” group (right).<span
+data-label="fig:fddpattern">](fig/ch11_fddpattern-1){width="\maxwidth"}
+
+The main reason given for dropping out was that the parents were
+overburdened (8). Other reasons for dropping out were: refusing to talk
+(1), language problems (1) and a new trauma rising to the forefront (2).
+One adolescent refused treatment from a therapist not belonging to his
+own culture (1). One child showed spontaneous recovery before treatment
+started (1).
+
+Comparison between the 14 drop-outs and the 38 completers regarding
+presentation at time of initial assessment yielded no significant
+differences in any of the demographic characteristics or number of
+traumatic experiences. On the symptom scales, only the mean score of the
+PROPS was marginally significantly higher for the drop-out group than
+for the treatment completers ($t=2.09$, $\mathrm{df}=48$, $p=.04$).
+
+Though these preliminary analyses are comforting, the best way to
+analyze the data is to the compare participants in the groups to which
+they were randomized, regardless of whether they received or adhered to
+the allocated intervention. Formal statistical testing requires random
+assignment to groups. The intention to treat (ITT) principle is widely
+recommended as the preferred approach to the analysis of clinical
+trials. @DEMETS2008 and @WHITE2011B provide balanced discussions of pros
+and cons of ITT.
+
+### Imputation model {#imputation-model-1}
+
+The major problem of the ITT principle is that some of the data that are
+needed are missing. Multiple imputation is a natural way to solve this
+problem, and thus to enable ITT analyses.
+
+A difficulty in setting up the imputation model in the SE Fireworks
+Disaster Study is the large number of outcome variables relative to the
+number of cases. Even though the analysis of the data in Table
+\[tab:fdddata\] is already challenging, the real dataset is more complex
+than this. There are six additional outcome variables (e.g., the Child
+Behavior Checklist, or CBCL), each measured over time and similarly
+structured as in Table \[tab:fdddata\]. In addition, some of the outcome
+measures are to be analyzed on both the subscale level and the total
+score level. For example, the PTSD-RI has three subscales
+(intrusiveness/numbing/avoidance, fear/anxiety, and disturbances in
+sleep and concentration and two additional summary measures (full PTSD
+and partial PTSD). All in all, there were 65 variables in data to be
+analyzed. Of these, 49 variables were incomplete. The total number of
+cases was 52, so in order to avoid grossly overdetermined models, the
+predictors of the imputation model should be selected very carefully.
+
+A first strategy for predictor reduction was to preserve all
+deterministic relations columns in the incomplete data. This was done by
+passive imputation. For example, let $Y^p_{a,1}$, $Y^p_{b,1}$ and
+$Y^p_{c,1}$ represent the scores on three subscales of the PTSD parent
+form administered at T1. Each of these is imputed individually. The
+total variable $Y^p_1$ is then imputed by
+`mice` in a deterministic way as
+the sum score.
+
+A second strategy to reduce the number of predictors was to leave out
+other outcomes, measured at other time points. To illustrate this, a
+subset of the predictor matrix for imputing $Y^p_{a,1}$, $Y^p_{b,1}$ and
+$Y^p_{c,1}$ is:
+
+`   `\
+`           `\
+`           `\
+
+         ypa1 ypb1 ypc1 ypa2 ypb2 ypc2 ypa3 ypb3 ypc3
+    ypa1    0    1    1    1    0    0    1    0    0
+    ypb1    1    0    1    0    1    0    0    1    0
+    ypc1    1    1    0    0    0    1    0    0    1
+
+The conditional distribution $P(Y^p_{a,1}|Y^p_{b,1}, Y^p_{c,1},
+Y^p_{a,2}, Y^p_{a,3})$ leaves out the cross-lagged predictors
+$Y^p_{b,2}$, $Y^p_{c,2}$, $Y^p_{b,3}$ and $Y^p_{c,3}$. The assumption is
+the cross-lagged predictors are represented by through their
+non-cross-lagged predictors. Applying this idea consistently throughout
+the entire $65 \times 65$ predictor matrix brings vast reductions of the
+number of predictors. The largest number of predictors for any
+incomplete variable was 23, which still leaves degrees of freedom for
+residual variation.
+
+Specifying a $65 \times 65$ predictor matrix by syntax in
+`R` is tedious and prone to error. I copied
+the variable names to Microsoft Excel, defined a square matrix of small
+cells containing zeroes, and used the menu option
+`Conditional formatting...` to define a cell
+color if the cell contains a “1.” The option
+`Freeze Panes` was helpful for keeping
+variable names visible at all times. After filling in the matrix with
+the appropriate patterns of ones, I exported it to
+`R` to be used as argument to the
+`mice()` function. Excel is convenient for
+setting up large, patterned imputation models.
+
+The imputations were generated as
+
+`  `\
+`  `\
+`  `\
+`  `\
+`  `\
+`  `\
+`  `\
+`         `\
+`                 `
+
+### Inspecting imputations
+
+For plotting purposes we need to convert the imputed data into long
+form. In `R` this can be done as follows:
+
+`    `\
+`   `\
+`     `\
+`                  `\
+`                  `\
+`                  `\
+`                `\
+`  `\
+`  `
+
+This code executes two wide-to-long transformations in succession. The
+data are imputed in wide format. The call to
+`complete()` writes the $m+1$ imputed stacked
+datasets to `lowi`, which stands for
+“long-wide.” The `data.frame()` statement
+appends three columns to the data with missing CBCL scores, since the
+CBCL was not administered at time point 2. The
+`reshape()` statement interprets everything
+from column 11 onward as time-varying variables. As long as the
+variables are labeled consistently,
+`reshape()` will be smart enough to identify
+groups of columns that belong together, and stack them in the
+double-long format `lolo`. Finally, the result
+is sorted such that the original data with
+`lolo$.imp==0` are stored as the first block.
+
+![Plot of the multiply imputed data of the 13 subjects with one or more
+missing values on PTSD-RI parent form.<span
+data-label="fig:fddplotimp">](fig/ch11_fddplotimp-1){width="\maxwidth"}
+
+Figure \[fig:fddplotimp\] plots the profiles from 13 subjects with a
+missing score on $Y^p_1$, $Y^p_2$ or $Y^p_3$ in Table \[tab:fdddata\].
+Some profiles are partially imputed. Examples are subjects 7 (missing
+T1) and 37 (missing T2). Other profiles are missing entirely, and are
+thus completely imputed. Examples are subjects 2 and 43. Similar plots
+can be made for other outcomes. In general, the imputed profiles look
+similar to the completely observed profiles (not shown).
+
+### Complete-data model
+
+In the absence of missing data, we would have liked to perform a
+classical repeated measures MANOVA as in @POTTHOFF1964. This method
+construct derived variables that represent time as polynomial contrasts
+that can be tested. An appealing feature of the method is that the
+covariances among the repeated measures can take any form.
+
+Let $y_{ikt}$ denote the measurement of individual $i$ ($i=1,\dots,n_k$)
+in group $k$ (CBT or EMDR) at time point $t$ ($t=1,\dots,n_t$). In the
+SE Fireworks Disaster Study data, we have $n_k=26$ and $n_t=3$. All
+subjects have been measures at the same time points. The model
+represents the time trend in each group by a linear and quadratic trend
+as $$\label{eq:1}
+  y_{ikt}=\beta_{k0}+t \beta_{k1} + t^2 \beta_{k2} + e_{ikt}$$ where the
+subject residual $e_i$ has an arbitrary covariance $3\times
+3$ matrix $\Sigma$ that is common to both groups. This model has six
+$\beta$ parameters, three for each treatment group. To answer the first
+research question, we would be interested in testing the null hypotheses
+$\beta_{11}=\beta_{21}$ and $\beta_{12}=\beta_{22}$, i.e., whether the
+linear and quadratic trends are different between the treatment groups.
+
+@POTTHOFF1964 showed how this model can be transformed into the usual
+MANOVA model and be fitted by standard software. Suppose that the
+repeated measures are collected in variables
+`Y1`, `Y2` and
+`Y3`. In
+`SPSS` we can use the
+`GLM` command to test for the hypothesis of
+linear and quadratic time trends, and for the hypothesis that these
+trends are different between CBT and EMDR groups. Though application of
+the method is straightforward for complete data, it cannot be used
+directly for the SE Fireworks Disaster Study, because of the missing
+data.
+
+The `mids` object created by
+`mice()` can be exported as a multiply imputed
+dataset to `SPSS` by means of the
+`mids2spss()` function. If the data came
+originally from `SPSS` it is also
+possible to merge the imputed data with the original data by means of
+the `UPDATE` command.
+`SPSS` will recognize an imported
+multiply imputed dataset, and execute the analysis $m$ times in
+parallel. It can also provide the pooled statistics. Note that pooling
+requires a license to the Missing Values module.
+
+Unfortunately, in `SPSS` 18.0
+pooling is not implemented for `GLM`. As a
+solution, I stored the results by means of the
+`OMS` command in
+`SPSS` and shipped the output
+back to `R` for further analysis.
+I then applied a yet unpublished procedure for pooling $F$-tests to the
+datasets stored by the `OMS` command. In this
+way, pooling procedures that are not built into
+`SPSS` can be done with
+`mice`.
+
+Of course, I could have saved myself the trouble of exporting the
+imputed data to `SPSS` and
+performed all analyses in `R`.
+That would, however, lock out the investigator from her own data. With
+the new pooling facilities investigators can now do their own data
+analysis on multiply imputed data. Some re-exporting is therefore
+worthwhile.
+
+An alternative could have been to create the multiply imputed datasets
+within `SPSS`. This option was
+not possible for these data because the
+`MULTIPLE IMPUTATION` command in
+`SPSS` does not support predictor
+selection and passive imputation. With a bit of conversion between
+software packages, it is possible to have best of both worlds.
+
+### Results from the complete-data model
+
+![Mean levels of PTSD-RI parent form for the completely observed
+profiles (gray) and all profiles (black) in the EMDR and
+CBT groups.<span
+data-label="fig:fddplotparent">](fig/ch11_fddplotparent-1){width="\maxwidth"}
+
+![Mean levels of PTSD-RI Child Form for the completely observed profiles
+(gray) and all profiles (black) in the EMDR and CBT
+groups.<span
+data-label="fig:fddplotchild">](fig/ch11_fddplotchild-1){width="\maxwidth"}
+
+Figures \[fig:fddplotparent\] and \[fig:fddplotchild\] show the
+development of the mean level of PTSD complaint according to the
+PTSD-RI. All curves display a strong downward trend between start of
+treatment (T1) and end of treatment (T2), which is presumably caused by
+the EMDR and CBT therapies. The shape between end of treatment (T2) and
+follow-up (T3) differs somewhat for the group, suggesting that EMDR has
+better long-term effects, but this difference was not statistically
+significant. Also note that the complete-case analysis and the analysis
+based on ITT are in close agreement with each other here.
+
+We will not go into details here to answer the second research question
+as stated on page . It is of interest to note that EMDR needed fewer
+sessions to achieve its effect. The original publication [@DEROOS2011]
+contains the details.
+
+## Time raster imputation {#sec:rastering}
+
+Longitudinal analysis has become virtually synonymous with mixed effects
+modeling. Following the influential work of @LAIRD1982 and
+@JENNRICH1986, this approach characterizes individual growth
+trajectories by a small number of random parameters. The differences
+between individuals are expressed in terms of these parameters.
+
+In some applications, it is natural to consider *change scores*. Change
+scores are however rather awkward within the context of mixed effects
+models. This section introduces *time raster imputation*, a new method
+to generate imputations on a regular time raster from irregularly spaced
+longitudinal data. The imputed data can then be used to calculate change
+scores or age-to-age correlations, or apply quantitative techniques
+designed for repeated measures.
+
+### Change score
+
+Let $Y_1$ and $Y_2$ represent repeated measurements of the same object
+at times $T_1$ and $T_2$ where $T_1<T_2$. The difference
+$\Delta=Y_2-Y_1$ is the most direct measure of change over time.
+@WILLETT1989 [p. 588] characterized the change score as an “intuitive,
+unbiased, and computationally-simple measure of individual growth.”
+
+One would expect that modern books on longitudinal data would take the
+change score as their starting point. That is not the case. The change
+score is fully absent from most current books on longitudinal analysis.
+For example, there is no entry “change score” in the index of
+@VERBEKE2000, @DIGGLE2002, @WALLS2006 or @FITZMAURICE2009. @SINGER2003
+[p. 10] do discuss the change score, but they quickly dismiss it on the
+basis that a study with only two time points cannot reveal the shape of
+a person’s growth trajectory.
+
+The change score, once the centerpiece of longitudinal analysis, has
+disappeared from the methodological literature. I find this is somewhat
+unfortunate as the parameters in the mixed effects model are more
+difficult to interpret than the change score. Moreover, classic
+statistical techniques, like the paired $t$-test or split-plot ANOVA,
+are built on the change score. There is a gap between modern mixed
+effects models and classical linear techniques for change scores and
+repeated measures data.
+
+Calculating a mean change score is only sensible if different persons
+are measured at the same time points. When the data are observed at
+irregular times, there is no simple way to calculate change scores.
+Calculating change scores from the person parameters of the mixed
+effects model is technically trivial, but such scores are difficult to
+interpret. The person parameters are fitted values that have been
+smoothed. Deriving a change score as the difference between the fitted
+curve of the person at $T_1$ and $T_2$ results in values that are closer
+to zero than those derived from data that have been observed.
+
+This section describes a technique that inserts pseudo time points to
+the observed data of each person. The outcome data at these
+supplementary time points are multiply imputed. The idea is that the
+imputed data can be analyzed subsequently by techniques for change
+scores and repeated measures.
+
+The imputation procedure is akin to the process needed to print a photo
+in a newspaper. The photo is coded as points on a predefined raster. At
+the microlevel there could be information loss, but the scenery is
+essentially unaffected. Hence the name *time raster imputation*. My hope
+is that this method will help bridge the gap between modern and classic
+approaches to longitudinal data.
+
+### Scientific question: Critical periods {#sec:tbcquestion}
+
+The research was motivated by the question: *At what ages do children
+become overweight?* Knowing the answer to this question may provide
+handles for preventive interventions to counter obesity.
+
+suggested the existence of three *critical periods* for obesity at adult
+age: the prenatal period, the period of adiposity rebound (roughly
+around the age of 5–6 years), and adolescence. Obesity that begins at
+these periods is expected to increase the risk of persistent obesity and
+its complications. Overviews of studies on critical periods are given by
+@CAMERON2002 and @LLOYD2010.
+
+In the sequel, we use the body mass index (BMI) as a measure of
+overweight. BMI will be analyzed in standard deviation scores (SDS)
+using the relevant Dutch references [@FREDRIKS2000B; @FREDRIKS2000A].
+Our criterion for being overweight in adulthood is defined as BMI SDS
+$\geq 1.3$.
+
+As an example, imagine an 18-year-old person with a BMI SDS equal to
++1.5 SD. How did this person end up at 1.5 SD? If we have the data, we
+can plot the measurements against age, and study the individual track.
+The BMI SDS trajectory may provide key insights into development of
+overweight and obesity.
+
+Figure \[fig:trajectories\] provides an overview of five theoretical BMI
+SDS trajectories that the person might have followed. These are:
+
+1.  *Long critical period*. A small but persistent centile crossing
+    across the entire age range. In this case, everything (or nothing)
+    is a critical period.
+
+2.  *No critical period*. The person is born with a BMI SDS of 1.5 SD
+    and this remains unaltered throughout age.
+
+3.  *Short early*. There is a large increase between ages 2y and 5y. We
+    would surely interpret the period 2y–5y is as a critical period for
+    this person.
+
+4.  *Short late*. This is essentially the same as before, but shifted
+    forward in time.
+
+5.  *Two critical periods*. Here the total increase of 1.5 SD is spread
+    over two periods. The first occurs at 2y–5y with an increase of
+    1.0 SD. The second at 12y–15y with an increase of 0.5 SD.
+
+In practice, mixing between these and other forms will occur.
+
+The objective is to identify any periods during childhood that
+contribute to an increase in overweight at adult age. A period is
+“critical” if
+
+1.  change differs between those who are and are not later overweight;
+    and
+
+2.  change is associated with the outcome after correction for the
+    measure at the end of the period.
+
+Both need to hold. In order to solve the problem of irregular age
+spacing, @DEKROON2010 use the *broken stick model*, a piecewise linear
+growth curve fitted, as a means to describe individual growth curves at
+fixed times.
+
+This section extends this methodology by generating imputations
+according to the broken stick model. The multiply imputed values are
+then used to estimate difference scores and regression models that throw
+light on the question of scientific interest.
+
+### Broken stick model$^\spadesuit$ {#sec:brokenstick}
+
+In a sample of $n$ persons $i=1,\dots,n$, we assume that there are $n_i$
+measurement occasions for person $i$. Let $y_i$ represent the
+$n_i\times 1$ vector containing the SDS values obtained for person $i$.
+Let $t_i$ represent the $n_i\times 1$ vector with the ages at which the
+measurements were made.
+
+The broken stick model requires the user to specify an ordered set of
+$k$ break ages, collected in the vector
+$\kappa=(\kappa_1,\dots,\kappa_k)$. The set should cover the entire
+range of the measured ages, so $\kappa_1 \leq \min(t_i)$ and $\kappa_k
+\geq \max(t_i)$ for all $i$. It is convenient to set $\kappa_1$ and
+$\kappa_k$ to rounded values just below and above the minimum and
+maximum ages in the data, respectively. specified nine break ages: birth
+(0d), 8 days (8d), 4 months (4m), 1 year (1y), 2 years (2y), 6 years
+(6y), 10 years (10y), 18 years (18y) and 29 years (29y).
+
+Without loss of information, the time points $t_i$ of person $i$ are
+represented by a $B$-spline of degree 1, with knots specified by
+$\kappa$. More specifically, the vector $t_i$ is recoded as the
+$n_i\times k$ design matrix $X_i=(x_{1i},\dots,x_{ki})$. We refer to
+@RUPPERT2003 [p. 59] for further details. For the set of break ages we
+calculate the $B$-splines matrix in `R` by the
+`bs()` function from the
+`splines` package as follows:
+
+\
+`  `\
+\
+\
+`          `\
+`  `\
+\
+\
+`  `\
+`         `\
+`          `\
+`          `\
+`  `\
+`  `\
+`  `\
+
+           x1   x2   x3 x4 x5 x6 x7 x8 x9
+    [1,] 1.00 0.00 0.00  0  0  0  0  0  0
+    [2,] 0.27 0.73 0.00  0  0  0  0  0  0
+    [3,] 0.00 0.83 0.17  0  0  0  0  0  0
+
+Matrix $X$ has only two nonzero elements in each row. Each row sums to
+1. If an observed age coincides with a break age, the corresponding
+entry is equal to 1, and all remaining elements are zero. In the data
+example, this occurs in the first record, at birth. A small constant of
+0.0001 was added to the last break age. This was done to accommodate for
+a pseudo time point with an exact age of 29years, which will be inserted
+later in Section \[sec:tbcimpute\].
+
+The measurements $y_i$ for person $i$ are modeled by the linear mixed
+effects model
+
+$$\begin{aligned}
+y_i & = & X_i(\beta + \beta_i) + \epsilon_i \label{eq:bs} \\
+    & = & X_i\gamma_i + \epsilon_i \nonumber\end{aligned}$$
+
+where $\gamma_i=\beta + \beta_i$. The $k\times 1$ column vector $\beta$
+contains $k$ fixed-effect coefficients common to all persons. The vector
+$\beta_i$ contains $k$ subject-specific random effect coefficients for
+person $i$. The vector $\epsilon_i$ contains $n_i$ subject-specific
+residuals.
+
+We make the usual assumption that $\gamma_i\sim N(\beta,\Omega)$, i.e.,
+the random coefficients of the subjects have a multivariate normal
+distribution with global mean $\beta$ and an unstructured covariance
+$\Omega$. We also assume that the residuals are independently and
+normally distributed as $\epsilon_i \sim
+N(0,\sigma^2 I(n_i))$ where $\sigma^2$ is a common variance parameter.
+The covariances between $\beta_i$ and $e_i$ are assumed to be zero.
+
+Since the rows of the $B$-spline basis all sum to 1, the intercept is
+implicit. In fact, one could interpret the model as a special form of
+the random intercept model, where the intercept is represented by a
+$B$-spline rather than by the usual column of ones.
+
+The model prescribes that growth follows a straight line between the
+break ages. In this application, we are not so much interested in what
+happens *within* the age interval of each period. @ROGOSA1985 contrasted
+the analysis of individual differences based on change scores with the
+analysis of individual differences based on multilevel parameters. They
+concluded that in general the analysis of change scores is inferior to
+the parameter approach. The exception is when growth is assumed to
+follow a straight line within the interval of interest. In that case,
+the change score approach and the mixed effects model are
+interchangeable [@ROGOSA1985 p. 225]. The straight line assumption is
+often reasonable in epidemiological studies if the time interval is
+short [@HUI1983]. For extra detail, we could add an extra break age
+within the interval.
+
+The function `lmer()` from the
+`lme4` package fits the model. Change scores
+can be calculated from the fixed and random effects as follows:
+
+\
+`               `\
+`                           `\
+`                            `\
+`             `\
+\
+\
+`    `\
+`  `\
+\
+` `
+
+The $\hat\gamma_i$ estimates are found in the variable
+`tsiz`. Let
+$\hat\delta_{ik}=\hat\gamma_{i,j+1}-\hat\gamma_{i,j}$ with
+$j=1,\dots,k-1$ denote the successive differences (or increments) of the
+elements in $\hat\gamma_i$. These are found in the variable
+`tinc`. We may interpret $\hat\delta_i$ as the
+expected change scores for person $i$.
+
+The first criterion for a critical period is that change differs between
+those who are and are not later overweight. A simple analysis for this
+criterion is the Student’s $t$-test applied to $\hat\delta_{ik}$ for
+every period $k$. The correlations between $\hat\delta_{ik}$ at
+successive $k$ were generally higher than 0.5, so we analyzed
+unconditional change scores [@JONES2009]. The second criterion for a
+critical period involves fitting two regression models, both of which
+have final BMI SDS at adulthood, denoted by $\gamma_i^\mathrm{adult}$,
+as their outcome. The two models are: $$\begin{aligned}
+  \gamma_i^\mathrm{adult} & = & \hat\gamma_{i,j+1}\zeta_{j+1} + \epsilon_i \\
+  \gamma_i^\mathrm{adult} & = & \hat\gamma_{i,j+1}\eta_{j+1} + \hat\gamma_j\eta_j + \varepsilon_i\end{aligned}$$
+which are fitted for $j=1,\dots,k-2$. The parameter of scientific
+interest is the added value of including $\eta_j$.
+
+### Terneuzen Birth Cohort
+
+The Terneuzen Birth Cohort consists of all ($n=2604$) newborns in
+Terneuzen, the Netherlands, between 1977 and 1986. The most recent
+measurements were made in the year 2005, so the data spans an age range
+of 0–29 years. Height and weight were measured throughout this age
+range. More details on the measurement procedures and the data can be
+found in @DEKROON2008 [@DEKROON2010].
+
+Suppose the model is fitted to weight SDS. The parameters $\gamma_i$ can
+be interpreted as attained weight SDS relative to the reference
+population. This allows us to represent the observed trajectory of each
+child in a condensed way by $k$ numbers. The values in $\hat\gamma_i$
+are the set of most likely weight SDS values at each break age, given
+all true measurements we have of child $i$. This implies that if the
+child has very few measurements, the estimates will be close to the
+global mean. When taken together, the values $\hat\gamma_i$ form the
+broken stick.
+
+Figure \[fig:tbcplotstick\] displays Weight SDS against age for six
+selected individuals. Child 1259 has a fairly common pattern. This child
+starts off near the average, but then steadily declines, apart from a
+blip around 10months. Child 2447 is fairly constant, but had a major
+valley near the age of 4months, perhaps because of a temporary illness.
+Child 7019 is also typical. The pattern hovers around the mean. Observe
+that no data beyond 10 years are available for this child. Child 7460
+experienced a substantial change in the height/weight proportions during
+the first year. Child 7646 was born prematurely with a gestational age
+of 32weeks. This individual has an unusually large increase in weight
+between birth and puberty. Child 8046 is aberrant with an unusually
+large number of weight measurements around the age of 8 days, but was
+subsequently not measured for about 1.5 years.
+
+Figure \[fig:tbcplotstick\] also displays the individual broken stick
+estimates for each outcome as a line. Observe that the model follows the
+individual data points very well. analyzed these estimates by the
+methods described at the end of Section \[sec:tbcquestion\], and found
+that the periods 2y–6y and 10y–18y were most relevant for developing
+later overweight.
+
+### Shrinkage and the change score$^\spadesuit$ {#sec:shrinkage}
+
+Thus far we have looked at the problem from a prediction perspective.
+This is a useful first step, but it does not address all aspects. The
+$\hat\beta_i$ estimate in the mixed effects model combines the
+person-specific ordinary least squares (OLS) estimate of $\beta_i$ with
+the grand mean $\hat\beta$. The amount of shrinkage toward the grand
+mean depends on three factors: the number of data points $n_i$, the
+residual variance estimate $\hat\sigma^2$ around the fitted broken
+stick, and the variance estimate $\hat\omega_j^2$ for the
+$j^\mathrm{th}$ random effect. If $n_i=\sigma^2/\hat\omega_j^2$ then
+$\hat\beta_i$ is halfway between $\hat\beta$ and the OLS estimate of
+$\beta_i$. If $n_i <
+\hat\sigma^2/\omega_j^2$ then $\hat\beta_i$ is closer to the global
+mean, while $n_i > \hat\sigma^2/\hat\omega_j^2$ implies that
+$\hat\beta_i$ is closer to the OLS-estimate. We refer to @GELMAN2007 [p.
+394] for more details.
+
+Shrinkage will stabilize the estimates of persons with few data points.
+Shrinkage also implies that the same $\hat\gamma_i =
+\hat\beta+\hat\beta_i$ can correspond to quite different data
+trajectories. Suppose profile A is an essentially flat and densely
+measured trajectory just above the mean. Profile B, on the other hand,
+is a sparse and highly variable trajectory far above the mean. Due to
+differential shrinkage, profiles A and B can have the same
+$\hat\gamma_i$ estimates. As a consequence, shrinkage will affect the
+change scores $\hat\delta_i$. For both profiles A and B the estimated
+change scores $\hat\delta_i$ are approximately zero at every period. For
+profile A this is reasonable since the profile itself is flat. In
+profile B we would expect to see substantial variation in $\hat\delta_i$
+if the data had been truly measured. Yet, shrinkage has dampened
+$\hat\gamma_i$, and thus made $\hat\delta_i$ closer to zero than if
+calculated from observed data.
+
+It is not quite known whether this effect is a problem in this
+application. It is likely that dampening of $\hat\delta_i$ will bias the
+result in the conservative direction, and hence primarily affects
+statistical power. The next section explores an alternative based on
+multiple imputation. The idea is to insert the break ages into the data,
+and impute the corresponding outcome data.
+
+### Imputation {#sec:tbcimpute}
+
+The measured outcomes are denoted by $Y_\mathrm{obs}$, e.g., weight SDS.
+For the moment, we assume that the $Y_\mathrm{obs}$ are coded in long
+format and complete, though neither is an essential requirement. For
+each person $i$ we append $k$ records, each of which corresponds to a
+break age. In `R` we first set up
+a time warping model that connect real age to warped age, and then
+integrate the new ages into the data.
+
+
+      obs   sup  pred
+    32845 15705     0
+
+The function `appendbreak()` is a custom
+function of about 20 lines in `mice` specific
+to the Terneuzen Birth Cohort data. It copies the first available record
+of the $i^\mathrm{th}$ person $k$ times, updates administrative and age
+variables, sets the outcome variables to `NA`,
+appends the result to the original data and sorts the result with
+respect to `id` and
+`age`. The real data are thus mingled with the
+supplementary records with missing outcomes. The first few records of
+`data2` look like this:
+
+        id occ nocc first typ   age sex hgt.z  wgt.z  bmi.z ao   x1
+    4    4   0   19  TRUE obs 0.000   1  0.33  0.195  0.666  0 1.00
+    42   4  NA   19 FALSE sup 0.000   1    NA     NA     NA  0 1.00
+    5    4   1   19 FALSE obs 0.016   1    NA -0.666     NA  0 0.27
+    4.1  4  NA   19 FALSE sup 0.022   1    NA     NA     NA  0 0.00
+    6    4   2   19 FALSE obs 0.076   1  0.71  0.020 -0.381  0 0.00
+    7    4   3   19 FALSE obs 0.104   1  0.18  0.073  0.075  0 0.00
+          x2   x3 x4 x5 x6 x7 x8 x9 age2
+    4   0.00 0.00  0  0  0  0  0  0  0.0
+    42  0.00 0.00  0  0  0  0  0  0  0.0
+    5   0.73 0.00  0  0  0  0  0  0  2.6
+    4.1 1.00 0.00  0  0  0  0  0  0  3.6
+    6   0.83 0.17  0  0  0  0  0  0  4.3
+    7   0.74 0.26  0  0  0  0  0  0  4.6
+
+Multiple imputation must take into account that the data are clustered
+within persons. The setup for `mice()`
+requires some care, so we discuss each step in detail.
+
+`    `\
+`  `\
+`  `\
+`  `
+
+These statements specify that only `hgt.z`,
+`wgt.z` and `bmi.z`
+need to be imputed. For these three outcomes we request the elementary
+imputation function `mice.impute.2l.pan()`,
+which is designed to impute data with two levels. See Section
+\[sec:multioutcome\] for more detail.
+
+`  `\
+`   `\
+`   `\
+`   `\
+`       `\
+`  `\
+`  `\
+`  `
+
+The setup of the predictor matrix needs some care. We first empty all
+entries from the variable `pred`. The
+statement `pred[Y, id] <- (-2)` defines
+variable `id` as the class variable. The
+statement `pred[Y, sex] <- 1` specifies
+`sex` as a fixed effect, as usual, while
+`pred[Y, paste(x, 1:9, sep = )] <- 2` sets the
+$B$-spline basis as a random effect, as in Equation \[eq:bs\]. The
+remaining three statement specify the $Y_2$ is a random effects
+predictor of $Y_1$ (and vice versa), and both $Y_1$ and $Y_2$ are random
+effects predictors of $Y_3$. Note that $Y_3$ (BMI SDS) is not a
+predictor of $Y_1$ or $Y_2$ in order to prevent the type of convergence
+problems explained in Section \[sec:convergence\]. Note also that age is
+not included in order to evade duplication with its $B$-spline coding.
+In summary, there are 12 random effects (9 for age and 3 for the
+outcomes), one class variable, and one fixed effect.
+
+The actual imputations are produced by
+
+`         `\
+`                         `
+
+There are over 48000 records. This call takes about 30 minutes to
+complete, which is much longer than the other applications discussed in
+this book. In the year 2012 the same problem still took over 10 hours,
+so there is certainly progress.
+
+![Ten multiply imputed trajectories of weight SDS for the same persons
+as in Figure \[fig:tbcplotstick\] (in red). Also shown are the data
+points (in gray).<span
+data-label="fig:tbcplotimp">](fig/ch11_tbcplotimp-1){width="\maxwidth"}
+
+Figure \[fig:tbcplotimp\] displays ten multiply imputed trajectories for
+the six persons displayed in Figure \[fig:tbcplotstick\]. The general
+impression is that the imputed trajectory follows the data quite well.
+At ages where the are many data points (e.g., in period 0d–1y in person
+1259 or in period 8d–1y in person 7460) the curves are quite close,
+indicating a relatively large certainty. On the other hand, at locations
+where data are sparse (e.g., the period 10y–29y in person 7019, or the
+period 8d–2y in person 8046) the curves diverge, indicating a large
+amount of uncertainty about the imputation. This effect is especially
+strong at the edges of the age range. Incidentally, we noted that the
+end effects are less pronounced for larger sample sizes.
+
+![The relation between height SDS and weight SDS in the observed
+(gray) and imputed (red) longitudinal trajectories. The
+imputed data occur exactly at the break ages. The observed data come
+from the period immediately after the break age. No data beyond 29 years
+were observed, so the upper-right panel contains no observed data.<span
+data-label="fig:tbchw">](fig/ch11_tbchw-1){width="\maxwidth"}
+
+It is also interesting to study whether imputation preserves the
+relation between height, weight and BMI. Figure \[fig:tbchw\] is a
+scattergram of height SDS and weight SDS split according to age that
+superposes the imputations on the observed data in the period after the
+break point. In general the relation in the observed data is preserved
+in the imputed data. Note that the imputations become more variable for
+regions with fewer data. This is especially visible at the panel in the
+upper-right corner at age 29y, where there were no data at all. Similar
+plots can be made in combination with BMI SDS. In general, the data in
+these plots all behave as one would expect.
+
+### Complete-data model
+
+Table \[tab:tbcresult\] provides a comparison of the mean changes
+observed under the broken stick model and under time raster imputation.
+The estimates are very similar, so the mean change estimated under both
+methods is similar. The $p$-values in the broken stick method are
+generally more optimistic relative to multiple imputation, which is due
+to the fact that the broken stick model ignores the uncertainty about
+the estimates.
+
+  ---------- ---------------- --------- -------------------------- --------- --------- -------------
+               *Broken stick*             *Time raster imputation*
+  *Period*              *NAO*      *AO*                *$p$-value*     *NAO*      *AO*   *$p$-value*
+  0d–8d               $-$0.88   $-$0.80                      0.214   $-$0.93   $-$0.82         0.335
+  8d–4m               $-$0.32   $-$0.34                      0.811   $-$0.07   $-$0.11         0.745
+  4m–1y                  0.42      0.62                      0.006      0.35      0.58         0.074
+  1y–2y                  0.22      0.28                      0.242      0.24      0.26         0.884
+  2y–6y               $-$0.36   $-$0.10                  &lt;0.001   $-$0.35   $-$0.06         0.026
+  6y–10y                 0.05      0.34                  &lt;0.001   $-$0.01      0.31         0.029
+  10y–18y                0.09      0.52                  &lt;0.001      0.17      0.68         0.009
+  ---------- ---------------- --------- -------------------------- --------- --------- -------------
+
+  : Mean change per period, split according to adult overweight (AO)
+  ($n=124$) and no adult overweight (NAO) ($n=486$) for the broken stick
+  method and for multiple imputation of the time raster.<span
+  data-label="tab:tbcresult">
+
+There is also an effect on the correlations. In general, the age-to-age
+correlations of the broken stick method are higher than the raster
+imputations.
+
+  --------------------------------------------- -- -- -- -- -- -- -- --
+  *Age&0d&8d&4m&1y&2y&6y&10y&18y\
+  0d &– &0.64&0.20&0.21&0.18&0.17&0.16&0.11\
+  8d &0.75&– &0.30&0.17&0.20&0.20&0.15&0.13\
+  4m &0.28&0.44&– &0.39&0.30&0.29&0.20&0.16\
+  1y &0.28&0.23&0.65& – &0.55&0.40&0.31&0.23\
+  2y &0.31&0.33&0.46&0.76& – &0.56&0.36&0.23\
+  6y &0.31&0.36&0.46&0.59&0.79& – &0.62&0.42\
+  10y&0.26&0.26&0.35&0.47&0.55&0.89& – &0.53\
+  18y&0.23&0.26&0.29&0.37&0.40&0.72&0.89& –\
+  *
+  --------------------------------------------- -- -- -- -- -- -- -- --
+
+  : Age-to-age correlations of BMI SDS the broken stick estimates (lower
+  triangle) and raster imputations (upper triangle) for the Terneuzen
+  Birth Cohort ($n=1745$).<span data-label="tab:tbccorr">
+
+Table \[tab:tbccorr\] provides the age-to-age correlation matrix of BMI
+SDS estimated from 1745 cases from the Terneuzen Birth Cohort. Apart
+from the peculiar values for the age of 8days, the correlations decrease
+as the period between time points increases. The values for the broken
+stick method are higher because these do not incorporate the uncertainty
+of the estimates.
+
+## Conclusion
+
+This chapter described techniques for imputing longitudinal data in both
+the wide and long formats. Some things are easier in the wide format,
+e.g., change scores or imputing data, while other procedures are easier
+in the long format, e.g., graphics and advanced statistical modeling. It
+is therefore useful to have both formats available.
+
+The methodology for imputing data in the wide format is not really
+different from that of cross-sectional data. When possible, always try
+to convert the data into the wide format before imputation. If the data
+have been observed at irregular time points, as in the Terneuzen Birth
+Cohort, conversion of the data into the wide format is not possible,
+however, and imputation can be done in the long format by multilevel
+imputation.
+
+This chapter introduced time raster imputation, a technique for
+converting data with an irregular age spacing into the wide format by
+means of imputation. Time rastering seems to work well in the sense that
+the generated trajectories follow the individual trajectories. The
+technique is still experimental and may need further refinement before
+it can be used routinely.
+
+The current method inserts missing data at the full time grid, and thus
+imputes data even at time points where there are real observations. One
+obvious improvement would be to strip such points from the grid so that
+they are not imputed. For example, in the Terneuzen Birth Cohort this
+means that we would always take observed birth weight when it is
+measured.
+
+Another potential improvement is to use the OLS estimates within each
+cluster as the center of the posterior predictive distribution rather
+than their shrunken versions. This would decrease within cluster
+variability in the imputations, and increase between cluster
+variability. It is not yet clear how to deal with clusters with only a
+few time points, but this modification is likely to produce age-to-age
+correlations that are most faithful to the data.
+
+Finally, the selection of the data could be much stricter. The analysis
+of the Terneuzen Birth Cohort data used a very liberal inclusion
+criterion that requires a minimum of only three data points across the
+entire age range. Sparse trajectories will have large imputation
+variances, and may thus bias the age-to-age correlations toward zero. As
+a preliminary rule of thumb, there should be at least one, and
+preferably two or more, measurements per period.
+
+## Exercises {#ex:ch:longitudinal}
+
+1.  *Potthoff–Roy, wide format imputation*. published classic data on a
+    study in 16 boys and 11 girls, who at ages 8, 10, 12, and 14 had the
+    distance (mm) from the center of the pituitary gland to the
+    pteryomaxillary fissure measured. Changes in
+    pituitary-pteryomaxillary distances during growth is important in
+    orthodontic therapy. The goals of the study were to describe the
+    distance in boys and girls as simple functions of age, and then to
+    compare the functions for boys and girls. The data have been
+    reanalyzed by many authors including @JENNRICH1986, @LITTLE1987,
+    @PINHEIRO2000, @VERBEKE2000 and @MOLENBERGHS2007.
+
+    -   Take the version from @LITTLE1987 in which nine entries
+        have been made missing. The missing data have been created such
+        that children with a low value at age 8 are more likely to have
+        a missing value at age 10. Use
+        `mice()` to impute the missing entries
+        under the normal model using $m=100$.
+
+    -   For each missing entry, summarize the distribution of the
+        100 imputations. Determine the interquartile range of
+        each distribution. If the imputations fit the data, how many of
+        the original values you expect to fall within this range? How
+        many actually do?
+
+    -   Produce a `lattice` graph of the
+        nine imputed trajectories that clearly shows the range of the
+        imputed values.
+
+2.  *Potthoff–Roy comparison*. Use the multiply imputed data from
+    the previous exercise, and apply a linear mixed effects model with
+    an unstructured mean and an unstructured covariance. See
+    @MOLENBERGHS2007 [ch. 5] for a discussion of the setup. Discuss
+    advantages and disadvantages of the analysis of the multiply imputed
+    data compared to direct likelihood.
+
+3.  *Potthoff–Roy, long format imputation*. Do this exercise with the
+    complete Potthoff–Roy data. Warning: This exercise requires good
+    data handling skills and some patience.
+
+    -   Calculate the broken stick estimates for each child using
+        8, 10, 12 and 14 as the break ages. Make a graph like
+        Figure \[fig:tbcplotstick\]. Each data point has exactly one
+        parameter, so the fit could be perfect in principle. Why doesn’t
+        that happen? Which two children show the largest discrepancies
+        between the data and the model?
+
+    -   Compare the age-to-age correlation matrix of the broken
+        stick estimates to the original data. Why are these correlation
+        matrices different?
+
+    -   How would you adapt the analysis such that the age-to-age
+        correlation matrix of the broken stick estimates would reproduce
+        the age-to-age correlation matrix of the original data. Hint:
+        Think of a simpler form of multilevel analysis.
+
+    -   Multiply impute the data according to the method used in
+        Section \[sec:tbcimpute\], and produce a display like Figure
+        \[fig:tbcplotimp\] for children 1, 7, 20, 21, 22 and 24.
+
+    -   Compare the age-to-age correlation matrix from the imputed
+        data to that of the original data. Are these different? How?
+        Calculate the correlation matrix after deleting the data from
+        the two children who showed the largest discrepancy in the
+        broken stick model. Did this help?
+
+    -   How would you adapt the imputation method for the
+        longitudinal data so that its correlation matrix is close to
+        that of the original?
