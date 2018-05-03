@@ -14,7 +14,7 @@ description: "This is a minimal example of using the bookdown package to write a
 
 ```{r external-code, cache=FALSE}
 library(knitr)
-read_chunk('fimd.R')
+read_chunk('R/fimd.R')
 ```
 
 ```{r setglobalchunkoptions}
