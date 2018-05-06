@@ -262,14 +262,10 @@ re <- round(calcacf(acf.resid$analyses),2)
 
 ## ----ch2, child = "src/ch2.Rnw"------------------------------------------
 
-## ----start2, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch2_', self.contained = FALSE)
-
 ## ----init2, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
+opts_chunk$set(fig.path = 'fig/ch02-', self.contained = FALSE)
+suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
+suppressPackageStartupMessages(library(lattice, warn.conflicts = FALSE, quietly = TRUE))
 
 ## ----publications, echo=FALSE, fig.width=4.5, fig.height=2.25, solo=TRUE----
 cit  <- c(     2017, 75, 381, NA,

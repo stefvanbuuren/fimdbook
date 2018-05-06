@@ -3,7 +3,7 @@ delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
-rmd_files: ["index.Rmd", "01-introduction.Rmd", "05-analysis.Rmd", "13-references.Rmd"]
+rmd_files: ["index.Rmd", "01-introduction.Rmd", "02-multiple-imputation.Rmd", "05-analysis.Rmd", "13-references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"
 
 # rmd_files: ["index.Rmd", "01-introduction.Rmd", "02-multiple-imputation.Rmd", "05-analysis.Rmd"]
