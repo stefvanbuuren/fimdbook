@@ -17,15 +17,15 @@ guidelines for practical application of multilevel imputation.
 
 The structure of this chapter is as follows. We start with a concise
 overview of three ways to formulate the multilevel model. Section
-\[sec:missmult\] reviews several non-imputation approaches for dealing
-with missing values in multilevel data. Sections \[sec:mljoint\] and
-\[sec:mlfcs\] describe imputation using the joint modeling and fully
-conditional specification frameworks. Sections \[sec:multioutcome\] and
-\[sec:catoutcome\] review current procedures for imputation under
+\@ref(sec:missmult) reviews several non-imputation approaches for dealing
+with missing values in multilevel data. Sections \@ref(sec:mljoint) and
+\@ref(sec:mlfcs) describe imputation using the joint modeling and fully
+conditional specification frameworks. Sections \@ref(sec:multioutcome) and
+\@ref(sec:catoutcome) review current procedures for imputation under
 multilevel models with continuous and discrete outcomes, respectively.
-Section \[sec:level2pred\] deals with missing data in the level-2
-predictors, and Section \[sec:comparative\] summarizes comparative work
-on the different approaches. Section \[sec:mlguidelines\] contains
+Section \@ref(sec:level2pred) deals with missing data in the level-2
+predictors, and Section \@ref(sec:comparative) summarizes comparative work
+on the different approaches. Section \@ref(sec:mlguidelines) contains
 worked examples that illustrate how imputations can be generated in
 `mice`, provides guidelines on the practical
 application, written in the form of recipes for multilevel imputation.
@@ -89,18 +89,19 @@ In *level notation*, introduced by @BRYK1992, we formulate a multilevel
 model as a system of two equations, one at level-1, and two at level-2:
 
 $$\begin{aligned}
-\label{eq:level}
-{{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{sex}}}_{ic} + \epsilon_{ic}\label{eq:level1}\\
-\beta_{0c}     & = & \gamma_{00} + \gamma_{01}{{\texttt{den}}}_{c} + u_{0c}\label{eq:level2a}\\
-\beta_{1c}     & = & \gamma_{10}\label{eq:level2b}\end{aligned}$$
+(\#eq:level)
+{{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{sex}}}_{ic} + \epsilon_{ic}(\#eq:level1)\\
+\beta_{0c}     & = & \gamma_{00} + \gamma_{01}{{\texttt{den}}}_{c} + u_{0c}(\#eq:level2a)\\
+\beta_{1c}     & = & \gamma_{10}(\#eq:level2b)
+\end{aligned}$$
 
 where ${{\texttt{lpo}}}_{ic}$ is the test score of pupil $i$ in school
 $c$, where ${{\texttt{sex}}}_{ic}$ is the sex of pupil $i$ in school
 $c$, and where ${{\texttt{den}}}_c$ is the religious denomination of
 school $c$. Note that here the subscripts distinguish the level-1 and
 level-2 variables. In this notation, ${{\texttt{sex}}}_{ic}$ only
-appears in the level-1 model \[eq:level1\], and ${{\texttt{den}}}_c$
-only appears in the level-2 model \[eq:level2a\]. The term $\beta_{0c}$
+appears in the level-1 model \@ref(eq:level1), and ${{\texttt{den}}}_c$
+only appears in the level-2 model \@ref(eq:level2a). The term $\beta_{0c}$
 is a random intercept that varies by cluster, while $\beta_{1c}$ is a
 sex effect that is assumed to be the same across schools. The term
 $\epsilon_{ic}$ is the within-cluster random residual at the pupil level
@@ -118,18 +119,18 @@ $\sigma_{\epsilon}^2$ and $\sigma_{u_0}^2$.
 
 We may write the same model as a single predictive equation by
 substituting the level-2 models into the level-2 model:
-$$\label{eq:composite1}
+$$(\#eq:composite1)
 {{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{10}{{\texttt{sex}}}_{ic} + \gamma_{01}{{\texttt{den}}}_{c} + u_{0c} + \epsilon_{ic},$$
 We do not need the double subscripts any more, so we write the model in
-*composite notation* as $$\label{eq:composite2}
+*composite notation* as $$(\#eq:composite2)
 {{\texttt{lpo}}}_{ic} = \beta_0 + \beta_1{{\texttt{sex}}}_{ic} + \beta_2{{\texttt{den}}}_{c} + u_{0c} + \epsilon_{ic},$$
 Note that these $\beta$’s are fixed effects and the $\beta$’s in the
-level-1 model \[eq:level1\] are random effects. They differ by the
+level-1 model \@ref(eq:level1) are random effects. They differ by the
 number of subscripts.
 
 The same model written in *matrix notation* is widely known as the
 *linear mixed effects model* [@LAIRD1982] and can be written as
-$$y_c = X_c\beta + Z_cu_c + \epsilon_c  \label{eq:lmm}$$ where
+$$y_c = X_c\beta + Z_cu_c + \epsilon_c  (\#eq:lmm)$$ where
 $y_c = {{\texttt{lpo}}}_c$ is a column vector containing the scores in
 cluster $c$, where
 $X_c = ({{\texttt{1}}}, {{\texttt{den}}}_c, {{\texttt{sex}}}_c)$ is the
@@ -144,7 +145,7 @@ $q \leq p$.
 The different formulations of the multilevel model reflect different
 scientific traditions. The matrix model formulation is favoured among
 statisticians because all multilevel models can be economically
-expressed by Equation \[eq:lmm\], which eases estimation of parameters,
+expressed by Equation \@ref(eq:lmm), which eases estimation of parameters,
 statistical inference and prediction. The books by @MCCULLOCH2001,
 @VERBEKE2000, @DELEEUW2008A and @FITZMAURICE2011 are representative for
 this tradition. The level formulation clearly separates the roles of
@@ -161,7 +162,7 @@ different terminology. See @FITZMAURICE2011 [pp. 203-208, Ch. 22] and
 
 Although the models are mathematically equivalent, the notation has
 implications on the ease with which imputation models can be specified.
-Equation \[eq:lmm\] nicely separates the fixed $X_c$ from random effects
+Equation \@ref(eq:lmm) nicely separates the fixed $X_c$ from random effects
 $Z_c$, but the same covariates may appear in both $X_c$ and $Z_c$. This
 complicates imputation of those covariates in an FCS framework because
 the same variable appears two times in the model. We surely want to
@@ -191,7 +192,7 @@ model can occur in
 
 This chapter assumes that the class variable is always completely
 observed. In real life, this may not be the case and techniques detailed
-in Chapter \[ch:univariate\] can be used to impute class membership. See
+in Chapter \@ref(ch:univariate) can be used to impute class membership. See
 @HILL1998 and @GOLDSTEIN2011B for models to handle missing class
 identification.
 
@@ -277,7 +278,7 @@ There is not one super-method that will address all such issues. In
 practice, we may need to emphasize certain issues at the expense of
 others. In order to gauge the complexity of the imputation task for
 particular dataset and model, ask yourself the questions listed in Table
-\[tab:mlquestions\]. If your answer to all questions is “NO”, then there
+\@ref(tab:mlquestions). If your answer to all questions is “NO”, then there
 are several methods for multilevel MI that are available in standard
 software. If many of your answers are “YES”, the situation is less
 clear-cut, and you may need to think about the relative priority of the
@@ -367,16 +368,16 @@ interest.
 
 The joint model specifies a single model for all incomplete variables in
 data. Suppose that we have missing values in both outcome $y_c$ and the
-level-1 predictors $X_c$ in the linear mixed model \[eq:lmm\] with
+level-1 predictors $X_c$ in the linear mixed model \@ref(eq:lmm) with
 random intercepts. A limitation of the standard model is that both $X_c$
 and $Z_c$ need to be completely observed. @SCHAFER2002A showed that it
 is possible to reformulate the model by placing all variables in the
-model as an outcome on the left-hand side of model \[eq:lmm\], which
+model as an outcome on the left-hand side of model \@ref(eq:lmm), which
 gives rise to multilevel models with multivariate outcomes. Suppose that
 $Y_{ic}$ is the $1 \times p$ matrix of all incomplete variables from
 unit $i$ in class $c$. Under a random intercept model, the multivariate
 multilevel model decomposes the data into a between-group part and a
-within-group part as $$\label{eq:jm.decomp}
+within-group part as $$(\#eq:jm.decomp)
 Y_{ic} = \mu + Y_c^\mathrm{between} + Y_{ic}^\mathrm{within}.$$ The
 relations between the $p$ variables at the group level are captured by
 the between component $Y_c^\mathrm{between}$, while relations at the
@@ -397,7 +398,7 @@ categorical) variables, which is available through the
 `jomo` package [@QUARTAGNO2017]. Related work
 has been done by @ASPAROUHOV2010 for M*plus*.
 
-Because of the decomposition \[eq:jm.decomp\], imputation by joint
+Because of the decomposition \@ref(eq:jm.decomp), imputation by joint
 modeling is very natural when the complete-data analysis focuses on
 different within- and between-cluster associations
 [@ENDERS2016; @GRUND2016]. Multilevel imputation is not without
@@ -422,11 +423,11 @@ very recent, there is not yet much practical experience.
 Another possibility is to iterate univariate multilevel imputation over
 the variables [@VANBUUREN2011]. For example, suppose there are missing
 values in `lpo` and
-`sex` in model \[eq:composite2\]. One way to
+`sex` in model \@ref(eq:composite2). One way to
 draw imputations is to alternate the following two steps:
 
 $$\begin{aligned}
-\label{eq:naivefcs}
+(\#eq:naivefcs)
 \dot{{\texttt{lpo}}}_{ic} & \sim & N(\beta_0 + \beta_1 {{\texttt{den}}}_{c} + \beta_2 {{\texttt{sex}}}_{ic} + u_{0c}, \sigma_\epsilon^2)\\
 \dot{{\texttt{sex}}}_{ic} & \sim & N(\beta_0 + \beta_1 {{\texttt{den}}}_{c} + \beta_2 {{\texttt{lpo}}}_{ic} + u_{0c}, \sigma_\epsilon^2)\end{aligned}$$
 
@@ -445,7 +446,7 @@ the predictor, and on the size of the cluster. In addition, the
 conditional variance depends on cluster size. These results hold for the
 random intercept model. Of course, including random slopes as well will
 only complicate matters. The naive FCS procedure in Equation
-\[eq:naivefcs\] does not account for the cluster means or for the
+\@ref(eq:naivefcs) does not account for the cluster means or for the
 effects of cluster size, and hence might not provide good imputations.
 From their derivation, @RESCHE2016 therefore hypothesized that the
 imputation model (1) should incorporate the cluster means, and (2) be
@@ -497,7 +498,7 @@ the existing literature on FCS. The other three studies address the
 problem of *congeniality*, a mismatch between the imputation model and
 the substantive model. Improving congeniality had a major effect, which
 is in line with the larger multiple imputation literature. Section
-\[sec:congeniality\] explains the confusion surrounding the term
+\@ref(sec:congeniality) explains the confusion surrounding the term
 compatibility in some detail.
 
 A problematic aspect of including cluster means is that the contextual
@@ -544,12 +545,12 @@ $y_{c}$ only.
 
 ### General principle
 
-Imputations under the linear mixed model in Equation \[eq:lmm\] can be
+Imputations under the linear mixed model in Equation \@ref(eq:lmm) can be
 generated by taking draws from posterior distribution of the modeled
 parameters, followed by a step to draw the imputations. The sequence of
 steps is:
 
-1.  Fit model \[eq:lmm\] to the observed data to obtain estimates
+1.  Fit model \@ref(eq:lmm) to the observed data to obtain estimates
     $\hat\sigma^2$, $\hat\beta$, $\hat\Omega$ and $\hat u_c$;
 
 2.  Generate random draws $\dot\sigma^2$, $\dot\beta$, $\dot\Omega$ and
@@ -649,7 +650,7 @@ using linear mixed model fitted by `lmer` or
 both methods is to obtain donors across all clusters, which is probably
 fine for most applications.
 
-Table \[tab:mlacontinuous\] presents an overview of
+Table \@ref(tab:mlacontinuous) presents an overview of
 `R` functions for univariate imputations
 according to a multilevel model for continuous outcomes. Each row
 represents a function. The functions belong to different packages, and
@@ -687,7 +688,7 @@ normal, heteroscedastic\
 ### Example {#sec:cont.exam}
 
 We use the `brandsma` data introduced in
-Section \[sec:threeformulations\]. Here we will analyze the full set of
+Section \@ref(sec:threeformulations). Here we will analyze the full set of
 4016 pupils. Apart from Chapter 9, @SNIJDERS2012 concentrated on the
 analysis of a reduced set of 3758 pupils. In order to keep things
 simple, this section restricts the analysis to just two variables.
@@ -761,7 +762,7 @@ method `2l.norm` is more flexible since the
 within-cluster error variances may differ. To see which of these methods
 should be preferred for these data, let us study the distribution of the
 standard deviation of `lpo` by schools. Figure
-\[fig:mlsd\] shows that the standard deviation per school varies between
+\@ref(fig:mlsd) shows that the standard deviation per school varies between
 4 and 16, a fairly large spread. This suggests that
 `2l.norm` might be preferred here.
 
@@ -770,7 +771,7 @@ the imputed data (red) under five methods, split according to the number
 of missing values per school.<span
 data-label="fig:mldist">](fig/ch7_mla_empty3-1){width="\maxwidth"}
 
-Figure \[fig:mldist\] shows the box plot of the observed data (in blue)
+Figure \@ref(fig:mldist) shows the box plot of the observed data (in blue)
 and the imputed data (in red) under each of the methods. Box plots are
 drawn for school with zero missing values, one missing value, two or
 three missing values and more than three missing values. Pupils in
@@ -798,7 +799,7 @@ values for `2l.pan` (top) and
 `2l.pmm` (bottom).<span
 data-label="fig:mldens">](fig/ch7_mla_empty4-1){width="\maxwidth"}
 
-Figure \[fig:mldens\] shows the density plot of the 10 sets of imputed
+Figure \@ref(fig:mldens) shows the density plot of the 10 sets of imputed
 values (red) compared with the density plot of the observed values
 (blue). The top row corresponds to the
 `2l.pan` method, and shows that some parts of
@@ -864,11 +865,11 @@ Missing level-1 count outcomes can be imputed under the generalized
 linear mixed model using a Poisson or (zero-inflated) negative binomial
 distributions [@KLEINKE2015]. Relevant functions can be found in the
 `micemd` and
-`countimp` packages. Table \[tab:mlacat\]
+`countimp` packages. Table \@ref(tab:mlacat)
 presents an overview of `R` functions for
 univariate imputations for discrete outcomes. Discrete data can also be
 imputed by the predictive mean matching functions listed in Table
-\[tab:mlacontinuous\].
+\@ref(tab:mlacontinuous).
 
 lll Package & Method & Description\
 *Binary* & &\
@@ -940,7 +941,7 @@ $m=5$ imputations for the missing outcomes by method
        0    1 <NA>
     1635  423    0
 
-Figure \[fig:toenail.profiles\] visualizes the imputations. The plot
+Figure \@ref(fig:toenail.profiles) visualizes the imputations. The plot
 shows the partially imputed profiles of 16 subjects in the
 `toenail` data. The general downward trend in
 the probability of infection severity with time is obvious, and was also
@@ -993,7 +994,7 @@ imputation here is that it produces a dataset with scores on all visits,
 which makes it easier to summarize. The added values of imputation
 increases if important covariates are available that are not present in
 the substantive model, or if missing values occur in the predictors.
-Section \[sec:ri1pred\] contains an example of that problem.
+Section \@ref(sec:ri1pred) contains an example of that problem.
 
 ## Imputation of level-2 variable {#sec:level2pred}
 
@@ -1031,7 +1032,7 @@ It is conceptually straightforward to extend imputations to higher
 levels [@YUCEL2008]. If there are two levels, combine all level-2
 predictors with an aggregate (e.g., the cluster means) of the level-1
 predictors and the level-1 outcomes. Once we have this, we may choose
-suitable methods from Chapter \[ch:univariate\] to impute the missing
+suitable methods from Chapter \@ref(ch:univariate) to impute the missing
 level-2 variables in the usual way. No new issues arise.
 
 Method `ml.lmer` from
@@ -1041,7 +1042,7 @@ lowest level (and any other level) with an arbitrary specification of
 (additive) random effects. This includes general nested models,
 cross-classified models, the ability to include cluster means at any
 level of clustering, and the specification of random slopes at any level
-of clustering. Table \[tab:funcmixed\] lists the various methods.
+of clustering. Table \@ref(tab:funcmixed) lists the various methods.
 
   Package                                Method                                           Description
   -------------------------------------- ------------------------------------------------ -----------------------------
@@ -1157,7 +1158,7 @@ are complete, whereas the others contain missing values.
 data.<span
 data-label="fig:mla.mdp">](fig/ch7_mla_data4-1){width="\maxwidth"}
 
-Figure \[fig:mla.mdp\], with the missing data patterns, reveals that
+Figure \@ref(fig:mla.mdp), with the missing data patterns, reveals that
 there are 3183 (out of 4016) pupils without missing values. For the
 remaining sample, most have a missing value in just one variable: 583
 pupils have only missing `ssi`, 175 pupils
@@ -1171,7 +1172,7 @@ three missing values. The challenge is to perform the analyses from
 
 The intercept-only (or empty) model is the simplest multilevel model. We
 have already imputed the data according to this model in Section
-\[sec:cont.exam\]. Here we select the imputations according to the
+\@ref(sec:cont.exam). Here we select the imputations according to the
 `2l.pmm` method for further analysis.
 
 `    `\
@@ -1210,13 +1211,13 @@ Let’s now extend the model in order to quantify the impact of IQ on the
 language score. This random intercepts model with one explanatory
 variable is defined by
 
-$$\label{eq:r1}
+$$(\#eq:r1)
 {{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{10} {{\texttt{iqv}}}_{ic} + u_{0c} + \epsilon_{ic}.$$
 
 In level notation, the model reads as
 
 $$\begin{aligned}
-\label{eq:r1level}
+(\#eq:r1level)
 {{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic}\\
 \beta_{0c}     & = & \gamma_{00} + u_{0c}\\
 \beta_{1c}     & = & \gamma_{10}\end{aligned}$$
@@ -1228,7 +1229,7 @@ and `iqv` by
 `2l.pmm` with added cluster means. Adding the
 cluster means is done here to improve compatibility among the
 conditional specified imputation models (cf. Section
-\[sec:clustermeans\]).
+\@ref(sec:clustermeans)).
 
 `     `\
 `  `\
@@ -1261,7 +1262,7 @@ multilevel model with only random intercepts and fixed slopes, rescaling
 the data to the origin presents no issues since the model is invariant
 to linear transformations. This is not true when there are random slopes
 [@HOX2018 p. 48]. We return to this point in Section
-\[sec:randomslopes\].
+\@ref(sec:randomslopes).
 
 The JM can create multivariate imputations by the
 `jomoImpute` or
@@ -1283,8 +1284,8 @@ as
 `                  `
 
 This uses a new facility in `mice` that allows
-imputation of blocks of variables (cf. Section \[sec:blockvar\]). The
-final estimates on the multiply imputed data under model \[eq:r1\] can
+imputation of blocks of variables (cf. Section \@ref(sec:blockvar)). The
+final estimates on the multiply imputed data under model \@ref(eq:r1) can
 be calculated (from the `2l.pmm` method) as
 
 `          `\
@@ -1313,12 +1314,12 @@ can allow for differences in the within- and between-group regressions.
 The models here parallel Example 4.3 and Table 4.4 in @SNIJDERS2012, and
 row 1 in Table 6 of @GRUND2018.
 
-We continue with the analysis of Section \[sec:ri1pred\]. We extend the
+We continue with the analysis of Section \@ref(sec:ri1pred). We extend the
 complete-data multilevel model by an extra term, as follows:
-$$\label{eq:r2}
+$$(\#eq:r2)
 {{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{01} {{\overline{\texttt{iqv}}}}_{c} + \gamma_{10} {{\texttt{iqv}}}_{ic} + u_{0c} + \epsilon_{ic}.$$
 In level notation, we get $$\begin{aligned}
-\label{eq:r2level}
+(\#eq:r2level)
 {{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic}\\
 \beta_{0c}     & = & \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_{c} + u_{0c}\\
 \beta_{1c}     & = & \gamma_{10}\end{aligned}$$
@@ -1332,7 +1333,7 @@ testing the null hypothesis that $\gamma_{01} = 0$. Because of this
 decomposition we need to add the cluster means of
 `lpo` and `iqv` to
 the imputation model. Remember however that we just did that in the FCS
-imputation model of Section \[sec:ri1pred\]. Thus, we may use the same
+imputation model of Section \@ref(sec:ri1pred). Thus, we may use the same
 set of imputations to perform the within- and between-group regressions.
 
 The following code block adds the cluster means to the imputed data,
@@ -1365,7 +1366,7 @@ An alternative could have been to use the
 joint imputation model.
 
 Binary level-1 predictors can be imputed in the same way using one of
-the methods listed in Table \[tab:funcmixed\]. It is not yet clear which
+the methods listed in Table \@ref(tab:funcmixed). It is not yet clear which
 of the methods should be preferred. No univariate methods yet exist for
 multi-category variables, but `2l.pmm` may be
 a workable alternative. Categorical variables can be imputed by
@@ -1385,14 +1386,14 @@ model looks very similar:
 $${{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{01} {{\texttt{den}}}_{c} + \gamma_{10}{{\texttt{iqv}}}_{ic} + u_{0c} + \epsilon_{ic}.$$
 
 In level notation, we get $$\begin{aligned}
-\label{eq:r3level}
+(\#eq:r3level)
 {{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic}\\
 \beta_{0c}     & = & \gamma_{00} + \gamma_{01}{{\texttt{den}}}_{c} + u_{0c}\\
 \beta_{1c}     & = & \gamma_{10}\end{aligned}$$
 
 The missing values occur in `lpo`,
 `iqv` and `den`. The
-difference with model \[eq:r2\] is that `den`
+difference with model \@ref(eq:r2) is that `den`
 is a measured variable, so the value is identical for all members of the
 same cluster. If `den` is missing, it is
 missing for the entire cluster. Imputing a missing level-2 predictor is
@@ -1459,7 +1460,7 @@ were members of the same block.
 `2l.pmm` (bottom).<span
 data-label="fig:mladens">](fig/ch7_mla_ril2p5-1){width="\maxwidth"}
 
-Figure \[fig:mladens\] shows the density plots of the observed and
+Figure \@ref(fig:mladens) shows the density plots of the observed and
 imputed data after applying the joint mixed normal/categorical model,
 and after predictive mean matching. Both methods handle categorical
 data, so the figures for `den` have multiple
@@ -1489,8 +1490,8 @@ imputed data can be fitted as
 
 The random intercepts model may have predictors at level-1, at level-2,
 and possibly interactions within and/or across levels. A level-2
-variable can be a level-1 aggregate (e.g., as in Section \[sec:wbg\]),
-or a measured level-2 variable (as in Section \[sec:ril2\]). Missing
+variable can be a level-1 aggregate (e.g., as in Section \@ref(sec:wbg)),
+or a measured level-2 variable (as in Section \@ref(sec:ril2)). Missing
 values in the measured variables will propagate through the interaction
 terms. This section suggests imputation methods for the model with
 random intercepts and interactions.
@@ -1510,11 +1511,11 @@ into the model:
 
 The extended model in composite notation is defined by:
 $$\begin{aligned}
-\label{eq:ri2}
+(\#eq:ri2)
 {{\texttt{lpo}}}_{ic} & = & \gamma_{00} + \gamma_{10}{{\texttt{iqv}}}_{ic} + \gamma_{20}{{\texttt{sex}}}_{ic} + \gamma_{30}{{\texttt{iqv}}}_{ic}{{\texttt{sex}}}_{ic} + \gamma_{40}{{\texttt{sex}}}_{ic}{{\texttt{den}}}_c + \\
  &  & \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\texttt{den}}}_c + \gamma_{03}{{\overline{\texttt{iqv}}}}_c{{\texttt{den}}}_c + u_{0c} + \epsilon_{ic}.\end{aligned}$$
 In level notation, the model is $$\begin{aligned}
-\label{eq:ri2level}
+(\#eq:ri2level)
 {{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \beta_{2c}{{\texttt{sex}}}_{ic} + \beta_{3c}{{\texttt{iqv}}}_{ic}{{\texttt{sex}}}_{ic} + \beta_{4c}{{\texttt{sex}}}_{ic}{{\texttt{den}}}_c + \epsilon_{ic}\\
 \beta_{0c}     & = & \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\texttt{den}}}_c + \gamma_{03}{{\overline{\texttt{iqv}}}}_c{{\overline{\texttt{den}}}}_c + u_{0c}\\
 \beta_{1c}     & = & \gamma_{10}\\
@@ -1642,7 +1643,7 @@ of imputation, centering on the cluster means often enhances stability
 and robustness of models to generate imputations, especially if
 interactions are involved. When the complete-data model uses cluster
 centering, then the imputation model should also do so. See Section
-\[sec:clustermeans\] for more details.
+\@ref(sec:clustermeans) for more details.
 
 The next block of code specifies the interaction effects, by means of
 passive imputation.
@@ -1707,15 +1708,15 @@ and then fits and pools the mixed model.
 
 So far our examples were restricted to models with random intercepts. We
 continue here with the contextual model that includes random slopes for
-IQ (cf. Example 5.1 in @SNIJDERS2012). Section \[sec:wbg\] showed how to
+IQ (cf. Example 5.1 in @SNIJDERS2012). Section \@ref(sec:wbg) showed how to
 impute the contextual model. Including random slopes extends the
 complete-data model as
 
-$$\label{eq:rs1}
+$$(\#eq:rs1)
 {{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_{c} + \gamma_{10}{{\texttt{iqv}}}_{ic} + u_{0c} + u_{1c} {{\texttt{iqv}}}_{ic} + \epsilon_{ic}$$
 
 When expressed in level notation, the model is $$\begin{aligned}
-\label{eq:rs1level}
+(\#eq:rs1level)
 {{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic}\\
 \beta_{0c}     & = & \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_{c} + u_{0c}\\
 \beta_{1c}     & = & \gamma_{10} + u_{1c}\end{aligned}$$ The addition of
@@ -1725,7 +1726,7 @@ $\beta_{1c}$ to vary over clusters, hence the name “random slopes”.
 Missing data may occur in `lpo` and
 `iqv`. @ENDERS2016 and @GRUND2018 recommend
 FCS for this problem. The procedure is almost identical to that in
-Section \[sec:ri1pred\], but now including both the cluster means and
+Section \@ref(sec:ri1pred), but now including both the cluster means and
 random slopes into the imputation model.
 
 `     `\
@@ -1816,7 +1817,7 @@ This is a fairly elaborate model that can best be understood in level
 notation:
 
 $$\begin{aligned}
-\label{eq:rs2level}
+(\#eq:rs2level)
 {{\texttt{lpo}}}_{ic} & = & \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \beta_{2c}{{\texttt{ses}}}_{ic} + \beta_{3c}{{\texttt{iqv}}}_{ic}{{\texttt{ses}}}_{ic} + \epsilon_{ic}\\
 \beta_{0c}     & = & \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\overline{\texttt{ses}}}}_c + \gamma_{03}{{\overline{\texttt{iqv}}}}_c{{\overline{\texttt{ses}}}}_c + u_{0c}\\
 \beta_{1c}     & = & \gamma_{10} + \gamma_{11}{{\overline{\texttt{iqv}}}}_c + \gamma_{12}{{\overline{\texttt{ses}}}}_c + u_{1c}\\
@@ -1824,7 +1825,7 @@ $$\begin{aligned}
 \beta_{3c}     & = & \gamma_{30}\end{aligned}$$
 
 which can be reorganized into composite notation as: $$\begin{aligned}
-\label{eq:rs2}
+(\#eq:rs2)
 {{\texttt{lpo}}}_{ic} & = & \gamma_{00} + \gamma_{10}{{\texttt{iqv}}}_{ic} + \gamma_{20}{{\texttt{ses}}}_{ic} + \gamma_{30}{{\texttt{iqv}}}_{ic}{{\texttt{ses}}}_{ic} + \\
  &  & \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\overline{\texttt{ses}}}}_c + \\
  &  & \gamma_{11}{{\texttt{iqv}}}_{ic}{{\overline{\texttt{iqv}}}}_c + \gamma_{12}{{\texttt{iqv}}}_{ic}{{\overline{\texttt{ses}}}}_c + \gamma_{21}{{\texttt{ses}}}_{ic}{{\overline{\texttt{iqv}}}}_c + \gamma_{22}{{\texttt{ses}}}_{ic}{{\overline{\texttt{ses}}}}_c + \\
@@ -1864,7 +1865,7 @@ All terms need to be included into the imputation model for
 `iqv` and `ses` can
 be specified along the same principles by reversing the roles of outcome
 and predictor. As a first step, let us pad the data with the set of all
-relevant interactions from model \[eq:rs2level\].
+relevant interactions from model \@ref(eq:rs2level).
 
 `      `\
 `     `\
@@ -1908,7 +1909,7 @@ matrix as follows:
     iqm.lpm   0   0   1
 
 The model for `lpo` is almost equivalent to
-model \[eq:rs2level\]. According to the model, both cluster means and
+model \@ref(eq:rs2level). According to the model, both cluster means and
 random effects should be included, thus values
 `pred[lpo, c(iqv, ses)]` should be coded as a
 `4`, and not as a
@@ -1917,7 +1918,7 @@ effects are almost linearly dependent, which causes slow convergence and
 unstable estimates in the imputation model. These problems disappear
 when only the cluster means are included as covariates. An alternative
 is to scale the predictors in deviations from the cluster means, as was
-done in Section \[sec:mlint\]. This circumvents many of the
+done in Section \@ref(sec:mlint). This circumvents many of the
 computational issues of raw-scored variables, and the parameters are
 easier to interpret.
 
@@ -2038,16 +2039,17 @@ close to the data\
 7. & Include predictors related to the missingness and the target\
 8. & Exclude any terms involving the target\
 
-Table \[tab:recipes\] contains two recipes for imputing multilevel data.
+Table \@ref(tab:recipes) contains two recipes for imputing multilevel data.
 There are separate recipes for level-1 and level-2 data. The recipes
 follow the inclusive strategy advocated by @COLLINS2001, and extend the
-predictor specification strategy in Section \[sec:predictors\] to
+predictor specification strategy in Section \@ref(sec:predictors) to
 multilevel data. Including all two-way (or higher-order) interactions
 may quickly inflate the number of parameters in the model, especially
 for categorical data, so some care is needed in selecting the
 interactions that seem most important to the application at hand.
 
-Sections \[sec:emptymodel\] to \[sec:rs.interactions\] demonstrated
+Sections \@ref(sec:emptymodel) 
+to \@ref(sec:rs.interactions) demonstrated
 applications of these recipes for a variety of multilevel models. One
 very important source of information was not yet included. For clarity,
 all procedures were restricted to the subset of data that was actually
@@ -2065,7 +2067,7 @@ between-imputation variability and hence lead to sharper statistical
 inferences. Including extra predictive variables is left as an exercise
 for the reader.
 
-The procedure in Section \[sec:rs.interactions\] may be a daunting task
+The procedure in Section \@ref(sec:rs.interactions) may be a daunting task
 when the number of variables grows, especially keeping track of all
 required interaction effects. The whole process can be automated, but
 currently there is no software that will perform these steps behind the
@@ -2114,4 +2116,4 @@ easy to apply in standard software, and has been found to work
 reasonably well. In the future we may see model-based imputation
 procedures that enhance the handling of interactions by combining the
 imputation and analysis models into larger Bayesian models. See Section
-\[sec:modelbased\] for some pointers into the literature.
+\@ref(sec:modelbased) for some pointers into the literature.

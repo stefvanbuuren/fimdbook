@@ -1,4 +1,4 @@
---- 
+---
 title: "Flexible Imputation of Missing Data"
 author: "Stef van Buuren"
 date: "`r Sys.Date()`"
@@ -7,18 +7,13 @@ documentclass: book
 bibliography: [fimd2.bib]
 biblio-style: apalike
 link-citations: yes
-description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+description: "Online version of Flexible Imputation of Missing Data"
 ---
 
 # Hello {-}
 
-```{r external-code, cache=FALSE}
-library(knitr)
-read_chunk('R/fimd.R')
-```
+notation: $a^2 + c^3$.
 
-```{r setglobalchunkoptions}
+```{r external-code, cache=FALSE, echo = FALSE}
+source("R/before_book_script.R")
 ```
-```{r ch1}
-```
-

@@ -10,9 +10,9 @@
 This chapter changes the perspective to the rows of the data matrix. An
 important consequence of nonresponse and missing data is that the
 remaining sample may not be representative any more. Multiple imputation
-of entire blocks of variables (Section \[sec:selective\]) can be useful
+of entire blocks of variables (Section \@ref(sec:selective)) can be useful
 to adjust for selective loss of cases in panel and cohort studies.
-Section \[sec:nonresponse\] takes this idea a step further by appended
+Section \@ref(sec:nonresponse) takes this idea a step further by appended
 and imputing new synthetic records to the data. This can also work for
 cross-sectional studies.
 
@@ -24,7 +24,7 @@ people are followed over time. People who leave the study are called
 from those who remain, thus providing an opportunity for bias. This
 section assumes that the drop-out mechanism is MAR and that the
 parameters of the complete-data model and the response mechanism are
-distinct (cf. Section \[sec:ignorable\]). Techniques for nonignorable
+distinct (cf. Section \@ref(sec:ignorable)). Techniques for nonignorable
 drop-outs are described by @LITTLE1995, @DIGGLE2002, @DANIELS2008 and
 @WU2010.
 
@@ -84,7 +84,7 @@ $n$&959&&596&&109&&254\
  Mild&153&(16.2)&101&(16.9)&16&(14.7)&36&(15.0)\
  Severe&65&(6.9)&21&(3.5)&15&(13.8)&29&(12.1)\
 
-Table \[tab:pops\] lists some of the major differences between the three
+Table \@ref(tab:pops) lists some of the major differences between the three
 response groups. Compared to the postal and nonresponders, the full
 response group consists of more girls, contains more Dutch children, has
 higher educational and social economic levels and has fewer handicaps.
@@ -114,7 +114,7 @@ data that is used for all analyses.
 
 For each outcome, the investigator created a list of potentially
 relevant predictors according to the predictor selection strategy set
-forth in Section \[sec:predictors\]. In total, this resulted in a set of
+forth in Section \@ref(sec:predictors). In total, this resulted in a set of
 85 unique variables. Only four of these were completely observed for all
 959 children. Moreover, the information provided by the investigators
 was coded (in Microsoft Excel) as an $85 \times 85$ predictor matrix
@@ -125,7 +125,7 @@ parts signal the column variables that are used to impute the row
 variable.<span
 data-label="fig:POPSpredictor">](ch10_predictormatrix.pdf){width="\textwidth"}
 
-Figure \[fig:POPSpredictor\] shows a miniature version of the predictor
+Figure \@ref(fig:POPSpredictor) shows a miniature version of the predictor
 matrix. The dark cell indicates that the column variable is used to
 impute the row variable. Note the four complete variables with rows
 containing only zeroes. There are three blocks of variables. The first
@@ -178,7 +178,7 @@ data-label="fig:popstrace">](fig/ch10_poptracefig-1){width="\maxwidth"}
 The number of iterations is set to 20 because the trace lines from the
 MICE algorithm show strong initial trends and slow mixing.
 
-Figure \[fig:popstrace\] plots the trace lines of the binary variable
+Figure \@ref(fig:popstrace) plots the trace lines of the binary variable
 `a10u`, an indicator of visual disabilities.
 The behavior of these trace lines looks suspect, especially for
 `a10u`. The mean of
@@ -193,14 +193,14 @@ only 1.5%, so 90% is clearly beyond any reasonable value.
 
 In addition, `iq` and
 `coping` move into remote territories. Figure
-\[fig:popsbwplot1\] illustrates that the imputed values for
+\@ref(fig:popsbwplot1) illustrates that the imputed values for
 `iq` appear unreasonably low, whereas for
 `coping` they appear unreasonably high. What
 is happening here?
 
 ![Distributions (observed and imputed) of IQ and coping score at 19
 years in the POPS study for the imputation model in Figure
-\[fig:POPSpredictor\].<span
+\@ref(fig:POPSpredictor).<span
 data-label="fig:popsbwplot1">](fig/ch10_popsbwplot1-1){width="\maxwidth"}
 
 The phenomenon we see illustrates a weakness (or feature) of the MICE
@@ -230,7 +230,7 @@ impute all outcomes simultaneously. This removes the risk of
 artificially inflating the relations among outcomes, and is a promising
 alternative. Finally, the approach we follow here is to simplify the
 imputation model by removing the gray block in the lower-right part of
-Figure \[fig:POPSpredictor\]. The relation between the outcomes would
+Figure \@ref(fig:POPSpredictor). The relation between the outcomes would
 then only be maintained through their relation with predictors measured
 at other time points. It is easy to change and rerun the model as:
 
@@ -247,14 +247,14 @@ iterations.
 years in the POPS study for the simplified imputation model.<span
 data-label="fig:popsbwplot2">](fig/ch10_popsbwplot2-1){width="\maxwidth"}
 
-Figure \[fig:popsbwplot2\] displays the distributions of IQ and coping.
+Figure \@ref(fig:popsbwplot2) displays the distributions of IQ and coping.
 The nonrespondents have slightly lower IQ scores, but not as extreme as
-in Figure \[fig:popsbwplot1\]. There are now hardly any differences in
+in Figure \@ref(fig:popsbwplot1). There are now hardly any differences in
 coping.
 
 ### Results
 
-Table \[tab:popsprev\] provides estimates of the percentage of three
+Table \@ref(tab:popsprev) provides estimates of the percentage of three
 health problems, both uncorrected and corrected for selective drop-out.
 As expected, all estimates are adjusted upward. Note that the prevalence
 of visual problems tripled to 4.7% after correction. While this increase
@@ -282,11 +282,11 @@ Many studies are plagued by selective drop-out. Multiple imputation
 provides an intuitive way to adjust for drop-out, thus enabling
 estimation of statistics relative to the entire cohort rather than the
 subgroup. The method assumes MAR. The formulation of the imputation
-model requires some care. Section \[sec:popsmodel\] outlines a simple
+model requires some care. Section \@ref(sec:popsmodel) outlines a simple
 strategy to specify the predictor matrix to fit an imputation model for
 multiple uses. This methodology is easily adapted to other studies.
 
-Section \[sec:degenerate\] illustrates that multiple imputation is not
+Section \@ref(sec:degenerate) illustrates that multiple imputation is not
 without dangers. The imputations produced by the initial model were far
 off, which underlines the importance of diagnostic evaluation of the
 imputed data. A disadvantage of the approach taken to alleviate the
@@ -294,7 +294,7 @@ problem is that it preserves the relations between the variables in Set
 3 only insofar as they are related through their common predictors.
 These relations may thus be attenuated. Some alternatives were
 highlighted, and an especially promising one is to impute blocks of
-variables (cf. Section \[sec:blockvar\]). Whatever is done, it is
+variables (cf. Section \@ref(sec:blockvar)). Whatever is done, it is
 important to diagnose aberrant algorithmic behavior, and decide on an
 appropriate strategy to prevent it given the scientific questions at
 hand.
@@ -397,7 +397,7 @@ Netherlands.
   regions by age. Numbers are column percentages. Source: Fifth Dutch
   Growth Study [@SCHONBECK2013].<span data-label="tab:cbs">
 
-Table \[tab:cbs\] compares the proportion of children within five
+Table \@ref(tab:cbs) compares the proportion of children within five
 geographical regions in the Netherlands per January 1, 2010, with the
 proportions in the sample. Geography is known to be related to height,
 with the 20-year-olds in the North being about 3cm taller in the North
@@ -428,7 +428,7 @@ East.
 
 The idea is to augment the sample in such a way that it will be
 nationally representative, followed by multiple imputation of the
-outcomes of interest. Table \[tab:vlgaugment\] lists the number of the
+outcomes of interest. Table \@ref(tab:vlgaugment) lists the number of the
 measured children. The table also reports the number of children needed
 to bring the sample close to the population distribution.
 
@@ -481,7 +481,7 @@ Growth Study ($n=10030$).<span
 data-label="fig:sdsbyregion">](fig/ch10_vlgfigsdsbyregion-1){width="\maxwidth"}
 
 Regional differences in height are not constant across age, and tend to
-be more pronounced in older children. Figure \[fig:sdsbyregion\]
+be more pronounced in older children. Figure \@ref(fig:sdsbyregion)
 displays mean height standard deviation scores by age and region.
 Children from the North are generally the tallest, while those from the
 South are shortest, but the difference varies somewhat with age.
@@ -514,7 +514,7 @@ and `City`, in the observed data ($n=10030$)
 ($n=12005$).<span
 data-label="fig:vlginspect">](fig/ch10_vlginspect-1){width="\maxwidth"}
 
-Figure \[fig:vlginspect\] displays mean height SDS per year for regions
+Figure \@ref(fig:vlginspect) displays mean height SDS per year for regions
 `North` and `City`
 in the original and augmented data. The 10 imputed datasets show
 patterns in mean height SDS similar to those in the observed data.
@@ -534,7 +534,7 @@ sample ($n=10030$) and 10 augmented samples ($n=12005$) that correct for
 the nonresponse.<span
 data-label="fig:finalheight">](fig/ch10_vlgplotfinalheight-1){width="\maxwidth"}
 
-Figure \[fig:finalheight\] displays the mean of fitted height
+Figure \@ref(fig:finalheight) displays the mean of fitted height
 distribution of the original and the 10 imputed datasets. Since children
 from the shorter population in the South are overrepresented, the
 estimates of final height from the sample (183.6cm for boys, 170.6cm for
@@ -573,12 +573,12 @@ compare the methodology to traditional weighting approaches.
 
 ## Exercises {#ex:ch:selection}
 
-1.  *90th centile*. Repeat the analysis in Section \[sec:finalheight\]
+1.  *90th centile*. Repeat the analysis in Section \@ref(sec:finalheight)
     for final height. Study the effect of omitting the interaction
     effect from the imputation model. Are the effects on the 90th
     centile the same as for the mean?
 
-2.  *How many records?* Section \[sec:augmentsample\] describes an
+2.  *How many records?* Section \@ref(sec:augmentsample) describes an
     application in which incomplete records are appended to create a
     representative sample. Develop a general strategy to determine the
     number of records needed to append.

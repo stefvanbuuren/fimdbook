@@ -35,7 +35,7 @@ In the long format, this dataset looks like
 
 Note that the concepts of long and wide are general, and also apply to
 cross-sectional data. For example, we have seen the long format before
-in Section \[sec:badworkflowb\], where it referred to stacked imputed
+in Section \@ref(sec:badworkflowb), where it referred to stacked imputed
 data that was produced by the `complete()`
 function. The basic idea is the same.
 
@@ -73,21 +73,21 @@ Multiple imputation is somewhat more convenient in the wide format.
 Apart from the fact that the columns are ordered in time, there is
 nothing special about the imputation problem. We may thus apply
 techniques for single level data to longitudinal data. Section
-\[sec:fdd\] discusses an imputation technique in the wide format in a
+\@ref(sec:fdd) discusses an imputation technique in the wide format in a
 clinical trial application with the goal of performing a statistical
 analysis according to the intention to treat (ITT) principle. The
 longitudinal character of the data helped specify the imputation model.
 
 Multiple imputation of the longitudinal data in the long form can be
-done by multilevel imputation techniques. See Chapter \[ch:multilevel\]
-for an overview. Section \[sec:rastering\] discusses multiple imputation
+done by multilevel imputation techniques. See Chapter \@ref(ch:multilevel)
+for an overview. Section \@ref(sec:rastering) discusses multiple imputation
 in the long format. The application defines a common time raster for all
 persons. Multiple imputations are drawn for each raster point. The
 resulting imputed datasets can be converted to, and analyzed in, the
 wide format if desired. This approach is a more principled way to deal
 with the information loss problem discussed previously. The procedure
 aligns times to a common raster, hence the name *time raster imputation*
-(cf. Section \[sec:rastering\]).
+(cf. Section \@ref(sec:rastering)).
 
 ## SE Fireworks Disaster Study {#sec:fdd}
 
@@ -129,7 +129,7 @@ if there was no remaining distress associated with the trauma memory, as
 indicated by a self-reported Subjective Units of Disturbance Scale
 (SUDS) of 0 (EMDR condition only).
 
-\[fdd:objective\] The objective of the study was to answer the following
+\@ref(fdd:objective) The objective of the study was to answer the following
 questions:
 
 -   Is one of these treatments more effective in reducing PTSD symptoms
@@ -173,7 +173,7 @@ questions:
   subjects, children and parents, randomized to EMDR or CBT.<span
   data-label="tab:fdddata">
 
-Table \[tab:fdddata\] contains the outcome data of all subjects. The
+Table \@ref(tab:fdddata) contains the outcome data of all subjects. The
 columns labeled $Y^c_t$ contain the child data, and the columns labeled
 $Y^p_t$ contain the parent data at time $t=(1,2,3)$. Children under the
 age of 6 years did not fill in the child form, so their scores are
@@ -184,7 +184,7 @@ follow the protocol. The majority (11) of this group did not receive the
 therapy, but still provided outcome measurements. The three others
 received therapy, but failed to provide outcome measures. The combined
 group is labeled as “drop-out,” while the other group is called the
-“completers” or “per-protocol” group. Figure \[fig:fddpattern\] shows
+“completers” or “per-protocol” group. Figure \@ref(fig:fddpattern) shows
 the missing data patterns for both groups.
 
 ![Missing data patterns for the “per-protocol” group (left) and the
@@ -223,10 +223,10 @@ problem, and thus to enable ITT analyses.
 A difficulty in setting up the imputation model in the SE Fireworks
 Disaster Study is the large number of outcome variables relative to the
 number of cases. Even though the analysis of the data in Table
-\[tab:fdddata\] is already challenging, the real dataset is more complex
+\@ref(tab:fdddata) is already challenging, the real dataset is more complex
 than this. There are six additional outcome variables (e.g., the Child
 Behavior Checklist, or CBCL), each measured over time and similarly
-structured as in Table \[tab:fdddata\]. In addition, some of the outcome
+structured as in Table \@ref(tab:fdddata). In addition, some of the outcome
 measures are to be analyzed on both the subscale level and the total
 score level. For example, the PTSD-RI has three subscales
 (intrusiveness/numbing/avoidance, fear/anxiety, and disturbances in
@@ -329,8 +329,8 @@ is sorted such that the original data with
 missing values on PTSD-RI parent form.<span
 data-label="fig:fddplotimp">](fig/ch11_fddplotimp-1){width="\maxwidth"}
 
-Figure \[fig:fddplotimp\] plots the profiles from 13 subjects with a
-missing score on $Y^p_1$, $Y^p_2$ or $Y^p_3$ in Table \[tab:fdddata\].
+Figure \@ref(fig:fddplotimp) plots the profiles from 13 subjects with a
+missing score on $Y^p_1$, $Y^p_2$ or $Y^p_3$ in Table \@ref(tab:fdddata).
 Some profiles are partially imputed. Examples are subjects 7 (missing
 T1) and 37 (missing T2). Other profiles are missing entirely, and are
 thus completely imputed. Examples are subjects 2 and 43. Similar plots
@@ -350,7 +350,7 @@ in group $k$ (CBT or EMDR) at time point $t$ ($t=1,\dots,n_t$). In the
 SE Fireworks Disaster Study data, we have $n_k=26$ and $n_t=3$. All
 subjects have been measures at the same time points. The model
 represents the time trend in each group by a linear and quadratic trend
-as $$\label{eq:1}
+as $$(\#eq:1)
   y_{ikt}=\beta_{k0}+t \beta_{k1} + t^2 \beta_{k2} + e_{ikt}$$ where the
 subject residual $e_i$ has an arbitrary covariance $3\times
 3$ matrix $\Sigma$ that is common to both groups. This model has six
@@ -424,7 +424,8 @@ data-label="fig:fddplotparent">](fig/ch11_fddplotparent-1){width="\maxwidth"}
 groups.<span
 data-label="fig:fddplotchild">](fig/ch11_fddplotchild-1){width="\maxwidth"}
 
-Figures \[fig:fddplotparent\] and \[fig:fddplotchild\] show the
+Figures \@ref(fig:fddplotparent) 
+and \@ref(fig:fddplotchild) show the
 development of the mean level of PTSD complaint according to the
 PTSD-RI. All curves display a strong downward trend between start of
 treatment (T1) and end of treatment (T2), which is presumably caused by
@@ -529,7 +530,7 @@ can plot the measurements against age, and study the individual track.
 The BMI SDS trajectory may provide key insights into development of
 overweight and obesity.
 
-Figure \[fig:trajectories\] provides an overview of five theoretical BMI
+Figure \@ref(fig:trajectories) provides an overview of five theoretical BMI
 SDS trajectories that the person might have followed. These are:
 
 1.  *Long critical period*. A small but persistent centile crossing
@@ -626,13 +627,13 @@ entry is equal to 1, and all remaining elements are zero. In the data
 example, this occurs in the first record, at birth. A small constant of
 0.0001 was added to the last break age. This was done to accommodate for
 a pseudo time point with an exact age of 29years, which will be inserted
-later in Section \[sec:tbcimpute\].
+later in Section \@ref(sec:tbcimpute).
 
 The measurements $y_i$ for person $i$ are modeled by the linear mixed
 effects model
 
 $$\begin{aligned}
-y_i & = & X_i(\beta + \beta_i) + \epsilon_i \label{eq:bs} \\
+y_i & = & X_i(\beta + \beta_i) + \epsilon_i (\#eq:bs) \\
     & = & X_i\gamma_i + \epsilon_i \nonumber\end{aligned}$$
 
 where $\gamma_i=\beta + \beta_i$. The $k\times 1$ column vector $\beta$
@@ -725,7 +726,7 @@ child has very few measurements, the estimates will be close to the
 global mean. When taken together, the values $\hat\gamma_i$ form the
 broken stick.
 
-Figure \[fig:tbcplotstick\] displays Weight SDS against age for six
+Figure \@ref(fig:tbcplotstick) displays Weight SDS against age for six
 selected individuals. Child 1259 has a fairly common pattern. This child
 starts off near the average, but then steadily declines, apart from a
 blip around 10months. Child 2447 is fairly constant, but had a major
@@ -739,10 +740,10 @@ between birth and puberty. Child 8046 is aberrant with an unusually
 large number of weight measurements around the age of 8 days, but was
 subsequently not measured for about 1.5 years.
 
-Figure \[fig:tbcplotstick\] also displays the individual broken stick
+Figure \@ref(fig:tbcplotstick) also displays the individual broken stick
 estimates for each outcome as a line. Observe that the model follows the
 individual data points very well. analyzed these estimates by the
-methods described at the end of Section \[sec:tbcquestion\], and found
+methods described at the end of Section \@ref(sec:tbcquestion), and found
 that the periods 2y–6y and 10y–18y were most relevant for developing
 later overweight.
 
@@ -841,7 +842,7 @@ These statements specify that only `hgt.z`,
 need to be imputed. For these three outcomes we request the elementary
 imputation function `mice.impute.2l.pan()`,
 which is designed to impute data with two levels. See Section
-\[sec:multioutcome\] for more detail.
+\@ref(sec:multioutcome) for more detail.
 
 `  `\
 `   `\
@@ -859,12 +860,12 @@ variable `id` as the class variable. The
 statement `pred[Y, sex] <- 1` specifies
 `sex` as a fixed effect, as usual, while
 `pred[Y, paste(x, 1:9, sep = )] <- 2` sets the
-$B$-spline basis as a random effect, as in Equation \[eq:bs\]. The
+$B$-spline basis as a random effect, as in Equation \@ref(eq:bs). The
 remaining three statement specify the $Y_2$ is a random effects
 predictor of $Y_1$ (and vice versa), and both $Y_1$ and $Y_2$ are random
 effects predictors of $Y_3$. Note that $Y_3$ (BMI SDS) is not a
 predictor of $Y_1$ or $Y_2$ in order to prevent the type of convergence
-problems explained in Section \[sec:convergence\]. Note also that age is
+problems explained in Section \@ref(sec:convergence). Note also that age is
 not included in order to evade duplication with its $B$-spline coding.
 In summary, there are 12 random effects (9 for age and 3 for the
 outcomes), one class variable, and one fixed effect.
@@ -880,12 +881,12 @@ this book. In the year 2012 the same problem still took over 10 hours,
 so there is certainly progress.
 
 ![Ten multiply imputed trajectories of weight SDS for the same persons
-as in Figure \[fig:tbcplotstick\] (in red). Also shown are the data
+as in Figure \@ref(fig:tbcplotstick) (in red). Also shown are the data
 points (in gray).<span
 data-label="fig:tbcplotimp">](fig/ch11_tbcplotimp-1){width="\maxwidth"}
 
-Figure \[fig:tbcplotimp\] displays ten multiply imputed trajectories for
-the six persons displayed in Figure \[fig:tbcplotstick\]. The general
+Figure \@ref(fig:tbcplotimp) displays ten multiply imputed trajectories for
+the six persons displayed in Figure \@ref(fig:tbcplotstick). The general
 impression is that the imputed trajectory follows the data quite well.
 At ages where the are many data points (e.g., in period 0d–1y in person
 1259 or in period 8d–1y in person 7460) the curves are quite close,
@@ -904,7 +905,7 @@ were observed, so the upper-right panel contains no observed data.<span
 data-label="fig:tbchw">](fig/ch11_tbchw-1){width="\maxwidth"}
 
 It is also interesting to study whether imputation preserves the
-relation between height, weight and BMI. Figure \[fig:tbchw\] is a
+relation between height, weight and BMI. Figure \@ref(fig:tbchw) is a
 scattergram of height SDS and weight SDS split according to age that
 superposes the imputations on the observed data in the period after the
 break point. In general the relation in the observed data is preserved
@@ -916,7 +917,7 @@ these plots all behave as one would expect.
 
 ### Complete-data model
 
-Table \[tab:tbcresult\] provides a comparison of the mean changes
+Table \@ref(tab:tbcresult) provides a comparison of the mean changes
 observed under the broken stick model and under time raster imputation.
 The estimates are very similar, so the mean change estimated under both
 methods is similar. The $p$-values in the broken stick method are
@@ -962,7 +963,7 @@ imputations.
   triangle) and raster imputations (upper triangle) for the Terneuzen
   Birth Cohort ($n=1745$).<span data-label="tab:tbccorr">
 
-Table \[tab:tbccorr\] provides the age-to-age correlation matrix of BMI
+Table \@ref(tab:tbccorr) provides the age-to-age correlation matrix of BMI
 SDS estimated from 1745 cases from the Terneuzen Birth Cohort. Apart
 from the peculiar values for the age of 8days, the correlations decrease
 as the period between time points increases. The values for the broken
@@ -1058,7 +1059,7 @@ preferably two or more, measurements per period.
 
     -   Calculate the broken stick estimates for each child using
         8, 10, 12 and 14 as the break ages. Make a graph like
-        Figure \[fig:tbcplotstick\]. Each data point has exactly one
+        Figure \@ref(fig:tbcplotstick). Each data point has exactly one
         parameter, so the fit could be perfect in principle. Why doesn’t
         that happen? Which two children show the largest discrepancies
         between the data and the model?
@@ -1073,8 +1074,8 @@ preferably two or more, measurements per period.
         Think of a simpler form of multilevel analysis.
 
     -   Multiply impute the data according to the method used in
-        Section \[sec:tbcimpute\], and produce a display like Figure
-        \[fig:tbcplotimp\] for children 1, 7, 20, 21, 22 and 24.
+        Section \@ref(sec:tbcimpute), and produce a display like Figure
+        \@ref(fig:tbcplotimp) for children 1, 7, 20, 21, 22 and 24.
 
     -   Compare the age-to-age correlation matrix from the imputed
         data to that of the original data. Are these different? How?

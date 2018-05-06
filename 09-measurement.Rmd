@@ -8,12 +8,12 @@
 
 This chapter contains three case studies using real data. The common
 theme is that all have “problems with the columns.” Section
-\[sec:toomany\] illustrates a number of useful steps to take when
+\@ref(sec:toomany) illustrates a number of useful steps to take when
 confronted with a dataset that has an overwhelming number of variables.
-Section \[sec:sensitivity\] continues with the same data, and shows how
-a simple sensitivity analysis can be done. Section \[sec:prevalence\]
+Section \@ref(sec:sensitivity) continues with the same data, and shows how
+a simple sensitivity analysis can be done. Section \@ref(sec:prevalence)
 illustrates how multiple imputation can be used to estimate overweight
-prevalence from self-reported data. Section \[sec:codingsystems\] shows
+prevalence from self-reported data. Section \@ref(sec:codingsystems) shows
 a way to do a sensible analysis on data that are incomparable.
 
 ## Too many columns {#sec:toomany}
@@ -197,7 +197,7 @@ the variable of primary interest, is 0.97. Including
 `syst` into the imputation model for
 `rrsyst` will ruin the imputations. The “as
 is” option is dangerous, and shares some of the same perils of the
-indicator method (cf. Section \[sec:indicator\]). The message is that
+indicator method (cf. Section \@ref(sec:indicator)). The message is that
 variables that are 100% complete deserve appropriate attention.
 
 After a first round of screening, I found that 57 of the 87 complete
@@ -229,11 +229,11 @@ Variables with higher influx depend strongly on the imputation
 model.<span
 data-label="fig:c85influx">](fig/ch9_c85flux-1){width="\maxwidth"}
 
-Figure \[fig:c85influx\] is the influx-outflux pattern of Leiden 85+
+Figure \@ref(fig:c85influx) is the influx-outflux pattern of Leiden 85+
 Cohort data. The influx of a variable quantifies how well its missing
 data connect to the observed data on other variables. The outflux of a
 variable quantifies how well its observed data connect to the missing
-data on other variables. See Section \[sec:flux\] for more details.
+data on other variables. See Section \@ref(sec:flux) for more details.
 Though the display could obviously benefit from a better label-placing
 strategy, we can see three groups. All points are relatively close to
 the diagonal, which indicates that influx and outflux are balanced.
@@ -391,7 +391,7 @@ This outlist contains 28 variables.
 
 The `mice` package contains the function
 `quickpred()` that implements the predictor
-selection strategy of Section \[sec:predictors\]. In order to apply this
+selection strategy of Section \@ref(sec:predictors). In order to apply this
 strategy to the Leiden 85+ Cohort data, I first deleted the variables on
 three of the four outlists created in the previous sections.
 
@@ -441,7 +441,7 @@ It is possible to influence the number of predictors by altering the
 values of `mincor` and
 `minpuc` in
 `quickpred()`. A number of predictors of 15–25
-is about right (cf. Section \[sec:predictors\]), so I decided to accept
+is about right (cf. Section \@ref(sec:predictors)), so I decided to accept
 this predictor matrix. The number of predictors for systolic and
 diastolic BP are
 
@@ -473,9 +473,9 @@ Everything is now ready to impute the data as
 
 Thanks to the smaller dataset and the more compact imputation model,
 this code runs about 50 times faster than “blind imputation” as
-practiced in Section \[sec:toomany\]. More importantly, the new solution
+practiced in Section \@ref(sec:toomany). More importantly, the new solution
 is much better. To illustrate the latter, take a look at Figure
-\[fig:blindvsquickpred\].
+\@ref(fig:blindvsquickpred).
 
 ![Scatterplot of systolic and diastolic blood pressure from the first
 imputation. The left-hand-side plot was obtained after just running
@@ -526,7 +526,7 @@ calculated as
 
 where `dead` is coded such that “1” means
 death. The `nelsonaalen()` function is part of
-`mice`. Table \[tab:c85hazardcor\] lists the
+`mice`. Table \@ref(tab:c85hazardcor) lists the
 correlations beween several key variables. The correlation between
 $H_0(T)$ and $T$ is almost equal to 1, so for these data it matters
 little whether we take $H_0(T)$ or $T$ as the predictor. The high
@@ -600,9 +600,9 @@ needs.
 
 ## Sensitivity analysis {#sec:sensitivity}
 
-The imputations created in Section \[sec:toomany\] are based on the
-assumption that the data are MAR (cf. Sections \[sec:MCAR\] and
-\[sec:MCARreprise\]). While this is often a good starting assumption, it
+The imputations created in Section \@ref(sec:toomany) are based on the
+assumption that the data are MAR (cf. Sections \@ref(sec:MCAR) and
+\@ref(sec:MCARreprise)). While this is often a good starting assumption, it
 may not be realistic for the data at hand. When the data are not MAR, we
 can follow two strategies to obtain plausible imputations. The first
 strategy is to make the data “more MAR.” In particular, this strategy
@@ -612,7 +612,7 @@ generate imputations conditional on that information. The second
 strategy is to perform a sensitivity analysis. The goal of the
 sensitivity analysis is to explore the result of the analysis under
 alternative scenarios for the missing data. See Section
-\[sec:whenignorable\] for a more elaborate discussion of these
+\@ref(sec:whenignorable) for a more elaborate discussion of these
 strategies.
 
 This section explores sensitivity analysis for the Leiden 85+ Cohort
@@ -630,7 +630,7 @@ information beyond the data.
 ### Causes and consequences of missing data {#sec:c85causes}
 
 We continue with the Leiden 85+ Cohort data described in Section
-\[sec:toomany\]. The objective is to estimate the effect of blood
+\@ref(sec:toomany). The objective is to estimate the effect of blood
 pressure (BP) on mortality. BP was not measured for 126 individuals (121
 systolic, 126 diastolic).
 
@@ -640,7 +640,7 @@ the group with observed BP measures (gray) and the group
 with missing BP measures (red).<span
 data-label="fig:c85km">](fig/ch9_c85km-1){width="\maxwidth"}
 
-The missingness is strongly related to survival. Figure \[fig:c85km\]
+The missingness is strongly related to survival. Figure \@ref(fig:c85km)
 displays the Kaplan-Meier survival curves for those with ($n=835$) and
 without ($n=121$) a measurement of systolic BP (SBP). BP measurement was
 missing for a variety of reasons. Sometimes there was a time constraint.
@@ -666,7 +666,7 @@ History of hypertension&$p=0.06$\
 No&&77&85\
 Yes&&23&15\
 
-Table \[tab:c85rdist\] indicates that BP was measured less frequently
+Table \@ref(tab:c85rdist) indicates that BP was measured less frequently
 for very old persons and for persons with health problems. Also, BP was
 measured more often if the BP was too high, for example if the
 respondent indicated a previous diagnosis of hypertension, or if the
@@ -690,7 +690,7 @@ those over 95, were visited first.
   proportions per cell (number of cases with missing BP/total cell
   count).<span data-label="tab:c85pmiss">
 
-Table \[tab:c85pmiss\] contains the proportion of persons for which BP
+Table \@ref(tab:c85pmiss) contains the proportion of persons for which BP
 was not measured, cross-classified by three-year survival and history of
 hypertension as measured during anamnesis. Of all persons who die within
 three years and that have no history of hypertension, more than 19% have
@@ -708,7 +708,7 @@ however, we would expect more missing data from the lower BP measures.
 It is known that BP and mortality are inversely related in this age
 group, that is, lower BP is associated with higher mortality. If there
 are more missing data for those with low BP and high mortality (as in
-Table \[tab:c85pmiss\]), selection of the complete cases could blur the
+Table \@ref(tab:c85pmiss)), selection of the complete cases could blur the
 effect of BP on mortality.
 
 ### Scenarios
@@ -720,9 +720,9 @@ the missing data may also be caused by factors that have not been
 observed. In order to study the influence of such factors on the final
 inferences, let us conduct a sensitivity analysis.
 
-Section \[sec:nonignorable\] advocated the use of simple adjustments to
+Section \@ref(sec:nonignorable) advocated the use of simple adjustments to
 the imputed data as a way to perform sensitivity analysis. Table
-\[tab:delta\] lists possible values for an offset $\delta$, together
+\@ref(tab:delta) lists possible values for an offset $\delta$, together
 with an interpretation whether the value would be (too) small or (too)
 large. The next section uses the following range for $\delta$: 0mmHg
 (MCAR, too small), $-$5mmHg (small), $-$10mmHg (large), $-$15mmHg
@@ -768,7 +768,7 @@ $\delta$-adjustment for just one variable will affect many.
   imputations is $m = 5$.<span data-label="tab:c85diff">
 
 The mean of the observed systolic blood pressures is equal to 152.9mmHg.
-Table \[tab:c85diff\] provides the differences in means between the
+Table \@ref(tab:c85diff) provides the differences in means between the
 imputed and observed data as a function of $\delta$. For $\delta = 0$,
 i.e., under MAR, we find that the imputations are on average 8.2mmHg
 lower than the observed blood pressure, which is in line with the
@@ -837,7 +837,7 @@ rrrrrrr $\delta$ & &\
 \
 CCA&1.76&(1.36–2.28)&1.48&(1.19–1.84)&0.89&(0.51–1.57)\
 
-Table \[tab:c85sensresults\] provides the hazard ratio estimates under
+Table \@ref(tab:c85sensresults) provides the hazard ratio estimates under
 the different scenarios for three SBP groups. A risk ratio of 1.76 means
 that the mortality risk (after correction for sex and age) in the group
 “&lt;125mmHg” is 1.76 times the risk of the reference group
@@ -859,7 +859,7 @@ informal, simple and direct method to create imputations under
 nonignorable models by simply deducting some amount from the
 imputations.
 
-Section \[sec:nonignorableoverview\] discussed shift, scale and shape
+Section \@ref(sec:nonignorableoverview) discussed shift, scale and shape
 parameters for nonignorable models. We only used a shift parameter here,
 which suited our purposes in the light of what we knew about the causes
 of the missing data. In other applications, scale or shape parameters
@@ -886,14 +886,14 @@ data-label="fig:plotbmi">](fig/ch9_plotbmi-1){width="\maxwidth"}
 Body Mass Index (BMI) is calculated from height and weight as
 $\mathrm{kg}/\mathrm{m}^2$. For BMI both biases operate in the same
 direction, so any self-reporting biases are amplified in BMI. Figure
-\[fig:plotbmi\] is drawn from data of @KRUL2010. Self-reported BMI is on
+\@ref(fig:plotbmi) is drawn from data of @KRUL2010. Self-reported BMI is on
 average 1–2$\mathrm{kg}/\mathrm{m}^2$ lower than measured BMI.
 
 BMI values can be categorized into underweight (BMI $< 18.5$), normal
 ($18.5\leq \mathrm{BMI}<25$), overweight ($25\leq
 \mathrm{BMI}<30$), and obese ($\mathrm{BMI}\geq 30$). Self-reported BMI
 may assign subjects to a category that is too low. In Figure
-\[fig:plotbmi\] persons in the white area labeled “1” are obese
+\@ref(fig:plotbmi) persons in the white area labeled “1” are obese
 according to both self-reported and measured BMI. Persons in the white
 area labeled “3” are non-obese. The shaded areas represent disagreement
 between measured and self-reported obesity. The shaded area “4” are
@@ -928,7 +928,8 @@ combined region 2 + 3b will have fewer cases than region 4a. Thiscauses
 a downward bias in the prevalence estimate.<span
 data-label="fig:plotexplain">](fig/ch9_plotexplain-1){width="\maxwidth"}
 
-Figure \[fig:plotexplain\] plots the data of Figure \[fig:plotbmi\] in a
+Figure \@ref(fig:plotexplain) plots 
+the data of Figure \@ref(fig:plotbmi) in a
 different way. The figure is centered around the BMI of
 30$\mathrm{kg}/\mathrm{m}^2$. The two dashed lines divide the area into
 four quadrants. Quadrant 1 contains the cases that are obese according
@@ -936,10 +937,11 @@ to both BMI values. Quadrant 3 contains the cases that are classified as
 non-obese according to both. Quadrant 2 holds the subjects that are
 classified as obese according to self-report, but not according to
 measured BMI. Quadrant 4 has the opposite interpretation. The area and
-quadrant numbers used in Figures \[fig:plotbmi\] and \[fig:plotexplain\]
+quadrant numbers used in Figures \@ref(fig:plotbmi) 
+and \@ref(fig:plotexplain)
 correspond to identical subdivisions in the data.
 
-The “true obese” in Figure \[fig:plotexplain\] lie in quadrants 1 and 4.
+The “true obese” in Figure \@ref(fig:plotexplain) lie in quadrants 1 and 4.
 The obese according to self-report are located in quadrants 1 and 2.
 Observe that the number of cases in quadrant 2 is smaller than in
 quadrant 4, a result of the systematic bias that is observed in humans.
@@ -991,7 +993,7 @@ high, but they are systematically biased in general.
 *Note:* The survey data are representative for the
 population of interest, possibly after correction for design factors.
 
-Table \[tab:srcvars\] lists the six variable names needed in this
+Table \@ref(tab:srcvars) lists the six variable names needed in this
 application. Let us assume that we have two data sources available:
 
 -   The *calibration dataset* contains $n_c$ subjects for which both
@@ -1033,13 +1035,13 @@ correspond to 803 observations from the survey sample (where
 `hm` and `wm` were
 not measured).
 
-We apply predictive mean matching (cf. Section \[sec:pmm\]) to impute
+We apply predictive mean matching (cf. Section \@ref(sec:pmm)) to impute
 `hm` and `wm` in the
 803 records from the survey data. The number of imputations $m=10$. The
 complete-data estimates are calculated on each imputed dataset and
 combined using Rubin’s pooling rules to obtain prevalence rates and the
-associated confidence intervals as in Sections \[sec:threesources\] and
-\[sec:inference\].
+associated confidence intervals as in Sections \@ref(sec:threesources) and
+\@ref(sec:inference).
 
 ### Application
 
@@ -1069,9 +1071,9 @@ predictor matrix is set up so that only `age`,
 dataset.<span
 data-label="fig:plotimpbmi">](fig/ch9_plotimpbmi-1){width="\maxwidth"}
 
-Figure \[fig:plotimpbmi\] is a diagnostic plot to check whether the
+Figure \@ref(fig:plotimpbmi) is a diagnostic plot to check whether the
 imputations maintain the relation between the measured and the
-self-reported data. The plot is identical to Figure \[fig:plotbmi\],
+self-reported data. The plot is identical to Figure \@ref(fig:plotbmi),
 except that the imputed data from the survey data (in red) have been
 added. Imputations have been taken from the first imputed dataset. The
 figure shows that the red and gray dots are similar in
@@ -1099,7 +1101,7 @@ Female&18–29&68&14.7&4.3&16.3 &5.7\
 \
 M & F&18–75&803&15.2&1.3&19.5 &1.5\
 
-Table \[tab:survey\] contains the prevalence estimates based on the
+Table \@ref(tab:survey) contains the prevalence estimates based on the
 survey data given for self-report and corrected for self-reporting bias.
 The estimates themselves are variable and have large standard errors. It
 is easy to infer that the size of the correction depends on age. Note
@@ -1271,9 +1273,9 @@ data-label="fig:walkingpattern1">](fig/ch9_walkingpattern-1){width="\maxwidth"}
 
 The data `Y` is a data frame with 604 rows and
 2 columns: `YA` and
-`YB`. Figure \[fig:walkingpattern1\] shows
+`YB`. Figure \@ref(fig:walkingpattern1) shows
 that the missing data pattern is unconnected (cf. Section
-\[sec:patternoverview\]), with no observations linking
+\@ref(sec:patternoverview)), with no observations linking
 `YA` to `YB`. There
 are six records that contain no data at all.
 
@@ -1324,7 +1326,7 @@ data contain no cases that have observations on both $Y_\mathrm{A}$ and
 $Y_\mathrm{B}$.<span
 data-label="fig:walkingtracenolink">](fig/ch9_walkingimpute5b-1){width="\maxwidth"}
 
-Figure \[fig:walkingtracenolink\] contains the trace plot of 50
+Figure \@ref(fig:walkingtracenolink) contains the trace plot of 50
 iterations. The traces start near zero, but then freely wander off over
 a substantial range of the correlation. In principle, the traces could
 hit values close to +1 or $-1$, but that is an extremely unlikely event.
@@ -1347,7 +1349,7 @@ between the estimates for populations A and B, despite the huge
 variation in Kendall’s $\tau$.
 
 We have now two estimates of $\hat\theta_\mathrm{AB}$ and
-$\hat\theta_\mathrm{BA}$. In particular, in Section \[sec:equating\] we
+$\hat\theta_\mathrm{BA}$. In particular, in Section \@ref(sec:equating) we
 calculated $\hat\theta_\mathrm{BA} =
 0.658$ and $\hat\theta_\mathrm{AB} = 0.807$, whereas in the present
 section the results are $\hat\theta_\mathrm{BA} = 0.253$ and
@@ -1359,7 +1361,7 @@ is which method yields results that are closer to the truth.
 
 Equating categories is equivalent to assuming that the pairs are 100%
 concordant. In that case Kendall’s $\tau$ is equal to 1. Figure
-\[fig:walkingtracenolink\] illustrates that it is extremely unlikely
+\@ref(fig:walkingtracenolink) illustrates that it is extremely unlikely
 that $\tau=1$ will happen by chance. On the other hand, the two items
 look very similar, so Kendall’s $\tau$ could be high on that basis. In
 order to make progress, we need to look at the data, and estimate
@@ -1382,7 +1384,7 @@ $\tau$.
 
 Suppose that item $Y_\mathrm{A}$ and $Y_\mathrm{A}$ had both been
 administered to an external sample, called sample E. Table
-\[tab:walkingcontingency\] contains the contingency table of
+\@ref(tab:walkingcontingency) contains the contingency table of
 $Y_\mathrm{A}$ and $Y_\mathrm{B}$ in sample E, taken from
 @VANBUUREN2005. Although there is a strong relation between
 $Y_\mathrm{A}$ and $Y_\mathrm{B}$, the contingency table is far from
@@ -1416,7 +1418,7 @@ data-label="fig:walkingpattern2">](fig/ch9_walkingimpute5d-1){width="\maxwidth"}
 
 The combined data are available in
 `mice` as the dataset
-`walking`. Figure \[fig:walkingpattern2\]
+`walking`. Figure \@ref(fig:walkingpattern2)
 shows the missing data pattern of the combined data. Observe that
 `YA` and `YB` are
 now connected by 290 records from the bridge study on sample E. We
@@ -1463,7 +1465,7 @@ data are linked by the bridge study.<span
 data-label="fig:walkingtracelink">](fig/ch9_walkingimpute7b-1){width="\maxwidth"}
 
 The behavior of the trace plot is very different now (cf. Figure
-\[fig:walkingtracelink\]). After the first few iterations, the trace
+\@ref(fig:walkingtracelink)). After the first few iterations, the trace
 lines consistently move around a value of approximately 0.53, with a
 fairly small range. Thus, after five iterations, the conditional
 distributions defined by sample E have percolated into the imputations
@@ -1517,11 +1519,11 @@ without covariates (iteration 1–20), and with covariates age and sex as
 part of the imputation model (iterations 21–40).<span
 data-label="fig:walkingthetaAB">](fig/ch9_walkingplotthetaAB-1){width="\maxwidth"}
 
-Figure \[fig:walkingthetaAB\] plots the traces of MICE algorithm, where
+Figure \@ref(fig:walkingthetaAB) plots the traces of MICE algorithm, where
 we calculated $\theta_\mathrm{AB}$, the proportion of sample A in
 category 0 of item B. Without covariates, the proportion is
 approximately 0.587. Under equating, this proportion was found to be
-equal to 0.807 (cf.Section \[sec:equating\]). The difference between the
+equal to 0.807 (cf.Section \@ref(sec:equating)). The difference between the
 old (0.807) and the new (0.587) estimate is dramatic. After adding age
 and sex to the imputation model, $\theta_\mathrm{AB}$ drops further to
 about 0.534, close to $\theta_\mathrm{BB}$, the estimate for population
@@ -1542,7 +1544,7 @@ B (0.497).
   respectively. MI-multiple imputation.<span
   data-label="tab:walkingresults">
 
-Table \[tab:walkingresults\] summarizes the estimates from the four
+Table \@ref(tab:walkingresults) summarizes the estimates from the four
 analyses. Large differences are found between population A and B when we
 simply assume that the four categories of both items are identical
 (simple equating). In this case, population A appears much healthier by
@@ -1630,8 +1632,8 @@ explored.
     solution do you prefer? Why?
 
 4.  *Heterogeneity*. Kendall’s $\tau$ in the source E is 0.57 (cf.
-    Section \[sec:untenable\]). The average of the sampler is slightly
-    lower (Figure \[fig:walkingtracelink\]). Adapt the
+    Section \@ref(sec:untenable)). The average of the sampler is slightly
+    lower (Figure \@ref(fig:walkingtracelink)). Adapt the
     `micemill()` function to calculate the
     $\tau$-values separately for the three sources. Which population has
     the lowest $\tau$-values?

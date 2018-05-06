@@ -6,14 +6,7 @@
 >
 > --- David J. Hand
 
-```{r external-code1, cache=FALSE}
-library(knitr)
-read_chunk('fimd.R')
-```
-
-```{r start1}
-```
-```{r init1}
+```{r init1, echo = FALSE}
 ```
 
 ## The problem of missing data {#sec:problem}
@@ -67,10 +60,9 @@ obtained as
 ```
 
 This works. For example, we may produce diagnostic plots by
-`plot(fit)` to study the quality of the model.
-In practice, it is cumbersome to supply the
-`na.action()` function each time. We can
-change the setting in `options` as
+`plot(fit)` to study the quality of the model. In practice, 
+it is cumbersome to supply the `na.action()` function each 
+time. We can change the setting in `options` as
 
 ```{r air3b}
 ```
@@ -79,20 +71,17 @@ which eliminates the error message once and for all. Users of other
 software packages like `SPSS`, `SAS` and `Stata` enjoy the “luxury” that
 this deletion option has already been set for them, so the calculations
 can progress silently. Next, we wish to plot the predicted ozone levels
-against the observed data, so we use
-`predict()` to calculate the predicted values,
-and add these to the data to prepare for plotting.
+against the observed data, so we use `predict()` to calculate the 
+predicted values, and add these to the data to prepare for plotting.
 
 ```{r air4}
 ```
 
 Argg... that doesn’t work either. The error message tells us that the
-two datasets have a different number of rows. The
-`airquality` data has 153 rows, whereas there
-are only 116 predicted values. The problem, of course, is that there are
-missing data. The `lm()` function dropped any
-incomplete rows in the data. We find the indices of the first six cases
-by
+two datasets have a different number of rows. The `airquality` data has 
+153 rows, whereas there are only 116 predicted values. The problem, 
+of course, is that there are missing data. The `lm()` function dropped any
+incomplete rows in the data. We find the indices of the first six cases by
 
 ```{r air5}
 ```
@@ -115,7 +104,7 @@ Removing the incomplete cases prior to analysis is known as
 two related functions for the subset of complete cases, `na.omit()` 
 and `complete.cases()`.
 
-Figure \@ref(fig:air9) plots the predicted against the observed values.
+Figure \@ref(fig:plotair9) plots the predicted against the observed values.
 Here we adopt the Abayomi convention for the colors [@ABAYOMI2008]:
 Blue refers to the observed part of the data, red to the
 synthetic part of the data (also called the *imputed values* or
@@ -129,11 +118,10 @@ by 37 horizontal lines.
 
 ```{r air8}
 ```
-```{r plotair9}
+
+```{r plotair9, echo=FALSE, fig.asp = 0.5, duo = TRUE, fig.cap = '(ref:plotair9)'}
 ```
-![Predicted versus measured ozone levels for the observed (left, blue)
-and missing values (right, red).<span
-data-label="fig:air9">](fig/ch1_plotair9-1){width="\maxwidth"}
+(ref:plotair9) Predicted versus measured ozone levels for the observed (left, blue) and missing values (right, red).
 
 Listwise deletion allows the calculations to proceed, but it may
 introduce additional complexities in interpretation. Let’s try to find a
@@ -405,17 +393,17 @@ $X$ and $Y$ have non-missing scores. Subsequently, the matrix of summary
 statistics are fed into a program for regression analysis, factor
 analysis or other modeling procedures.
 
-`SPSS`, `SAS` and `Stata` contain many procedures with an option for 
-pairwise deletion. In `R` we can calculate the means and correlations 
+`SPSS`, `SAS` and `Stata` contain many procedures with an option for
+pairwise deletion. In `R` we can calculate the means and correlations
 of the `airquality` data under pairwise deletion in `R` as:
 
-```{r pairwise1}
+```{r pairwise1, eval = FALSE}
 ```
 
-The standard `lm()` function does not take means and covariances as 
+The standard `lm()` function does not take means and covariances as
 input, but the `lavaan` package [@ROSSEEL2012] provides this feature:
 
-```{r pairwise2}
+```{r pairwise2, eval = FALSE}
 ```
 
 The method is simple, and appears to use all available information.
@@ -444,22 +432,20 @@ other cases.
 
 A quick fix for the missing data is to replace them by the mean. We may
 use the mode for categorical data. Suppose we want to impute the mean in
-`Ozone` and `Solar.R` of the `airquality` data. `SPSS`, `SAS` and `Stata` 
+`Ozone` and `Solar.R` of the `airquality` data. `SPSS`, `SAS` and `Stata`
 have pre-built functions that substitute the mean. This book uses the
-`R` package `mice` [@VANBUUREN2011B]. This software is a contributed 
-package that extends the functionality of `R`. Before `mice` can be 
+`R` package `mice` [@VANBUUREN2011B]. This software is a contributed
+package that extends the functionality of `R`. Before `mice` can be
 used, it must be installed. An easy way to do this is to type:
 
-```{r install}
+```{r install, eval = FALSE}
 ```
 
 which searches the Comprehensive R Archive Network (CRAN), and installs
 the requested package on the local computer. After succesful
 installation, the `mice` package can be loaded by
 
-```{r loadinit}
-```
-```{r load}
+```{r load, eval = FALSE}
 ```
 
 Imputing the mean in each variable can now be done by
@@ -467,26 +453,24 @@ Imputing the mean in each variable can now be done by
 ```{r meanimp}
 ```
 
-The argument `method = mean` specifies mean imputation, the argument 
+The argument `method = mean` specifies mean imputation, the argument
 `m = 1` requests a single imputed dataset, and `maxit = 1` sets
 the number of iterations to 1 (no iteration). The latter two options can
 be left to their defaults with essentially the same result.
 
-```{r plotmeanimp}
+```{r plotmeanimp, duo = TRUE, echo=FALSE, fig.asp = 0.5, fig.cap = '(ref:plotmeanimp)'}
 ```
-![Mean imputation of `Ozone`. Blue indicates the observed data, red 
-indicates the imputed values.
-<span data-label="fig:meanimp">](fig/ch1_plotmeanimp-1){width="\maxwidth"}
+(ref:plotmeanimp) Mean imputation of `Ozone`. Blue indicates the observed data, red indicates the imputed values.
 
 Mean imputation distorts the distribution in several ways. Figure
-\@ref(fig:meanimp) displays the distribution of
+\@ref(fig:plotmeanimp) displays the distribution of
 `Ozone` after imputation. In the figure on the
 left, the red bar at the mean stands out. Imputing the mean here
 actually creates a bimodal distribution. The standard deviation in the
 imputed data is equal to 28.7, much smaller than from the observed data
 alone, which is 33. The figure on the right-hand side shows that the
 relation between `Ozone` and `Solar.R` is distorted because of the
-imputations. The correlation drops from 0.35 in the blue points 
+imputations. The correlation drops from 0.35 in the blue points
 to 0.3 in the combined data.
 
 Mean imputation is a fast and simple fix for the missing data. However,
@@ -502,22 +486,22 @@ Regression imputation incorporates knowledge of other variables with the
 idea of producing smarter imputations. The first step involves building
 a model from the observed data. Predictions for the incomplete cases are
 then calculated under the fitted model, and serve as replacements for
-the missing data. Suppose that we predict `Ozone` by linear regression 
+the missing data. Suppose that we predict `Ozone` by linear regression
 from `Solar.R`.
 
 ```{r regimp}
 ```
-```{r plotregimp}
+
+```{r plotregimp, duo = TRUE, echo=FALSE, fig.asp=0.5, fig.cap = '(ref:plotregimp)'}
 ```
-![Regression imputation: Imputing `Ozone` from the regression line.<span
-data-label="fig:regimp">](fig/ch1_plotregimp-1){width="\maxwidth"}
+(ref:plotregimp) Regression imputation: Imputing `Ozone` from the regression line.
 
 Another possibility for regression imputation uses `mice`:
 
-```{r regimp2}
+```{r regimp2, eval = FALSE}
 ```
 
-Figure \@ref(fig:regimp) shows the result. The imputed values correspond to
+Figure \@ref(fig:plotregimp) shows the result. The imputed values correspond to
 the most likely values under the model. However, the ensemble of imputed
 values vary less than the observed values. It may be that each of the
 individual points is the best under the model, but it is very unlikely
@@ -533,7 +517,7 @@ just like mean imputation, and of the regression weights of the
 imputation model if the explanatory variables are complete. Moreover,
 the regression weights are unbiased under MAR if the factors that
 influence the missingness are part of the regression model. In the
-example this corresponds to the situation where `Solar.R` would explain 
+example this corresponds to the situation where `Solar.R` would explain
 any differences in the probability that `Ozone` is missing. On the
 other hand, correlations are biased upwards, and the variability of the
 imputed data is systematically underestimated. The degree of
@@ -559,32 +543,31 @@ for false positive and spurious relations.
 
 Stochastic regression imputation is a refinement of regression
 imputation attempts to address correlation bias by adding noise to the
-predictions. The following code imputes `Ozone` from `Solar.R` by 
+predictions. The following code imputes `Ozone` from `Solar.R` by
 stochastic regression imputation.
 
 ```{r sri}
 ```
-```{r plotsri}
+```{r plotsri, duo = TRUE, echo=FALSE, fig.asp = 0.5, fig.cap = '(ref:plotsri)'}
 ```
-![Stochastic regression imputation of `Ozone`.<span
-data-label="fig:sri">](fig/ch1_plotsri-1){width="\maxwidth"}
+(ref:plotsri) Stochastic regression imputation of `Ozone`.
 
-The `method = norm.nob` argument requests a plain, non-Bayesian, 
+The `method = norm.nob` argument requests a plain, non-Bayesian,
 stochastic regression method. This method first
 estimates the intercept, slope and residual variance under the linear
 model, then calculates the predicted value for each missing value, and
 adds a random draw from the residual to the prediction. We will come
 back to the details in Section \@ref(sec:linearnormal). The
-`seed` argument makes the solution reproducible. Figure \@ref(fig:sri) 
-shows that the addition of noise to the predictions opens up the 
+`seed` argument makes the solution reproducible. Figure \@ref(fig:plotsri)
+shows that the addition of noise to the predictions opens up the
 distribution of the imputed values, as intended.
 
 Note that some new complexities arise. There is one imputation with a
 negative value. Such values need not be due to the draws from the
 residual distribution, but can also be a consequence of the use of a
-linear model for non-negative data. In fact, Figure \@ref(fig:air9) shows
+linear model for non-negative data. In fact, Figure \@ref(fig:plotair9) shows
 several negative predicted values in the observed data. Since negative
-`Ozone` concentrations do not exist in the real world, we cannot 
+`Ozone` concentrations do not exist in the real world, we cannot
 consider negative values as plausible imputations.
 Note also that the high end of the distribution is not well covered. The
 observed data form a cone, i.e., the data are heteroscedastic, but the
@@ -600,8 +583,8 @@ conceptual advance. Some analysts may find it counterintuitive to
 precisely what makes it suitable for imputation. A well-executed
 stochastic regression imputation preserves not only the regression
 weights, but also the correlation between variables (cf. Exercise
-\@ref(ex:sri)). The main idea to draw from the residuals is very powerful,
-and forms the basis of more advanced imputation techniques.
+\@ref(exr:sriexr)). The main idea to draw from the residuals is very 
+powerful, and forms the basis of more advanced imputation techniques.
 
 ### LOCF and BOCF {#sec:locf}
 
@@ -618,13 +601,23 @@ LOCF to fill in `Ozone` by
 
 ```{r locf1}
 ```
-```{r locf2}
-```
-![Imputation of `Ozone` by last observation
-carried forward (LOCF).<span
-data-label="fig:locf">](fig/ch1_locf2-1){width="\maxwidth"}
 
-Figure \@ref(fig:locf) plots the results of the first 80 days of the
+```{r locf2,echo=FALSE,fig.asp = 0.556, solo=TRUE, fig.cap = '(ref:locf2)'}
+lwd <- 0.6
+Oz <- airquality$Oz
+Ozi <- airquality2$Oz
+colvec <- ifelse(is.na(Oz), mdc(2), mdc(1))
+plot(Ozi[1:80], col = colvec, type = "l",
+     xlab = "Day number", ylab = "Ozone (ppb)",
+     lwd = lwd, axes = FALSE)
+points(Ozi[1:80], col = colvec, pch = 20)
+axis(1, lwd = lwd)
+axis(2, lwd = lwd, las = 1)
+box(lwd = lwd)
+```
+(ref:locf2) Imputation of `Ozone` by last observation carried forward (LOCF).
+
+Figure \@ref(fig:locf2) plots the results of the first 80 days of the
 `Ozone` series. The stretches of red dots
 indicate the imputations, and are constant within the same batch of
 missing ozone levels. The real, unseen values are likely to vary within
@@ -663,7 +656,7 @@ In `R` the indicator method can be coded as
 ```{r indicator1}
 ```
 
-Observe that since the missing data are in `Ozone` we needed to 
+Observe that since the missing data are in `Ozone` we needed to
 reverse the direction of the regression model.
 
 The indicator method has been popular in public health and epidemiology.
@@ -695,7 +688,7 @@ handle missing data.
 ### Summary {#sec:simplesummary}
 
   ------------ ------ ---------------- ------------- -------------
-                       Standard Error
+                         Unbiased                    Standard Error
                 Mean     Reg Weight     Correlation
   Listwise      MCAR        MCAR           MCAR        Too large
   Pairwise      MCAR        MCAR           MCAR       Complicated
@@ -706,8 +699,7 @@ handle missing data.
   Indicator      –           –               –         Too small
   ------------ ------ ---------------- ------------- -------------
 
-  : Overview of assumptions made by ad-hoc methods.<span
-  data-label="tab:simple">
+  : (\#tab:simple) Overview of assumptions made by ad-hoc methods.
 
 Table \@ref(tab:simple) provides a summary of the methods discussed in this
 section. The table addresses two topics: whether the method yields the
@@ -756,20 +748,10 @@ pooled into a final point estimate plus standard error by pooling rules
 (“Rubin’s rules”). Figure \@ref(fig:miflow) illustrates the three main
 steps in multiple imputation: imputation, analysis and pooling.
 
-(8,5) (1,3) (3,1.5) (3,3) (3,4.5) (5,1.5) (5,3) (5,4.5) (7,3)
-(1.35,3)(1,0)1.3
-(1.35,3)(1,1)1.3
-(1.35,3)(1,-1)1.3
-(3.35,1.5)(1,0)1.3
-(3.35,3)(1,0)1.3
-(3.35,4.5)(1,0)1.3
-(5.35,3)(1,0)1.3
-(5.35,4.5)(1,-1)1.3
-(5.35,1.5)(1,1)1.3
-(0,0)(2,1)Incomplete data
-(2,0)(2,1)Imputed data
-(4,0)(2,1)Analysis results
-(6,0)(2,1)Pooled result
+```{r miflow, echo = FALSE, fig.cap = '(ref:miflow)', out.width='80%'}
+knitr::include_graphics("fig/ch01-miflow-1.png")
+```
+(ref:miflow) Scheme of main steps in multiple imputation.
 
 The analysis starts with observed, incomplete data. Multiple imputation
 creates several complete versions of the data by replacing the missing
@@ -834,20 +816,20 @@ better insight into the phenomenon of scientific study.
 
 ### Example of multiple imputation {#sec:miexample}
 
-Continuing with the `airquality` dataset, it
-is straightforward to apply multiple imputation. The following code
-imputes the missing data twenty times, fits a linear regression model to
-predict `Ozone` in each of the imputed
-datasets, pools the twenty sets of estimated parameters, and calculates
-the Wald statistics for testing significance of the weights.
+Continuing with the `airquality` dataset, it is straightforward to 
+apply multiple imputation. The following code imputes the missing 
+data twenty times, fits a linear regression model to predict `Ozone` 
+in each of the imputed datasets, pools the twenty sets of estimated 
+parameters, and calculates the Wald statistics for testing 
+significance of the weights.
 
 ```{r airx8}
 ```
 
 There is much more to say about each of these steps, but it shows that
 multiple imputation need not be a daunting task. Assuming we have set
-`options(na.action = na.omit)`, fitting the
-same model to the complete cases can be done by
+`options(na.action = na.omit)`, fitting the same model to the complete 
+cases can be done by
 
 ```{r airx9}
 ```
@@ -859,34 +841,46 @@ complete-case analysis. Multiple imputation is often more efficient than
 complete-case analysis. Depending on the data and the model at hand, the
 differences can be dramatic.
 
-```{r plotairmi}
+```{r plotairmi, echo=FALSE, fig.asp = 0.5, duo = TRUE, fig.cap = '(ref:plotairmi)'}
 ```
-![Multiple imputation of `Ozone`. Plotted are
-the imputed values from the first imputation.<span
-data-label="fig:airmidist">](fig/ch1_plotairmi-1){width="\maxwidth"}
+(ref:plotairmi) Multiple imputation of `Ozone`. Plotted are the imputed values from the first imputation.
 
-Figure \@ref(fig:airmidist) shows the distribution and scattergram for the
+Figure \@ref(fig:plotairmi) shows the distribution and scattergram for the
 observed and imputed data combined. The imputations are taken from the
 first completed dataset. The blue and red distributions are
 quite similar. Problems with the negative values as in Figure
-\@ref(fig:sri) are now gone since the imputation method used observed data
+\@ref(fig:plotsri) are now gone since the imputation method used observed data
 as donors to fill the missing data. Section \@ref(sec:pmm) describes the
 method in detail. Note that the red points respect the heteroscedastic
-nature of the relation between `Ozone` and
-`Solar.R`. All in all, the red points look as
-if they could have been measured if they had not been missing. The
-reader can easily recalculate the solution and inspect these plots for
-the other imputations.
+nature of the relation between `Ozone` and `Solar.R`. All in all, the red 
+points look as if they could have been measured if they had not been 
+missing. The reader can easily recalculate the solution and inspect these 
+plots for the other imputations.
 
-```{r air10}
+```{r air10, echo=FALSE,fig.asp = 0.556, solo=TRUE, fig.cap = '(ref:air10)'}
+Oz <- airquality$Ozone
+colvec <- ifelse(is.na(Oz),mdc(2),mdc(1))
+
+plot(Oz[1:80],col=mdc(1),type="l",xlab="Day number",ylab="Ozone (ppb)",
+     axes = FALSE,lwd = lwd)
+points(Oz[1:80],col=mdc(1),pch=20)
+lwd <- 0.6
+axis(1, lwd = lwd)
+axis(2, lwd = lwd, las = 1)
+box(lwd = lwd)
+
+idx <- ici(airquality$Ozone) & (1:153)<81
+x   <- (1:153)[idx]
+points(x=x,y=complete(imp,1)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
+points(x=x,y=complete(imp,2)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
+points(x=x,y=complete(imp,3)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
+points(x=x,y=complete(imp,4)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
+points(x=x,y=complete(imp,5)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
 ```
-![Multiple imputation of `Ozone`. Plotted are
-the observed values (in blue) and the multiply imputed
-values (in red).<span
-data-label="fig:airmi">](fig/ch1_air10-1){width="\maxwidth"}
+(ref:air10) Multiple imputation of `Ozone`. Plotted are the observed values (in blue) and the multiply imputed values (in red).
 
-Figure \@ref(fig:airmi) plots the completed `Ozone` data. The 
-imputed data of all five imputations are plotted for the days with 
+Figure \@ref(fig:air10) plots the completed `Ozone` data. The
+imputed data of all five imputations are plotted for the days with
 missing `Ozone` scores. In order to avoid clutter, the
 lines that connect the dots are not drawn for the imputed values. Note
 that the pattern of imputed values varies substantially over the days.
@@ -898,9 +892,6 @@ whereas the imputations during the moderate days 52–61 are consistently
 in the moderate range. Note how the available information helps
 determine sensible imputed values that respect the relations between
 wind, temperature, sunshine and ozone.
-
-```{r acf}
-```
 
 One final point. The `airquality` data is a
 time series of 153 days. It is well known that the standard error of the
@@ -921,7 +912,7 @@ in practice and how to report the results of the steps taken.
 The computations are done with the help of the `R` package `mice`,
 written by Karin Groothuis-Oudshoorn and myself [@VANBUUREN2011B]. The
 book thus also serves as an extended tutorial on the practical
-application of `mice`. Online materials that accompany the book 
+application of `mice`. Online materials that accompany the book
 can be found on www.multiple-imputation.com. My hope
 is that this hands-on approach will facilitate understanding of the key
 ideas in multiple imputation.
@@ -1077,97 +1068,94 @@ and future extensions.
 
 ## Exercises {#ex:ch1}
 
-1.  *Reporting practice*. What are the reporting practices in your
-    field? Take a random sample of articles that have appeared during
-    the last 10 years in the leading journal in your field. Select only
-    those that present quantitative analyses, and address the following
-    topics:
+```{exercise, name = "Reporting practice", label = "report"}
+What are the reporting practices in your field? Take a random sample 
+of articles that have appeared during the last 10 years in the leading 
+journal in your field. Select only those that present quantitative 
+analyses, and address the following topics:
+  
+1. Did the authors report that there were missing data?
+  
+2. If not, can you infer from the text that there must have
+   been missing data?
+  
+3. Did the authors discuss how they handled the missing
+   data?
+  
+4. Were the missing data properly addressed?
+  
+5. Can you detect a trend over time in reporting practice?
+  
+6. Would the editors of the journal be interested in your findings?
 
-    1.  Did the authors report that there were missing
-        data?
+```
 
-    2.  If not, can you infer from the text that there must have
-        been missing data?
+```{exercise, name = "Loss of information", label = "caseslost"}
+Suppose that a dataset consists of 100 cases and 10 variables. 
+Each variable contains 10% missing values. What is the 
+largest possible subsample under listwise deletion? What
+is the smallest? If each variable is MCAR, how many cases will
+remain?
+```
 
-    3.  Did the authors discuss how they handled the missing
-        data?
+```{exercise, name = "Stochastic regression imputation", label = "sriexr"}
+The correlation of the data in Figure \@ref(fig:plotsri) is 
+equal to 0.33. This is relatively low compared to the other 
+correlations reported in Section \@ref(sec:simplesolutions). 
+This seems to contradict the statement that stochastic regression 
+imputation does not bias the correlation. Could this low correlation 
+be due to random variation?
 
-    4.  Were the missing data properly addressed?
+1. Rerun the code with a different `seed` value. What is the 
+   correlation now?
+     
+2. Write a loop to apply apply stochastic regression imputation 
+   with the `seed` increasing from 1 to 1000. Calculate the 
+   regression weight and the correlation for each solution, and 
+   plot the histogram. What are the mean, minimum and maximum 
+   values of the correlation?
+     
+3. Do your results indicate that stochastic regression imputation 
+   alters the correlation?
 
-    5.  Can you detect a trend over time in reporting
-        practice?
+```
 
-    6.  Would the editors of the journal be interested in your
-        findings?
-    (\#ex:report)
+```{exercise, name = "Stochastic regression imputation (continued)", label = "sricontinued"}
+The largest correlation found in the previous exercise exceeds the value found
+in Section \@ref(sec:regimp). This seems odd since the correlation of
+the imputed values under regression imputation is equal to 1, and hence the 
+imputed data have a maximal contribution to the overall correlation.
 
-2.  *Loss of information*. Suppose that a dataset consists of 100
-    cases and 10 variables. Each variable contains 10% missing values.
-    What is the largest possible subsample under listwise deletion? What
-    is the smallest? If each variable is MCAR, how many cases will
-    remain?(\#ex:caseslost)
+1. Can you explain why this could happen?
 
-3.  *Stochastic regression imputation*. The correlation of the data in
-    Figure \@ref(fig:sri) is equal to 0.33. This is relatively low compared
-    to the other correlations reported in
-    Section \@ref(sec:simplesolutions). This seems to contradict the
-    statement that stochastic regression imputation does not bias the
-    correlation. Could this low correlation be due to random variation?
+2. Adapt the code from the previous exercise to test your explanation. 
+   Was your explanation satisfactory?
 
-    1.  Rerun the code with a different `seed` value. What is
-        the correlation now?
+3. If not, can you think of another reason, and test that?
+   Hint: Find out what is special about the solutions with the
+   largest correlations.
 
-    2.  Write a loop to apply apply stochastic regression
-        imputation with the `seed` increasing
-        from 1 to 1000. Calculate the regression weight and the
-        correlation for each solution, and plot the histogram. What are
-        the mean, minimum and maximum values of the correlation?
+```
 
-    3.  Do your results indicate that stochastic regression
-        imputation alters the correlation?
-    (\#ex:sri)
+```{exercise, name = "Nonlinear model", label = "nonlinear"}
+The model fitted to the `airquality` data in Section \@ref(sec:miexample) 
+is a simple linear model. Inspection of the residuals reveals that 
+there is a slight curvature in the average of the residuals.
 
-4.  *Stochastic regression imputation (continued)*. The largest
-    correlation found in the previous exercise exceeds the value found
-    in Section \@ref(sec:regimp). This seems odd since the correlation of
-    the imputed values under regression imputation is equal to 1, and
-    hence the imputed data have a maximal contribution to the
-    overall correlation.
+1. Start from the completed cases, and use `plot(fit)` to obtain 
+   diagnostic plots. Can you explain why the curvature shows up?
 
-    1.  Can you explain why this could happen?
+2. Experiment with solutions, e.g., by transforming `Ozone` or 
+   by adding a quadratic term to the model. Can you make the 
+   curvature disappear? Does the amount of explained variance 
+   increase?
 
-    2.  Adapt the code from the previous exercise to test
-        your explanation. Was your explanation satisfactory?
+3. Does the curvature also show up in the imputed data? If so, 
+   does the same solution work? Hint: You can assess the 
+   $j^\mathrm{th}$ fitted model by `getfit(fit, j)`, where
+   `fit` was created by `with(imp,...)`.
 
-    3.  If not, can you think of another reason, and test that?
-        Hint: Find out what is special about the solutions with the
-        largest correlations.
-    (\#ex:sricontinued)
+4. Advanced: Do you think your solution would necessitate
+   drawing new imputations?
 
-5.  *Nonlinear model*. The model fitted to the
-    `airquality` data in Section
-    \@ref(sec:miexample) is a simple linear model. Inspection of the
-    residuals reveals that there is a slight curvature in the average of
-    the residuals.
-
-    1.  Start from the completed cases, and use
-        `plot(fit)` to obtain
-        diagnostic plots. Can you explain why the curvature shows
-        up?
-
-    2.  Experiment with solutions, e.g., by transforming
-        `Ozone` or by adding a quadratic term
-        to the model. Can you make the curvature disappear? Does the
-        amount of explained variance increase?
-
-    3.  Does the curvature also show up in the imputed data? If
-        so, does the same solution work? Hint: You can assess the
-        $j^\mathrm{th}$ fitted model by
-        `getfit(fit, j)`, where
-        `fit` was created by
-        `with(imp,...)`.
-
-    4.  Advanced: Do you think your solution would necessitate
-        drawing new imputations?
-    (\#ex:nonlinear)
-
+```

@@ -1,20 +1,9 @@
-## ----setglobalchunkoptions, include = FALSE------------------------------
-library(knitr)
-thm = knit_theme$get("earendel")  # parse the theme to a list
-knit_theme$set(thm)
-opts_chunk$set(comment = NA, background = "#FBFBFB")
-knit_hooks$set(document = function(x) {sub('\\usepackage[]{color}', '\\usepackage{xcolor}', x, fixed = TRUE)})
-
 ## ----ch1, child = "src/ch1.Rnw"------------------------------------------
 
-## ----start1, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch1_', self.contained = FALSE)
-
 ## ----init1, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
+opts_chunk$set(fig.path = 'fig/ch01-', self.contained = FALSE)
+suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
+source("R/mi.hist.R")
 
 ## ----mean1---------------------------------------------------------------
 y <- c(1, 2, 4)
@@ -63,7 +52,7 @@ plot(predicted ~ Ozone, data = airquality2, type = "n",
 axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
 abline(0, 1, lty = 3, lwd = 0.6)
-points(predicted ~ Ozone, data = airquality2, cex = 0.75,
+points(predicted ~ Ozone, data = airquality2,
        lwd = 1.5, col = mdc(1))
 box(lwd = lwd)
 fit2 <- lm(Ozone ~ Wind, data = airquality, na.action = na.exclude)
@@ -84,32 +73,25 @@ fit2 <- lm(Ozone ~ Wind + Solar.R, data = airquality)
 naprint(na.action(fit2))
 
 ## ----pairwise1, eval=FALSE-----------------------------------------------
-## data <- airquality[, c("Ozone", "Solar.R", "Wind")]
-## mu <- colMeans(data, na.rm = TRUE)
-## cv <- cov(data, use = "pairwise")
+data <- airquality[, c("Ozone", "Solar.R", "Wind")]
+mu <- colMeans(data, na.rm = TRUE)
+cv <- cov(data, use = "pairwise")
 
 ## ----pairwise2, eval = FALSE---------------------------------------------
-## library(lavaan)
-## fit <- lavaan("Ozone ~ 1 + Wind + Solar.R
-##                Ozone ~~ Ozone",
-##               sample.mean = mu, sample.cov = cv,
-##               sample.nobs = sum(complete.cases(data)))
+library(lavaan)
+fit <- lavaan("Ozone ~ 1 + Wind + Solar.R
+              Ozone ~~ Ozone",
+             sample.mean = mu, sample.cov = cv,
+             sample.nobs = sum(complete.cases(data)))
 
 ## ----install, eval=FALSE-------------------------------------------------
-## install.packages("mice")
-
-## ----loadinit, results = "hide", echo=FALSE------------------------------
-suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
+install.packages("mice")
 
 ## ----load, eval = FALSE--------------------------------------------------
-## library("mice")
+library("mice")
 
 ## ----meanimp, echo=TRUE--------------------------------------------------
-imp <- mice(airquality, method = "mean", m = 1,
-            maxit = 1)
-
-## ----initmi, echo=FALSE, results='hide'----------------------------------
-# library(mi)
+imp <- mice(airquality, method = "mean", m = 1, maxit = 1)
 
 ## ----plotmeanimp, duo = TRUE, echo=FALSE, fig.width=4.5, fig.height=2.25----
 lwd <- 0.6
@@ -123,10 +105,10 @@ mi.hist(Yimp, Yobs,b=seq(-20,200,10),type="continuous",
         mlt=0.08,main="",xlab="Ozone (ppb)",
         axes = FALSE)
 box(lwd = 1)
-plot(data[cci(imp),2:1],col=mdc(1),cex=0.75,lwd=1.5,ylab="Ozone (ppb)",
+plot(data[cci(imp),2:1],col=mdc(1), lwd=1.5,ylab="Ozone (ppb)",
      xlab="Solar Radiation (lang)",ylim=c(-10,170),
      axes = FALSE)
-points(data[ici(imp),2:1],col=mdc(2),lwd=1.5,cex=0.75)
+points(data[ici(imp),2:1],col=mdc(2),lwd=1.5)
 axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
 box(lwd = 1)
@@ -148,19 +130,19 @@ mi.hist(Yimp[ss], Yobs[ss],b=seq(-20,200,10),type="continuous",
         obs.col=mdc(4),mis.col=mdc(5), imp.col="transparent",
         mlt=0.08,main="",xlab="Ozone (ppb)", axes = FALSE)
 box(lwd = 1)
-plot(data[cci(imp),2:1],col=mdc(1),lwd=1.5,cex=0.75,
+plot(data[cci(imp),2:1],col=mdc(1),lwd=1.5,
      ylab="Ozone (ppb)", xlab="Solar Radiation (lang)",
      ylim=c(-10,170), axes = FALSE)
-points(data[ici(imp),2:1],col=mdc(2),lwd=1.5,cex=0.75)
+points(data[ici(imp),2:1],col=mdc(2),lwd=1.5)
 axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
 box(lwd = 1)
 
 ## ----regimp2, eval = FALSE-----------------------------------------------
-## data <- airquality[, c("Ozone", "Solar.R")]
-## imp <- mice(data, method = "norm.predict", seed = 1,
-##             m = 1, print = FALSE)
-## xyplot(imp, Ozone ~ Solar.R)
+data <- airquality[, c("Ozone", "Solar.R")]
+imp <- mice(data, method = "norm.predict", seed = 1,
+           m = 1, print = FALSE)
+xyplot(imp, Ozone ~ Solar.R)
 
 ## ----sri-----------------------------------------------------------------
 data <- airquality[, c("Ozone", "Solar.R")]
@@ -169,7 +151,6 @@ imp <- mice(data, method = "norm.nob", m = 1, maxit = 1,
 
 ## ----plotsri, duo = TRUE, echo=FALSE, fig.width=4.5, fig.height=2.25-----
 lwd <- 0.6
-
 data <- complete(imp)
 Yobs <- airquality[, "Ozone"]
 Yimp <- data[, "Ozone"]
@@ -181,10 +162,10 @@ mi.hist(Yimp, Yobs,
         mlt = 0.08, main = "", xlab = "Ozone (ppb)")
 box(lwd = 1)
 plot(data[cci(imp), 2:1], col = mdc(1),
-     lwd = 1.5,cex = 0.75, ylab = "Ozone (ppb)",
+     lwd = 1.5, ylab = "Ozone (ppb)",
      xlab = "Solar Radiation (lang)", ylim = c(-10, 170),
      axes = FALSE)
-points(data[ici(imp), 2:1], col = mdc(2), lwd = 1.5, cex = 0.75)
+points(data[ici(imp), 2:1], col = mdc(2), lwd = 1.5)
 axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
 box(lwd = 1)
@@ -200,7 +181,7 @@ colvec <- ifelse(is.na(Oz), mdc(2), mdc(1))
 plot(Ozi[1:80], col = colvec, type = "l",
      xlab = "Day number", ylab = "Ozone (ppb)",
      lwd = lwd, axes = FALSE)
-points(Ozi[1:80], col = colvec, pch = 20,cex = 1)
+points(Ozi[1:80], col = colvec, pch = 20)
 axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
 box(lwd = lwd)
@@ -223,7 +204,6 @@ coef(summary(fit))
 
 ## ----plotairmi, echo=FALSE, fig.width=4.5, fig.height=2.25, duo = TRUE----
 lwd <- 0.6
-
 data <- complete(imp)
 Yobs <- airquality[,"Ozone"]
 Yimp <- data[,"Ozone"]
@@ -234,13 +214,12 @@ mi.hist(Yimp, Yobs,b=seq(-20,200,10),type="continuous",
         mlt=0.08,main="",xlab="Ozone (ppb)")
 box(lwd = 1)
 plot(data[cci(imp),2:1],
-     col = mdc(1),lwd = 1.5, cex = 0.75,
+     col = mdc(1),lwd = 1.5,
      ylab = "Ozone (ppb)",
      xlab = "Solar Radiation (lang)",
      ylim = c(-10, 170), axes = FALSE)
 points(data[ici(imp),2:1],
-       col = mdc(2), lwd = 1.5,
-       cex = 0.75)
+       col = mdc(2), lwd = 1.5)
 axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
 box(lwd = 1)
@@ -251,7 +230,7 @@ colvec <- ifelse(is.na(Oz),mdc(2),mdc(1))
 
 plot(Oz[1:80],col=mdc(1),type="l",xlab="Day number",ylab="Ozone (ppb)",
      axes = FALSE,lwd = lwd)
-points(Oz[1:80],col=mdc(1),pch=20,cex=1)
+points(Oz[1:80],col=mdc(1),pch=20)
 lwd <- 0.6
 axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
@@ -259,11 +238,11 @@ box(lwd = lwd)
 
 idx <- ici(airquality$Ozone) & (1:153)<81
 x   <- (1:153)[idx]
-points(x=x,y=complete(imp,1)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
-points(x=x,y=complete(imp,2)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
-points(x=x,y=complete(imp,3)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
-points(x=x,y=complete(imp,4)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
-points(x=x,y=complete(imp,5)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20,cex=1)
+points(x=x,y=complete(imp,1)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20)
+points(x=x,y=complete(imp,2)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20)
+points(x=x,y=complete(imp,3)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20)
+points(x=x,y=complete(imp,4)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20)
+points(x=x,y=complete(imp,5)$Ozone[idx],col=mdc(2),lwd=lwd,pch=20)
 
 
 ## ----acf, echo=FALSE-----------------------------------------------------
@@ -1264,14 +1243,10 @@ print(tp)
 
 ## ----ch5, child = "src/ch5.Rnw"------------------------------------------
 
-## ----start5, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch5_', self.contained = FALSE)
-
 ## ----init5, echo=FALSE, results='hide'-----------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
+opts_chunk$set(fig.path = 'fig/ch05-', self.contained = FALSE)
+pkg <- c("mice", "magrittr", "purrr", "dplyr")
+loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
 
 ## ----workflow1, warning = FALSE------------------------------------------
 # mids workflow using saved objects
@@ -1279,9 +1254,6 @@ library(mice)
 imp <- mice(nhanes, seed = 123, print = FALSE)
 fit <- with(imp, lm(chl ~ age + bmi + hyp))
 est1 <- pool(fit)
-
-## ----workflow2prepare, include = FALSE-----------------------------------
-library(magrittr)
 
 ## ----workflow2-----------------------------------------------------------
 # mids workflow using pipes
@@ -1307,9 +1279,6 @@ est4 <- nhanes %>%
   Map(f = lm, MoreArgs = list(f = chl ~ age + bmi + hyp)) %>%
   pool()
 
-## ----workflow5prepare, include = FALSE-----------------------------------
-library(purrr)
-
 ## ----workflow5, warning = FALSE------------------------------------------
 # mild workflow using purrr::map
 library(purrr)
@@ -1326,9 +1295,6 @@ est6 <- nhanes %>%
   mice::complete("long")  %>%
   by(as.factor(.$.imp), lm, formula = chl ~ age + bmi + hyp) %>%
   pool()
-
-## ----workflow7prepare, include = FALSE-----------------------------------
-library(dplyr)
 
 ## ----workflow7-----------------------------------------------------------
 # long workflow using a dplyr list-column
@@ -1383,7 +1349,6 @@ fit <- with(imp, eval(expr))
 unlist(fit$analyses)
 
 ## ----d1-1----------------------------------------------------------------
-library(mice)
 imp <- mice(nhanes2, m = 10, print = FALSE, seed = 71242)
 m2 <- with(imp, lm(chl ~ age + bmi))
 pool(m2)

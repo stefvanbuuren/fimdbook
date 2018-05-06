@@ -7,10 +7,10 @@
 > --- Thomas Permutt
 
 This closing chapter starts with a description of the limitations and
-pitfalls of multiple imputation. Section \[sec:reporting\] provides
-reporting guidelines for applications. Section \[sec:otherapps\] gives
+pitfalls of multiple imputation. Section \@ref(sec:reporting) provides
+reporting guidelines for applications. Section \@ref(sec:otherapps) gives
 an overview of applications that were omitted from the book. Section
-\[sec:future\] contains some speculations about possible future
+\@ref(sec:future) contains some speculations about possible future
 developments.
 
 ## Some dangers, some do’s and some don’ts {#sec:limitations}
@@ -144,7 +144,7 @@ Do not:
 
 ## Reporting {#sec:reporting}
 
-Section \[sec:changingperspective\] noted that the attitude toward
+Section \@ref(sec:changingperspective) noted that the attitude toward
 missing data is changing. Many aspects related to missing data could
 potentially affect the conclusions drawn for the statistical analysis,
 but not all aspects are equally important. This leads to the question:
@@ -153,7 +153,7 @@ but not all aspects are equally important. This leads to the question:
 Guidelines to report the results of a missing data analysis have been
 given by @STERNE2009, @ENDERS2010, @NRC2010 and @MACKINNON2010. These
 sources vary in scope and comprehensiveness, but they also exhibit a
-great deal of overlap and consensus. Section \[sec:guidelines\] combines
+great deal of overlap and consensus. Section \@ref(sec:guidelines) combines
 some of the material found in the three sources.
 
 Reviewers or editors may be unfamiliar with, or suspicious of, newer
@@ -197,65 +197,69 @@ the answers.
     each variable of interest? What is the number of cases with complete
     data for the analyses of interest? If people drop out at various
     time points, break down the number of participants per
-    occasion.\[lis:amount\]
+    occasion.\@ref(lis:amount)
 
 2.  *Reasons for missingness:* What is known about the reasons for
     missing data? Are the missing data intentional? Are the reasons
     possibly related to the outcome measurements? Are the reasons
-    related to other variables in the study?\[lis:reasons\]
+    related to other variables in the study?\@ref(lis:reasons)
 
 3.  *Consequences:* Are there important differences between individuals
     with complete and incomplete data? Do these groups differ in mean or
     spread on the key variables? What are the consequences if
-    complete-case analysis is used?\[lis:differences\]
+    complete-case analysis is used?\@ref(lis:differences)
 
 4.  *Method:* What method is used to account for missing data (e.g.,
     complete-case analysis, multiple imputation)? Which assumptions were
     made (e.g., missing at random)? How were multivariate missing data
-    handled?\[lis:method\]
+    handled?\@ref(lis:method)
 
 5.  *Software:* What multiple imputation software is used? Which
-    settings differ from the default?\[lis:software\]
+    settings differ from the default?\@ref(lis:software)
 
 6.  *Number of imputed datasets:* How many imputed datasets were created
-    and analyzed? \[lis:number\]
+    and analyzed? \@ref(lis:number)
 
 7.  *Imputation model:* Which variables were included in the imputation
     model? Was any form of automatic variable predictor used? How were
     non-normally distributed and categorical variables imputed? How were
     design features (e.g., hierarchical data, complex samples,
-    sampling weights) taken into account?\[lis:model\]
+    sampling weights) taken into account?\@ref(lis:model)
 
 8.  *Derived variables:* How were derived variables (transformations,
     recodes, indices, interaction terms, and so on) taken into
-    account?\[lis:derived\]
+    account?\@ref(lis:derived)
 
 9.  *Diagnostics:* How has convergence been monitored? How do the
     observed and imputed data compare? Are imputations plausible in the
     sense that they could have been plausibly measured if they had not
-    been missing? \[lis:diagnostics\]
+    been missing? \@ref(lis:diagnostics)
 
 10. *Pooling:* How have the repeated estimates been combined (pooled)
     into the final estimates? Have any statistics been transformed for
-    pooling?\[lis:pooling\]
+    pooling?\@ref(lis:pooling)
 
 11. *Complete-case analysis:* Do multiple imputation and complete-case
     analysis lead to similar similar conclusions? If not, what might
-    explain the difference?\[lis:listwise\]
+    explain the difference?\@ref(lis:listwise)
 
 12. *Sensitivity analysis:* Do the variables included in the imputation
     model make the missing at random assumption plausible? Are the
     conclusions affected if imputations are generated under a plausible
-    nonignorable model?\[lis:sensitivity\]
+    nonignorable model?\@ref(lis:sensitivity)
 
 If space is limited, the main text can be restricted to a short summary
-of points \[lis:amount\], \[lis:reasons\], \[lis:method\],
-\[lis:software\], \[lis:number\] and \[lis:listwise\], whereas the
+of points \@ref(lis:amount), 
+\@ref(lis:reasons), 
+\@ref(lis:method),
+\@ref(lis:software), 
+\@ref(lis:number) and 
+\@ref(lis:listwise), whereas the
 remaining points are addressed in a appendix or online supplement.
-Section \[sec:template\] contains an example template.
+Section \@ref(sec:template) contains an example template.
 
 For clinical trials, reporting in the main text should be extended by
-point \[lis:sensitivity\], conform to recommendation 15 of @NRC2010.
+point \@ref(lis:sensitivity), conform to recommendation 15 of @NRC2010.
 Moreover, the study protocol should specify the statistical methods for
 handling missing data in advance, and their associated assumptions
 should be stated in a way that can be understood by clinicians [@NRC2010
@@ -315,7 +319,8 @@ imputation.
 
 ## Other applications {#sec:otherapps}
 
-Chapters \[ch:measurement\]–\[ch:longitudinal\] illustrated several
+Chapters \@ref(ch:measurement)–
+\@ref(ch:longitudinal) illustrated several
 applications of multiple imputation. This section briefly reviews some
 other applications. These underscore the general nature and broad
 applicability of multiple imputation.
@@ -372,7 +377,8 @@ to several alternatives, and found MICE to work well under normality and
 conditional independence. If the assumption of conditional independence
 does not hold, we may bring prior information into MICE by appending a
 third data file that contains records with data that embody the prior
-information. Sections \[sec:convergence\] and \[sec:impbridge\] put this
+information. Sections \@ref(sec:convergence) 
+and \@ref(sec:impbridge) put this
 idea into practice in a different context. This techique can perform
 file matching for mixed continuous-discrete data under any data coded
 prior.
@@ -411,7 +417,7 @@ section identifies some areas where further research could be useful.
 
 ### Derived variables {#derived-variables}
 
-Section \[sec:knowledge\] describes techniques to generate imputations
+Section \@ref(sec:knowledge) describes techniques to generate imputations
 for interactions, sum scores, quadratic terms and other derived
 variables. Many datasets contain derived variables of some form. The
 relations between the variables need to be maintained if imputations are
@@ -419,7 +425,7 @@ to be plausible. There are no fail-safe methods for drawing imputations
 that preserve the proper interactions in the substantive models. One
 promising area of development is the rise of model-based forms of
 imputation that essentially take the substantive model as leading
-(cf. Section \[sec:modelbased\]). It would be interesting to study how
+(cf. Section \@ref(sec:modelbased)). It would be interesting to study how
 well model-based techniques can cope with derived variables of various
 sorts.
 
@@ -493,7 +499,7 @@ The key problem in multiple imputation is how to generate good
 imputations. The ultimate criterion of a good imputation is that it is
 confidence proper with respect to the scientific parameters of interest.
 Diagnostic methods are intermediate tools to evaluate the plausibility
-of a set of imputations. Section \[sec:diagnostics\] discussed several
+of a set of imputations. Section \@ref(sec:diagnostics) discussed several
 techniques, but these may be laborious for datasets involving many
 variables. It would be useful to have informative summary measures that
 can signal whether “something is wrong” with the imputed data. Multiple
@@ -524,7 +530,7 @@ thus easier to understand. And that is what matters in the end.
 
 ## Exercises {#ex:ch:conclusion}
 
-1.  *Do’s:* Take the list of do’s in Section \[sec:dos\]. For each item
+1.  *Do’s:* Take the list of do’s in Section \@ref(sec:dos). For each item
     on the list, answer the following questions:
 
     1.  Why is it on the list?
@@ -542,7 +548,7 @@ thus easier to understand. And that is what matters in the end.
         list?
 
 2.  *Don’ts:* Repeat the previous exercise for the list of don’ts in
-    Section \[sec:donts\].
+    Section \@ref(sec:donts).
 
 3.  *Template:* Adapt the template for the
     `mammalsleep` data in

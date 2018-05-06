@@ -38,19 +38,19 @@ Torey & 72 & 9 & 8 & $+1$\
 
 In order to answer this question, we would ideally like to know John’s
 survival under both options, and choose the option that gives him the
-longest life. Table \[tab:surgery\] contains the hypothetical number of
+longest life. Table \@ref(tab:surgery) contains the hypothetical number of
 years lived for eight patients under a new surgery, labeled $Y(1)$, and
 the number for years under standard treatment, labeled $Y(0)$.
 
 Let us define the individual causal effect $\tau_i$ for individual $i$
-as the difference between the two outcomes $$\label{eq:ice}
+as the difference between the two outcomes $$(\#eq:ice)
 \tau_i = Y_i(1) - Y_i(0)$$ so John gains one year because of surgery. We
 see that the new surgery is beneficial for John, Peter and Torey, but
 harmful to the others.
 
 In addition, let the *average causal effect*, or ACE, be the mean ICE
 over all units, i.e., $$\tau = \frac{1}{n}\sum_{i=1}^n Y_i(1) - Y_i(0)$$
-In Table \[tab:surgery\] it is equal to
+In Table \@ref(tab:surgery) it is equal to
 $\tau = (1-6-3-3-3-5+2+1)/8 = -2$, so applying the new surgery will
 reduce average life expectancy in these patients by two years. Knowing
 this, we would be inclined to conclude that the new surgery is harmful,
@@ -122,7 +122,7 @@ subset of forms of HTE.
 ## Problem of causal inference
 
 In reality we will only be able to observe part of the values in Table
-\[tab:surgery\]. This is the *fundamental problem of causal inference*
+\@ref(tab:surgery). This is the *fundamental problem of causal inference*
 [@RUBIN1974; @HOLLAND1986]. If Joyce gets the standard treatment, we
 will observe that she lives for another 4 years, but we will not know
 that she would have died after one year had she been given the new
@@ -206,26 +206,26 @@ imputation model. Let $\dot Y_{i\ell}(W_i)$ denote an independent draw
 from the posterior predictive distributions of $Y$ for unit $i$,
 imputation $\ell$, and treatment $W_i$. The replicated individual causal
 effect $\dot\tau_{i\ell}$ in the $\ell^\mathrm{th}$ imputed dataset is
-equal to $$\label{eq:dottau}
+equal to $$(\#eq:dottau)
 \dot\tau_{i\ell} = \dot Y_{i\ell}(1) - \dot Y_{i\ell}(0)$$ so the
-individual causal effect $\tau_i$ is estimated by $$\label{eq:hattau}
+individual causal effect $\tau_i$ is estimated by $$(\#eq:hattau)
 \hat\tau_{i} = \frac{1}{m}\sum_{\ell=1}^m \dot\tau_{i\ell}$$ The
 variance of $\hat\tau_i$ is equal to the within-unit between-replication
 spread
 $$\hat\sigma_i^2 = \frac{m + 1}{m^2 - m} \sum_{\ell=1}^m (\dot\tau_{i\ell} - \hat\tau_i)^2$$
 Note that both $\dot Y_{i\ell}(1)$ and $\dot Y_{i\ell}(0)$ vary over
-$\ell$ in Equation \[eq:dottau\], but this is only needed if both
+$\ell$ in Equation \@ref(eq:dottau), but this is only needed if both
 outcomes are missing for unit $i$. In general, we may equate
 $Y_{i\ell}(W_i) = Y_i(W_i)$ for the observed outcomes. If unit $i$ was
 allocated to the experimental treatment and if the outcome was observed,
-the replicated causal effect \[eq:dottau\] simplifies to
+the replicated causal effect \@ref(eq:dottau) simplifies to
 $$\dot\tau_{i\ell} = Y_{i}(1) - \dot Y_{i\ell}(0)$$ Likewise, if unit
 $i$ was measured under the control condition, we find
 $$\dot\tau_{i\ell} = \dot Y_{i\ell}(1) - Y_{i}(0)$$
 
 ## Generating imputations by FCS
 
-We return to the data in Table \[tab:surgery\]. Suppose that the
+We return to the data in Table \@ref(tab:surgery). Suppose that the
 assignment mechanism depends on `age` only,
 where patients up to age 70 years are allocated to the new surgery with
 a probability of 0.75, and older patients are assigned the new surgery
@@ -266,7 +266,7 @@ data for the potential outcomes `y1` and
 `y1`.<span
 data-label="fig:horrible">](fig/ch8_ice_plot1-1){width="\maxwidth"}
 
-Figure \[fig:horrible\] shows the values of the observed and imputed
+Figure \@ref(fig:horrible) shows the values of the observed and imputed
 data of the potential outcomes. The imputations look very bad,
 especially for `y1`. The spread is much larger
 than in the data, resulting in illogical negative values and implausible
@@ -306,7 +306,7 @@ realistic.
 The $\rho$ parameter can act as a *tuning knob* regulating the amount of
 heterogeneity in the imputation. In my experience, $\rho$ has to be set
 at fairly high value, say in the range 0.9 – 0.99. The correlation in
-Table \[tab:surgery\] is 0.9, which allows for fairly large differences
+Table \@ref(tab:surgery) is 0.9, which allows for fairly large differences
 in $\tau_i$, here from $-6$ years to $+2$ years.
 
 The specification $\rho$ in `mice` can be a
@@ -314,7 +314,7 @@ little tricky, and is most easily achieved by appending hypothetical
 extra cases to the data with both `y1` and
 `y0` observed given the specified correlation.
 Following @IMBENS2015 [p. 165] we assume a bivariate normal distribution
-for the potential outcomes: $$\label{eq:bivextra}
+for the potential outcomes: $$(\#eq:bivextra)
 \left( \begin{array}{c} Y_i(0) \\ Y_i(1) \end{array}\right) \bigg | \theta
 \sim
 N \left( \left( \begin{array}{c} \mu_0 \\ \mu_1 \end{array} \right),
@@ -325,7 +325,7 @@ $\theta = (\mu_0, \mu_1, \sigma_0^2, \sigma_1^2)$ are informed by the
 available data, and where $\rho$ is set by the user. The corresponding
 sample estimates are $\hat\mu_0 = 6.6$, $\hat\mu_1 = 5.0$,
 $\hat\sigma_0^2 = 1.8$ and $\hat\sigma_1^2 = 61$. However, we do not use
-these estimates right away in Equation \[eq:bivextra\]. Rather we equate
+these estimates right away in Equation \@ref(eq:bivextra). Rather we equate
 $\mu_0 = \mu_1$ because we wish to avoid using the group difference
 twice. The location is arbitrary, but a convenient choice is grand mean
 $\mu = 6$, which gives quicker convergence than, say, $\mu = 0$. Also,
@@ -385,7 +385,7 @@ the predictor matrix in order to evade circularities.
 ![Trace lines of FCS with a $\rho = 0.9$ and $m = 5$.<span
 data-label="fig:icetrace">](fig/ch8_ice_plottraces-1){width="\maxwidth"}
 
-The trace lines in Figure \[fig:icetrace\], produced by
+The trace lines in Figure \@ref(fig:icetrace), produced by
 `plot(imp)`, look well-behaved. Imputations of
 `y1` and `y0` hover
 in the same range, but imputations for `y0`
@@ -397,7 +397,7 @@ imputed data (red) for the potential outcomes
 `y1` and `y0`.<span
 data-label="fig:rhodens">](fig/ch8_ice_plot2-1){width="\maxwidth"}
 
-Figure \[fig:rhodens\] shows the imputed data (red) against a backdrop
+Figure \@ref(fig:rhodens) shows the imputed data (red) against a backdrop
 of the prior of 100 data points. The left-hand plot shows the
 imputations for the five patients who received the standard surgery,
 while the right-hand plot shows imputations for the three patients who
@@ -417,7 +417,7 @@ plotted against the hypothetical prior data (in gray) with
 $\rho = 0.9$.<span
 data-label="fig:potential1">](fig/ch8_ice_xyplot1-1){width="\maxwidth"}
 
-Figure \[fig:potential1\] is created as
+Figure \@ref(fig:potential1) is created as
 
 `        `\
 `                `
@@ -434,10 +434,10 @@ of the imputation model.
 ![Fan plot. Observed and imputed ($m = 100$) outcomes under new (1) and
 standard (0) surgery. John, Caren and Joyce had the new surgery. The
 three rows correspond to $\rho = 0.00$ (top), $\rho = 0.90$ (middle) and
-$\rho = 0.99$ (bottom). Data from Table \[tab:surgery\].<span
+$\rho = 0.99$ (bottom). Data from Table \@ref(tab:surgery).<span
 data-label="fig:fan1">](fig/ch8_ice_parallelplot1-1){width="\maxwidth"}
 
-Figure \[fig:fan1\] displays imputations by patients for three different
+Figure \@ref(fig:fan1) displays imputations by patients for three different
 values of $\rho$. Each panel contains the observed outcome for the
 patient, and $m = 100$ imputed values for the missing outcome. We used
 $\sigma_0^2 = \sigma_1^2 = 1$ here. John, Caren and Joyce had the new
@@ -494,7 +494,7 @@ make the imputations more precise, and so this is generally beneficial.
 The third covariate type directly explains heterogeneity of causal
 effects over the units. Because $\tau_i$ is an entirely missing (latent)
 variable, it is difficult to impute $\tau_i$ directly in
-`mice`. The method in Section \[sec:fcsprior\]
+`mice`. The method in Section \@ref(sec:fcsprior)
 explains heterogeneity of $\tau_i$ indirectly via the imputation models
 for $Y_i(0)$ and $Y_i(1)$. Any covariates of type 3 should be included
 on the imputation models, and their regression weights should be allowed
@@ -561,7 +561,7 @@ presented in this chapter. Some methods are advertised as estimating
 individual causal effects, but actually target a different estimand. The
 relevant literature typically defines individual causal effect as
 something like
-$$\tilde\tau_i = \mathrm{E}[Y | X = x_i, W_i = 1] - \mathrm{E}[Y | X = x_i, W_i = 0]\label{eq:notice}$$
+$$\tilde\tau_i = \mathrm{E}[Y | X = x_i, W_i = 1] - \mathrm{E}[Y | X = x_i, W_i = 0](\#eq:notice)$$
 which is the difference between the predicted value under treatment and
 predicted value under control for each individual. In order to quantify
 $\tilde\tau_i$, one needs to estimate the components

@@ -133,7 +133,7 @@ these intervals across a wide range of cases of practical interest.
 
 The tide turned around 2005. Reviews started to appear that criticize
 insufficient reporting practice of the missing data in diverse fields
-(cf. Section \[sec:changingperspective\]). Nowadays multiple imputation
+(cf. Section \@ref(sec:changingperspective)). Nowadays multiple imputation
 is almost universally accepted, and in fact acts as the benchmark
 against which newer methods are being compared. The major statistical
 packages have all implemented modules for multiple imputation, so
@@ -148,7 +148,7 @@ counting methods. Data source: <https://www.scopus.com> (accessed Jan
 14, 2018).<span
 data-label="fig:publications">](fig/ch2_publications-1){width="\maxwidth"}
 
-Figure \[fig:publications\] contains three time series with counts on
+Figure \@ref(fig:publications) contains three time series with counts on
 the number of publications on multiple imputation during the period
 1977–2017. Counts were made in three ways. The rightmost series
 corresponds to the number of publications per year that featured the
@@ -267,7 +267,7 @@ by edit and imputation techniques.
   intentional/unintentional missing data with item/unit
   nonresponse.<span data-label="tab:intentional">
 
-Table \[tab:intentional\] cross-classifies both distinctions, and
+Table \@ref(tab:intentional) cross-classifies both distinctions, and
 provides some typical examples in each of the four cells. The
 distinction between intentional/unintentional missing data is the more
 important one. The item/unit nonresponse distinction says *how much*
@@ -364,7 +364,7 @@ applications.
 
 ### MCAR, MAR and MNAR again {#sec:MCARreprise}
 
-Section \[sec:MCAR\] introduced MCAR, MAR and MNAR. This section
+Section \@ref(sec:MCAR) introduced MCAR, MAR and MNAR. This section
 provides more precise definitions.
 
 The matrix $R$ stores the locations of the missing data in $Y$. The
@@ -430,7 +430,7 @@ values under these models as
 ![Distribution of $Y_\mathrm{obs}$ and $Y_\mathrm{mis}$ under three
 missing data models.<span data-label="fig:mcarmar">](fig/ch2_marplot-1){width="\maxwidth"}
 
-Figure \[fig:mcarmar\] displays the distribution of $Y_\mathrm{obs}$ and
+Figure \@ref(fig:mcarmar) displays the distribution of $Y_\mathrm{obs}$ and
 $Y_\mathrm{mis}$ under the three missing data models. As expected, these
 are similar under MCAR, but become progressively more distinct as we
 move to the MNAR model.
@@ -479,7 +479,7 @@ data model is said to be “ignorable” if MAR holds.
 Note that the label “ignorable” does not mean that we can be entirely
 careless about the missing data. For inferences to be valid, we need to
 condition on those factors that influence the missing data rate. For
-example, in the MAR example of Section \[sec:MCARreprise\] the
+example, in the MAR example of Section \@ref(sec:MCARreprise) the
 missingness in $Y_2$ depends on $Y_1$. A valid estimate of the mean of
 $Y_2$ cannot be made without $Y_1$, so we should include $Y_1$ somehow
 into the calculations for the mean of $Y_2$.
@@ -547,7 +547,7 @@ itself, but it can be checked against suitable external validation data.
 There are two main strategies that we may pursue if the response
 mechanism is not ignorable. The first is to expand the data, and assume
 ignorability on the expanded data [@COLLINS2001]. See also Section
-\[sec:whenignorable\] for more details. In the above example, overweight
+\@ref(sec:whenignorable) for more details. In the above example, overweight
 children may simply not want anybody to know their weight, but perhaps
 have no objection if their waist circumference $Y_3$ is measured. As
 $Y_3$ predicts $Y_2$, $R_2$ or both, the ignorability assumption
@@ -559,7 +559,7 @@ different from $P(Y_2 |Y_1, R_2=1)$, describing which body weights would
 have been observed if they had been measured. Such a model could simply
 add some extra kilos to the imputed values, but of course we need to be
 able to justify our choice in light of what we know about the data. See
-Section \[sec:nonignorableoverview\] for a more detailed discussion of
+Section \@ref(sec:nonignorableoverview) for a more detailed discussion of
 the idea. In general, the formulation of nonignorable models should be
 driven by knowledge about the process that created the missing data. Any
 such methods need to be explained and justified as part of the
@@ -589,12 +589,12 @@ find an *estimate* $\hat Q$ that is *unbiased* and *confidence valid*
 
 Unbiasedness means that the average $\hat Q$ over all possible samples
 $Y$ from the population is equal to $Q$. The formula is
-$$E(\hat Q|Y) = Q  \label{eq:unbiasedness}$$ The explanation of
+$$E(\hat Q|Y) = Q  (\#eq:unbiasedness)$$ The explanation of
 confidence validity requires some additional symbols. Let $U$ be the
 estimated variance-covariance matrix of $\hat
 Q$. This estimate is *confidence valid* if the average of $U$ over all
 possible samples is equal or larger than the variance of $\hat Q$. The
-formula is $$E(U|Y) \geq V(\hat Q|Y) \label{eq:confidenceproper}$$ where
+formula is $$E(U|Y) \geq V(\hat Q|Y) (\#eq:confidenceproper)$$ where
 the function $V(\hat Q|Y)$ denotes the variance caused by the sampling
 process. A statistical test with a stated nominal rejection rate of 5%
 should reject the null hypothesis in at most 5% of the cases when in
@@ -622,7 +622,7 @@ $P(Q|{\mbox{$Y_\mathrm{obs}$}})$. In itself,
 $P(Q|{\mbox{$Y_\mathrm{obs}$}})$ is often intractable, but it can be
 decomposed into two parts that are easier to solve as follows:
 
-$$P(Q|{\mbox{$Y_\mathrm{obs}$}}) = \int{P(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})} d{\mbox{$Y_\mathrm{mis}$}}\label{eq:Qdecomp}$$
+$$P(Q|{\mbox{$Y_\mathrm{obs}$}}) = \int{P(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})} d{\mbox{$Y_\mathrm{mis}$}}(\#eq:Qdecomp)$$
 
 Here, $P(Q|{\mbox{$Y_\mathrm{obs}$}})$ is the posterior distribution of
 $Q$ given the observed data ${\mbox{$Y_\mathrm{obs}$}}$. This is the
@@ -632,7 +632,7 @@ posterior distribution of $Q$ in the hypothetically complete data, and
 $P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})$ is the
 posterior distribution of the missing data given the observed data.
 
-The interpretation of Equation \[eq:Qdecomp\] is most conveniently done
+The interpretation of Equation \@ref(eq:Qdecomp) is most conveniently done
 from right to left. Suppose that we use
 $P({\mbox{$Y_\mathrm{mis}$}}|{\mbox{$Y_\mathrm{obs}$}})$ to draw
 imputations for ${\mbox{$Y_\mathrm{mis}$}}$, denoted as
@@ -641,7 +641,7 @@ $P(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$\dot Y_\mathrm{mis}$}})$ to
 calculate the quantity of interest $Q$ from the imputed data
 ($Y_\mathrm{obs}$,$\dot Y_\mathrm{mis}$). We repeat these two steps with
 new draws ${\mbox{$\dot Y_\mathrm{mis}$}}$, and so on. Equation
-\[eq:Qdecomp\] says that the actual posterior distribution of $Q$ is
+\@ref(eq:Qdecomp) says that the actual posterior distribution of $Q$ is
 equal to the average over the repeated draws of $Q$. This result is
 important since it expresses $P(Q|{\mbox{$Y_\mathrm{obs}$}})$, which is
 generally difficult, as a combination of two simpler posteriors from
@@ -655,12 +655,12 @@ data. This equation suggests the following procedure for combining the
 results of repeated imputations. Suppose that $\hat Q_l$ is the estimate
 of the $\ell^\mathrm{th}$ repeated imputation, then the combined
 estimate is equal to $$\bar Q = \frac{1}{m}\sum_{\ell=1}^m \hat Q_\ell
-\label{eq:poolQ}$$ where $\hat Q_\ell$ contains $k$ parameters and is
+(\#eq:poolQ)$$ where $\hat Q_\ell$ contains $k$ parameters and is
 represented as a $k \times 1$ column vector.
 
 The posterior variance of $P(Q|{\mbox{$Y_\mathrm{obs}$}})$ is the sum of
 two variance components:
-$$V(Q|{\mbox{$Y_\mathrm{obs}$}})=E[V(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})|{\mbox{$Y_\mathrm{obs}$}}] + V[E(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})|{\mbox{$Y_\mathrm{obs}$}}]\label{eq:varDecomp}$$
+$$V(Q|{\mbox{$Y_\mathrm{obs}$}})=E[V(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})|{\mbox{$Y_\mathrm{obs}$}}] + V[E(Q|{\mbox{$Y_\mathrm{obs}$}},{\mbox{$Y_\mathrm{mis}$}})|{\mbox{$Y_\mathrm{obs}$}}](\#eq:varDecomp)$$
 This equation is well known in statistics, but can be difficult to grasp
 at first. The first component is the average of the repeated
 complete-data posterior variances of $Q$. This is called the
@@ -671,16 +671,16 @@ and between components for an infinitely large number of imputations
 $m=\infty$. Then $T_\infty = \bar U_\infty + B_\infty$ is the posterior
 variance of $Q$.
 
-Equation \[eq:varDecomp\] suggests the following procedure to estimate
+Equation \@ref(eq:varDecomp) suggests the following procedure to estimate
 $T_\infty$ for finite $m$. We calculate the average of the complete-data
 variances as $$\bar U = \frac{1}{m}\sum_{\ell=1}^m \bar U_\ell
-  \label{eq:within}$$ where the term $\bar U_\ell$ is the
+  (\#eq:within)$$ where the term $\bar U_\ell$ is the
 variance-covariance matrix of $\hat Q_\ell$ obtained for the
 $\ell^\mathrm{th}$ imputation. The standard unbiased estimate of the
 variance between the $m$ complete-data estimates is given by
 $$B = \frac{1}{m-1}\sum_{\ell=1}^m (\hat Q_\ell-\bar Q)(\hat Q_\ell-\bar Q)'
-  \label{eq:between}$$ where $\bar Q$ is calculated by Equation
-\[eq:poolQ\].
+  (\#eq:between)$$ where $\bar Q$ is calculated by Equation
+\@ref(eq:poolQ).
 
 It is tempting to conclude that the total variance $T$ is equal to the
 sum of $\bar U$ and $B$, but that would be incorrect. We need to
@@ -690,10 +690,12 @@ that the contribution to the variance of this factor is systematic and
 equal to $B_\infty/m$. Since $B$ approximates $B_\infty$, we may write
 $$\begin{aligned}
   T & = & \bar U + B + B/m \nonumber \\
-      & = & \bar U + \left(1+\frac{1}{m}\right)B\label{eq:poolT}\end{aligned}$$
+      & = & \bar U + \left(1+\frac{1}{m}\right)B(\#eq:poolT)
+      \end{aligned}$$
 for the total variance of $\bar Q$, and hence of $(Q-\bar Q)$ if
 $\bar Q$ is unbiased. The procedure to combine the repeated-imputation
-results by Equations \[eq:poolQ\] and \[eq:poolT\] is referred to as
+results by Equations \@ref(eq:poolQ) 
+and \@ref(eq:poolT) is referred to as
 Rubin’s rules.
 
 In summary, the total variance $T$ stems from three sources:
@@ -712,7 +714,7 @@ The addition of the latter term is critical to make multiple imputation
 work at low values of $m$. Not including it would result in $p$-values
 that are too low, or confidence intervals that are too short.
 Traditional choices for $m$ are $m=3$, $m=5$ and $m=10$. The current
-advice is to set $m$ higher, e.g., $m=50$ (cf.Section \[sec:howmany\]).
+advice is to set $m$ higher, e.g., $m=50$ (cf.Section \@ref(sec:howmany)).
 The larger $m$ gets, the smaller the effect of simulation error on the
 total variance.
 
@@ -728,13 +730,13 @@ used sparingly.
 In order to yield valid statistical inferences, the imputed values
 should possess certain characteristics. Procedures that yield such
 imputations are called *proper* [@RUBIN1987 pp. 118–128]. Section
-\[sec:migoal\] described two conditions needed for a valid estimate of
+\@ref(sec:migoal) described two conditions needed for a valid estimate of
 $Q$. These requirements apply simultaneously to both the sampling and
 the nonresponse model. An analogous set of requirements exists if we
 zoom in on procedures that deal exclusively with the response model. The
 important theoretical result is: If the imputation method is proper and
 if the complete-data model is valid in the sense of Section
-\[sec:migoal\], the whole procedure is valid [@RUBIN1987 p. 119].
+\@ref(sec:migoal), the whole procedure is valid [@RUBIN1987 p. 119].
 
   --------------------- ------------------- ----------------------------------------------------------- ------------------- ------------
     Incomplete Sample                                             Complete Sample                                            Population
@@ -749,7 +751,7 @@ if the complete-data model is valid in the sense of Section
   relation $\doteq$ means “is asymptotically equal to.”<span
   data-label="tab:misymbols">
 
-Recall from Section \[sec:migoal\] that the goal of multiple imputation
+Recall from Section \@ref(sec:migoal) that the goal of multiple imputation
 is to find an estimate $\hat Q$ of $Q$ with correct statistical
 properties. At the level of the sample, there is uncertainty about $Q$.
 This uncertainty is captured by $U$, the estimated variance-covariance
@@ -767,7 +769,7 @@ Now suppose that we want to go from the incomplete sample to the
 complete sample. At the sample level we can distinguish two estimands,
 instead of one: $\hat Q$ and $U$. Thus, the role of the single estimand
 $Q$ at the population level is taken over by the estimand pair
-$(\hat Q, U)$ at the sample level. Table \[tab:misymbols\] provides an
+$(\hat Q, U)$ at the sample level. Table \@ref(tab:misymbols) provides an
 overview of the three different analytic levels involved, the quantities
 defined at each level and their relations. Note that $\hat Q$ is both an
 estimate (of $Q$) as well as an estimand (of $\bar Q$). Also, $U$ has
@@ -781,9 +783,10 @@ simplified version given by @BRAND1999 [p. 89] combined with @RUBIN1987.
 An imputation procedure is said to be *confidence proper* for
 complete-data statistics $(\hat Q,U)$ if at large $m$ all of the
 following conditions hold approximately: $$\begin{aligned}
-  E(\bar Q|Y) &=& \hat Q \label{eq:proper1} \\
-  E(\bar U|Y) &= & U \label{eq:proper2} \\
-  \left(1+\frac{1}{m}\right) E(B|Y) & \geq & V(\bar Q) \label{eq:proper3}\end{aligned}$$
+  E(\bar Q|Y) &=& \hat Q (\#eq:proper1) \\
+  E(\bar U|Y) &= & U (\#eq:proper2) \\
+  \left(1+\frac{1}{m}\right) E(B|Y) & \geq & V(\bar Q) (\#eq:proper3)
+  \end{aligned}$$
 The hypothetically complete sample data $Y$ is now held fixed, and the
 response indicator $R$ varies according to a specified model.
 
@@ -800,15 +803,15 @@ variance of $\hat Q$ is equal to $U$, the sampling variance estimate
 calculated from the hypothetically complete data in the realized sample.
 
 The third requirement is that $B$ is a confidence valid estimate of the
-variance due to missing data. Equation \[eq:proper3\] implies that the
+variance due to missing data. Equation \@ref(eq:proper3) implies that the
 extra inferential uncertainty about $\hat Q$ due to missing data is
 correctly reflected. On average, the estimate $B$ of the variance due to
 missing data should be equal to $V(\bar Q)$, the variance observed in
 the multiple imputation estimator $\bar Q$ over different realizations
 of the response mechanism. This requirement is analogous to Equation
-\[eq:confidenceproper\] for confidence valid estimates of $U$.
+\@ref(eq:confidenceproper) for confidence valid estimates of $U$.
 
-If we replace $\geq$ in Equation \[eq:proper3\] by $>$, then the
+If we replace $\geq$ in Equation \@ref(eq:proper3) by $>$, then the
 procedure is said to be *proper*, a stricter version. In practice, being
 confidence proper is enough to obtain valid inferences.
 
@@ -818,9 +821,9 @@ may be proper with respect to one response mechanism $P(R)$, but
 improper for an alternative mechanism $P(R')$.
 
 It is not always easy to check whether a certain procedure is proper.
-Section \[sec:evaluation\] describes simulation-based tools for checking
+Section \@ref(sec:evaluation) describes simulation-based tools for checking
 the adequacy of imputations for valid statistical inference. Chapter
-\[ch:univariate\] provides examples of proper and improper procedures.
+\@ref(ch:univariate) provides examples of proper and improper procedures.
 
 ### Scope of the imputation model
 
@@ -864,7 +867,7 @@ imputations.
 ### Variance ratios$^\spadesuit$ {#sec:varianceratios}
 
 For scalar $Q$, the ratio
-$$\lambda = \frac{B+B/m}{T} \label{eq:lambda}$$ can be interpreted as
+$$\lambda = \frac{B+B/m}{T} (\#eq:lambda)$$ can be interpreted as
 the proportion of the variation attributable to the missing data. It is
 equal to zero if the missing data do not add extra variation to the
 sampling variance, an exceptional situation that can occur only if we
@@ -881,12 +884,12 @@ related to $\lambda$ by $r = \lambda/(1-\lambda)$.
 
 Another related measure is the *fraction of information about $Q$
 missing due to nonresponse* [@RUBIN1987 eq. 3.1.10]. This measure is
-defined by $$\gamma = \frac{r+2/(\nu+3)}{1+r}\label{eq:gammama}$$ This
+defined by $$\gamma = \frac{r+2/(\nu+3)}{1+r}(\#eq:gammama)$$ This
 measure needs an estimate of the degrees of freedom $\nu$, and will be
-discussed in Section \[sec:df\]. The interpretations of $\gamma$ and
+discussed in Section \@ref(sec:df). The interpretations of $\gamma$ and
 $\lambda$ are similar, but $\gamma$ is adjusted for the finite number of
 imputations. Both statistics are related by
-$$\gamma = \frac{\nu+1}{\nu+3}\lambda+\frac{2}{\nu+3}\label{eq:gammamb}$$
+$$\gamma = \frac{\nu+1}{\nu+3}\lambda+\frac{2}{\nu+3}(\#eq:gammamb)$$
 The literature often confuses $\gamma$ and $\lambda$, and erroneously
 labels $\lambda$ as the fraction of missing information. The values of
 $\lambda$ and $\gamma$ are almost identical for large $\nu$, but they
@@ -894,10 +897,10 @@ could notably differ for low $\nu$.
 
 If $Q$ is a vector, it is sometimes useful to calculate a compromise
 $\lambda$ over all elements in $\bar Q$ as
-$$\bar\lambda = \left(1+\frac{1}{m}\right)\mathrm{tr}(BT^{-1})/k \label{eq:barlambda}$$
+$$\bar\lambda = \left(1+\frac{1}{m}\right)\mathrm{tr}(BT^{-1})/k (\#eq:barlambda)$$
 where $k$ is the dimension of $\bar Q$, and where $B$ and $T$ are now $k
 \times k$ matrices. The compromise expression for $r$ is equal to
-$$\bar r = \left(1+\frac{1}{m}\right)\mathrm{tr}(B\bar U^{-1})/k \label{eq:barrm}$$
+$$\bar r = \left(1+\frac{1}{m}\right)\mathrm{tr}(B\bar U^{-1})/k (\#eq:barrm)$$
 the average relative increase in variance.
 
 The quantities $\lambda$, $r$ and $\gamma$ as well as their multivariate
@@ -908,7 +911,7 @@ be interpreted as “modest,” 0.3 as “moderately large” and 0.5 as “high
 statistical inferences are highly dependent on the way in which the
 missing data were handled. Note that estimates of $\lambda$, $r$ and
 $\gamma$ may be quite variable for low $m$ (cf. Section
-\[sec:howmany\]).
+\@ref(sec:howmany)).
 
 ### Degrees of freedom$^\spadesuit$ {#sec:df}
 
@@ -918,15 +921,16 @@ of freedom cannot be the same as for the complete data because part of
 the data is missing. The “old” formula [@RUBIN1987 eq. 3.1.6] for the
 degrees of freedom can be written concisely as $$\begin{aligned}
   \nu_\mathrm{old} & = & (m-1)\left(1+\frac{1}{r^2}\right)  \nonumber\\
-  & = & \frac{m-1}{\lambda^2}\label{eq:oldnu}\end{aligned}$$ with $r$
-and $\lambda$ defined as in Section \[sec:varianceratios\]. The lowest
+  & = & \frac{m-1}{\lambda^2}(\#eq:oldnu)
+  \end{aligned}$$ with $r$
+and $\lambda$ defined as in Section \@ref(sec:varianceratios). The lowest
 possible value is $\nu_\mathrm{old} = m-1$, which occurs if essentially
 all variation is attributable to the nonresponse. The highest value
 $\nu_\mathrm{old}=\infty$ indicates that all variation is sampling
 variation, either because there were no missing data, or because we
 could re-create them perfectly.
 
-@BARNARD1999A noted that Equation \[eq:oldnu\] can produce values that
+@BARNARD1999A noted that Equation \@ref(eq:oldnu) can produce values that
 are larger than the sample size in the complete data, a situation that
 is “clearly inappropriate.” They developed an adapted version for small
 samples that is free of the problem. Let $\nu_\mathrm{com}$ be the
@@ -938,10 +942,10 @@ $$\nu_\mathrm{obs} = \frac{\nu_\mathrm{com}+1}{\nu_\mathrm{com}+3}\nu_\mathrm{co
 The adjusted degrees of freedom to be used for testing in multiple
 imputation can be written concisely as $$\nu =
   \frac{\nu_\mathrm{old} \nu_\mathrm{obs}}
-  {\nu_\mathrm{old}+\nu_\mathrm{obs}} \label{eq:newnu}$$ The quantity
+  {\nu_\mathrm{old}+\nu_\mathrm{obs}} (\#eq:newnu)$$ The quantity
 $\nu$ is always less than or equal to $\nu_\mathrm{com}$. If
-$\nu_\mathrm{com}=\infty$, then Equation \[eq:newnu\] reduces to
-\[eq:oldnu\]. If $\lambda=0$ then $\nu=\nu_\mathrm{com}$, and if
+$\nu_\mathrm{com}=\infty$, then Equation \@ref(eq:newnu) reduces to
+\@ref(eq:oldnu). If $\lambda=0$ then $\nu=\nu_\mathrm{com}$, and if
 $\lambda=1$ we find $\nu=0$. Distributions with zero degrees of freedom
 are nonsensical, so for $\nu<1$ we should refrain from any testing due
 to lack of information.
@@ -973,10 +977,12 @@ linear model and pools the results:
     age         0.310
 
 The column `estimate` is the value of $\bar Q$
-as defined in Equation \[eq:poolQ\]. Columns
+as defined in Equation \@ref(eq:poolQ). Columns
 `ubar`, `b` and
 `t` are the variance estimates from Equations
-\[eq:within\], \[eq:between\] and \[eq:poolT\], respectively. Column
+\@ref(eq:within), 
+\@ref(eq:between) and 
+\@ref(eq:poolT), respectively. Column
 `dfcom` is the degrees of freedom is the
 hypothetically complete data $\nu_\mathrm{com}$, and
 `df` is the degrees of freedom after the
@@ -994,7 +1000,7 @@ statistical estimates from incomplete data. For scalar $Q$, it is
 straightforward to calculate confidence intervals and $p$-values from
 multiply imputed data, the primary difficulty being the derivation of
 the appropriate degrees of freedom for the $t$- and $F$-distributions .
-Section \[sec:singlepar\] provides the relevant statistical procedures.
+Section \@ref(sec:singlepar) provides the relevant statistical procedures.
 
 If $Q$ is a vector, we have two options for analysis. The first option
 is to calculate confidence intervals and $p$-values for the individual
@@ -1023,7 +1029,7 @@ variance of the measurements.
 Several approaches for multi-parameter inference are available: Wald
 test, likelihood ratio test and $\chi^2$-test. These methods are more
 complex than single-parameter inference, and their treatment is
-therefore deferred to Section \[sec:pooling\]. The next section shows
+therefore deferred to Section \@ref(sec:pooling). The next section shows
 how confidence intervals and $p$-values for scalar parameters can be
 calculated from multiply imputed data.
 
@@ -1035,7 +1041,7 @@ is not known a priori, $\bar Q$ follows a $t$-distribution rather than
 the normal. Univariate tests are based on the approximation
 $$\frac{Q-\bar Q}{\sqrt{T}} \sim t_\nu$$ where $t_\nu$ is the Student’s
 $t$-distribution with $\nu$ degrees of freedom, with $\nu$ defined by
-Equation \[eq:newnu\].
+Equation \@ref(eq:newnu).
 
 The $100(1-\alpha)$% confidence interval of a $\bar Q$ is calculated as
 $$\bar Q \pm t_{\nu,1-\alpha/2}\sqrt{T}$$ where $t_{\nu,1-\alpha/2}$ is
@@ -1085,7 +1091,8 @@ obtain all output by
 
 The advantageous properties of multiple imputation are only guaranteed
 if the imputation method used to create the missing data is proper.
-Equations \[eq:proper1\]–\[eq:proper3\] describe the conditions needed
+Equations \@ref(eq:proper1)–
+\@ref(eq:proper3) describe the conditions needed
 for proper imputation.
 
 Checking the validity of statistical procedures is often done by
@@ -1125,7 +1132,7 @@ describe this procedure in more detail.
 If we are primarily interested in determining the quality of imputation
 methods, we may simplify evaluation by defining the sample equal to the
 population, and set the within-variance $\bar U = 0$ in Equation
-\[eq:poolT\]. See @VINK2014 for a short exploration of the idea.
+\@ref(eq:poolT). See @VINK2014 for a short exploration of the idea.
 
 ### Evaluation criteria {#sec:evaluationcriteria}
 
@@ -1169,13 +1176,13 @@ be near 0.95. Methods having no bias and proper coverage are called
 randomization-valid [@RUBIN1987]. If two methods are both
 randomization-valid, the method with the shorter confidence intervals is
 more efficient. While the RMSE is widely used, we will see in Section
-\[sec:true\] that it is not a suitable metric to evaluate multiple
+\@ref(sec:true) that it is not a suitable metric to evaluate multiple
 imputation methods.
 
 ### Example {#sec:quantifyingbias}
 
 This section demonstrates the measures defined in Section
-\[sec:evaluationcriteria\] can be calculated using simulation. The
+\@ref(sec:evaluationcriteria) can be calculated using simulation. The
 process starts by specifying a model that is of scientific interest and
 that fixes $Q$. Pseudo-observations according to the model are
 generated, and part of these observations is deleted, resulting in an
@@ -1190,8 +1197,8 @@ $y_i = \alpha + x_i \beta + \epsilon_i$. Here
 $\epsilon_i \sim N(0, \sigma^2)$ are random errors uncorrelated with
 $x$. Suppose that the true values are $\alpha = 0$, $\beta = 1$ and
 $\sigma^2 = 1$. We have 50% random missing data in $x$, and compare two
-imputation methods: regression imputation (cf. Section \[sec:regimp\])
-and stochastic regression imputation (cf. Section \[sec:sri\]).
+imputation methods: regression imputation (cf. Section \@ref(sec:regimp))
+and stochastic regression imputation (cf. Section \@ref(sec:sri)).
 
 It is convenient to create a series of small
 `R` functions. The
@@ -1255,7 +1262,7 @@ intervals per method, can be obtained by
     norm.nob        0.995 0.648   1.34
 
 The function of the following code is to calculate the quality
-statistics as defined in Section \[sec:evaluationcriteria\].
+statistics as defined in Section \@ref(sec:evaluationcriteria).
 
 `  `\
 `     `\
@@ -1284,7 +1291,7 @@ The story for stochastic regression imputation is different. The
 coverage of 92.5%. The method is not randomization-valid, but it is
 near. The AW and RMSE serve as useful indicators, though both may be a
 little low as the confidence intervals appear somewhat short. Chapter
-\[ch:univariate\] shows how to make it fully randomization-valid.
+\@ref(ch:univariate) shows how to make it fully randomization-valid.
 
 Of course, simulation studies do not guarantee fitness for a particular
 application. However, if simulation studies illustrate limitations in
@@ -1303,7 +1310,7 @@ method?
 
 The answer is “No”. Suppose that we would measure discrepancy by the
 RMSE of the imputed values:
-$$\mathrm{RMSE} = \sqrt{\frac{1}{n_\mathrm{mis}}\sum_{i=1}^{n_\mathrm{mis}} ({\mbox{$y_i^\mathrm{mis}$}}- {\mbox{$\dot y_i$}})^2} \label{eq:recovery}$$
+$$\mathrm{RMSE} = \sqrt{\frac{1}{n_\mathrm{mis}}\sum_{i=1}^{n_\mathrm{mis}} ({\mbox{$y_i^\mathrm{mis}$}}- {\mbox{$\dot y_i$}})^2} (\#eq:recovery)$$
 where $y_i^\mathrm{mis}$ represents the true (removed) data value for
 unit $i$ and where $\dot y_i$ is imputed value for unit $i$. For
 multiply imputed data we calculate RMSE for each imputed dataset, and
@@ -1363,7 +1370,7 @@ missing data as before.
     norm.nob     1.025
 
 The simulation confirms that regression imputation is better at
-recreating the missing data. Remember from Section \[sec:regimp\] that
+recreating the missing data. Remember from Section \@ref(sec:regimp) that
 regression imputation is fundamentally flawed. Its estimate of $\beta$
 is biased (even under MCAR) and the accompanying confidence interval is
 too short.
@@ -1380,7 +1387,7 @@ of false positives. Imputation is not prediction.
 
 Should we always use multiple imputation for the missing data? We
 probably could, but there are good alternatives in some situations.
-Section \[sec:doesnotcover\] already discussed some approaches not
+Section \@ref(sec:doesnotcover) already discussed some approaches not
 covered in this book, each of which has its merits. This section
 revisits complete-case analysis. Apart from being simple to apply, it
 can be a viable alternative to multiple imputation in particular
@@ -1428,7 +1435,7 @@ explicit statement that the missing data fit in one of the three
 categories described above.
 
 Other alternatives to multiple imputation were briefly reviewed in
-Section \[sec:doesnotcover\], and may work well in particular
+Section \@ref(sec:doesnotcover), and may work well in particular
 applications. However, none of these is as general as multiple
 imputation.
 
@@ -1472,7 +1479,7 @@ producing and analyzing more than a few imputed datasets” [@SCHAFER1998
 p. 549].
 
 @ROYSTON2004B observed that the length of the confidence interval also
-depends on $\nu$, and thus on $m$ (cf. Equation \[eq:oldnu\]). He
+depends on $\nu$, and thus on $m$ (cf. Equation \@ref(eq:oldnu)). He
 suggested to base the criterion for $m$ on the confidence coefficient
 $t_{\nu}\sqrt{T}$, and proposed that the coefficient of variation of
 $\ln(t_{\nu}\sqrt{T})$ should be smaller than 0.05. This effectively
@@ -1499,7 +1506,7 @@ $\gamma_0$ = (0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9), he recommends $m$ =
 the true $\gamma_0$ is unknown, Bodner suggested the proportion of
 complete cases as a conservative estimate of $\gamma_0$. @VONHIPPEL2018
 showed that a relation between $m$ and $\gamma_0$ is better explained by
-a quadratic rule $$\label{eq:hippel}
+a quadratic rule $$(\#eq:hippel)
 m = 1 + \frac{1}{2} \left(
          \frac{\gamma_0}
               {\mathrm{SD}(\sqrt{U_\ell})\mathrm{E}(\sqrt{U_\ell})}
@@ -1508,7 +1515,7 @@ $\mathrm{SD}(\sqrt{U_\ell})$ are the mean and standard deviation of the
 standard errors calculated from the imputed datasets. The rule is used
 in a two-step procedure, where the first step estimates $\gamma_0$ and
 its 95% confidence interval. The upper limit of the confidence interval
-is then plugged into Equation \[eq:hippel\]. Compared to Bodner, the
+is then plugged into Equation \@ref(eq:hippel). Compared to Bodner, the
 rule suggests somewhat lower $m$ if $\gamma_0 < 0.5$ and substantially
 higher $m$ if $\gamma_0 > 0.5$.
 
@@ -1562,7 +1569,7 @@ $m=5$.
 ## Exercises {#sec:exmi}
 
 1.  *Nomogram*. Construct a graphic representation of Equation
-    \[eq:gammamb\] that allows the user to convert $\lambda$ and
+    \@ref(eq:gammamb) that allows the user to convert $\lambda$ and
     $\gamma$ for different values of $\nu$. What influence does $\nu$
     have on the relation between $\lambda$ and $\gamma$?
 
@@ -1588,7 +1595,7 @@ $m=5$.
     4.  If you add a quadratic term to the model, would that alter
         your conclusion?
 
-    \[ex:listwise\]
+    \@ref(ex:listwise)
 
 4.  *Number of imputations*. Consider the
     `nhanes` dataset in
@@ -1628,7 +1635,7 @@ $m=5$.
         against $m$. Based on this graph, how many imputations would you
         advise?
 
-    3.  Check White’s conditions 1 and 2 (cf. Section \[sec:howmany\]).
+    3.  Check White’s conditions 1 and 2 (cf. Section \@ref(sec:howmany)).
         For which $m$ do these conditions true?
 
     4.  Does this also hold for categorical data? Use the
@@ -1636,4 +1643,4 @@ $m=5$.
 
 6.  *Automated choice of $m$*. Write an
     `R` function that implements
-    the methods discussed in Section \[sec:howmany\].
+    the methods discussed in Section \@ref(sec:howmany).
