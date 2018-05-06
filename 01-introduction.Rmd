@@ -1120,6 +1120,7 @@ be due to random variation?
 
 ```
 
+
 ```{exercise, name = "Stochastic regression imputation (continued)", label = "sricontinued"}
 The largest correlation found in the previous exercise exceeds the value found
 in Section \@ref(sec:regimp). This seems odd since the correlation of
