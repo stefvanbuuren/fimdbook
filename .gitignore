@@ -3,3 +3,8 @@
 .RData
 .Ruserdata
 original/
+_book/
+_bookdown_files/
+convert/
+fig/
+fonts/
