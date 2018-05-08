@@ -464,11 +464,14 @@ library(knitr)
 opts_chunk$set(fig.path = 'fig/ch3_', self.contained = FALSE)
 
 ## ----init3, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-source("R/mice.impute.x.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
+opts_chunk$set(fig.path = 'fig/ch03-', self.contained = FALSE)
+suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
+suppressPackageStartupMessages(library(lattice, warn.conflicts = FALSE, quietly = TRUE))
 suppressPackageStartupMessages(library(gamlss, warn.conflicts = FALSE, quietly = TRUE))
+suppressPackageStartupMessages(library(MASS, warn.conflicts = FALSE, quietly = TRUE))
+suppressPackageStartupMessages(library(ImputeRobust, warn.conflicts = FALSE, quietly = TRUE))
+suppressPackageStartupMessages(library(rpart, warn.conflicts = FALSE, quietly = TRUE))
+source("R/mice.impute.x.R")
 
 ## ----gas1,  six=TRUE, echo=FALSE, fig.width=4.5, fig.height=6.75---------
 library("MASS")
@@ -708,8 +711,8 @@ box(lwd = 0.7)
 }
 
 ## ----linhc2, cache=TRUE, warning = FALSE---------------------------------
-library(ImputeRobust)
-library(gamlss)
+library("ImputeRobust")
+library("gamlss")
 data(db)
 data <- subset(db, age > 1 & age < 2, c("age", "head"))
 names(data) <- c("age", "hc")
@@ -756,7 +759,7 @@ axis(2, lwd = 0.7, las = 1, cex.axis = 0.7)
 box(lwd = 0.7)
 }
 
-## ----figmisspecify, echo=FALSE, duo = TRUE,  fig.height=2.25, fig.width=4.5----
+## ----misspecify, echo=FALSE, duo = TRUE,  fig.height=2.25, fig.width=4.5----
 data <- boys[boys$age<=2,c("age","bmi")]
 set.seed(87120)
 data[sample(92:136,10),"bmi"] <- NA
@@ -843,7 +846,7 @@ legend(x="bottomleft", legend=c("before insulation","after insulation"), pch=c(3
 ## res <- res.pmm
 
 ## ----cart, echo=FALSE,  duo=TRUE, fig.width=4.5, fig.height=2.25---------
-library(rpart)
+library("rpart")
 
 fit <- rpart(Gas ~ Temp + Insul, data=whiteside)
 plot(fit, branch=0, margin=0.15)

@@ -4,6 +4,9 @@
 >
 > --- Roderick J.A. Little
 
+```{r init3, echo = FALSE}
+```
+
 Chapter \@ref(ch:mi) described the theory of multiple imputation. This
 chapter looks into ways of creating the actual imputations. In order to
 avoid unnecessary complexities at this point, the text is restricted to
@@ -26,21 +29,22 @@ of what we might do when that assumption is suspect.
 
 This section illustrates five ways to create imputations for a single
 incomplete continuous target variable. We use dataset number 88 in
-@HAND1994, which is also part of the `MASS`
-library under the name `whiteside`. Mr.
-Whiteside of the UK Building Research Station recorded the weekly gas
+@HAND1994, which is also part of the `MASS` library under the name 
+`whiteside`. Mr. Whiteside of the UK Building Research Station 
+recorded the weekly gas
 consumption (in 1000 cubic feet) and average external temperature (in
 $^\circ\mathrm{C}$) at his own house in south-east England for two
 heating seasons (1960 and 1961). The house thermostat was set at
 20$^\circ\mathrm{C}$ throughout.
 
-![Five ways to impute missing gas consumption for a temperature of
+```{r gas1, six=TRUE, echo=FALSE, fig.asp = 1.5, fig.cap = '(ref:whiteside)'}
+```
+(ref:whiteside) Five ways to impute missing gas consumption for a temperature of
 5$^\circ\mathrm{C}$: (a) no imputation; (b) predict; (c) predict +
 noise; (d) predict + noise + parameter uncertainty; (e) two predictors;
-(f) drawing from observed data.<span
-data-label="fig:whiteside">](fig/ch3_gas1-1){width="\maxwidth"}
+(f) drawing from observed data.
 
-Figure \@ref(fig:whiteside)a plots the observed data. More gas is needed in
+Figure \@ref(fig:gas1)a plots the observed data. More gas is needed in
 colder weeks, so there is an obvious relation in the data. The dataset
 is complete, but for the sake of argument suppose that the gas
 consumption in row 47 of the data is missing. The temperature at this
@@ -52,7 +56,7 @@ multiple imputations for the missing gas consumption?
 A first possibility is to calculate the regression line, and take the
 imputation from the regression line. The estimated regression line is
 equal to $y=5.49 - 0.29 x$, so the value at $x=5$ is
-$5.49-0.29 \times 5 = 4.04$. Figure \@ref(fig:whiteside)b shows where the
+$5.49-0.29 \times 5 = 4.04$. Figure \@ref(fig:gas1)b shows where the
 imputed value is. This is actually the “best” value in the sense that it
 is the most likely one under the regression model. However, even the
 best value may differ from the actual (unknown) value. In fact, we are
@@ -73,7 +77,7 @@ the distribution of gas consumption of the incomplete observation is
 identical to that in the complete cases.
 
 We can repeat the draws to get multiple synthetic values around the
-regression line. Figure \@ref(fig:whiteside)c illustrates five such drawn
+regression line. Figure \@ref(fig:gas1)c illustrates five such drawn
 values. On average, the synthetic values will be equal to the predicted
 value. The variability in the values reflects that fact that we cannot
 accurately predict gas consumption from temperature.
@@ -96,7 +100,7 @@ parameters directly from their posterior distributions, whereas
 bootstrap methods resample the observed data and re-estimate the
 parameters from the resampled data.
 
-Figure \@ref(fig:whiteside)d shows five sampled regression lines calculated
+Figure \@ref(fig:gas1)d shows five sampled regression lines calculated
 by Bayesian sampling. Imputed values are now defined as the predicted
 value of the sampled line added with noise, as in Section \@ref(sec:meth2).
 
@@ -106,7 +110,7 @@ The dataset actually contains a second predictor that indicates whether
 the house was insulated or not. Incorporating this extra information
 reduces the uncertainty of the imputed values.
 
-Figure \@ref(fig:whiteside)e shows the same data, but now flagged according
+Figure \@ref(fig:gas1)e shows the same data, but now flagged according
 to insulation status. Two regression lines are shown, one for the
 insulated houses and the other for the non-insulated houses. It is clear
 that less gas is needed after insulation. Suppose we know that the
@@ -115,7 +119,7 @@ insulated. How do we create multiple imputation given these two
 predictors?
 
 We apply the same method as in Section \@ref(sec:meth3), but now using the
-regression line for the insulated houses. Figure \@ref(fig:whiteside)e
+regression line for the insulated houses. Figure \@ref(fig:gas1)e
 shows the five values drawn for this method. As expected, the
 distribution of the imputed gas consumption has shifted downward.
 Moreover, its variability is lower, reflecting that fact that gas
@@ -124,7 +128,7 @@ also known.
 
 ### Drawing from the observed data
 
-Figure \@ref(fig:whiteside)f illustrates an alternative method to create
+Figure \@ref(fig:gas1)f illustrates an alternative method to create
 imputations. As before, we calculate the predicted value at
 5$^\circ\mathrm{C}$ for an insulated house, but now select a small
 number of candidate donors from the observed data. The selection is done
@@ -166,24 +170,21 @@ different ways of creating imputations under the normal linear model.
 The four methods are:
 
 1.  *Predict*.
-    ${\mbox{$\dot{y}$}}=\hat\beta_0+{\mbox{$X_\mathrm{mis}$}}\hat\beta_1$,
+    $\dot y=\hat\beta_0+X_\mathrm{mis}\hat\beta_1$,
     where $\hat\beta_0$ and $\hat\beta_1$ are least squares estimates
     calculated from the observed data. Section \@ref(sec:regimp) named this
-    regression imputation. In
-    `mice` this method is
+    regression imputation. In `mice` this method is
     available as method `norm.predict`.
 
-
 2.  *Predict* + *noise*.
-    ${\mbox{$\dot{y}$}}=\hat\beta_0+{\mbox{$X_\mathrm{mis}$}}\hat\beta_1+\dot\epsilon$,
+    $\dot y=\hat\beta_0+X_\mathrm{mis}\hat\beta_1+\dot\epsilon$,
     where $\dot\epsilon$ is randomly drawn from the normal distribution
     as $\dot\epsilon \sim N(0,\hat\sigma^2)$. Section \@ref(sec:sri) named
     this stochastic regression imputation. In
-    `mice` this method is
-    available as method `norm.nob`.
+    `mice` this method is available as method `norm.nob`.
 
 3.  *Bayesian multiple imputation*.
-    ${\mbox{$\dot{y}$}}=\dot\beta_0+{\mbox{$X_\mathrm{mis}$}}\dot\beta_1+\dot\epsilon$,
+    $\dot y =\dot\beta_0 + X_\mathrm{mis}\dot\beta_1+\dot\epsilon$,
     where $\dot\epsilon \sim N(0,\dot\sigma^2)$ and $\dot\beta_0$,
     $\dot\beta_1$ and $\dot\sigma$ are random draws from their posterior
     distribution, given the data. Section \@ref(sec:meth3) named this
@@ -191,7 +192,7 @@ The four methods are:
     as method `norm`.
 
 4.  *Bootstrap multiple imputation*.
-    ${\mbox{$\dot{y}$}}=\dot\beta_0+{\mbox{$X_\mathrm{mis}$}}\dot\beta_1+\dot\epsilon$,
+    $\dot y=\dot\beta_0+X_\mathrm{mis}\dot\beta_1+\dot\epsilon$,
     where $\dot\epsilon \sim N(0,\dot\sigma^2)$, and where
     $\dot\beta_0$, $\dot\beta_1$ and $\dot\sigma$ are the least squares
     estimates calculated from a bootstrap sample taken from the
@@ -227,11 +228,41 @@ contain no missing values. Chapter \@ref(ch:multivariate) deals with the
 case where $X_\mathrm{obs}$ and $X_\mathrm{mis}$ also could be
 incomplete.
 
-Algorithm \@ref(alg:norm) is adapted from @RUBIN1987 [p. 167], and is
-implemented as the method `norm` (or,
-equivalently, as the function
-`mice.impute.norm()`) in the
-`mice` package. Any drawn values
+------
+
+```{definition norm, echo=TRUE, name = '(ref:norm)'}
+    
+
+1. Calculate the cross-product matrix $S=X_\mathrm{obs}^\prime X_\mathrm{obs}$.
+
+2. Calculate $V = (S+\mathrm{diag}(S)\kappa)^{-1}$, with some small $\kappa$.
+
+3. Calculate regression weights $\hat\beta = VX_\mathrm{obs}^\prime y_\mathrm{obs}$.
+
+4. Draw a random variable $\dot g \sim \chi^2_\nu$ with $\nu=n_1 - q$.
+
+5. Calculate $\dot\sigma^2 = (y_\mathrm{obs} - X_\mathrm{obs}\hat\beta)^\prime(y_\mathrm{obs} - X_\mathrm{obs}\hat\beta) / \dot g$.
+
+6. Draw $q$ independent $N(0,1)$ variates in vector $\dot z_1$.
+
+7. Calculate $V^{1/2}$ by Cholesky decomposition.
+
+8. Calculate $\dot\beta = \hat\beta + \dot\sigma\dot z_1 V^{1/2}$.
+
+9. Draw $n_0$ independent $N(0,1)$ variates in vector $\dot z_2$.
+
+10. Calculate the $n_0$ values $y_\mathrm{imp} = X_\mathrm{mis}\dot\beta + \dot z_2\dot\sigma$.
+
+```
+
+(ref:norm) Bayesian imputation under the normal linear model.$^\spadesuit$
+
+------
+    
+
+Algorithm \@ref(def:norm) is adapted from @RUBIN1987 [p. 167], and is
+implemented as the method `norm` (or, equivalently, as the function
+`mice.impute.norm()`) in the `mice` package. Any drawn values
 are identified with a dot above the symbol, so $\dot\beta$ is a value of
 $\beta$ drawn from the posterior distribution. The algorithm uses a
 ridge parameter $\kappa$ to evade problems with singular matrices. This
@@ -240,8 +271,33 @@ $\kappa=0.0001$. For some data, larger $\kappa$ may be needed. High
 values of $\kappa$, e.g., $\kappa=0.1$, may introduce a systematic bias
 toward the null, and should thus be avoided.
 
+------
+
+```{definition normboot, echo=TRUE, name = '(ref:normboot)'}
+    
+
+1. Draw a bootstrap sample $(\dot y_\mathrm{obs},\dot X_\mathrm{obs})$ of size $n_1$ from $(y_\mathrm{obs},X_\mathrm{obs})$.}
+
+2. Calculate the cross-product matrix $\dot S=\dot X_\mathrm{obs}^\prime\dot X_\mathrm{obs}$.
+
+3. Calculate $\dot V = (\dot S+\mathrm{diag}(\dot S)\kappa)^{-1}$, with some small $\kappa$.
+
+4. Calculate regression weights $\dot\beta = \dot V\dot X_\mathrm{obs}^\prime\dot y_\mathrm{obs}$.
+
+5. Calculate $\dot\sigma^2 = (\dot y_\mathrm{obs} - \dot X_\mathrm{obs}\dot\beta)\prime(\dot y_\mathrm{obs} - \dot X_\mathrm{obs} \dot\beta)/(n_1-q-1)$.
+
+6. Draw $n_0$ independent $N(0,1)$ variates in vector $\dot z_2$.
+
+7. Calculate the $n_0$ values $y_\mathrm{imp} = X_\mathrm{mis}\dot\beta + \dot z_2\dot\sigma$.
+```
+
+(ref:normboot) Imputation under the normal linear model with bootstrap.$^\spadesuit$
+
+------
+    
+
 The bootstrap is a general method for estimating sampling variability
-through resampling the data [@EFRON1993]. Algorithm \@ref(alg:normboot)
+through resampling the data [@EFRON1993]. Algorithm \@ref(def:normboot)
 calculates univariate imputations by drawing a bootstrap sample from the
 complete part of the data, and subsequently takes the least squares
 estimates given the bootstrap sample as a “draw” that incorporates
@@ -259,34 +315,32 @@ assuming that $\beta_0=5.49$, $\beta_1= -0.29$ and $\sigma = 0.86$ are
 the population values. These values are used to generate artificial data
 with known properties.
 
-  Method                                          Bias   % Bias   Coverage   CI Width    RMSE
-  ------------------------------------------ --------- -------- ---------- ---------- -------
-  `norm.predict`      0.0000      0.0      0.652      0.114   0.063
-  `norm.nob`         -0.0001      0.0      0.908      0.226   0.064
-  `norm`             -0.0001      0.0      0.951      0.314   0.066
-  `norm.boot`        -0.0001      0.0      0.941      0.299   0.066
-  Listwise deletion                             0.0001      0.0      0.946      0.251   0.063
+Method                Bias   % Bias   Coverage   CI Width    RMSE
+---------------- --------- -------- ---------- ---------- -------
+`norm.predict`      0.0000      0.0      0.652      0.114   0.063
+`norm.nob`         -0.0001      0.0      0.908      0.226   0.064
+`norm`             -0.0001      0.0      0.951      0.314   0.066
+`norm.boot`        -0.0001      0.0      0.941      0.299   0.066
+Listwise deletion   0.0001      0.0      0.946      0.251   0.063
 
-  : Properties of $\beta_1$ under imputation of missing $y$ by five
-  methods for the normal linear model ($n_\mathrm{sim} = 10000$).<span
-  data-label="tab:linmody">
+: (\#tab:linmody) Properties of $\beta_1$ under imputation of missing
+$y$ by five methods for the normal linear model ($n_\mathrm{sim} =
+10000$).
 
-Table \@ref(tab:linmody) summarizes the results for the situation where we
-have 50% completely random missing in $y$ and $m = 5$. All methods are
-unbiased for $\beta_1$. The confidence interval of method
-`norm.predict` is much too short, leading to
-substantial undercoverage and $p$-values that are “too significant.”
-This result confirms the problems already noted in Section \@ref(sec:true).
-The `norm.nob` method performs better, but the
-coverage of 0.908 is still too low. Methods
-`norm` and
-`norm.boot` and complete-case analysis are
-correct. Complete-case analysis is a correct analysis here
-[@LITTLE2002], and in fact the most efficient choice for this problem as
-it yields the shortest confidence interval (cf. Section \@ref(sec:when)).
-This result does not hold more generally. In realistic situations
-involving more covariates multiple imputation will rapidly catch up and
-pass complete-case analysis. Note that the RMSE values are uninformative
+Table \@ref(tab:linmody) summarizes the results for the situation
+where we have 50% completely random missing in $y$ and $m = 5$. All
+methods are unbiased for $\beta_1$. The confidence interval of method
+`norm.predict` is much too short, leading to substantial undercoverage
+and $p$-values that are “too significant.” This result confirms the
+problems already noted in Section \@ref(sec:true). The `norm.nob`
+method performs better, but the coverage of 0.908 is still too low.
+Methods `norm` and `norm.boot` and complete-case analysis are correct.
+Complete-case analysis is a correct analysis here [@LITTLE2002], and
+in fact the most efficient choice for this problem as it yields the
+shortest confidence interval (cf. Section \@ref(sec:when)). This
+result does not hold more generally. In realistic situations involving
+more covariates multiple imputation will rapidly catch up and pass
+complete-case analysis. Note that the RMSE values are uninformative
 for separating correct and incorrect methods, and are in fact
 misleading.
 
@@ -297,42 +351,39 @@ proposed to correct the estimate
 require special adaptation of formulas to calculate the variance, they
 may be useful when the missing data are restricted to the outcome.
 
-  Method                                          Bias   % Bias   Coverage   CI Width    RMSE
-  ------------------------------------------ --------- -------- ---------- ---------- -------
-  `norm.predict`     -0.1007     34.7      0.359      0.160   0.118
-  `norm.nob`          0.0006      0.2      0.924      0.202   0.056
-  `norm`              0.0075      2.6      0.955      0.254   0.058
-  `norm.boot`        -0.0014      0.5      0.946      0.238   0.058
-  Listwise deletion                            -0.0001      0.0      0.946      0.251   0.063
+Method               Bias   % Bias   Coverage   CI Width    RMSE
+---------------- --------- -------- ---------- ---------- -------
+`norm.predict`     -0.1007     34.7      0.359      0.160   0.118
+`norm.nob`          0.0006      0.2      0.924      0.202   0.056
+`norm`              0.0075      2.6      0.955      0.254   0.058
+`norm.boot`        -0.0014      0.5      0.946      0.238   0.058
+Listwise deletion  -0.0001      0.0      0.946      0.251   0.063
 
-  : Properties of $\beta_1$ under imputation of missing $x$ by five
-  methods for the normal linear model ($n_\mathrm{sim} = 10000$).<span
-  data-label="tab:linmodx">
+: (\#tab:linmodx) Properties of $\beta_1$ under imputation of missing 
+$x$ by five methods for the normal linear model ($n_\mathrm{sim} = 10000$).
 
 It is straightforward to adapt the simulations to other, perhaps more
-interesting situations. Investigating the effect of missing data in the
-explanatory $x$ instead of the outcome variable requires only a small
-change in the function to create the missing data. Table \@ref(tab:linmodx)
-displays the results. Method `norm.predict` is
-now severely biased, whereas the other methods remain unbiased. The
-confidence interval of `norm.nob` is still too
-short, but less than in Table \@ref(tab:linmody). Methods
-`norm`, `norm.boot`
-and listwise deletion are correct, in the sense that these are unbiased
-and have appropriate coverage. Again, under the simulation conditions,
-listwise deletion is the optimal analysis. Note that
-`norm` is slightly biased, whereas method
-`norm.boot` slightly underestimates the
-variance. Both tendencies are small in magnitude. The RMSE values are
-uninformative, and are only shown to illustrate that point.
+interesting situations. Investigating the effect of missing data in
+the explanatory $x$ instead of the outcome variable requires only a
+small change in the function to create the missing data. Table
+\@ref(tab:linmodx) displays the results. Method `norm.predict` is now
+severely biased, whereas the other methods remain unbiased. The
+confidence interval of `norm.nob` is still too short, but less than in
+Table \@ref(tab:linmody). Methods `norm`, `norm.boot` and listwise
+deletion are correct, in the sense that these are unbiased and have
+appropriate coverage. Again, under the simulation conditions, listwise
+deletion is the optimal analysis. Note that `norm` is slightly biased,
+whereas method `norm.boot` slightly underestimates the variance. Both
+tendencies are small in magnitude. The RMSE values are uninformative,
+and are only shown to illustrate that point.
 
-We could increase the number of explanatory variables and the number of
-imputations $m$ to see how much the average confidence interval width
-would shrink. It is also easy to apply more interesting missing data
-mechanisms, such as those discussed in Section \@ref(sec:generateuni). Data
-can be generated from skewed distributions, the sample size $n$ can be
-varied and so on. Extensive simulation work is available
-[@RUBIN1986B; @RUBIN1987].
+We could increase the number of explanatory variables and the number
+of imputations $m$ to see how much the average confidence interval
+width would shrink. It is also easy to apply more interesting missing
+data mechanisms, such as those discussed in Section
+\@ref(sec:generateuni). Data can be generated from skewed
+distributions, the sample size $n$ can be varied and so on. Extensive
+simulation work is available [@RUBIN1986B; @RUBIN1987].
 
 ### Generating MAR missing data {#sec:generateuni}
 
@@ -341,61 +392,64 @@ more informative simulations if the missingness probability is a
 function of the observed, and possibly of the unobserved, information.
 This section considers some methods for creating missing data.
 
-Let us first consider three methods to create missing data in artificial
-data. The data are generated as 1000 draws from the bivariate normal
-distribution $P(Y_1, Y_2)$ with means $\mu_1 = \mu_2
+Let us first consider three methods to create missing data in
+artificial data. The data are generated as 1000 draws from the
+bivariate normal distribution $P(Y_1, Y_2)$ with means $\mu_1 = \mu_2
 =5$, variances $\sigma_1^2 =\sigma_2^2 = 1$, and covariance
 $\sigma_{12} = 0.6$. We assume that all values generated are positive.
 Missing data in $Y_2$ can be created in many ways. Let $R_2$ be the
 response indicator for $Y_2$. We study three examples, each of which
-affects the distribution in different ways: $$\begin{aligned}
-  \mathrm{MARRIGHT} &:& \mathrm{logit}(\Pr(R_2=0)) = -5 + Y_1\\
-  \mathrm{MARMID} &:& \mathrm{logit}(\Pr(R_2=0)) = 0.75 - |Y_1-5|\\
-  \mathrm{MARTAIL} &:& \mathrm{logit}(\Pr(R_2=0)) = -0.75 + |Y_1-5|\end{aligned}$$
+affects the distribution in different ways:
+
+\begin{align}
+  \mathrm{MARRIGHT} &:& \mathrm{logit}(\Pr(R_2=0)) = -5 + Y_1 (\#eq:marright)\\
+  \mathrm{MARMID}   &:& \mathrm{logit}(\Pr(R_2=0)) = 0.75 - |Y_1-5| (\#eq:marmid)\\
+  \mathrm{MARTAIL}  &:& \mathrm{logit}(\Pr(R_2=0)) = -0.75 + |Y_1-5| (\#eq:martail)
+\end{align}
+
 where $\mathrm{logit}(p) = \log(p)-\log(1-p)$ with $0\leq p \leq 1$ is
 the logit function. Its inverse $\mathrm{logit}^{-1}(x) =
 \exp(x)/(1+\exp(x))$ is known as the logistic function.
 
-Generating missing data under these models in
-`R` can be done in three steps: calculate the
-missingness probability of each data point, make a random draw from the
-binomial distribution and set the corresponding observations to
-`NA`. The following script creates missing
-data according to MARRIGHT:
+Generating missing data under these models in `R` can be done in three
+steps: calculate the missingness probability of each data point, make
+a random draw from the binomial distribution and set the corresponding
+observations to `NA`. The following script creates missing data
+according to MARRIGHT:
 
-\
-`  `\
-`        `\
-`         `\
-`       `\
-`   `\
-`  `\
-`     `
+```{r generate1}
+```
 
-![Probability that $Y_2$ is missing as a function of the values of $Y_1$
-under three models for the missing data.<span
-data-label="fig:missingness">](fig/ch3_generateplot1-1){width="\maxwidth"}
+```{r generateplot1,  echo=FALSE, solo=TRUE, fig.asp = 0.556, fig.cap = '(ref:generateplot1)'}
+```
 
-![Box plot of $Y_2$ separated for the observed and missing parts under
-three models for the missing data based on $n=10000$.<span
-data-label="fig:threemars">](fig/ch3_generateplot2-1){width="\maxwidth"}
+(ref:generateplot1) Probability that $Y_2$ is missing as a function 
+of the values of $Y_1$ under three models for the missing data.
 
-Figure \@ref(fig:missingness) displays the probability of being missing
-under the three MAR mechanisms. All mechanisms yield approximately 50%
-of missing data, but do so in very different ways. Figure
-\@ref(fig:threemars) displays the distributions of $Y_2$ under the three
-models. MARRIGHT deletes more high values, so the distribution of the
-observed data shifts to the left. MARMID deletes more data in the
-center, so the variance of the observed data grows, but the mean is not
-affected. MARTAIL shows the reverse effect. The variance of observed
-data reduces because the missing data occur in the tails.
+```{r generateplot2,  echo=FALSE, solo=TRUE, fig.asp = 0.667, fig.cap = '(ref:generateplot2)'}
+```
 
-These mechanisms are more extreme than we are likely to see in practice.
-Not only is there a strong relation between $Y_1$ and $R_2$, but the
-percentage of missing data is also quite high (50%). On the other hand,
-if methods perform well under these data deletion schemes, they will
-also do so in less extreme situations that are more likely to be
-encountered in practice.
+(ref:generateplot2) Box plot of $Y_2$ separated for the observed 
+and missing parts under three models for the missing data based 
+on $n=10000$.
+
+Figure \@ref(fig:generateplot1) displays the probability of being
+missing under the three MAR mechanisms. All mechanisms yield
+approximately 50% of missing data, but do so in very different ways.
+Figure \@ref(fig:generateplot2) displays the distributions of $Y_2$
+under the three models. MARRIGHT deletes more high values, so the
+distribution of the observed data shifts to the left. MARMID deletes
+more data in the center, so the variance of the observed data grows,
+but the mean is not affected. MARTAIL shows the reverse effect. The
+variance of observed data reduces because the missing data occur in
+the tails.
+
+These mechanisms are more extreme than we are likely to see in
+practice. Not only is there a strong relation between $Y_1$ and $R_2$,
+but the percentage of missing data is also quite high (50%). On the
+other hand, if methods perform well under these data deletion schemes,
+they will also do so in less extreme situations that are more likely
+to be encountered in practice.
 
 ### MAR missing data generation in multivariate data {#sec:generatemulti}
 
@@ -404,7 +458,7 @@ scenarios with one missing value per row. Things become more complicated
 for multiple missing values per unit, as we need to be careful not to
 delete any values that are needed to make the problem MAR.
 
-@BRAND1999 [pp. 110–113] developed the following method for generating
+@BRAND1999 [pp. 110–113] developed the following method for generating
 non-monotone multivariate missing data in $p$ variables $Y_1,\dots,Y_p$.
 We assume that $Y=(Y_1,\dots,Y_p)$ is initially completely known. The
 method requires specification of
@@ -437,51 +491,41 @@ then the missing variables in the $s^\mathrm{th}$ pattern should not
 influence the missingness probability defined by the missing data model
 $P(R_{(s)}|Y_{(s)}$ for block $s$.
 
-The `ampute()` function in
-`mice` implements the method. For example, we
-can create 50% missing data in both $Y_1$ and $Y_2$ according to a
+The `ampute()` function in `mice` implements the method. For example,
+we can create 50% missing data in both $Y_1$ and $Y_2$ according to a
 MARRIGHT scenario by
 
-`     `\
-`    `
-
-      V1   V2
-    4.91 4.91
+```{r ampute}
+```
 
 As expected, the means in the amputed data are lower than in the
 complete data. It is possible to inspect the distributions of the
-observed data more closely by
-`md.pattern(amp$amp)`,
-`bwplot(amp)` and
-`xyplot(amp)`. Many options are available that
-allows the user to tailor the missing data patterns to the data at hand.
-See @SCHOUTEN2018 for details.
+observed data more closely by `md.pattern(amp$amp)`, `bwplot(amp)` and
+`xyplot(amp)`. Many options are available that allows the user to
+tailor the missing data patterns to the data at hand. See
+@SCHOUTEN2018 for details.
 
 ### Conclusion
 
-Tables \@ref(tab:linmody) and 
-\@ref(tab:linmodx) show that methods
-`norm.predict` (regression imputation) and
-`norm.nob` (stochastic regression imputation)
-fail in terms of understating the uncertainty in the imputations. If the
-missing data occur in $y$ only, then it is possible to correct the
-variance formulas of method `norm.predict`.
-However, if the missing data occur in $X$,
-`norm.predict` is severely biased, so then
-variance correction is not useful. Methods
-`norm` and
-`norm.boot` account for the uncertainty of the
-imputation model provide statistically correct inferences. For missing
-$y$, the efficiency of these methods is less than theoretically
-possible, presumably due to simulation error.
+Tables \@ref(tab:linmody) and \@ref(tab:linmodx) show that methods
+`norm.predict` (regression imputation) and `norm.nob` (stochastic 
+regression imputation) fail in terms of understating the uncertainty 
+in the imputations. If the missing data occur in $y$ only, then it
+is possible to correct the variance formulas of method `norm.predict`.
+However, if the missing data occur in $X$, `norm.predict` is severely 
+biased, so then variance correction is not useful. Methods `norm` and
+`norm.boot` account for the uncertainty of the imputation model 
+provide statistically correct inferences. For missing $y$, the 
+efficiency of these methods is less than theoretically possible, 
+presumably due to simulation error.
 
 It is always better to include parameter uncertainty, either by the
 Bayesian or the bootstrap method. The effect of doing so will diminish
-with increasing sample size (Exercise \@ref(ex:sampling)), so for estimates
-based on a large sample one may opt for the simpler
-`norm.nob` method if speed of calculation is
-at premium. Note that in subgroup analyses, the large-sample requirement
-applies to the subgroup size, and not to the total sample size.
+with increasing sample size (Exercise \@ref(exr:sampling)), so for estimates
+based on a large sample one may opt for the simpler `norm.nob` method 
+if speed of calculation is at premium. Note that in subgroup analyses, 
+the large-sample requirement applies to the subgroup size, and not to the 
+total sample size.
 
 ## Imputation under non-normal distributions {#sec:nonnormal}
 
@@ -514,17 +558,17 @@ needed. More generally, the transformation could be made to depend on
 known covariates like age and sex, for example as done in the LMS model
 [@COLE1992] or the GAMLSS model [@RIGBY2005].
 
-warns that application of tricks to make the distribution of skewed
-variables closer to normality (e.g., censoring, truncation,
-transformation) may make matters worse. Censoring (rounding a disallowed
-value to the nearest allowed value) and truncation (redrawing a
-disallowed value until it is within the allowed range) can change both
-the mean and variability in the data. Transformations may fail to
-achieve near-normality, and even if that succeeds, bivariate relations
-may be affected when imputed by a method that assumes normality. The
-examples of Von Hippel are somewhat extreme, but they do highlight the
-point that simple fixes to achieve normality are limited by what they
-can do.
+@VONHIPPEL2013 warns that application of tricks to make the
+distribution of skewed variables closer to normality (e.g.,
+censoring, truncation, transformation) may make matters worse.
+Censoring (rounding a disallowed value to the nearest allowed value)
+and truncation (redrawing a disallowed value until it is within the
+allowed range) can change both the mean and variability in the data.
+Transformations may fail to achieve near-normality, and even if that
+succeeds, bivariate relations may be affected when imputed by a
+method that assumes normality. The examples of Von Hippel are
+somewhat extreme, but they do highlight the point that simple fixes
+to achieve normality are limited by what they can do.
 
 There are two possible strategies to progress. The first is to use
 predictive mean matching. Section \@ref(sec:pmm) will describe this
@@ -540,82 +584,77 @@ skewness with platykurtic and leptokurtic distributions.
 
 The GAMLSS method [@RIGBY2005; @STASINOPOULOS2017] extends both the
 generalized linear model and the generalized additive model. A unique
-feature of GAMLSS is its ability to specify a (possibly nonlinear) model
-for each of the parameters of the distribution, thus giving rise to an
-extremely flexible toolbox that can be used to model almost any
-distribution. The `gamlss` package contains
-over 60 built-in distributions. Each distribution comes with a function
-to draw random variates, so once the `gamlss`
-model is fitted, it can also be used to draw imputations. The first
-edition of this book showed how to construct a new univariate imputation
-function that `mice` could call.
+feature of GAMLSS is its ability to specify a (possibly nonlinear)
+model for each of the parameters of the distribution, thus giving rise
+to an extremely flexible toolbox that can be used to model almost any
+distribution. The `gamlss` package contains over 60 built-in
+distributions. Each distribution comes with a function to draw random
+variates, so once the `gamlss` model is fitted, it can also be used to
+draw imputations. The first edition of this book showed how to
+construct a new univariate imputation function that `mice` could call.
 This is not needed any more. @DEJONG2012 and @DEJONG2016 developed a
 series of imputation methods based on GAMLSS, so it is now easy to
 perform multiple imputation under variety of distributions. The
-`ImputeRobust` package [@SALFRAN2017],
-implements various `mice` methods for
-continuous data: `gamlss` (normal),
-`gamlssJSU` (Johnson’s SU),
-`gamlssTF` ($t$-distribution) and
-`gamlssGA` (gamma distribution). The following
-section demonstrates the use of the package.
+`ImputeRobust` package [@SALFRAN2017], implements various `mice`
+methods for continuous data: `gamlss` (normal), `gamlssJSU` (Johnson’s
+SU), `gamlssTF` ($t$-distribution) and `gamlssGA` (gamma
+distribution). The following section demonstrates the use of the
+package.
 
 ### Imputation from the $t$-distribution {#sec:tdist}
 
-We illustrate imputation from the $t$-distribution. The $t$-distribution
-is favored for more robust statistical modeling in a variety of settings
-[@LANGE1989]. observed unexplained kurtosis in the distribution of head
-circumference in children. @RIGBY2006 fitted a $t$-distribution to these
-data, and observed a substantial improvement of the fit.
+We illustrate imputation from the $t$-distribution. The
+$t$-distribution is favored for more robust statistical modeling in a
+variety of settings [@LANGE1989]. @VANBUUREN2001 observed unexplained
+kurtosis in the distribution of head circumference in children.
+@RIGBY2006 fitted a $t$-distribution to these data, and observed a
+substantial improvement of the fit.
 
-![Measured head circumference of 755 Dutch boys aged 1–2 years
-[@FREDRIKS2000B].<span
-data-label="fig:hc">](fig/ch3_linhc1-1){width="\maxwidth"}
+```{r lingamlss, echo = FALSE}
+```
 
-Figure \@ref(fig:hc) plots the data for Dutch boys aged 1–2 years. Due to
-the presence of several outliers, the $t$-distribution with 6.7 degrees
-of freedom fits the data substantially better than the normal
-distribution (Akaike Information Criterion (AIC): 2974.5 (normal model)
-versus 2904.3 ($t$-distribution). If the outliers are genuine data, then
-the $t$-distribution should provide imputations that are more realistic
-than the normal.
+```{r linhc0, echo = FALSE, results="hide"}
+```
 
-We create a synthetic dataset by imputing head circumference of the same
-755 boys. Imputation is easily done with the following steps: append the
-data with a duplicate, create missing data in
-`hc` and run
-`mice()` calling the
-`gamlssTF` method as follows:
+```{r linhc1, echo = FALSE, duo = TRUE, fig.asp = 0.5, fig.cap = '(ref:linhc1)'}
+```
+(ref:linhc1) Measured head circumference of 755 Dutch boys aged 1–2 years
+[@FREDRIKS2000B].
 
-\
-\
-\
-`          `\
-`   `\
-`      `\
-`  `\
-`  `\
-`   `\
-`           `\
-`              `\
-`  `
+Figure \@ref(fig:linhc1) plots the data for Dutch boys aged 1–2 years.
+Due to the presence of several outliers, the $t$-distribution with 6.7
+degrees of freedom fits the data substantially better than the normal
+distribution (Akaike Information Criterion (AIC): 2974.5 (normal
+model) versus 2904.3 ($t$-distribution). If the outliers are genuine
+data, then the $t$-distribution should provide imputations that are
+more realistic than the normal.
 
-![Fully synthetic data of head circumference of 755 Dutch boys aged 1–2
-years using a $t$-distribution.<span
-data-label="fig:hcimp">](fig/ch3_linhc3-1){width="\maxwidth"}
+We create a synthetic dataset by imputing head circumference of the
+same 755 boys. Imputation is easily done with the following steps:
+append the data with a duplicate, create missing data in `hc` and run
+`mice()` calling the `gamlssTF` method as follows:
 
-Figure \@ref(fig:hcimp) is the 
-equivalent of Figure \@ref(fig:hc), but now
-calculated from the synthetic data. Both configurations are similar. As
-expected, some outliers also occur in the imputed data, but these are a
-little less extreme than in the observed data due to the smoothing by
-the $t$-distribution. The estimated degrees of freedom varies over
-replications, and appears to be somewhat larger than the value of 6.7
-estimated from the observed data. For this replication, it is larger
-(11.5). The distribution of the imputed data is better behaved compared
-to the observed data. The typical rounding patterns seen in the real
-measurements are not present in the imputed data. Though these are small
-differences, they may be of relevance in particular analyses.
+```{r linhc2, cache = TRUE, warning = FALSE}
+```
+
+```{r linhc3, echo = FALSE, duo = TRUE, fig.asp = 0.5, fig.cap = '(ref:linhc3)'}
+```
+
+(ref:linhc3) Fully synthetic data of head circumference of 755 Dutch
+boys aged 1–2 years using a $t$-distribution.
+
+Figure \@ref(fig:linhc3) is the equivalent of Figure
+\@ref(fig:linhc1), but now calculated from the synthetic data. Both
+configurations are similar. As expected, some outliers also occur in
+the imputed data, but these are a little less extreme than in the
+observed data due to the smoothing by the $t$-distribution. The
+estimated degrees of freedom varies over replications, and appears to
+be somewhat larger than the value of 6.7 estimated from the observed
+data. For this replication, it is larger (11.5). The distribution of
+the imputed data is better behaved compared to the observed data. The
+typical rounding patterns seen in the real measurements are not
+present in the imputed data. Though these are small differences, they
+may be of relevance in particular analyses.
 
 ## Predictive mean matching {#sec:pmm}
 
@@ -633,21 +672,22 @@ the candidate donors.
 
 Predictive mean matching is an easy-to-use and versatile method. It is
 fairly robust to transformations of the target variable, so imputing
-$\log(Y)$ often yields results similar to imputing $\exp(Y)$. The method
-also allows for discrete target variables. Imputations are based on
-values observed elsewhere, so they are realistic. Imputations outside
-the observed data range will not occur, thus evading problems with
-meaningless imputations (e.g., negative body height). The model is
-implicit [@LITTLE2002], which means that there is no need to define an
-explicit model for the distribution of the missing values. Because of
-this, predictive mean matching is less vulnerable to model
+$\log(Y)$ often yields results similar to imputing $\exp(Y)$. The
+method also allows for discrete target variables. Imputations are
+based on values observed elsewhere, so they are realistic. Imputations
+outside the observed data range will not occur, thus evading problems
+with meaningless imputations (e.g., negative body height). The model
+is implicit [@LITTLE2002], which means that there is no need to define
+an explicit model for the distribution of the missing values. Because
+of this, predictive mean matching is less vulnerable to model
 misspecification than the methods discussed in Sections
-\@ref(sec:linearnormal) and 
-\@ref(sec:nonnormal).
+\@ref(sec:linearnormal) and \@ref(sec:nonnormal).
 
-![Robustness of predictive mean matching (right) relative to imputation
-under the linear normal model (left).<span
-data-label="fig:misspecify">](fig/ch3_figmisspecify-1){width="\maxwidth"}
+```{r misspecify, echo=FALSE, duo = TRUE,  fig.asp = 0.5, fig.cap = '(ref:misspecify)'}
+```
+
+(ref:misspecify) Robustness of predictive mean matching (right)
+relative to imputation under the linear normal model (left).
 
 Figure \@ref(fig:misspecify) illustrates the robustness of predictive mean
 matching relative to the normal model. The figure displays the body mass
@@ -670,31 +710,33 @@ in some sense close. Reviews of hot deck methods can be found in
 @FORD1983, @BRICK1996, @KOLLER2009, @ANDRIDGE2010 and @DEWAAL2011 [pp.
 249–255, 349–355].
 
-![Selection of candidate donors in predictive mean matching with the
-stochastic matching distance.<span
-data-label="fig:pmm">](fig/ch3_pmmfigure-1){width="\maxwidth"}
+```{r pmmfigure, echo = FALSE, solo = TRUE, fig.asp = 1, fig.cap = '(ref:pmmfigure)'}
+```
 
-Figure \@ref(fig:pmm) is an illustration of the method using the
-`whiteside` data. The predictor is equal to
-5$^\circ\mathrm{C}$ and the bandwidth is 1.2. The thick
-gray line indicates the area of the target variable where
-matches should be sought. The gray part of the figure are
-considered fixed. The red line correspond to one random draw of the line
-parameters to incorporate sampling uncertainty. The two light-red bands
-indicate the area where matches are permitted. In this particular
-instance, five candidate donors are found, four from the subgroup “after
-insulation” and one from the subgroup “before insulation.” The last step
-is to make a random draw among these five candidates. The red parts in
-the figure will vary between different imputed datasets, and thus the
-set of candidates will also vary over the imputed datasets.
+(ref:pmmfigure) Selection of candidate donors in predictive mean
+matching with the stochastic matching distance.
 
-The data point at coordinate (10.2, 2.6) is one of the candidate donors.
-This point differs from the incomplete unit in both temperature and
-insulation status, yet it is selected as a candidate donor. The
-advantage of including the point is that closer matches in terms of the
-predicted values are possible. Under the assumption that the
-distribution of the target in different bands is similar, including
-points from different bands is likely to be beneficial.
+Figure \@ref(fig:pmmfigure) is an illustration of the method using the
+`whiteside` data. The predictor is equal to 5$^\circ\mathrm{C}$ and
+the bandwidth is 1.2. The thick blue line indicates the area of the
+target variable where matches should be sought. The blue part of the
+figure are considered fixed. The red line correspond to one random
+draw of the line parameters to incorporate sampling uncertainty. The
+two light-red bands indicate the area where matches are permitted. In
+this particular instance, five candidate donors are found, four from
+the subgroup “after insulation” and one from the subgroup “before
+insulation.” The last step is to make a random draw among these five
+candidates. The red parts in the figure will vary between different
+imputed datasets, and thus the set of candidates will also vary over
+the imputed datasets.
+
+The data point at coordinate (10.2, 2.6) is one of the candidate
+donors. This point differs from the incomplete unit in both
+temperature and insulation status, yet it is selected as a candidate
+donor. The advantage of including the point is that closer matches in
+terms of the predicted values are possible. Under the assumption that
+the distribution of the target in different bands is similar,
+including points from different bands is likely to be beneficial.
 
 ### Computational details$^\spadesuit$ {#sec:pmmcomputation}
 
@@ -713,38 +755,37 @@ observed $y_i$ where $i=1,\dots,n_1$. Likewise, let $\hat y_j$ denote
 the predicted value of the rows with missing $y_j$ where
 $j=1,\dots,n_0$. @ANDRIDGE2010 distinguish four methods:
 
-1.  Choose a threshold $\eta$, and take all $i$ for which $|\hat
-        y_i-\hat y_j|<\eta$ as candidate donors for imputing $j$.
-    Randomly sample one donor from the candidates, and take its $y_i$ as
-    replacement value.
+1. Choose a threshold $\eta$, and take all $i$ for which 
+   $|\hat y_i-\hat y_j|<\eta$ as candidate donors for imputing $j$.
+   Randomly sample one donor from the candidates, and take its $y_i$ as
+   replacement value.
 
-2.  Take the closest candidate, i.e., the case $i$ for which
-    $|\hat
-        y_i-\hat y_j|$ is minimal as the donor. This is known as
-    “nearest neighbor hot deck,” “deterministic hot deck” or
-    “closest predictor.”
+2. Take the closest candidate, i.e., the case $i$ for which
+   $|\hat y_i-\hat y_j|$ is minimal as the donor. This is known as
+   “nearest neighbor hot deck,” “deterministic hot deck” or
+   “closest predictor.”
 
-3.  Find the $d$ candidates for which $|\hat y_i-\hat y_j|$ is
-    minimal, and sample one of them. Usual values for $d$ are 3, 5
-    and 10. There is also an adaptive method to specify the number of
-    donors [@SCHENKER1996].
+3. Find the $d$ candidates for which $|\hat y_i-\hat y_j|$ is
+   minimal, and sample one of them. Usual values for $d$ are 3, 5
+   and 10. There is also an adaptive method to specify the number of
+   donors [@SCHENKER1996].
 
-4.  Sample one donor with a probability that depends on
-    $|\hat y_i-\hat y_j|$ [@SIDDEQUE2008].
+4. Sample one donor with a probability that depends on
+   $|\hat y_i-\hat y_j|$ [@SIDDEQUE2008].
 
 In addition, it is useful to distinguish four types of matching:
 
-1.  *Type 0*: $\hat y={\mbox{$X_\mathrm{obs}$}}\hat\beta$ is matched to
-    $\hat y_j={\mbox{$X_\mathrm{mis}$}}\hat\beta$;
+1.  *Type 0*: $\hat y=X_\mathrm{obs}\hat\beta$ is matched to
+    $\hat y_j=X_\mathrm{mis}\hat\beta$;
 
-2.  *Type 1*: $\hat y={\mbox{$X_\mathrm{obs}$}}\hat\beta$ is matched to
-    $\dot y_j={\mbox{$X_\mathrm{mis}$}}\dot\beta$;
+2.  *Type 1*: $\hat y=X_\mathrm{obs}\hat\beta$ is matched to
+    $\dot y_j=X_\mathrm{mis}\dot\beta$;
 
-3.  *Type 2*: $\dot y={\mbox{$X_\mathrm{obs}$}}\dot\beta$ is matched to
-    $\dot y_j={\mbox{$X_\mathrm{mis}$}}\dot\beta$;
+3.  *Type 2*: $\dot y=X_\mathrm{obs}\dot\beta$ is matched to
+    $\dot y_j=X_\mathrm{mis}\dot\beta$;
 
-4.  *Type 3*: $\dot y={\mbox{$X_\mathrm{obs}$}}\dot\beta$ is matched to
-    $\ddot y_j={\mbox{$X_\mathrm{mis}$}}\ddot\beta$.
+4.  *Type 3*: $\dot y=X_\mathrm{obs}\dot\beta$ is matched to
+    $\ddot y_j=X_\mathrm{mis}\ddot\beta$.
 
 Here $\hat\beta$ is the estimate of $\beta$, while $\dot\beta$ is a
 value randomly drawn from the posterior distribution of $\beta$. Type 0
@@ -757,7 +798,7 @@ under different values of $\dot\beta$, so the same donor(s) get selected
 too often. Type 1 matching is a small but nifty adaptation of the
 matching distance that seems to alleviate the problem. The difference
 with Type 0 and Type 2 matching is that in Type 1 matching only
-${\mbox{$X_\mathrm{mis}$}}\dot\beta$ varies stochastically and does not
+$X_\mathrm{mis}\dot\beta$ varies stochastically and does not
 cancel out any more. As a result $\dot\eta$ incorporates
 between-imputation variation. Type 3 matching creates two draws for
 $\beta$, one for the donor set and one for the recipient set. In
@@ -766,10 +807,37 @@ described by @LITTLE1988 [eq. 4]. It disappeared from the literature,
 only to reappear two decades later in the works of @KOLLER2009 [p. 43]
 and @WHITE2011 [p. 383].
 
-Algorithm \@ref(alg:pmm) provides the steps used in predictive mean
+------
+
+```{definition pmm, echo = TRUE, name = '(ref:pmm)'}
+    
+
+1. Calculate $\dot\beta$ and $\hat\beta$ by Steps 1-8 of 
+   Algorithm \@ref(def:norm).
+   
+2. Calculate 
+   $\dot\eta(i,j)=|X_i^\mathrm{obs}\hat\beta-X_j^\mathrm{mis}\dot\beta|$ 
+   with $i=1,\dots,n_1$ and $j=1,\dots,n_0$.
+
+3. Construct $n_0$ sets $Z_j$, each containing $d$ candidate donors, 
+   from $Y_\mathrm{obs}$ such that $\sum_d\dot\eta(i,j)$ is minimum for
+   all $j=1,\dots,n_0$. Break ties randomly.
+
+4. Draw one donor $i_j$ from $Z_j$ randomly for $j=1,\dots,n_0$.
+
+5. Calculate imputations $\dot y_j = y_{i_j}$ for $j=1,\dots,n_0$.
+```
+
+(ref:pmm) Predictive mean matching with a Bayesian $\beta$ and a 
+stochastic matching distance (Type~1 matching).
+
+-----
+
+
+Algorithm \@ref(def:pmm) provides the steps used in predictive mean
 matching using Bayesian parameter draws for $\beta$. It is possible to
 create the bootstrap version of this algorithm that will also evade the
-need to draw $\beta$ along the same lines as Algorithm \@ref(alg:normboot).
+need to draw $\beta$ along the same lines as Algorithm \@ref(def:normboot).
 Given that the number of candidate donors and the model for the mean is
 provided by the user, the algorithm does not need an explicit
 specification of the distribution.
@@ -784,127 +852,96 @@ about variability of imputations.
 ### Number of donors
 
 There are different strategies for defining the set and number of
-candidate donors. Setting $d = 1$ is generally considered to be too low,
-as it may reselect the same donor over and over again. Predictive mean
-matching performs very badly when $d$ is small and there are lots of
-ties for the predictors among the individuals to be imputed. The reason
-is that the tied individuals all get the same imputed value in each
-imputed dataset when $d = 1$ (Ian White, personal communication).
+candidate donors. Setting $d = 1$ is generally considered to be too
+low, as it may reselect the same donor over and over again. Predictive
+mean matching performs very badly when $d$ is small and there are lots
+of ties for the predictors among the individuals to be imputed. The
+reason is that the tied individuals all get the same imputed value in
+each imputed dataset when $d = 1$ (Ian White, personal communication).
 Setting $d$ to a high value (say $n/10$) alleviates the duplication
 problem, but may introduce bias since the likelihood of bad matches
 increases. @SCHENKER1996 evaluated $d = 3$, $d = 10$ and an adaptive
 scheme. The adaptive method was slightly better than using a fixed
 number of candidates, but the differences were small. compared various
-settings for $d$, and found that $d = 5$ and $d = 10$ generally provided
-the best results. found that $d = 5$ may be too high for sample size
-lower than $n = 100$, and suggested setting $d = 1$ for better point
-estimates for small samples. @GAFFERT2016 explored scenarios in which
-candidate donors have different probabilities to be drawn, where the
-probability depends on the distance between the donor and recipient
-cases. As all observed cases can be donors in this scenario, there is no
-need to specify $d$. Instead a closeness parameter needs to be
-specified, and this was made adaptive to the data. An advantage of using
-all donors is that the variance of the imputations can be corrected by
-the Parzen correction, which alleviates concerns about insufficient
-variability of the imputes. Their simulations showed that with a small
-sample ($n = 10$), the adaptive method is clearly superior to methods
-with a fixed donor pool. The method is available in
-`mice` as the
-`midastouch` method. There is also a separate
-`midastouch` package in
-`R`. Related work can be found in @TUTZ2015.
+settings for $d$, and found that $d = 5$ and $d = 10$ generally
+provided the best results. found that $d = 5$ may be too high for
+sample size lower than $n = 100$, and suggested setting $d = 1$ for
+better point estimates for small samples. @GAFFERT2016 explored
+scenarios in which candidate donors have different probabilities to be
+drawn, where the probability depends on the distance between the donor
+and recipient cases. As all observed cases can be donors in this
+scenario, there is no need to specify $d$. Instead a closeness
+parameter needs to be specified, and this was made adaptive to the
+data. An advantage of using all donors is that the variance of the
+imputations can be corrected by the Parzen correction, which
+alleviates concerns about insufficient variability of the imputes.
+Their simulations showed that with a small sample ($n = 10$), the
+adaptive method is clearly superior to methods with a fixed donor
+pool. The method is available in `mice` as the `midastouch` method.
+There is also a separate `midastouch` package in `R`. Related work can
+be found in @TUTZ2015.
 
-The default in `mice` is $d = 5$, and
-represents a compromise. The above results suggest that an adaptive
-method for setting $d$ could improve small sample behavior. Meanwhile,
-the number of donors can be changed through the
-`donors` argument.
+The default in `mice` is $d = 5$, and represents a compromise. The
+above results suggest that an adaptive method for setting $d$ could
+improve small sample behavior. Meanwhile, the number of donors can be
+changed through the `donors` argument.
 
-lrrrrrr Method & & Bias & % Bias & Coverage & CI Width &
-RMSE\
-Missing $y$, $n = 50$ & $d$\
-`pmm` & 1 & 0.016 & 5.4 & 0.884 & 0.252 &
-0.071\
-`pmm` & 3 & 0.028 & 9.7 & 0.890 & 0.242 &
-0.070\
-`pmm` & 5 & 0.039 &13.6 & 0.876 & 0.241 &
-0.075\
-`pmm` &10 & 0.065 &22.4 & 0.806 & 0.245 &
-0.089\
-\
-Missing $x$\
-`pmm` & 1 &-0.002 & 0.8 & 0.916 & 0.223 &
-0.063\
-`pmm` & 3 & 0.002 & 0.9 & 0.931 & 0.228 &
-0.061\
-`pmm` & 5 & 0.008 & 2.8 & 0.938 & 0.237 &
-0.062\
-`pmm` &10 & 0.028 & 9.6 & 0.946 & 0.261 &
-0.067\
-\
-Listwise deletion & & 0.000 & 0.0 & 0.946 & 0.251 & 0.063\
-\
-\
-Missing $y$, $n = 50$ & $\kappa$\
-`midastouch` &auto& 0.013 & 4.5 & 0.920 &
-0.265 & 0.066\
-`midastouch` & 2& 0.032 &11.1 & 0.917 & 0.273
-& 0.068\
-`midastouch` & 3& 0.018 & 6.2 & 0.927 & 0.261
-& 0.064\
-`midastouch` & 4& 0.012 & 4.1 & 0.926 & 0.260
-& 0.064\
-\
-Missing $x$\
-`midastouch` &auto&-0.003&0.9 & 0.932 & 0.241
-& 0.060\
-`midastouch` & 2& 0.013 & 4.4 & 0.959 & 0.264
-& 0.059\
-`midastouch` & 3& 0.000 & 0.2 & 0.947 & 0.245
-& 0.058\
-`midastouch` & 4&-0.004 & 1.4 & 0.940 & 0.237
-& 0.058\
-\
-Listwise deletion & & 0.000 & 0.0 & 0.946 & 0.251 & 0.063\
-\
-\
-Missing $y$, $n = 1000$ & $d$\
-`pmm` & 1 & 0.001 & 0.2 & 0.929 & 0.056 &
-0.014\
-`pmm` & 3 & 0.001 & 0.4 & 0.950 & 0.056 &
-0.013\
-`pmm` & 5 & 0.002 & 0.6 & 0.951 & 0.055 &
-0.013\
-`pmm` & 10& 0.003 & 1.2 & 0.932 & 0.054 &
-0.013\
-\
-Missing $x$\
-`pmm` & 1 & 0.000 & 0.2 & 0.926 & 0.041 &
-0.011\
-`pmm` & 3 & 0.000 & 0.1 & 0.933 & 0.041 &
-0.011\
-`pmm` & 5 & 0.000 & 0.1 & 0.937 & 0.042 &
-0.011\
-`pmm` & 10& 0.000 & 0.1 & 0.928 & 0.042 &
-0.011\
-\
-Listwise deletion & & 0.000 & 0.1 & 0.955 & 0.050 & 0.012\
+|Method               |       |  Bias|% Bias| Coverage|CI Width|  RMSE|
+|---------------------|------:|-----:|-----:|--------:|-------:|-----:|
+|Missing $y$, $n = 50$|    $d$|      |      |         |        |      |
+|`pmm`                |     1 | 0.016|   5.4|    0.884|   0.252| 0.071|
+|`pmm`                |     3 | 0.028|   9.7|    0.890|   0.242| 0.070|
+|`pmm`                |     5 | 0.039|  13.6|    0.876|   0.241| 0.075|
+|`pmm`                |    10 | 0.065|  22.4|    0.806|   0.245| 0.089|
+|Missing $x$          |       |      |      |         |        |      |
+|`pmm`                |     1 |-0.002|   0.8|    0.916|   0.223| 0.063|
+|`pmm`                |     3 | 0.002|   0.9|    0.931|   0.228| 0.061|
+|`pmm`                |     5 | 0.008|   2.8|    0.938|   0.237| 0.062|
+|`pmm`                |    10 | 0.028|   9.6|    0.946|   0.261| 0.067|
+|Listwise deletion    |       | 0.000|   0.0|    0.946|   0.251| 0.063|
+|                     |       |      |      |         |        |      |
+|Missing $y$, $n = 50$|$\kappa$|     |      |         |        |      |
+|`midastouch`         |  auto | 0.013|   4.5|    0.920|   0.265| 0.066|
+|`midastouch`         |     2 | 0.032|  11.1|    0.917|   0.273| 0.068|
+|`midastouch`         |     3 | 0.018|   6.2|    0.927|   0.261| 0.064|
+|`midastouch`         |     4 | 0.012|   4.1|    0.926|   0.260| 0.064|
+|Missing $x$          |       |      |      |         |        |      |
+|`midastouch`         |  auto |-0.003|   0.9|    0.932|   0.241| 0.060|
+|`midastouch`         |     2 | 0.013|   4.4|    0.959|   0.264| 0.059|
+|`midastouch`         |     3 | 0.000|   0.2|    0.947|   0.245| 0.058|
+|`midastouch`         |     4 |-0.004|   1.4|    0.940|   0.237| 0.058|
+|Listwise deletion    |       | 0.000|   0.0|    0.946|   0.251| 0.063|
+|                     |       |      |      |         |        |      |
+|Missing $y$, $n = 1000$|  $d$|      |      |         |        |      |
+|`pmm`                |     1 | 0.001|   0.2|    0.929|   0.056| 0.014|
+|`pmm`                |     3 | 0.001|   0.4|    0.950|   0.056| 0.013|
+|`pmm`                |     5 | 0.002|   0.6|    0.951|   0.055| 0.013|
+|`pmm`                |    10 | 0.003|   1.2|    0.932|   0.054| 0.013|
+|Missing $x$          |       |      |      |         |        |      |
+|`pmm`                |     1 | 0.000|   0.2|    0.926|   0.041| 0.011|
+|`pmm`                |     3 | 0.000|   0.1|    0.933|   0.041| 0.011|
+|`pmm`                |     5 | 0.000|   0.1|    0.937|   0.042| 0.011|
+|`pmm`                |    10 | 0.000|   0.1|    0.928|   0.042| 0.011|
+|Listwise deletion    |       | 0.000|   0.1|    0.955|   0.050| 0.012|
+
+: (\#tab:pmm) Properties of $\beta_1$ under multiple imputation 
+by predictive mean matching and $m = 5$, 50\% MCAR missing data 
+and $n_\mathrm{sim} = 1000$.
 
 Table \@ref(tab:pmm) repeats the simulation experiment done in Tables
-\@ref(tab:linmody) and 
-\@ref(tab:linmodx) for predictive mean matching for
-three different choices of the number $d$ of candidate donors. Results
-are given for $n = 50$ and $n = 1000$. For $n = 50$ we find that
-$\beta_1$ is increasingly biased towards the null for larger $d$.
-Because of the bias, the coverage is lower than nominal. For missing $x$
-the bias is much smaller. Setting $d$ to a lower value, as recommended
-by @KLEINKE2017, improves point estimates, but the magnitude of the
-effect depends on whether the missing values occur in $x$ or $y$. For
-the sample size $n = 1000$ predictive mean matching appears well
-calibrated for $d = 5$ for missing data in $y$, and has slight
-undercoverage for missing data in $x$. Note that Table \@ref(tab:pmm) in
-the first edition of this book presented incorrect information because
-it had erroneously imputed the data by `norm`
+\@ref(tab:linmody) and \@ref(tab:linmodx) for predictive mean matching
+for three different choices of the number $d$ of candidate donors.
+Results are given for $n = 50$ and $n = 1000$. For $n = 50$ we find
+that $\beta_1$ is increasingly biased towards the null for larger $d$.
+Because of the bias, the coverage is lower than nominal. For missing
+$x$ the bias is much smaller. Setting $d$ to a lower value, as
+recommended by @KLEINKE2017, improves point estimates, but the
+magnitude of the effect depends on whether the missing values occur in
+$x$ or $y$. For the sample size $n = 1000$ predictive mean matching
+appears well calibrated for $d = 5$ for missing data in $y$, and has
+slight undercoverage for missing data in $x$. Note that Table
+\@ref(tab:pmm) in the first edition of this book presented incorrect
+information because it had erroneously imputed the data by `norm`
 instead of `pmm`.
 
 ### Pitfalls
@@ -921,18 +958,18 @@ predictors.
 
 The traditional method does not work for a small number of predictors.
 @HEITJAN1991 report that for just two predictors the results were
-“disastrous.” The cause of the problem appears to be related to their
-use of Type 0 matching. The default in `mice`
-is Type 1 matching, which works better for small number of predictors.
-The setting can be changed to Type 0 or Type 2 matching through the
+“disastrous.” The cause of the problem appears to be related to
+their use of Type 0 matching. The default in `mice` is Type 1
+matching, which works better for small number of predictors. The
+setting can be changed to Type 0 or Type 2 matching through the
 `matchtype` argument.
 
 Predictive mean matching is no substitute for sloppy modeling. If the
 imputation model is misspecified, performance can become poor if there
-are strong relations in the data that are not modeled [@MORRIS2014]. The
-default imputation model in `mice` consists of
-a linear main effect model conditional on all other variables, but this
-may be inadequate in the presence of strong nonlinear relations. More
+are strong relations in the data that are not modeled [@MORRIS2014].
+The default imputation model in `mice` consists of a linear main
+effect model conditional on all other variables, but this may be
+inadequate in the presence of strong nonlinear relations. More
 generally, any terms appearing in the complete-data model need to be
 accounted for in the imputation model. @MORRIS2014 advise to spend
 efforts on specifying the imputation model correctly, rather than
@@ -940,18 +977,18 @@ expecting predictive mean matching to do the work.
 
 ### Conclusion
 
-Predictive mean matching with $d=5$ is the default in
-`mice()` for continuous data. The method is
-robust against misspecification of the imputation model, yet performs as
-well as theoretically superior methods. In the context of missing
-covariate data, @MARSHALL2010 concluded that predictive mean matching
-“produced the least biased estimates and better model performance
-measures.” Another simulation study that addressed skewed data concluded
-that predictive mean matching “may be the preferred approach provided
-that less than 50% of the cases have missing data and the missing data
-are not MNAR” [@MARSHALL2010B]. @KLEINKE2017 found that the method works
-well across a wide variety of scenarios, but warned the default cannot
-address severe skewness or small samples.
+Predictive mean matching with $d = 5$ is the default in `mice()` for
+continuous data. The method is robust against misspecification of the
+imputation model, yet performs as well as theoretically superior
+methods. In the context of missing covariate data, @MARSHALL2010
+concluded that predictive mean matching “produced the least biased
+estimates and better model performance measures.” Another simulation
+study that addressed skewed data concluded that predictive mean
+matching “may be the preferred approach provided that less than 50% of
+the cases have missing data and the missing data are not MNAR”
+[@MARSHALL2010B]. @KLEINKE2017 found that the method works well across
+a wide variety of scenarios, but warned the default cannot address
+severe skewness or small samples.
 
 The method works best with large samples, and provides imputations that
 possess many characteristics of the complete data. Predictive mean
@@ -961,28 +998,31 @@ are sparse. Also, it may not perform well with small datasets. Bearing
 these points in mind, predictive mean matching is a great all-around
 method with exceptional properties.
 
+
 ## Classification and regression trees {#sec:cart}
 
 ### Overview {#sec:cartoverview}
 
-Classification and regression trees (CART) [@BREIMAN1984] are a popular
-class of machine learning algorithms. CART models seek predictors and
-cut points in the predictors that are used to split the sample. The cut
-points divide the sample into more homogeneous subsamples. The splitting
-process is repeated on both subsamples, so that a series of splits
-defines a binary tree. The target variable can be discrete
-(classification tree) or continuous (regression tree).
+Classification and regression trees (CART) [@BREIMAN1984] are a
+popular class of machine learning algorithms. CART models seek
+predictors and cut points in the predictors that are used to split the
+sample. The cut points divide the sample into more homogeneous
+subsamples. The splitting process is repeated on both subsamples, so
+that a series of splits defines a binary tree. The target variable can
+be discrete (classification tree) or continuous (regression tree).
 
-![Regression tree for predicting gas consumption. The left-hand plot
-displays the binary tree, whereas the right-hand plot identifies the
-groups at each end leaf in the data.<span
-data-label="fig:cart">](fig/ch3_cart-1){width="\maxwidth"}
+```{r cart, echo = FALSE,  duo = TRUE, fig.asp = 0.5, fig.cap = '(ref:cart)'}
+```
+
+(ref:cart) Regression tree for predicting gas consumption. 
+The left-hand plot displays the binary tree, whereas the right-hand 
+plot identifies the groups at each end leaf in the data.
 
 Figure \@ref(fig:cart) illustrates a simple CART solution for the
-`whiteside` data. The left-hand side contains
-the optimal binary tree for predicting gas consumption from temperature
-and insulation status. The right-hand side shows the scatterplot in
-which the five groups are labeled by their terminal nodes.
+`whiteside` data. The left-hand side contains the optimal binary tree
+for predicting gas consumption from temperature and insulation status.
+The right-hand side shows the scatterplot in which the five groups are
+labeled by their terminal nodes.
 
 CART methods have properties that make them attractive for imputation:
 they are robust against outliers, can deal with multicollinearity and
@@ -996,30 +1036,29 @@ wide variety of authors in a variety of ways. See @SAAR2007 for an
 introductory overview. Some investigators [@HEYAN2006; @VATEEKUL2009]
 simply fill in the mean or mode. The majority of tree-based imputation
 methods use some form of single imputation based on prediction
-[@BARCENA2000; @CONVERSANO2003; @SICILIANO2006; @CREEL2006; @ISHWARAN2008; @CONVERSANO2009].
-Multiple imputation methods have been developed by @HARRELL2001, who
-combined it with optimal scaling of the input variables, by @REITER2005B
-and by @BURGETTE2010. @WALLACE2010 present a multiple imputation method
-that averages the imputations to produce a single tree and that does not
-pool the variances. @PARKER2010 investigates multiple imputation methods
-for various unsupervised and supervised learning algorithms.
+[@BARCENA2000; @CONVERSANO2003; @SICILIANO2006; @CREEL2006;
+@ISHWARAN2008; @CONVERSANO2009]. Multiple imputation methods have been
+developed by @HARRELL2001, who combined it with optimal scaling of the
+input variables, by @REITER2005B and by @BURGETTE2010. @WALLACE2010
+present a multiple imputation method that averages the imputations to
+produce a single tree and that does not pool the variances.
+@PARKER2010 investigates multiple imputation methods for various
+unsupervised and supervised learning algorithms.
 
-The `missForest` method [@STEKHOVEN2011]
-successfully used regression and classification trees to predict the
-outcomes in mixed continuous/categorical data.
-`MissForest` is popular, presumably because it
-produces a *single* complete dataset, which at the same time is the
-reason why it fails as a scientific method. The
-`missForest` method does not account for the
-uncertainty caused by the missing data, treats the imputed data as if
-they were real (which they are not), and thus invents information. As a
-consequence, $p$-values calculated after application of
-`missForest` will be more significant than
-they actually are, confidence intervals will be shorter than they
-actually are, and relations between variables will be stronger than they
-actually are. These problems worsen as more missing values are imputed.
-Unfortunately, comparisons studies that evaluate only accuracy, such as
-@WALJEE2013, will fail to detect these problems.
+The `missForest` method [@STEKHOVEN2011] successfully used regression
+and classification trees to predict the outcomes in mixed
+continuous/categorical data. `MissForest` is popular, presumably
+because it produces a *single* complete dataset, which at the same
+time is the reason why it fails as a scientific method. The
+`missForest` method does not account for the uncertainty caused by the
+missing data, treats the imputed data as if they were real (which they
+are not), and thus invents information. As a consequence, $p$-values
+calculated after application of `missForest` will be more significant
+than they actually are, confidence intervals will be shorter than they
+actually are, and relations between variables will be stronger than
+they actually are. These problems worsen as more missing values are
+imputed. Unfortunately, comparisons studies that evaluate only
+accuracy, such as @WALJEE2013, will fail to detect these problems.
 
 As a alternative, multiple imputations can be created using the tree in
 Figure \@ref(fig:cart). For a given temperature and insulation status,
@@ -1027,39 +1066,59 @@ traverse the tree and find the appropriate terminal node. Form the donor
 group of all observed cases at the terminal node, randomly draw a case
 from the donor group, and take its reported gas consumption as the
 imputed value. The idea is identical to predictive mean matching
-(cf. Section \@ref(sec:pmm)), where the “predictive mean” is now calculated
+(cf. Section \@ref(sec:pmm)), where the “predictive mean” is now calculated
 by a tree model instead of a regression model. As before, the parameter
 uncertainty can be incorporated by fitting the tree on a bootstrapped
 sample.
 
-Algorithm \@ref(alg:cart) describes the major steps of an algorithm for
-creating imputations using a classification or regression tree. There is
-considerable freedom at step 2, where the tree model is fitted to the
-training data
-$({\mbox{$\dot y_\mathrm{obs}$}},{\mbox{$\dot X_\mathrm{obs}$}})$. It
-may be useful to fit the tree such that the number of cases at each node
-is equal to some pre-set number, say 5 or 10. The composition of the
-donor groups will vary over different bootstrap replications, thus
-incorporating sampling uncertainty about the tree.
+------
+
+```{definition cartalg, echo=TRUE, name = '(ref:cartalg)'}
+    
+
+1. Draw a bootstrap sample $(\dot y_\mathrm{obs},\dot X_\mathrm{obs})$ 
+   of size $n_1$ from $(y_\mathrm{obs},X_\mathrm{obs})$.
+
+2. Fit $\dot y_\mathrm{obs}$ by $\dot X_\mathrm{obs}$ by a tree 
+   model $f(X)$.
+   
+3. Predict the $n_0$ terminal nodes $g_j$ from $f(X_\mathrm{mis})$.
+
+4. Construct $n_0$ sets $Z_j$ of all cases at node $g_j$, each 
+   containing $d_j$ candidate donors.
+   
+5. Draw one donor $i_j$ from $Z_j$ randomly for $j=1,\dots,n_0$.
+
+6. Calculate imputations $\dot y_j = y_{i_j}$ for $j=1,\dots,n_0$.
+```
+
+(ref:cartalg) Imputation under a tree model using the bootstrap.\advanced
+
+------
+
+Algorithm \@ref(def:cartalg) describes the major steps of an algorithm
+for creating imputations using a classification or regression tree.
+There is considerable freedom at step 2, where the tree model is
+fitted to the training data $(\dot y_\mathrm{obs},\dot X_\mathrm{obs})$. 
+It may be useful to fit the tree such that the number of cases at 
+each node is equal to some pre-set number, say 5 or 10. The 
+composition of the donor groups will vary over different bootstrap 
+replications, thus incorporating sampling uncertainty about the tree.
 
 Multiple imputation methodology using trees has been developed by
 @BURGETTE2010, @SHAH2014 and @DOOVE2014. The main motivation given in
-these papers was to improve our ability to account for interactions and
-other non-linearities, but these are generic methods that apply to both
-continuous and categorical outcomes and predictors. @BURGETTE2010 used
-the `tree` package, and showed that the CART
-results for recovering interactions were uniformly better than standard
-techniques. @SHAH2014 applied random forest techniques to both
-continuous and categorical outcomes, which produced more efficient
-estimates than standard procedures. The techniques are available as
-methods `rfcat` and
-`rfcont` in the
-`CALIBERrfimpute` package. @DOOVE2014
-independently developed a similar set of routines building on the
-`rpart` [@THERNEAU2017] and
-`randomForest` [@LIAW2002] packages. Methods
-`cart` and `rf` are
-part of `mice`.
+these papers was to improve our ability to account for interactions
+and other non-linearities, but these are generic methods that apply
+to both continuous and categorical outcomes and predictors.
+@BURGETTE2010 used the `tree` package, and showed that the CART
+results for recovering interactions were uniformly better than
+standard techniques. @SHAH2014 applied random forest techniques to
+both continuous and categorical outcomes, which produced more
+efficient estimates than standard procedures. The techniques are
+available as methods `rfcat` and `rfcont` in the `CALIBERrfimpute`
+package. @DOOVE2014 independently developed a similar set of
+routines building on the `rpart` [@THERNEAU2017] and `randomForest`
+[@LIAW2002] packages. Methods `cart` and `rf` are part of `mice`.
 
 A recent development is the growing interest from the machine learning
 community for the idea of multiple imputation. The problem of imputing
@@ -1080,66 +1139,108 @@ of generalized linear models [@MCCULLAGH1989]. For incomplete binary
 variables we use *logistic regression*, where the outcome probability is
 modeled as
 
-$$\Pr(y_i=1|X_i, \beta) = \frac{\exp(X_i\beta)}{1+\exp(X_i\beta)}$$
+\begin{equation}
+\Pr(y_i=1|X_i, \beta) = \frac{\exp(X_i\beta)}{1+\exp(X_i\beta)} (\#eq:logreg)
+\end{equation}
 
 A categorical variable with $K$ unordered categories is imputed under
 the *multinomial logit model*
-$$\Pr(y_i=k|X_i, \beta) = \frac{\exp(X_i\beta_k)}{\sum_{k=1}^K \exp(X_i\beta_k)}$$
+
+$$
+\Pr(y_i=k|X_i, \beta) = \frac{\exp(X_i\beta_k)}{\sum_{k=1}^K \exp(X_i\beta_k)} (\#eq:multinom)
+$$
+
 for $k=1,\dots,K$, where $\beta_k$ varies over the categories and where
 $\beta_1=0$ to identify the model. A categorical variable with $K$
 ordered categories is imputed by the *ordered logit model*, or
 *proportional odds model*
-$$\Pr(y_i\leq k|X_i, \beta, \tau_k) = \frac{\exp(\tau_k - X_i\beta)}
- {1 + \exp(\tau_k - X_i\beta)}$$ with the slope $\beta$ is identical
-across categories, but the intercepts $\tau_k$ differ. For
-identification, we set $\tau_1=0$. The probability of observing category
-$k$ is written as $$\Pr(y_i = k|X_i) =
-  \Pr(y_i\leq k|X_i) -
-  \Pr(y_i\leq k-1|X_i)$$ where the model parameters $\beta$, $\tau_k$
-and $\tau_{k-1}$ are suppressed for clarity. @SCOTTLONG1997 is a very
-readable introduction to these methods. The practical application of
-these techniques in `R` is treated in
-@AITKIN2009. The general idea is to estimate the probability model on
-the subset of the observed data, and draw synthetic data according to
-the fitted probabilities to impute the missing data. The parameters are
-typically estimated by iteratively reweighted least squares. As before,
-the variability of the model parameters $\beta$ and
-$\tau_2,\dots,\tau_K$ introduces additional uncertainty that needs to be
-incorporated into the imputations.
 
-Algorithm \@ref(alg:binary) provides the steps for an approximate Bayesian
-imputation method using logistic regression. The method assumes that the
-parameter vector $\beta$ follows a multivariate normal distribution.
-Although this is true in large samples, the distribution can in fact be
-far from normal for modest $n_1$, for large $q$ or for predicted
-probabilities close to 0 or 1. The procedure is also approximate in the
-sense that it does not draw the estimated covariance $V$ matrix. It is
-possible to define an explicit Bayesian sampling for drawing $\beta$ and
-$V$ from their exact posteriors. This method is theoretically
-preferable, but as it requires more elaborate modeling, it does not
-easily extend to other regression situations. In
-`mice` the algorithm is
-implemented as the method `logreg`.
+$$
+\Pr(y_i\leq k|X_i, \beta, \tau_k) = \frac{\exp(\tau_k - X_i\beta)}
+ {1 + \exp(\tau_k - X_i\beta)} (\#eq:pomod)
+$$ 
+ 
+with the slope $\beta$ is identical across categories, but the
+intercepts $\tau_k$ differ. For identification, we set $\tau_1=0$. The
+probability of observing category $k$ is written as
+
+$$
+\Pr(y_i = k|X_i) = \Pr(y_i\leq k|X_i) - \Pr(y_i\leq k-1|X_i) (\#eq:ppomod)
+$$ 
+
+where the model parameters $\beta$, $\tau_k$ and $\tau_{k-1}$ are
+suppressed for clarity. @SCOTTLONG1997 is a very readable introduction
+to these methods. The practical application of these techniques in `R`
+is treated in @AITKIN2009. The general idea is to estimate the
+probability model on the subset of the observed data, and draw
+synthetic data according to the fitted probabilities to impute the
+missing data. The parameters are typically estimated by iteratively
+reweighted least squares. As before, the variability of the model
+parameters $\beta$ and $\tau_2,\dots,\tau_K$ introduces additional
+uncertainty that needs to be incorporated into the imputations.
+
+------
+
+```{definition binary, echo=TRUE, name = '(ref:binary)'}
+    
+
+1. Estimate regression weights $\hat\beta$ from 
+   $(y_\mathrm{obs},X_\mathrm{obs})$ by iteratively reweighted 
+   least squares.
+   
+2. Obtain $V$, the unscaled estimated covariance matrix of 
+   $\hat\beta$.
+
+3. Draw $q$ independent $N(0,1)$ variates in vector $\dot z_1$.
+
+4. Calculate $V^{1/2}$ by Cholesky decomposition.
+
+5. Calculate $\dot\beta = \hat\beta + \dot z_1 V^{1/2}$.
+
+6. Calculate $n_0$ predicted probabilities 
+   $\dot p = 1 / (1+ \exp(-\Xmis\dot\beta))$.
+
+7. Draw $n_0$ random variates from the uniform distribution
+   $U(0,1)$ in the vector $u$.
+
+8. Calculate imputations $\dot y_j = 1$ if $u_j\leq\dot p_j$, 
+   and $\dot y_j = 0$ otherwise, where $j=1,\dots,n_0$.
+```
+
+(ref:binary) Imputation of a binary variable by means of Bayesian 
+logistic regression.\advanced
+
+------
+
+Algorithm \@ref(def:binary) provides the steps for an approximate
+Bayesian imputation method using logistic regression. The method
+assumes that the parameter vector $\beta$ follows a multivariate
+normal distribution. Although this is true in large samples, the
+distribution can in fact be far from normal for modest $n_1$, for
+large $q$ or for predicted probabilities close to 0 or 1. The
+procedure is also approximate in the sense that it does not draw the
+estimated covariance $V$ matrix. It is possible to define an explicit
+Bayesian sampling for drawing $\beta$ and $V$ from their exact
+posteriors. This method is theoretically preferable, but as it
+requires more elaborate modeling, it does not easily extend to other
+regression situations. In `mice` the algorithm is implemented as the
+method `logreg`.
 
 It is easy to construct a bootstrap version that avoids some of the
-difficulties in Algorithm \@ref(alg:binary). Prior to estimating
+difficulties in Algorithm \@ref(ref:binary). Prior to estimating
 $\hat\beta$, we include a step that draws a bootstrap sample from
-$Y_\mathrm{obs}$ and $X_\mathrm{obs}$. Steps 2–5 can then be replaced by
-equating $\dot\beta=\hat\beta$.
+$Y_\mathrm{obs}$ and $X_\mathrm{obs}$. Steps 2–5 can then be replaced 
+by equating $\dot\beta=\hat\beta$.
 
-The algorithms for imputation of variables with more than two categories
-follow the same structure. In
-`mice` the multinomial logit
-model in method `polyreg` is estimated by the
-`nnet::multinom()` function in the
-`nnet` package. The ordered logit model in
-method `polr` is estimated by the
-`polr()` function of the
-`MASS` package. Even though the ordered model
-uses fewer parameters, it is often more difficult to estimate. In cases
-where `MASS::polr()` fails to converge,
-`nnet::multinom()` will take over its duties.
-See @VENABLES2002 for more details on both functions.
+The algorithms for imputation of variables with more than two
+categories follow the same structure. In `mice` the multinomial logit
+model in method `polyreg` is estimated by the `nnet::multinom()`
+function in the `nnet` package. The ordered logit model in method
+`polr` is estimated by the `polr()` function of the `MASS` package.
+Even though the ordered model uses fewer parameters, it is often more
+difficult to estimate. In cases where `MASS::polr()` fails to
+converge, `nnet::multinom()` will take over its duties. See
+@VENABLES2002 for more details on both functions.
 
 ### Perfect prediction$^\spadesuit$
 
@@ -1152,16 +1253,14 @@ set of symptoms. If one of the symptoms (or a combination of symptoms)
 always leads to the disease, then we can perfectly predict the disease
 for any patient who has the symptom(s).
 
-  --------- ----- -----
+Disease     Yes    No
+--------- ----- -----
+Yes         100   100
+No            0   100
+Unknown     100   100
 
-  Disease     Yes    No
-  Yes         100   100
-  No            0   100
-  Unknown     100   100
-  --------- ----- -----
-
-  : Artificial data demonstrating complete separation. Adapted from
-  @WHITE2010B.<span data-label="tab:perfectpred">
+: (\#tab:perfectpred) Artificial data demonstrating complete 
+separation. Adapted from @WHITE2010B.
 
 Table \@ref(tab:perfectpred) contains an artificial numerical example.
 Having the symptom always implies the disease, so knowing that the
@@ -1170,17 +1269,16 @@ status. When such data are analyzed, most software will print out a
 warning message and produce unusually large standard errors.
 
 Now suppose that in a new group of 200 patients (100 in each symptom
-group) we know only the symptom and impute disease status. Under MAR, we
-should impute all 100 cases with the symptom to the diseased group, and
-divide the 100 cases without the symptom randomly over the diseased and
-non-diseased groups. However, this is not what happens in Algorithm
-\@ref(alg:binary). The estimate of $V$ will be very large as a result of
-separation. If we naively use this $V$ then $\dot\beta$ in step 5
-effectively covers both positive and negative values equally likely.
-This results in either correctly 100 imputations in
-`Yes` or incorrectly 100 imputations in
-`No`, thereby resulting in bias in the disease
-probability.
+group) we know only the symptom and impute disease status. Under MAR,
+we should impute all 100 cases with the symptom to the diseased group,
+and divide the 100 cases without the symptom randomly over the
+diseased and non-diseased groups. However, this is not what happens in
+Algorithm \@ref(ref:binary). The estimate of $V$ will be very large as
+a result of separation. If we naively use this $V$ then $\dot\beta$ in
+step 5 effectively covers both positive and negative values equally
+likely. This results in either correctly 100 imputations in `Yes` or
+incorrectly 100 imputations in `No`, thereby resulting in bias in the
+disease probability.
 
 The problem has recently gained attention. There are at least six
 different approaches to perfect prediction:
@@ -1190,7 +1288,7 @@ different approaches to perfect prediction:
 2.  Take $\hat\beta$ instead of $\dot\beta$.
 
 3.  Use penalized regression with Jeffreys prior in step 2 of
-    Algorithm \@ref(alg:binary) [@FIRTH1993; @HEINZE2002].
+    Algorithm \@ref(binary) [@FIRTH1993; @HEINZE2002].
 
 4.  Use the bootstrap, and then apply method 1.
 
@@ -1213,10 +1311,8 @@ and computationally inefficient [@WHITE2010B]. Option 4 corrects method
 
 Methods 4, 5 and 6 all solve a major difficulty in the construction of
 automatic imputation techniques. It is not yet clear whether one of
-these methods is superior. The `logreg`,
-`polr` and `polyreg`
-methods in `mice` implement
-option 5.
+these methods is superior. The `logreg`, `polr` and `polyreg` methods
+in `mice` implement option 5.
 
 ### Evaluation
 
@@ -1224,46 +1320,43 @@ The methods are based on the elegant generalized linear models.
 Simulations presented in @VANBUUREN2006 show that these methods
 performed quite well in the lab. When used in practice however, the
 methods may be unstable, slow and exhibit poor performance. @HARDT2013
-intentionally pushed the logistic methods to their limits, and observed
-that most methods break down relatively quick, i.e., if the proportion
-of missing values exceeds 0.4. @VANDERPALM2016A found that
-`logreg` failed to pick up a three-way
-association in the data, leading to biased estimates. Likewise,
-@VIDOTTO2015 observed that `logreg` did not
-recover the structure in the data as well as latent class models.
-@WU2015 found poor results for all three methods (i.e., binary,
-multinomial and proportional odds), and advise against their
-application. @AKANDE2017 reported difficulties with fitting multinomial
-variables having many categories. The performance of the procedures
-suffered when variables with probabilities nearly equal to one (or zero)
-are included in the models. Methods based on the generalized linear
-model were found to be inferior to method
-`cart` (cf. Section \@ref(sec:cart)) and to
-latent class models for categorical data (cf. Section \@ref(sec:JM)).
-@AUDIGIER2017 found that logistic regression presented difficulties on
-the datasets with a high number of categories, resulting in
-undercoverage on several quantities.
+intentionally pushed the logistic methods to their limits, and
+observed that most methods break down relatively quick, i.e., if the
+proportion of missing values exceeds 0.4. @VANDERPALM2016A found that
+`logreg` failed to pick up a three-way association in the data,
+leading to biased estimates. Likewise, @VIDOTTO2015 observed that
+`logreg` did not recover the structure in the data as well as latent
+class models. @WU2015 found poor results for all three methods (i.e.,
+binary, multinomial and proportional odds), and advise against their
+application. @AKANDE2017 reported difficulties with fitting
+multinomial variables having many categories. The performance of the
+procedures suffered when variables with probabilities nearly equal to
+one (or zero) are included in the models. Methods based on the
+generalized linear model were found to be inferior to method `cart`
+(cf. Section \@ref(sec:cart)) and to latent class models for
+categorical data (cf. Section \@ref(sec:JM)). @AUDIGIER2017 found that
+logistic regression presented difficulties on the datasets with a high
+number of categories, resulting in undercoverage on several
+quantities.
 
 Imputation of categorical data is more difficult than continuous data.
 As a rule of thumb, in logistic regression we need at least *10 events
 per predictor* in order to get reasonably stable estimates of the
-regression coefficients [@BELLE2002 p. 87]. So if we impute 10 binary
+regression coefficients [@BELLE2002 p. 87]. So if we impute 10 binary
 outcomes, we need $100$ events, and if the events occur with a
-probability of 0.1, then we need $n > 1000$ cases. If we impute outcomes
-with more categories, the numbers rapidly increase for two reasons.
-First, we have more possible outcomes, and we need 10 events for each
-category. Second, when used as predictor, each nominal variable is
-expanded into dummy variables, so the number of predictors multiplies by
-the number of categories minus 1. The defaults
-`logreg`, `polyreg`
-and `polr` tend to preserve the main effects
-well provided that the parameters are identified and can be reasonably
-well estimated. In many datasets, especially those with many categories,
+probability of 0.1, then we need $n > 1000$ cases. If we impute
+outcomes with more categories, the numbers rapidly increase for two
+reasons. First, we have more possible outcomes, and we need 10 events
+for each category. Second, when used as predictor, each nominal
+variable is expanded into dummy variables, so the number of predictors
+multiplies by the number of categories minus 1. The defaults `logreg`,
+`polyreg` and `polr` tend to preserve the main effects well provided
+that the parameters are identified and can be reasonably well
+estimated. In many datasets, especially those with many categories,
 the ratio of the number of fitted parameters relative to the number of
-events easily drops below 10, which may lead to estimation problems. In
-those cases, the advice is to specify more robust methods, like
-`pmm`, `cart` or
-`rf`.
+events easily drops below 10, which may lead to estimation problems.
+In those cases, the advice is to specify more robust methods, like
+`pmm`, `cart` or `rf`.
 
 ## Other data types
 
@@ -1274,10 +1367,10 @@ number of crimes committed. The minimum value is zero. Imputing
 incomplete count data should produce non-negative synthetic replacement
 values. Count data can be imputed in various ways:
 
-1.  Predictive mean matching (cf. Section \@ref(sec:pmm)).
+1.  Predictive mean matching (cf. Section \@ref(sec:pmm)).
 
 2.  Ordered categorical imputation
-    (cf. Section \@ref(sec:categorical)).
+    (cf. Section \@ref(sec:categorical)).
 
 3.  (Zero-inflated) Poisson regression [@RAGHUNATHAN2001].
 
@@ -1296,27 +1389,19 @@ imputation.
 
 @KLEINKE2013 developed methods for zero-inflated and over-dispersed
 data, using both Bayesian and bootstrap approaches. Methods are
-available in the `countimp` package for the
-Poisson model (`pois`,
-`pois.boot`), quasi Poission model
-(`qpois`,
-`qpois.boot`), the negative binomial model
-(`nb`), the zero-inflated Poisson
-(`2l.zip`,
-`2l.zip.boot`), and the zero-inflated negative
-binomial (`2l.zinb`,
-`2l.zinb.boot`). Note that, despite their
-naming, these `2l` methods are for
-single-level imputation. An alternative is the
-`ImputeRobust` package [@SALFRAN2017], which
-implements the following `mice` methods for
-count data: `gamlssPO` (Poisson),
-`gamlssZIBI` (zero-inflated binomial) and
-`gamlssZIP` (zero-inflated Poisson).
-@KLEINKE2017 evaluated the use of predictive mean matching as a
-multipurpose missing data tool. By and large, the simulations illustrate
-that the method is robust against violations of its assumptions, and can
-be recommended for imputation of mildly to moderately skewed variables
+available in the `countimp` package for the Poisson model (`pois`,
+`pois.boot`), quasi Poission model (`qpois`, `qpois.boot`), the
+negative binomial model (`nb`), the zero-inflated Poisson (`2l.zip`,
+`2l.zip.boot`), and the zero-inflated negative binomial (`2l.zinb`,
+`2l.zinb.boot`). Note that, despite their naming, these `2l` methods
+are for single-level imputation. An alternative is the `ImputeRobust`
+package [@SALFRAN2017], which implements the following `mice` methods
+for count data: `gamlssPO` (Poisson), `gamlssZIBI` (zero-inflated
+binomial) and `gamlssZIP` (zero-inflated Poisson). @KLEINKE2017
+evaluated the use of predictive mean matching as a multipurpose
+missing data tool. By and large, the simulations illustrate that the
+method is robust against violations of its assumptions, and can be
+recommended for imputation of mildly to moderately skewed variables
 when sample size is sufficiently large.
 
 ### Semi-continuous data {#sec:semi}
@@ -1332,7 +1417,7 @@ count data are generally considered discrete.
 Imputation of semi-continuous variables needs to reproduce both the
 point mass and continuously varying part of the data. One possibility is
 to apply a general-purpose method that preserves distributional
-features, like predictive mean matching (cf. Section \@ref(sec:pmm)).
+features, like predictive mean matching (cf. Section \@ref(sec:pmm)).
 
 An alternative is to model the data in two parts. The first step is to
 determine whether the imputed value is zero or not. The second step is
@@ -1349,13 +1434,12 @@ mean matching performs well, provided that a sufficient number of data
 points in the neighborhood of the incomplete data are available.
 @VINK2014B found that generic predictive mean matching is at least as
 good as three dedicated methods for semi-continuous data: the two-part
-models as implemented in `mi` [@SU2011] and
-`irmi` [@TEMPL2011], and the blocked general
-location model by @JAVARAS2003. @VROOMEN2016 investigated imputation of
-cost data, and found that predictive mean matching of the
-log-transformed outperformed plain predictive mean matching, a two-step
-method and complete-case analysis, and hence recommend log-transformed
-method for monetary data.
+models as implemented in `mi` [@SU2011] and `irmi` [@TEMPL2011], and
+the blocked general location model by @JAVARAS2003. @VROOMEN2016
+investigated imputation of cost data, and found that predictive mean
+matching of the log-transformed outperformed plain predictive mean
+matching, a two-step method and complete-case analysis, and hence
+recommend log-transformed method for monetary data.
 
 ### Censored, truncated and rounded data {#sec:censored}
 
@@ -1363,14 +1447,13 @@ An observation $y_i$ is censored if its value is only partly known. In
 *right-censored* data we only know that $y_i > a_i$ for a censoring
 point $a_i$. In *left-censored* data we only know that $y_i \leq b_i$
 for some known censoring point $b_i$, and in *interval censoring* we
-know $a_i \leq y_i \leq
-b_i$. Right-censored data arise when the true value is beyond the
-maximum scale value, for example, when body weight exceeds the scale
-maximum, say 150kg. When $y_i$ is interpreted as time taken to some
-event (e.g., death), right-censored data occur when the observation
-period ends before the event has taken place. Left and right censoring
-may cause floor and ceiling effects. Rounding data to fewer decimal
-places results in interval-censored data.
+know $a_i \leq y_i \leq b_i$. Right-censored data arise when the true
+value is beyond the maximum scale value, for example, when body weight
+exceeds the scale maximum, say 150kg. When $y_i$ is interpreted as
+time taken to some event (e.g., death), right-censored data occur when
+the observation period ends before the event has taken place. Left and
+right censoring may cause floor and ceiling effects. Rounding data to
+fewer decimal places results in interval-censored data.
 
 Truncation is related to censoring, but differs from it in the sense
 that value below (left truncation) or above (right truncation) the
@@ -1458,7 +1541,45 @@ matching. A donor group size with $d=10$ was found to perform well, and
 Kaplan–Meier imputation was superior to risk set imputation across a
 wide range of situations.
 
-Algorithm \@ref(alg:KMIB) is based on the KIMB method proposed by @HSU2006.
+------
+
+```{definition KMIB, echo=TRUE, name = '(ref:KMIB)'}
+    
+  
+1. Estimate $\hat\beta$ by a proportional hazards model of
+   $y$ given $X$, where $y = (t,\phi)$ consists of time $t$ and
+   censoring indicator $\phi$ ($\phi_i=0$ if $t_i$ is censored).
+   
+2. Draw a bootstrap sample $(\dot y,\dot X)$ of size $n$ from
+   $(y,X)$.
+
+3. Estimate $\dot\beta$ by a proportional hazards model of 
+   $\dot y$ given $\dot X$.
+
+4. Calculate $\dot\eta(i,j)=|X_{[i]}\hat\beta-X_{[j]}\dot\beta|$ with
+   $i=1,\dots,n$ and $j=1,\dots,n_0$, where $[j]$ indexes the cases
+   with censored times.
+
+5. Construct $n_0$ sets $Z_j$, each containing $d$ candidate donors 
+   such that $t_i > t_j$ and $\sum_d\dot\eta(i,j)$ is minimum for
+   each $j=1,\dots,n_0$. Break ties randomly.
+
+6. For each $Z_j$, estimate the Kaplan--Meier curve $\hat S_j(t)$.
+
+7. Draw $n_0$ uniform random variates $u_j$, and take $\dot t_j$ from
+   the estimated cumulative distribution function 
+   $1-\hat S_j(t)$ at $u_j$ for $j=1,\dots,n_0$.
+
+8. Set $\phi_j=0$ if $\dot t_j = t_n$ and $\phi_{t_n}=0$, 
+   else set $\phi_j=1$.
+```
+
+(ref:KMIB) Imputation of right-censored data using predictive mean matching, 
+Kaplan--Meier estimation and the bootstrap.\advanced
+
+------
+
+Algorithm \@ref(def:KMIB) is based on the KIMB method proposed by @HSU2006.
 The method assumes that censoring status is known, and aims to impute
 plausible event times for censored observations. @HSU2006 actually
 suggested fitting two proportional hazards models, one with survival
@@ -1468,24 +1589,25 @@ model for survival time. The way in which predictive mean matching is
 done differs slightly from @HSU2006.
 
 The literature on imputation methods for censored and rounded data is
-rapidly evolving. Alternative methods for right-censored data have also
-been proposed [@WEI1991; @GESKUS2001; @LAM2005; @LIU2011]. @LYLES2001,
-@LYNN2001, @HOPKE2001 and @LEE2018 concentrated on left-censored data.
-Imputation of interval-censored data (rounded data) has been discussed
-quite extensively
-[@HEITJAN1990; @DOREY1993; @JAMES1995; @PAN2000; @BEBCHUK2000; @GLYNN2004; @HSU2007; @ROYSTON2007; @CHEN2010; @HSU2015].
-Imputation of double-censored data, where both the initial and the final
-times are interval censored, is treated by @PAN2001 and @ZHANG2009.
-@DELORD2016 extended Pan’s approach to interval-censored competing risks
-data, thus allowing estimation of the survival function, cumulative
-incidence function, Cox and Fine & Gray regression coefficients. These
-methods are available in the `MIICD` package.
-@JACKSON2014 used multiple imputation to study departures from the
-independent censoring assumption in the Cox model.
+rapidly evolving. Alternative methods for right-censored data have
+also been proposed [@WEI1991; @GESKUS2001; @LAM2005; @LIU2011].
+@LYLES2001, @LYNN2001, @HOPKE2001 and @LEE2018 concentrated on
+left-censored data. Imputation of interval-censored data (rounded
+data) has been discussed quite extensively [@HEITJAN1990; @DOREY1993;
+@JAMES1995; @PAN2000; @BEBCHUK2000; @GLYNN2004; @HSU2007;
+@ROYSTON2007; @CHEN2010; @HSU2015]. Imputation of double-censored
+data, where both the initial and the final times are interval
+censored, is treated by @PAN2001 and @ZHANG2009. @DELORD2016 extended
+Pan’s approach to interval-censored competing risks data, thus
+allowing estimation of the survival function, cumulative incidence
+function, Cox and Fine & Gray regression coefficients. These methods
+are available in the `MIICD` package. @JACKSON2014 used multiple
+imputation to study departures from the independent censoring
+assumption in the Cox model.
 
 By comparison, very few methods have been developed to deal with
-truncation. Methods for imputing a missing censoring indicator have been
-proposed by @SUBRAMANIAN2009 [@SUBRAMANIAN2011] and @WANG2010.
+truncation. Methods for imputing a missing censoring indicator have 
+been proposed by @SUBRAMANIAN2009, @SUBRAMANIAN2011 and @WANG2010.
 
 ## Nonignorable missing data {#sec:nonignorable}
 
@@ -1493,7 +1615,7 @@ proposed by @SUBRAMANIAN2009 [@SUBRAMANIAN2011] and @WANG2010.
 
 All methods described thus far assume that the missing data mechanism is
 ignorable. In this case, there is no need for an explicit model of the
-missing data process (cf. Section \@ref(sec:ignorability)). In reality, the
+missing data process (cf. Section \@ref(sec:ignorability)). In reality, the
 mechanism may be nonignorable, even after accounting for any measurable
 factors that govern the response probability. In such cases, we can try
 to adapt the imputed data to make them more realistic. Since such
@@ -1546,40 +1668,52 @@ $\delta$.
 ### Selection model {#sec:selectionmodel}
 
 The selection model [@HECKMAN1976] decomposes the joint distribution
-$P(Y,R)$ as $$P(Y,R) = P(Y)P(R|Y). (\#eq:selection)$$ The selection
-model multiplies the marginal distribution $P(Y)$ in the population with
-the response weights $P(R|Y)$. Both $P(Y)$ and $P(R|Y)$ are unknown, and
-must be specified by the user. The model where $P(Y)$ is normal and
-where $P(R|Y)$ is a probit model is known as the Heckman model. This
-model is widely used in economics to correct for selection bias.
+$P(Y,R)$ as 
 
-lrrrr $Y$&$P(Y)$&$P(R=1|Y)$&$P(Y|R=1)$&$P(Y|R=0)$\
-100&0.02&0.65&0.015&0.058\
-110&0.03&0.70&0.024&0.074\
-120&0.05&0.75&0.043&0.103\
-130&0.10&0.80&0.091&0.164\
-140&0.15&0.85&0.145&0.185\
-150&0.30&0.90&0.307&0.247\
-160&0.15&0.92&0.157&0.099\
-170&0.10&0.94&0.107&0.049\
-180&0.05&0.96&0.055&0.016\
-190&0.03&0.98&0.033&0.005\
-200&0.02&1.00&0.023&0.000\
-\
-$\bar Y$&150.00&&151.58&138.60\
+$$
+P(Y,R) = P(Y)P(R|Y). (\#eq:selection)
+$$
+
+The selection model multiplies the marginal distribution $P(Y)$ in the
+population with the response weights $P(R|Y)$. Both $P(Y)$ and
+$P(R|Y)$ are unknown, and must be specified by the user. The model
+where $P(Y)$ is normal and where $P(R|Y)$ is a probit model is known
+as the Heckman model. This model is widely used in economics to
+correct for selection bias.
+
+
+|$Y$  |  $P(Y)$|  $P(R=1|Y)$ | $P(Y|R=1)$  |   $P(Y|R=0)$|
+|-----|-------:|------------:|------------:|------------:|
+|100|0.02|0.65|0.015|0.058|
+|110|0.03|0.70|0.024|0.074|
+|120|0.05|0.75|0.043|0.103|
+|130|0.10|0.80|0.091|0.164|
+|140|0.15|0.85|0.145|0.185|
+|150|0.30|0.90|0.307|0.247|
+|160|0.15|0.92|0.157|0.099|
+|170|0.10|0.94|0.107|0.049|
+|180|0.05|0.96|0.055|0.016|
+|190|0.03|0.98|0.033|0.005|
+|200|0.02|1.00|0.023|0.000|
+|   |    |    |     |     |
+|$\bar Y$|150.00||151.58|138.60|
+
+: (\#tab:c85nmar) Imputation of right-censored data using 
+predictive mean matching, Kaplan--Meier estimation and the 
+bootstrap.\advanced
 
 *Numerical example*. The column labeled $Y$ in Table \@ref(tab:c85nmar)
 contains the midpoints of 11 categories of systolic blood pressure. The
 column $P(Y)$ contains a hypothetically complete distribution of
 systolic blood pressure. It is specified here as symmetric with a mean
-of 150mmHg (millimeters mercury). This distribution should be a
+of 150 mmHg (millimeters mercury). This distribution should be a
 realistic description of the *combined* observed and missing blood
 pressure values in the population of interest. The column $P(R=1|Y)$
 specifies the probability that blood pressure is actually observed at
 different levels of blood pressure. Thus, at a systolic blood pressure
-of 100mmHg, we expect that 65% of the data will be observed. On the
+of 100 mmHg, we expect that 65% of the data will be observed. On the
 other hand, we expect that no missing data occur for those with a blood
-pressure of 200mmHg. This specification produces 12.2% of missing data.
+pressure of 200 mmHg. This specification produces 12.2% of missing data.
 The variability in the missingness probability is large, and reflects an
 extreme scenario where the missing data are created mostly at the lower
 blood pressures. Section \@ref(sec:c85causes) discusses why more missing
@@ -1589,19 +1723,24 @@ $P(Y)$ and $P(R=1|Y)$ specify a selection model.
 ### Pattern-mixture model {#sec:patternmixturemodel}
 
 The pattern-mixture model [@GLYNN1986B; @LITTLE1993] decomposes the
-joint distribution $P(Y,R)$ as $$\begin{aligned}
-  P(Y,R)&=& P(Y|R)P(R)\\
-  &=&P(Y|R=1)P(R=1) + P(Y|R=0)P(R=0)\end{aligned}$$ Compared to Equation
-\@ref(eq:selection) this model only reverses the roles of $Y$ and $R$, but
-the interpretation is quite different. The pattern-mixture model
-emphasizes that the combined distribution is a mix of the distributions
-of $Y$ in the responders and nonresponders. The model needs a
-specification of the distribution $P(Y|R=1)$ of the responders (which
-can be conveniently modeled after the data), and of the distribution
-$P(Y|R=0)$ of the nonresponders (for which we have no data at all). The
-joint distribution is the mixture of these two distributions, with
-mixing probabilities $P(R=1)$ and $P(R=0)=1-P(R=1)$, the overall
-proportions of observed and missing data, respectively.
+joint distribution $P(Y,R)$ as
+
+\begin{align}
+ P(Y,R)&=& P(Y|R)P(R) (\#eq:pmmod1)\\ 
+       &=& P(Y|R=1)P(R=1) + P(Y|R=0)P(R=0) (\#eq:pmmod2)
+\end{align}
+  
+Compared to Equation \@ref(eq:selection) this model only reverses the
+roles of $Y$ and $R$, but the interpretation is quite different. The
+pattern-mixture model emphasizes that the combined distribution is a
+mix of the distributions of $Y$ in the responders and nonresponders.
+The model needs a specification of the distribution $P(Y|R=1)$ of the
+responders (which can be conveniently modeled after the data), and of
+the distribution $P(Y|R=0)$ of the nonresponders (for which we have no
+data at all). The joint distribution is the mixture of these two
+distributions, with mixing probabilities $P(R=1)$ and
+$P(R=0)=1-P(R=1)$, the overall proportions of observed and missing
+data, respectively.
 
 *Numerical example*. The columns labeled $P(Y|R=1)$ and $P(Y|R=0)$ in
 Table \@ref(tab:c85nmar) contain the probability per blood pressure
@@ -1609,8 +1748,8 @@ category for the respondents and nonrespondents. Since more missing data
 are expected to occur at lower blood pressures, the mass of the
 nonresponder distribution has shifted toward the lower end of the scale.
 As a result, the mean of the nonresponder distribution is equal to
-138.6mmHg, while the mean of the responder distribution equals
-151.58mmHg.
+138.6 mmHg, while the mean of the responder distribution equals
+151.58 mmHg.
 
 ### Converting selection and pattern-mixture models {#sec:convert}
 
@@ -1620,72 +1759,86 @@ probability distributions $P(Y|R=0)$ and $P(Y|R=1)$ plus the overall
 response probability $P(R)$. The corresponding selection model can be
 calculated as $$P(R=1|Y=y) = P(Y=y|R=1)P(R=1) / P(Y=y)$$ where the
 marginal distribution of $Y$ is
-$$P(Y=y) = P(Y=y|R=1)P(R=1) + P(Y=y|R=0)P(R=0)$$
+
+$$
+P(Y=y) = P(Y=y|R=1)P(R=1) + P(Y=y|R=0)P(R=0) (\#eq:margdist)
+$$
 
 Reversely, the pattern-mixture model can be calculated from the
-selection model as follows: $$P(Y=y|R=r) = P(R=r|Y=y)P(Y=y) / P(R=r)$$
+selection model as follows:
+
+$$
+P(Y=y|R=r) = P(R=r|Y=y)P(Y=y) / P(R=r) (\#eq:pmmfromselection)
+$$
+
 where the overall probability of observed ($r=1$) or missing ($r=0$)
-data is equal to $$P(R=r) = \sum_y P(R=r|Y=y)P(Y=y)$$
+data is equal to 
+$$
+P(R=r) = \sum_y P(R=r|Y=y)P(Y=y) (\#eq:overallprob)
+$$
+
 
 *Numerical example*. In Table \@ref(tab:c85nmar) we calculate
 $P(Y=100) = 0.015 \times 0.878 + 0.058 \times 0.122 = 0.02$. Likewise,
-we find $P(R=1|Y) = 0.015 \times 0.878 / 0.02 = 0.65$ and $P(R=0|Y) =
-0.058 \times 0.122/0.02 = 0.35$. The reverse calculation is left as an
-exercise to the reader.
+we find $P(R=1|Y) = 0.015 \times 0.878 / 0.02 = 0.65$ and 
+$P(R=0|Y) = 0.058 \times 0.122/0.02 = 0.35$. The reverse calculation 
+is left as an exercise to the reader.
 
-![Graphic representation of the response mechanism for systolic blood
-pressure in Table \@ref(tab:c85nmar). See text for explanation.<span
-data-label="c85:fignmar">](fig/ch3_c85sensfig-1){width="\maxwidth"}
+```{r c85sensfig, duo = TRUE, echo = FALSE, fig.asp = 0.5, fig.cap = '(ref:c85sensfig)'}
+```
 
-Figure \@ref(c85:fignmar) is an illustration of the posited missing data
-mechanism. The left-hand figure displays the missingness probabilities
-$P(R|Y)$ of the selection model. The right-hand plot provides the
-distributions $P(Y|R)$ in the observed (gray) and missing
+(ref:c85sensfig) Graphic representation of the response mechanism for 
+systolic blood pressure in Table \@ref(tab:c85nmar). See text for 
+explanation.
+
+Figure \@ref(fig:c85sensfig) is an illustration of the posited missing
+data mechanism. The left-hand figure displays the missingness
+probabilities $P(R|Y)$ of the selection model. The right-hand plot
+provides the distributions $P(Y|R)$ in the observed (blue) and missing
 (red) data in the corresponding pattern-mixture model. The
 hypothetically complete distribution is given by the black curve. The
-distribution of blood pressure in the group with missing blood pressures
-is quite different, both in form and location. At the same time, observe
-that the effect of missingness on the combined distribution is only
-slight. The reason is that 87% of the information is actually observed.
+distribution of blood pressure in the group with missing blood
+pressures is quite different, both in form and location. At the same
+time, observe that the effect of missingness on the combined
+distribution is only slight. The reason is that 87% of the information
+is actually observed.
 
 The mean of the distribution of the observed data remains almost
-unchanged (151.6mmHg instead of 150mmHg), but the mean of the
-distribution of the missing data is substantially lower at 138.6mmHg.
+unchanged (151.6 mmHg instead of 150 mmHg), but the mean of the
+distribution of the missing data is substantially lower at 138.6 mmHg.
 Thus, under the assumed selection model we expect that the mean of the
-imputed data should be $151.6-138.6 = 13$mmHg lower than in the observed
-data.
+imputed data should be $151.6-138.6 = 13$ mmHg lower than in the
+observed data.
 
 ### Sensitivity analysis {#sec:ch3sensitivity}
 
-Sections \@ref(sec:selectionmodel)–
-\@ref(sec:convert) provide different,
+Sections \@ref(sec:selectionmodel)–\@ref(sec:convert) provide different,
 though related, views on the assumed response model. A fairly extreme
 response model where the missingness probability increases from 0% to
-35% in the outcome produces a mean difference of 13mmHg. The effect in
-the combined distribution is much smaller: 1.6mmHg.
+35% in the outcome produces a mean difference of 13 mmHg. The effect in
+the combined distribution is much smaller: 1.6 mmHg.
 
-     $\delta$    Interpretation
-  ----------- -- --------------------------
-        0mmHg    MCAR, $\delta$ too small
-     $-$5mmHg    Small effect
-    $-10$mmHg    Large effect
-    $-$15mmHg    Extreme effect
-    $-$20mmHg    Too extreme effect
+   $\delta$    Interpretation
+----------- -- --------------------------
+    $0$ mmHg    MCAR, $\delta$ too small
+   $-5$ mmHg    Small effect
+  $-10$ mmHg    Large effect
+  $-15$ mmHg    Extreme effect
+  $-20$ mmHg    Too extreme effect
 
-  : Difference between the means of the blood pressure distributions of
+: (\#tab:delta) Difference between the means of the blood pressure distributions of
   the response and nonresponse groups, and its interpretation in the
-  light of what we know about the data.<span
-  data-label="tab:delta">
+  light of what we know about the data.
 
 Section \@ref(sec:nonignorableoverview) discussed the idea of adding some
 extra mmHg to the imputed values, a method known as $\delta$-adjustment.
 It is important to form an idea of what reasonable values for $\delta$
-could be. Under the posited model, $\delta=0$mmHg is clearly too small
-(as it assumes MCAR), whereas $\delta=-20$mmHg is too extreme (as it can
+could be. Under the posited model, $\delta=0$ mmHg is clearly too small
+(as it assumes MCAR), whereas $\delta=-20$ mmHg is too extreme (as it can
 only occur if nearly all missing values occur in the lowest blood
 pressures). Table \@ref(tab:delta) provides an interpretation of various
 values for $\delta$. The most likely scenarios would yield $\delta=-5$
-or $\delta=-10$mmHg.
+or $\delta=-10$ mmHg.
 
 In practice, part of $\delta$ may be realized through the predictors
 needed under MAR. It is useful to decompose $\delta$ as
@@ -1790,46 +1943,42 @@ the missing data indicator under a selection model, and imputes the
 missing data under a pattern-mixture model, with the objective of
 estimating $\delta$ from the data under relaxed assumptions. Initial
 simulation results look promising. The algorithm is available as the
-`ri` method in
-`mice`.
+`ri` method in `mice`.
 
 ## Exercises {#ex:ch:univariate}
 
-1.  *MAR*. Reproduce Table \@ref(tab:linmody) and Table
-    \@ref(tab:linmodx) for MARRIGHT, MARMID and MARTAIL missing data
-    mechanisms of Section \@ref(sec:generateuni).
+```{exercise, name = "MAR", label = "marexr"}
+Reproduce Table \@ref(tab:linmody) and Table \@ref(tab:linmodx) 
+for MARRIGHT, MARMID and MARTAIL missing data mechanisms of Section 
+\@ref(sec:generateuni).
 
-    1.  Are there any choices that you need to make? If so,
-        which?
+1. Are there any choices that you need to make? If so, which?
 
-    2.  Consider the six possibilities to combine the missing data
-        mechanism and missingness in $x$ or $y$. Do you expect
-        complete-case analysis to perform well in each case?
+2. Consider the six possibilities to combine the missing data 
+   mechanism and missingness in $x$ or $y$. Do you expect
+   complete-case analysis to perform well in each case?
 
-    3.  Do the Bayesian sampling and bootstrap methods also work
-        under the three MAR mechanisms?
+3. Do the Bayesian sampling and bootstrap methods also work 
+   under the three MAR mechanisms?
+```
 
-    \@ref(ex:marlin)
+```{exercise, name = "Parameter uncertainty", label = "sampling"}
+Repeat the simulations of Section \@ref(sec:linearnormal) on 
+the `whiteside` data for different samples sizes.
 
-2.  *Parameter uncertainty*. Repeat the simulations of Section
-    \@ref(sec:linearnormal) on the `whiteside`
-    data for different samples sizes.
+1. Use the method of Section \@ref(sec:perflin) to generate an
+   artificial population of 10000 synthetic gas consumption 
+   observations. Re-estimate the parameter from the artificial 
+   population. How close are they to the “true” values?
 
-    1.  Use the method of Section \@ref(sec:perflin) to generate an
-        artificial population of 10000 synthetic gas
-        consumption observations. Re-estimate the parameter from the
-        artificial population. How close are they to the “true”
-        values?
+2. Draw random samples from the artificial population. 
+   Systematically vary sample size. Is there some sample size at
+   which `norm.nob` is as good as the Bayesian sampling and 
+   bootstrap methods?
 
-    2.  Draw random samples from the artificial population.
-        Systematically vary sample size. Is there some sample size at
-        which `norm.nob` is as good as the
-        Bayesian sampling and bootstrap methods?
+3. Is the result identical for missing $y$ and missing $x$?
 
-    3.  Is the result identical for missing $y$ and missing
-        $x$?
+4. Is the result the same after including insulation status 
+   in the model?
+```
 
-    4.  Is the result the same after including insulation status
-        in the model?
-
-    \@ref(ex:sampling)
