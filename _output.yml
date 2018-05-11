@@ -1,6 +1,8 @@
 bookdown::gitbook:
   css: style.css
   split_bib: no
+  includes:
+      in_header: mathjax-init.html
   config:
     toc:
       before: |

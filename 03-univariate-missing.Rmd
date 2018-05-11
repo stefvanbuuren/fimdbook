@@ -1947,7 +1947,7 @@ simulation results look promising. The algorithm is available as the
 
 ## Exercises {#ex:ch:univariate}
 
-```{exercise, name = "MAR", label = "marexr"}
+```{exercise, name = "MAR", label = "marexr1"}
 Reproduce Table \@ref(tab:linmody) and Table \@ref(tab:linmodx) 
 for MARRIGHT, MARMID and MARTAIL missing data mechanisms of Section 
 \@ref(sec:generateuni).

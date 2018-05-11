@@ -5,7 +5,13 @@ language:
     def: 'Algorithm '
   ui:
     chapter_name: "Chapter "
-rmd_files: ["index.Rmd", "01-introduction.Rmd", "02-multiple-imputation.Rmd", "03-univariate-missing.Rmd", "05-analysis.Rmd", "13-references.Rmd"]
+rmd_files: ["index.Rmd",
+            "01-introduction.Rmd",
+            "02-multiple-imputation.Rmd",
+            "03-univariate-missing.Rmd",
+            "04-multivariate-missing.Rmd",
+            "05-analysis.Rmd",
+            "13-references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"
 
 # rmd_files: ["index.Rmd", "01-introduction.Rmd", "02-multiple-imputation.Rmd", "05-analysis.Rmd"]

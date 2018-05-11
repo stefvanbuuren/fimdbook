@@ -459,10 +459,6 @@ apply(res2, c(1, 3), mean, na.rm = TRUE)
 
 ## ----ch3, child = "src/ch3.Rnw"------------------------------------------
 
-## ----start3, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch3_', self.contained = FALSE)
-
 ## ----init3, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch03-', self.contained = FALSE)
 suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
@@ -921,16 +917,12 @@ box(lwd = 0.7)
 
 ## ----ch4, child = "src/ch4.Rnw"------------------------------------------
 
-## ----start4, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch4_', self.contained = FALSE)
-
 ## ----init4, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-source("R/functions.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
+opts_chunk$set(fig.path = 'fig/ch04-', self.contained = FALSE)
+suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
+suppressPackageStartupMessages(library(lattice, warn.conflicts = FALSE, quietly = TRUE))
 suppressPackageStartupMessages(library(gam, warn.conflicts = FALSE, quietly = TRUE))
+source("R/functions.R")
 
 ## ----patterns, echo=FALSE------------------------------------------------
 data <- matrix(sample(1:100,4*8*3,replace=TRUE),nrow=8*4,
@@ -944,36 +936,17 @@ pattern1 <- data[1:8,]
 pattern2 <- data[9:16,]
 pattern3 <- data[17:24,]
 pattern4 <- data[25:32,]
-
-## ----patternplot, echo=FALSE, eval=FALSE---------------------------------
-## types <-  c("Univariate","Monotone","File matching","General")
-## print(
-## levelplot(r~var+rec|as.factor(pat), data=mdpat,
-##           as.table=TRUE, aspect="iso",
-##           shrink=c(0.9),
-##           col.regions = mdc(1:2),
-##           colorkey=FALSE,
-##           scales=list(draw=FALSE),
-##           xlab="", ylab="",
-##           between = list(x=1,y=0),
-##           strip = strip.custom(bg = "grey95", style = 1,
-##             factor.levels = types))
-## )
-
-## ----patterns2,  solo = TRUE, fig.width=6, fig.height=4, echo=FALSE------
 types <-  c("Univariate","Monotone","File matching","General")
-print(
 levelplot(r~var+rec|as.factor(pat), data=mdpat,
-          as.table=TRUE, aspect="iso",
-          shrink=c(0.9),
-          col.regions = mdc(1:2),
-          colorkey=FALSE,
-          scales=list(draw=FALSE),
-          xlab="", ylab="",
-          between = list(x=1,y=0),
-          strip = strip.custom(bg = "grey95", style = 1,
-            factor.levels = types))
-)
+            as.table=TRUE, aspect="iso",
+            shrink=c(0.9),
+            col.regions = mdc(1:2),
+            colorkey=FALSE,
+            scales=list(draw=FALSE),
+            xlab="", ylab="",
+            between = list(x=1,y=0),
+            strip = strip.custom(bg = "grey95", style = 1,
+                                 factor.levels = types))
 
 ## ----pattern-------------------------------------------------------------
 md.pattern(pattern4, plot = FALSE)
@@ -1070,33 +1043,9 @@ simulate <- function(
 ## ----slow4, cache = TRUE-------------------------------------------------
 slow.demo <- simulate(maxit = 150, seed = 62771)
 
-## ----slowplotcmd1, eval=FALSE, echo=FALSE--------------------------------
-## labels <- c("90% missing", "95% missing", "97.5% missing",
-##     "99% missing", "99.5% missing", "100% missing")
-## xyplot(rY1Y2 ~ iteration | as.factor(k), group = m,
-##     data = slow.demo, layout = c(3, 2), type = "l",
-##     as.table = TRUE, ylab = "Correlation between Y1 and Y2",
-##     xlab = "Iteration", col = mdc(3),
-##     scales = list(y = list(alternating = 1, tck = c(1, 0))),
-##     strip = strip.custom(bg = "grey95", style = 1,
-##         factor.levels = labels))
-
-## ----slowplotcmd2, eval=TRUE, echo=FALSE---------------------------------
+## ----slowplot, echo=FALSE, fig.height=5----------------------------------
 labels <- c("90% missing", "95% missing", "97.5% missing",
             "99% missing", "99.5% missing", "100% missing")
-
-## ----slowplotcmd3, eval = FALSE, echo = FALSE----------------------------
-## xyplot(rY1Y2 ~ iteration | as.factor(k), group = m,
-##        data = slow.demo, layout = c(3,2),
-##        type="l", as.table = TRUE,
-##        ylab = "Correlation between Y1 and Y2",
-##        xlab = "Iteration", col = mdc(3),
-##        scales = list(y = list(alternating = 1, tck = c(1, 0))),
-##        strip = strip.custom(bg = "grey95", style = 1,
-##          factor.levels = labels))
-
-## ----slowplot, echo=FALSE, fig.height=5----------------------------------
-print(
 xyplot(rY1Y2 ~ iteration | as.factor(k), group = m,
        data = slow.demo, layout = c(3,2),
        type="l", as.table = TRUE,
@@ -1105,7 +1054,6 @@ xyplot(rY1Y2 ~ iteration | as.factor(k), group = m,
        scales = list(y = list(alternating = 1, tck = c(1, 0))),
        strip = strip.custom(bg = "grey95", style = 1,
          factor.levels = labels))
-)
 
 ## ----pubimpjm, eval=TRUE, cache=TRUE-------------------------------------
 select <- with(boys, age >= 8 & age <= 21.0)
@@ -1122,22 +1070,15 @@ pmm <- mice(djm, method = "pmm", seed = 71332, m = 10,
             print = FALSE)
 fcs <- mice(dfcs, seed = 81420, m = 10, print = FALSE)
 
-## ----pubfigjm,  echo=FALSE, fig.width=6, fig.height=5--------------------
-tp <- xyplot(jm, gen ~ age | as.factor(.imp), subset = .imp < 6,
-             xlab = "Age", ylab = "Genital stage",
-             col = mdc(1:2), ylim = c(0, 6))
-print(tp)
+## ----pubfigjm,  echo=TRUE, fig.width=6, fig.height=5--------------------
+xyplot(jm, gen ~ age | as.factor(.imp), subset = .imp < 6,
+       xlab = "Age", ylab = "Genital stage", col = mdc(1:2),
+       ylim = c(0, 6))
 
 ## ----pubfigfcs,  echo=FALSE, fig.width=6, fig.height=5-------------------
-tp <- xyplot(fcs, gen ~ age | as.factor(.imp), subset = .imp < 6,
-             xlab = "Age", ylab = "Genital stage",
-             col = mdc(1:2), ylim = c(0, 6))
-print(tp)
-
-## ----pubfigjmmake, eval=FALSE, echo=TRUE---------------------------------
-## xyplot(jm, gen ~ age | as.factor(.imp), subset = .imp < 6,
-##        xlab = "Age", ylab = "Genital stage",
-##        col = mdc(1:2), ylim = c(0, 6))
+xyplot(fcs, gen ~ age | as.factor(.imp), subset = .imp < 6,
+       xlab = "Age", ylab = "Genital stage", col = mdc(1:2),
+       ylim = c(0, 6))
 
 ## ----pubfig2,  echo=FALSE, cache=TRUE------------------------------------
 drawgen <- function(imp, var="gen", doround=FALSE) {
@@ -1221,24 +1162,7 @@ tp<-four.gen(layout=c(2,2),ylab="",strip=function(...,bg) strip.default(..., bg=
 print(tp)
 
 ## ----ex.slow1, eval=FALSE------------------------------------------------
-## slow2 <- simulate(ns = ns2, maxit = 50, seed = 62771)
-
-## ----slow.ns, eval=FALSE, echo=FALSE-------------------------------------
-## ns2 <- matrix(c(1000,500,250,100,50,20,
-##                 rep(0,12),
-##                 c(9000, 9500, 9750, 9900, 9950, 9980)), nrow=6)
-## slow.ns2 <- simulate(maxit=50, ns=ns2, seed=62771)
-##
-## tp <- xyplot(rY1Y2~iteration|as.factor(k), group=m,
-##        data = slow.ns2, layout=c(3,2),
-##        type="l", as.table = TRUE,
-##        ylab = "Correlation between Y1 and Y2",
-##        xlab = "Iteration", col=mdc(3),
-##        scales=list(y=list(alternating=1, tck=c(1,0))),
-##        strip = strip.custom(bg="grey95", style=1,
-##          factor.levels=labels))
-## print(tp)
-
+# slow2 <- simulate(ns = ns2, maxit = 50, seed = 62771)
 
 ## ----ch5, child = "src/ch5.Rnw"------------------------------------------
 
