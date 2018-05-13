@@ -264,8 +264,8 @@ re <- round(calcacf(acf.resid$analyses),2)
 
 ## ----init2, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch02-', self.contained = FALSE)
-suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(lattice, warn.conflicts = FALSE, quietly = TRUE))
+pkg <- c("mice", "lattice")
+loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
 
 ## ----publications, echo=FALSE, fig.width=4.5, fig.height=2.25, solo=TRUE----
 cit  <- c(     2017, 75, 381, NA,
@@ -461,12 +461,8 @@ apply(res2, c(1, 3), mean, na.rm = TRUE)
 
 ## ----init3, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch03-', self.contained = FALSE)
-suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(lattice, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(gamlss, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(MASS, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(ImputeRobust, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(rpart, warn.conflicts = FALSE, quietly = TRUE))
+pkg <- c("mice", "lattice", "gamlss", "MASS", "ImputeRobust", "rpart")
+loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
 source("R/mice.impute.x.R")
 
 ## ----gas1,  six=TRUE, echo=FALSE, fig.width=4.5, fig.height=6.75---------
@@ -919,9 +915,8 @@ box(lwd = 0.7)
 
 ## ----init4, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch04-', self.contained = FALSE)
-suppressPackageStartupMessages(library(mice, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(lattice, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(gam, warn.conflicts = FALSE, quietly = TRUE))
+pkg <- c("mice", "lattice", "gam")
+loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
 source("R/functions.R")
 
 ## ----patterns, echo=FALSE------------------------------------------------
@@ -1314,50 +1309,12 @@ D1(fit.with, fit.without)
 
 ## ----ch6, child = "src/ch6.Rnw"------------------------------------------
 
-## ----start6, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch6_',
-               self.contained = FALSE)
 
 ## ----init6, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
-suppressPackageStartupMessages(library(gamlss, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(AGD, warn.conflicts = FALSE, quietly = TRUE))
-
-## ----trellisopts, echo=FALSE, results= 'hide', eval=FALSE----------------
-## lhset <- trellis.par.get("layout.heights")
-## lhset$top.padding <- 0
-## lhset$bottom.padding <- 0
-## trellis.par.set("layout.heights", lhset)
-## str(trellis.par.get("layout.heights"))
-## lwset <- trellis.par.get("layout.widths")
-## lwset$left.padding <- 0
-## lwset$right.padding <- 0
-## trellis.par.set("layout.widths", lwset)
-## str(trellis.par.get("layout.widths"))
-##
-## mice.theme <- function ()
-## {
-##   list(superpose.symbol =
-##          list(col = mdc(1:2),
-##               fill = c(hcl(240, 100, 40, 0.3), hcl(0, 100, 40, 0.3)), pch = 1),
-##        superpose.line = list(col = mdc(4:5),
-##                              lwd = 1),
-##        box.dot = list(col = mdc(1:2)),
-##        box.rectangle = list(col = mdc(4:5)),
-##        box.symbol = list(col = mdc(1:2)),
-##        plot.symbol = list(col = mdc(1:2),
-##                           fill = c(hcl(240, 100, 40, 0.3), hcl(0, 100, 40, 0.3)), pch = 1),
-##        plot.line = list(col = mdc(4:5)),
-##        superpose.polygon = list(col = c(hcl(240, 100, 40, 0.3), hcl(0, 100, 40, 0.3))),
-##        strip.background = list(col = "grey95"),
-##        layout.widths = lwset,
-##        layout.heights = lhset,
-##        mice = list(flag = TRUE))
-## }
-##
+opts_chunk$set(fig.path = 'fig/ch6-', self.contained = FALSE)
+pkg <- c("mice", "lattice", "gamlss", "AGD", "smcfcs")
+loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
+source("R/mi.hist.R")
 
 ## ----pred1---------------------------------------------------------------
 imp <- mice(nhanes, print = FALSE)
@@ -1374,7 +1331,7 @@ imp <- mice(cbind(nhanes, chl2 = 2 * nhanes$chl),
             remove.collinear = FALSE)
 imp$loggedEvents
 
-## ----chlchlplot,  solo = TRUE, fig.width =7, echo = FALSE, fig.height = 7----
+## ----chlchl,  solo = TRUE, fig.width =7, echo = FALSE, fig.height = 7----
 xyplot(imp, chl2 ~ chl | as.factor(.imp), pch = 21)
 
 ## ----derived1, cache=TRUE------------------------------------------------
@@ -1408,7 +1365,7 @@ pred[c("wgt", "hgt"), "whr"] <- 0
 imp.pas <- mice(data, meth = meth, pred = pred,
                 print = FALSE, seed = 32093)
 
-## ----derived11,  echo=FALSE, fig.width=7,fig.height=3.5------------------
+## ----passive,  echo=FALSE, fig.width=7,fig.height=3.5------------------
 if (empty_figure) {
   plot.new()
   } else {
@@ -1429,17 +1386,17 @@ pop$whr <- with(pop, 100 * wgt / hgt)
 broom::tidy(lm(hc ~ age + hgt + wgt + whr, data = pop))
 
 ## ----ratiofcs, eval = FALSE----------------------------------------------
-## library(smcfcs)
-## data <- pop
-## data[sample(nrow(data), size = 100), "wgt"] <- NA
-## data[sample(nrow(data), size = 100), "hgt"] <- NA
-## data$whr <- 100 * data$wgt / data$hgt
-## meth <- c("", "norm", "norm", "", "", "norm")
-## imps <- smcfcs(originaldata = data, meth = meth, smtype = "lm",
-##                smformula = "hc ~ age + hgt + wgt + whr")
-## fit <- lapply(imps$impDatasets, lm,
-##               formula = hc ~ age + hgt + wgt + whr)
-## summary(pool(fit))
+library(smcfcs)
+data <- pop
+data[sample(nrow(data), size = 100), "wgt"] <- NA
+data[sample(nrow(data), size = 100), "hgt"] <- NA
+data$whr <- 100 * data$wgt / data$hgt
+meth <- c("", "norm", "norm", "", "", "norm")
+imps <- smcfcs(originaldata = data, meth = meth, smtype = "lm",
+               smformula = "hc ~ age + hgt + wgt + whr")
+fit <- lapply(imps$impDatasets, lm,
+              formula = hc ~ age + hgt + wgt + whr)
+summary(pool(fit))
 
 ## ----inter1, cache = TRUE------------------------------------------------
 expr <- expression((wgt - 40) * (hc - 50))
@@ -1452,7 +1409,7 @@ pred[c("wgt", "hc"), "wgt.hc"] <- 0
 imp.int <- mice(boys, m = 1, meth = meth, pred = pred,
                 print = FALSE, seed = 62587, maxit = 10)
 
-## ----inter2, echo=FALSE, duo=TRUE, fig.width=4.5, fig.height=2.25--------
+## ----interaction, echo=FALSE, duo=TRUE, fig.width=4.5, fig.height=2.25--------
 if (empty_figure) {
   plot.new()
   } else {
@@ -1478,14 +1435,6 @@ axis(1, lwd = lwd)
 axis(2, lwd = lwd, las = 1)
 box(lwd = lwd)
 }
-## tp <- xyplot(wgt+hc~wgt.hc, data=cd, groups=is.na(imp.int$data$wgt.hc),
-##              scales=list(x=list(relation="free"),
-##                y=list(relation="free")), theme=mice.theme(),
-##              cex=c(0.4,1), pch=c(1,20),
-##              ## xlab="Interaction",
-##              ## ylab="Weight",
-##              strip=FALSE)
-## plot(tp)
 
 ## ----compos1-------------------------------------------------------------
 set.seed(43112)
@@ -1518,7 +1467,7 @@ imp1 <- mice(data, meth = meth, pred = pred, m = 10,
 ## ----compos4-------------------------------------------------------------
 round(summary(pool(with(imp1, lm(Y3 ~ Y1 + Y2))))[, 1:2], 2)
 
-## ----compos5,  echo=FALSE, fig.width=7, fig.height=4---------------------
+## ----composition, echo=FALSE, fig.width=7, fig.height=4---------------------
 meth <- make.method(data)
 meth["Y1"] <- "~ I(P1 * Y12)"
 meth["Y2"] <- "~ I((1 - P1) * Y12)"
@@ -1540,11 +1489,8 @@ tp <-xyplot(imp, P1~Y12|model, pch=c(1,19),
             strip=strip.custom(factor.levels=c(expression(italic(Y)[12] + italic(Y)[3]),
                                                expression(italic(Y)[12]))))
 plot(tp)
-## tp <- xyplot(imp, P1~Y12|.imp, subset=.imp=="0"|.imp=="1"|.imp=="2", layout=c(3,1), pch=c(1,19),
-##        xlab="Y1 + Y2")
-## plot(tp)
 
-## ----squeeze, eval=TRUE, echo=TRUE, results='hide'-----------------------
+## ----squeezeprep, eval=TRUE, echo=TRUE, results='hide'-----------------------
 data <- airquality[, 1:2]
 post <- make.post(data)
 post["Ozone"] <-
@@ -1552,7 +1498,7 @@ post["Ozone"] <-
 imp <- mice(data, method = "norm.nob", m = 1,
             maxit = 1, seed = 1, post = post)
 
-## ----plotsqueeze, echo=FALSE, duo=TRUE,  results='hide', fig.width=4.5, fig.height=2.25----
+## ----squeeze, echo=FALSE, duo=TRUE, fig.width=4.5, fig.height=2.25----
 lwd <- 1.5
 data <- mice::complete(imp)
 Yobs <- airquality[, "Ozone"]
@@ -1593,12 +1539,6 @@ tp <-xyplot(imp3, gen~age|model, pch=c(3,1), cex=c(3,1.5),
             col=mdc(1:2))
 print(tp)
 
-## ----post1, eval=FALSE, echo=TRUE----------------------------------------
-## post <- make.post(boys)
-## post["gen"] <- "ifdo(age < 8, levels(gen)[1])"
-## post["phb"] <- "ifdo(age < 8, levels(phb)[1])"
-## post["tv"] <- "ifdo(age < 8, 1)"
-
 ## ----visit1--------------------------------------------------------------
 imp.int$visitSequence
 
@@ -1619,13 +1559,13 @@ imp.int2 <- mice(boys, m = 1, maxit = 1, vis =  "monotone",
                  meth = imp.int$meth, pred = imp.int$pred,
                  seed = 23390)
 
-## ----convergence1,  echo=FALSE, cache = TRUE-----------------------------
+## ----convergence1, echo = FALSE, cache = TRUE-----------------------------
 imp <- mice(nhanes, seed = 62006, maxit = 20, print = FALSE)
 print(plot(imp, lwd = 1))
 
-## ----convergence0, eval=FALSE, echo=TRUE---------------------------------
-## imp <- mice(nhanes, seed = 62006, maxit = 20, print = FALSE)
-## plot(imp)
+## ----convergence0, eval = FALSE, echo = TRUE---------------------------------
+imp <- mice(nhanes, seed = 62006, maxit = 20, print = FALSE)
+plot(imp)
 
 ## ----convergence2, cache = TRUE------------------------------------------
 meth <- make.method(boys)
@@ -1661,54 +1601,36 @@ mis <- gamlss(wgt ~ age + hgt + hc + gen + phb + tv + reg, data = cdmis)
 wp.twin(obs, mis, xvar = NULL, xvar.column = 2, n.inter = 9,
         col1 = mdc(4), col2 = mdc(5), ylim = 0.9, cex = 0.7, pch = 1)
 
-## ----stripplot2,  echo=FALSE, fig.width = 7, fig.height=5----------------
+## ----stripplot, echo=FALSE, fig.width = 7, fig.height=5----------------
 imp <- mice(nhanes, seed = 29981, print = FALSE)
-stripplot(imp, pch = c(1, 20), cex = c(0.8, 1.2))
+stripplot(imp, pch = c(21, 20), cex = c(1, 1.5))
 
 ## ----stripplot1, eval=FALSE, echo=TRUE-----------------------------------
-## imp <- mice(nhanes, seed = 29981)
-## stripplot(imp, pch = c(21, 20), cex = c(1, 1.5))
+imp <- mice(nhanes, seed = 29981)
+stripplot(imp, pch = c(21, 20), cex = c(1, 1.5))
 
 ## ----densityplot1, eval=FALSE, echo=TRUE---------------------------------
-## densityplot(imp, layout = c(3, 1))
+densityplot(imp, layout = c(3, 1))
 
-## ----densityplot2, solo=TRUE, echo=FALSE, fig.width = 7, fig.height=3----
+## ----densityplot, solo=TRUE, echo=FALSE, fig.width = 7, fig.height=3----
 densityplot(imp, layout = c(3, 1), col = c(mdc(4), rep(mdc(5), 5)))
 
 ## ----propensityplot1, eval = FALSE---------------------------------------
-## fit <- with(imp, glm(ici(imp) ~ age + bmi + hyp + chl,
-##                      family = binomial))
-## ps <- rep(rowMeans(sapply(fit$analyses, fitted.values)),
-##           imp$m + 1)
-## xyplot(imp, bmi ~ ps | as.factor(.imp),
-##        xlab = "Probability that record is incomplete",
-##        ylab = "BMI", pch = c(1, 19))
+fit <- with(imp, glm(ici(imp) ~ age + bmi + hyp + chl,
+                     family = binomial))
+ps <- rep(rowMeans(sapply(fit$analyses, fitted.values)),
+          imp$m + 1)
+xyplot(imp, bmi ~ ps | as.factor(.imp),
+       xlab = "Probability that record is incomplete",
+       ylab = "BMI", pch = c(1, 19), col = mdc(1:2))
 
-## ----propensityplot3, solo=TRUE, echo=FALSE, fig.width = 7, fig.height=5----
+## ----propensityplot, solo=TRUE, echo=FALSE, fig.width = 7, fig.height=5----
 fit <- with(imp, glm(ici(imp)~age+bmi+hyp+chl,family=binomial))
 ps <- rep(rowMeans(sapply(fit$analyses, fitted.values)),imp$m+1)
 tp <- xyplot(imp, bmi~ps|as.factor(.imp), pch=c(1,19),
              xlab="Probability that record is incomplete",
              ylab="BMI", col=mdc(1:2))
 print(tp)
-
-## ----wormplot10, eval=FALSE, echo=FALSE----------------------------------
-## rm(boys)
-## set.seed(24417)
-## boys$wgt[sample(1:nrow(boys),nrow(boys)/2)] <- NA
-## meth1 <- c("","norm","norm","","norm","polr","polr","pmm","polyreg")
-## imp1 <- mice(boys, m=1, meth=meth1, seed=53882)
-## xyplot(imp1, wgt~age|as.factor(.imp))
-##
-## cd <- mice::complete(imp1)[,-4]
-## isobs <- !is.na(boys$wgt)
-## cdobs <- cd[isobs,]
-## cdmis <- cd[!isobs,]
-## obs <- gamlss(wgt~age+hgt+hc+gen+phb+tv+reg, data=cdobs)
-## mis <- gamlss(wgt~age+hgt+hc+gen+phb+tv+reg, data=cdmis)
-##
-## wp.twin(obs, mis, xvar=NULL, xvar.column=2, n.inter=9, col1=mdc(4), col2=mdc(5), ylim=01, cex=0.8, pch=1)
-
 
 ## ----ch7, child = "src/ch7.Rnw"------------------------------------------
 

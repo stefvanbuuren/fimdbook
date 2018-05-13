@@ -7,13 +7,15 @@
 > 
 > --- John W. Graham
 
-Chapters \@ref(ch:univariate) 
-and \@ref(ch:multivariate) describe methods to
-generate multiple imputations. The application of these techniques in
-practice should be done with appropriate care. This chapter focuses on
-practical issues that surround the methodology. This chapter assumes
-that multiple imputations are created by means of the MICE algorithm, as
-described in Section \@ref(sec:MICE).
+```{r init6, echo = FALSE, hide = TRUE}
+```
+
+Chapters \@ref(ch:univariate) and \@ref(ch:multivariate) describe
+methods to generate multiple imputations. The application of these
+techniques in practice should be done with appropriate care. This
+chapter focuses on practical issues that surround the methodology.
+This chapter assumes that multiple imputations are created by means of
+the MICE algorithm, as described in Section \@ref(sec:MICE).
 
 ## Overview of modeling choices {#sec:choices}
 
@@ -27,68 +29,67 @@ in multiple imputation. The imputation model should
 -   preserve the uncertainty about these relations.
 
 The idea is that adherence to these principles will yield proper
-imputations (cf. Section \@ref(sec:proper)), and thus result in valid
+imputations (cf. Section \@ref(sec:proper)), and thus result in valid
 statistical inferences. What are the choices that we need to make, and
 in what order? list the following seven choices:
 
-1.  First, we should decide whether the MAR assumption is plausible. See
-    Sections \@ref(sec:MCAR) and 
-    \@ref(sec:MCARreprise) for an introduction to
-    MAR and MNAR. FCS can handle both MAR and MNAR. Multiple imputation
-    under MNAR requires additional modeling assumptions that influence
-    the generated imputations. There are many ways to do this. Section
-    \@ref(sec:nonignorable) described one way to do so within the
-    FCS framework. Section \@ref(sec:whenignorable) deals with this issue
-    in more detail.
+1. First, we should decide whether the MAR assumption is plausible.
+   See Sections \@ref(sec:MCAR) and \@ref(sec:MCARreprise) for an
+   introduction to MAR and MNAR. FCS can handle both MAR and MNAR.
+   Multiple imputation under MNAR requires additional modeling
+   assumptions that influence the generated imputations. There are many
+   ways to do this. Section \@ref(sec:nonignorable) described one way to
+   do so within the FCS framework. Section \@ref(sec:whenignorable) deals
+   with this issue in more detail.
 
-2.  The second choice refers to the form of the imputation model. The
-    form encompasses both the structural part and the assumed
-    error distribution. In FCS the form needs to be specified for each
-    incomplete column in the data. The choice will be steered by the
-    scale of the variable to be imputed, and preferably incorporates
-    knowledge about the relation between the variables. Chapter
-    \@ref(ch:univariate) described many different methods for creating
-    univariate imputations.
+2. The second choice refers to the form of the imputation model. The
+   form encompasses both the structural part and the assumed
+   error distribution. In FCS the form needs to be specified for each
+   incomplete column in the data. The choice will be steered by the
+   scale of the variable to be imputed, and preferably incorporates
+   knowledge about the relation between the variables. Chapter
+   \@ref(ch:univariate) described many different methods for creating
+   univariate imputations.
 
-3.  A third choice concerns the set of variables to include as
-    predictors in the imputation model. The general advice is to include
-    as many relevant variables as possible, including their interactions
-    [@COLLINS2001]. This may, however, lead to unwieldy
-    model specifications. Section \@ref(sec:modelform) describes the
-    facilities within the `mice()` function
-    for setting the predictor matrix.
+3. A third choice concerns the set of variables to include as
+   predictors in the imputation model. The general advice is to include
+   as many relevant variables as possible, including their interactions
+   [@COLLINS2001]. This may, however, lead to unwieldy model 
+   specifications. Section \@ref(sec:modelform) describes the 
+   facilities within the `mice()` function for setting the predictor 
+   matrix.
 
-4.  The fourth choice is whether we should impute variables that are
-    functions of other (incomplete) variables. Many datasets contain
-    derived variables, sum scores, interaction variables, ratios and
-    so on. It can be useful to incorporate the transformed variables
-    into the multiple imputation algorithm. Section \@ref(sec:knowledge)
-    describes methods that we can use to incorporate such additional
-    knowledge about the data.
+4. The fourth choice is whether we should impute variables that are
+   functions of other (incomplete) variables. Many datasets contain
+   derived variables, sum scores, interaction variables, ratios and
+   so on. It can be useful to incorporate the transformed variables
+   into the multiple imputation algorithm. Section \@ref(sec:knowledge)
+   describes methods that we can use to incorporate such additional
+   knowledge about the data.
 
-5.  The fifth choice concerns the order in which variables should
-    be imputed. The visit sequence may affect the convergence of the
-    algorithm and the synchronization between derived variables. Section
-    \@ref(sec:visit) discusses relevant options.
+5. The fifth choice concerns the order in which variables should
+   be imputed. The visit sequence may affect the convergence of the
+   algorithm and the synchronization between derived variables. Section
+   \@ref(sec:visit) discusses relevant options.
 
-6.  The sixth choice concerns the setup of the starting imputations and
-    the number of iterations $M$. The convergence of the MICE algorithm
-    can be monitored in many ways. Section \@ref(sec:convergence) outlines
-    some techniques that assist in this task.
+6. The sixth choice concerns the setup of the starting imputations and
+   the number of iterations $M$. The convergence of the MICE algorithm
+   can be monitored in many ways. Section \@ref(sec:convergence) outlines
+   some techniques that assist in this task.
 
-7.  The seventh choice is $m$, the number of multiply imputed datasets.
-    Setting $m$ too low may result in large simulation error and
-    statistical inefficiency, especially if the fraction of missing
-    information is high. Section \@ref(sec:howmany) provided guidelines for
-    setting $m$.
+7. The seventh choice is $m$, the number of multiply imputed datasets.
+   Setting $m$ too low may result in large simulation error and
+   statistical inefficiency, especially if the fraction of missing
+   information is high. Section \@ref(sec:howmany) provided guidelines for
+   setting $m$.
 
-Please realize that these choices are always needed. Imputation software
-needs to make default choices. These choices are intended to be useful
-across a wide range of applications. However, the default choices are
-not necessarily the best for the data at hand. There is simply no
-magical setting that always works, so often some tailoring is needed.
-Section \@ref(sec:diagnostics) highlights some diagnostic tools that aid in
-determining the choices.
+Please realize that these choices are always needed. Imputation
+software needs to make default choices. These choices are intended to
+be useful across a wide range of applications. However, the default
+choices are not necessarily the best for the data at hand. There is
+simply no magical setting that always works, so often some tailoring
+is needed. Section \@ref(sec:diagnostics) highlights some diagnostic
+tools that aid in determining the choices.
 
 ## Ignorable or nonignorable? {#sec:whenignorable}
 
@@ -134,7 +135,7 @@ and if the assumption is still suspect, perform a concise simulation
 study as in @COLLINS2001 customized for the problem at hand with the
 goal of finding out how extreme the MNAR mechanism needs to be to
 influence the parameters of scientific interest. Finally, use a
-nonignorable imputation model (cf. Section \@ref(sec:nonignorable)) to
+nonignorable imputation model (cf. Section \@ref(sec:nonignorable)) to
 correct the direction of imputations created under MAR. Vary the most
 critical parameters, and study their influence on the final inferences.
 Section \@ref(sec:sensitivity) contains an example of how this can be done
@@ -146,113 +147,88 @@ in practice.
 
 The MICE algorithm requires a specification of a univariate imputation
 method separately for each incomplete variable. Chapter
-\@ref(ch:univariate) discussed many possible methods. The measurement level
-largely determines the form of the univariate imputation model. The
-`mice()` function distinguishes numerical,
-binary, ordered and unordered categorical data, and sets the defaults
-accordingly.
+\@ref(ch:univariate) discussed many possible methods. The measurement
+level largely determines the form of the univariate imputation model.
+The `mice()` function distinguishes numerical, binary, ordered and
+unordered categorical data, and sets the defaults accordingly.
 
-  Method                                     Description                              Scale Type
-  ------------------------------------------ ---------------------------------------- -------------
-  `pmm`            Predictive mean matching                 Any$^*$
-  `midastouch`     Weighted predictive mean matching        Any
-  `sample`         Random sample from observed values       Any
-  `cart`           Classification and regression trees      Any
-  `rf`             Random forest imputation                 Any
-  `mean`           Unconditional mean imputation            Numeric
-  `norm`           Bayesian linear regression               Numeric
-  `norm.boot`      Normal imputation with bootstrap         Numeric
-  `norm.nob`       Normal imputation ignoring model error   Numeric
-  `norm.predict`   Normal imputation, predicted values      Numeric
-  `quadratic`      Imputation of quadratic terms            Numeric
-  `ri`             Random indicator for nonignorable data   Numeric
-  `logreg`         Logistic regression                      Binary$^*$
-  `logreg.boot`    Logistic regression with bootstrap       Binary
-  `polr`           Proportional odds model                  Ordinal$^*$
-  `polyreg`        Polytomous logistic regression           Nominal$^*$
-  `lda`            Discriminant analysis                    Nominal
+Method         | Description                            | Scale Type
+:--------------|:---------------------------------------|:-----------
+`pmm`          | Predictive mean matching               |  Any$^*$
+`midastouch`   | Weighted predictive mean matching      |  Any
+`sample`       | Random sample from observed values     |  Any
+`cart`         | Classification and regression trees    |  Any
+`rf`           | Random forest imputation               |  Any
+`mean`         | Unconditional mean imputation          |  Numeric
+`norm`         | Bayesian linear regression             |  Numeric
+`norm.boot`    | Normal imputation with bootstrap       |  Numeric
+`norm.nob`     | Normal imputation ignoring model error |  Numeric
+`norm.predict` | Normal imputation, predicted values    |  Numeric
+`quadratic`    | Imputation of quadratic terms          |  Numeric
+`ri`           | Random indicator for nonignorable data |  Numeric
+`logreg`       | Logistic regression                    |  Binary$^*$
+`logreg.boot`  | Logistic regression with bootstrap     |  Binary
+`polr`         | Proportional odds model                |  Ordinal$^*$
+`polyreg`      | Polytomous logistic regression         |  Nominal$^*$
+`lda`          | Discriminant analysis                  |  Nominal
 
-  : Built-in univariate imputation techniques in the
-  `mice` package.<span
-  data-label="tab:elem">
+: (\#tab:elem) Built-in univariate imputation techniques in the `mice` 
+package. Methods marked by $^*$ are default for scale type.
 
-$^*$ = default
+Table \@ref(tab:elem) lists the built-in univariate imputation method
+in the `mice` package. The defaults have been chosen to work well in a
+wide variety of situations, but in particular cases different methods
+may be better. For example, if it is known that the variable is close
+to normally distributed, using `norm` instead of the default `pmm` may
+be more efficient. For large datasets where sampling variance is not
+an issue, it could be useful to select `norm.nob`, which does not draw
+regression parameters, and is thus simpler and faster. The `norm.boot`
+method is a fast non-Bayesian alternative for `norm`. The `norm`
+methods are an alternative to `pmm` in cases where `pmm` does not work
+well, e.g., when insufficient nearby donors can be found.
 
-Table \@ref(tab:elem) lists the built-in univariate imputation method in
-the `mice` package. The defaults have been
-chosen to work well in a wide variety of situations, but in particular
-cases different methods may be better. For example, if it is known that
-the variable is close to normally distributed, using
-`norm` instead of the default
-`pmm` may be more efficient. For large
-datasets where sampling variance is not an issue, it could be useful to
-select `norm.nob`, which does not draw
-regression parameters, and is thus simpler and faster. The
-`norm.boot` method is a fast non-Bayesian
-alternative for `norm`. The
-`norm` methods are an alternative to
-`pmm` in cases where
-`pmm` does not work well, e.g., when
-insufficient nearby donors can be found.
-
-The `mean` method is included for completeness
-and should not be generally used. For sparse categorical data, it may be
-better to use method `pmm` instead of
-`logreg`, `polr` or
-`polyreg`. Method
-`logreg.boot` is a version of
-`logreg` that uses the bootstrap to emulate
-sampling variance. Method `lda` is generally
-inferior to `polyreg` [@BRAND1999], and should
-be used only as a backup when all else fails. Finally,
-`sample` is a quick method for creating
-starting imputations without the need for covariates.
+The `mean` method is included for completeness and should not be
+generally used. For sparse categorical data, it may be better to use
+method `pmm` instead of `logreg`, `polr` or `polyreg`. Method
+`logreg.boot` is a version of `logreg` that uses the bootstrap to
+emulate sampling variance. Method `lda` is generally inferior to
+`polyreg` [@BRAND1999], and should be used only as a backup when all
+else fails. Finally, `sample` is a quick method for creating starting
+imputations without the need for covariates.
 
 ### Predictors {#sec:predictors}
 
-A useful feature of the `mice()` function is
-the ability to specify the set of predictors to be used for each
-incomplete variable. The basic specification is made through the
-`predictorMatrix` argument, which is a square
-matrix of size `ncol(data)` containing 0/1
-data. Each row in `predictorMatrix` identifies
-which predictors are to be used for the variable in the row name. If
-`diagnostics=T` (the default), then
-`mice()` returns a
-`mids` object containing a
+A useful feature of the `mice()` function is the ability to specify
+the set of predictors to be used for each incomplete variable. The
+basic specification is made through the `predictorMatrix` argument,
+which is a square matrix of size `ncol(data)` containing 0/1 data.
+Each row in `predictorMatrix` identifies which predictors are to be
+used for the variable in the row name. If `diagnostics = TRUE` (the
+default), then `mice()` returns a `mids` object containing a
 `predictorMatrix` entry. For example, type
 
-`     `\
-
-        age bmi hyp chl
-    age   0   1   1   1
-    bmi   1   0   1   1
-    hyp   1   1   0   1
-    chl   1   1   1   0
+```{r pred1}
+```
 
 The rows correspond to incomplete target variables, in the sequence as
-they appear in the data. A value of `1`
-indicates that the column variable is a predictor to impute the target
-(row) variable, and a `0` means that it is not
-used. Thus, in the above example, `bmi` is
-predicted from `age`,
-`hyp` and `chl`.
-Note that the diagonal is `0` since a variable
-cannot predict itself. Since `age` contains no
-missing data, `mice()` silently sets all
-values in the row to `0`. The default setting
-of the `predictorMatrix` specifies that every
-variable predicts all others.
+they appear in the data. A value of `1` indicates that the column
+variable is a predictor to impute the target (row) variable, and a `0`
+means that it is not used. Thus, in the above example, `bmi` is
+predicted from `age`, `hyp` and `chl`. Note that the diagonal is `0`
+since a variable cannot predict itself. Since `age` contains no
+missing data, `mice()` silently sets all values in the row to `0`. The
+default setting of the `predictorMatrix` specifies that every variable
+predicts all others.
 
 Conditioning on all other data is often reasonable for small to medium
 datasets, containing up to, say, 20–30 variables, without derived
 variables, interactions effects and other complexities. As a general
 rule, using every bit of available information yields multiple
-imputations that have minimal bias and maximal efficiency
-[@MENG1994; @COLLINS2001]. It is often beneficial to choose as large a
-number of predictors as possible. Including as many predictors as
-possible tends to make the MAR assumption more plausible, thus reducing
-the need to make special adjustments for MNAR mechanisms [@SCHAFER1997].
+imputations that have minimal bias and maximal efficiency [@MENG1994;
+@COLLINS2001]. It is often beneficial to choose as large a number of
+predictors as possible. Including as many predictors as possible tends
+to make the MAR assumption more plausible, thus reducing the need to
+make special adjustments for MNAR mechanisms [@SCHAFER1997].
 
 For datasets containing hundreds or thousands of variables, using all
 predictors may not be feasible (because of multicollinearity and
@@ -260,117 +236,100 @@ computational problems) to include all these variables. It is also not
 necessary. In my experience, the increase in explained variance in
 linear regression is typically negligible after the best, say, 15
 variables have been included. For imputation purposes, it is expedient
-to select a suitable subset of data that contains no more than 15 to 25
-variables. provide the following strategy for selecting predictor
+to select a suitable subset of data that contains no more than 15 to
+25 variables. provide the following strategy for selecting predictor
 variables from a large database:
 
-1.  Include all variables that appear in the complete-data model, i.e.,
-    the model that will be applied to the data after imputation,
-    including the outcome [@LITTLE1992; @MOONS2006]. Failure to do so
-    may bias the complete-data model, especially if the complete-data
-    model contains strong predictive relations. Note that this step is
-    somewhat counter-intuitive, as it may seem that imputation would
-    artificially strengthen the relations of the complete-data model,
-    which would be clearly undesirable. If done properly however, this
-    is not the case. On the contrary, not including the complete-data
-    model variables will tend to bias the results toward zero. Note that
-    interactions of scientific interest also need to be included in the
-    imputation model.
+1. Include all variables that appear in the complete-data model, i.e.,
+   the model that will be applied to the data after imputation,
+   including the outcome [@LITTLE1992; @MOONS2006]. Failure to do so
+   may bias the complete-data model, especially if the complete-data
+   model contains strong predictive relations. Note that this step is
+   somewhat counter-intuitive, as it may seem that imputation would
+   artificially strengthen the relations of the complete-data model,
+   which would be clearly undesirable. If done properly however, this
+   is not the case. On the contrary, not including the complete-data
+   model variables will tend to bias the results toward zero. Note that
+   interactions of scientific interest also need to be included in the
+   imputation model.
 
-2.  In addition, include the variables that are related to
-    the nonresponse. Factors that are known to have influenced the
-    occurrence of missing data (stratification, reasons for nonresponse)
-    are to be included on substantive grounds. Other variables of
-    interest are those for which the distributions differ between the
-    response and nonresponse groups. These can be found by inspecting
-    their correlations with the response indicator of the variable to
-    be imputed. If the magnitude of this correlation exceeds a certain
-    level, then the variable should be included.
+2. In addition, include the variables that are related to
+   the nonresponse. Factors that are known to have influenced the
+   occurrence of missing data (stratification, reasons for nonresponse)
+   are to be included on substantive grounds. Other variables of
+   interest are those for which the distributions differ between the
+   response and nonresponse groups. These can be found by inspecting
+   their correlations with the response indicator of the variable to
+   be imputed. If the magnitude of this correlation exceeds a certain
+   level, then the variable should be included.
 
-3.  In addition, include variables that explain a considerable amount
-    of variance. Such predictors help reduce the uncertainty of
-    the imputations. They are basically identified by their correlation
-    with the target variable.
+3. In addition, include variables that explain a considerable amount
+   of variance. Such predictors help reduce the uncertainty of
+   the imputations. They are basically identified by their correlation
+   with the target variable.
 
-4.  Remove from the variables selected in steps 2 and 3 those variables
-    that have too many missing values within the subgroup of
-    incomplete cases. A simple indicator is the percentage of observed
-    cases within this subgroup, the percentage of usable cases
-    (cf. Section \@ref(sec:mdpattern)).
+4. Remove from the variables selected in steps 2 and 3 those variables
+   that have too many missing values within the subgroup of
+   incomplete cases. A simple indicator is the percentage of observed
+   cases within this subgroup, the percentage of usable cases
+   (cf. Section \@ref(sec:mdpattern)).
 
 Most predictors used for imputation are incomplete themselves. In
-principle, one could apply the above modeling steps for each incomplete
-predictor in turn, but this may lead to a cascade of auxiliary
-imputation problems. In doing so, one runs the risk that every variable
-needs to be included after all.
+principle, one could apply the above modeling steps for each
+incomplete predictor in turn, but this may lead to a cascade of
+auxiliary imputation problems. In doing so, one runs the risk that
+every variable needs to be included after all.
 
 In practice, there is often a small set of key variables, for which
-imputations are needed, which suggests that steps 1 through 4 are to be
-performed for key variables only. This was the approach taken in
+imputations are needed, which suggests that steps 1 through 4 are to
+be performed for key variables only. This was the approach taken in
 @VANBUUREN1999B, but it may miss important predictors of predictors. A
-safer and more efficient, though more laborious, strategy is to perform
-the modeling steps also for the predictors of predictors of key
-variables. This is done in @OUDSHOORN1999. I expect that it is rarely
-necessary to go beyond predictors of predictors. At the terminal node,
-we can apply a simple method like `sample`
-that does not need any predictors for itself.
+safer and more efficient, though more laborious, strategy is to
+perform the modeling steps also for the predictors of predictors of
+key variables. This is done in @OUDSHOORN1999. I expect that it is
+rarely necessary to go beyond predictors of predictors. At the
+terminal node, we can apply a simple method like `sample` that does
+not need any predictors for itself.
 
-The `mice` package contains several tools that
-aid in automatic predictor selection. The
-`quickpred()` function is a quick way to
+The `mice` package contains several tools that aid in automatic
+predictor selection. The `quickpred()` function is a quick way to
 define the predictor matrix using the strategy outlined above. The
-`flux()` function was introduced in Section
-\@ref(sec:flux). The `mice()` function detects
-multicollinearity, and solves the problem by removing one or more
-predictors for the model. Each removal is noted in the
-`loggedEvents` element of the
-`mids` object. For example,
+`flux()` function was introduced in Section \@ref(sec:flux). The
+`mice()` function detects multicollinearity, and solves the problem by
+removing one or more predictors for the model. Each removal is noted
+in the `loggedEvents` element of the `mids` object. For example,
 
-`       `\
-`                       `
-
-      it im dep      meth  out
-    1  0  0     collinear chl2
+```{r multi}
+```
 
 yields a warning that informs us that at initialization variable
-`chl2` was removed from the imputation model
-because it is collinear with `chl`. As a
-result, `chl` will be imputed, but
-`chl2` is not. We may override removal by
+`chl2` was removed from the imputation model because it is collinear
+with `chl`. As a result, `chl` will be imputed, but `chl2` is not. We
+may override removal by
 
-`       `\
-`                       `\
-`              `
-
-      it im  dep meth out
-    1  1  1 chl2  pmm chl
-    2  1  2 chl2  pmm chl
-    3  1  3 chl2  pmm chl
+```{r multi2}
+```
 
 Now, the algorithm detects multicollinearity during iterations, and
-removes `chl` from the imputation model for
-`chl2`. Although this imputes both
-`chl` and `chl2`,
-their relation is not maintained. See Figure \@ref(fig:chlchl).
+removes `chl` from the imputation model for `chl2`. Although this
+imputes both `chl` and `chl2`, their relation is not maintained. See
+Figure \@ref(fig:chlchl).
 
-![Scatterplot of `chl2` against
-`chl` for $m = 3$. The observed data are
-linearly related, but the imputed data do not respect the
-relationship.<span
-data-label="fig:chlchl">](fig/ch6_chlchlplot-1){width="\maxwidth"}
+```{r chlchl, solo = TRUE, fig.asp = 1, echo = FALSE, fig.cap = '(ref:chlchl)'}
+```
+
+(ref:chlchl) Scatterplot of `chl2` against `chl` for $m = 3$. The
+observed data are linearly related, but the imputed data do not
+respect the relationship.
 
 As a general rule, feedback between different versions of the same
 variable should be prevented. The next section describes a number of
 techniques that are useful in various situations. Another measure to
-control the algorithm is the `ridge`
-parameter, denoted by $\kappa$ in Algorithms \@ref(alg:norm),
-\@ref(alg:normboot) and 
-\@ref(alg:pmm). The `ridge`
-parameter is specified as an argument to
-`mice()`. Setting
-`ridge=0.001` or
-`ridge=0.01` makes the algorithm more robust
-at the expense of bias.
+control the algorithm is the `ridge` parameter, denoted by $\kappa$ in
+Algorithms \@ref(def:norm), \@ref(def:normboot) and \@ref(def:pmm).
+The `ridge` parameter is specified as an argument to `mice()`. Setting
+`ridge=0.001` or `ridge=0.01` makes the algorithm more robust at the
+expense of bias.
 
 ## Derived variables {#sec:knowledge}
 
@@ -378,84 +337,58 @@ at the expense of bias.
 
 In practice, there is often extra knowledge about the data that is not
 modeled explicitly. For example, consider the weight/height ratio
-`whr`, defined as
-`wgt`/`hgt` (kg/m).
-If any one of the triplet (`hgt`,
-`wgt`, `whr`) is
-missing, then the missing value can be calculated with certainty by a
-simple deterministic rule. Unless we specify otherwise, the imputation
-model is unaware of the relation between the three variables, and will
-produce imputations that are inconsistent with the rule. Inconsistent
-imputations are clearly undesirable since they yield combinations of
-data values that are impossible in the real world. Including knowledge
-about derived data in the imputation model prevents imputations from
-being inconsistent. Knowledge about the derived data can take many
-forms, and includes data transformations, interactions, sum scores,
-recoded versions, range restrictions, if-then relations and polynomials.
+`whr`, defined as `wgt`/`hgt` (kg/m). If any one of the triplet
+(`hgt`, `wgt`, `whr`) is missing, then the missing value can be
+calculated with certainty by a simple deterministic rule. Unless we
+specify otherwise, the imputation model is unaware of the relation
+between the three variables, and will produce imputations that are
+inconsistent with the rule. Inconsistent imputations are clearly
+undesirable since they yield combinations of data values that are
+impossible in the real world. Including knowledge about derived data
+in the imputation model prevents imputations from being inconsistent.
+Knowledge about the derived data can take many forms, and includes
+data transformations, interactions, sum scores, recoded versions,
+range restrictions, if-then relations and polynomials.
 
 The easiest way to deal with the problem is to leave any derived data
 outside the imputation process. For example, we may impute any missing
-height and weight data, and append `whr` to
-the imputed data afterward. It is simple to do that in
-`mice` by
+height and weight data, and append `whr` to the imputed data
+afterward. It is simple to do that in `mice` by
 
-`       `\
-`        `\
-`      `\
-`       `\
-`  `
+```{r derived1, cache = TRUE}
+```
 
 The approach is known as *Impute, then transform* [@VONHIPPEL2009].
-While `whr` will be consistent, the obvious
-problem with this approach is that `whr` is
-not used by the imputation method, and hence biases the estimates of
-parameters related to `whr` towards zero. Note
-the use of the `as.mids` function, which
-transforms the imputed data `long` back into a
-`mids` object.
+While `whr` will be consistent, the obvious problem with this approach
+is that `whr` is not used by the imputation method, and hence biases
+the estimates of parameters related to `whr` towards zero. Note the
+use of the `as.mids` function, which transforms the imputed data
+`long` back into a `mids` object.
 
-Another possibility is to create `whr` before
-imputation, and impute `whr` as just another
-variable, known as *JAV* [@WHITE2011], or under the name *Transform,
-then impute* [@VONHIPPEL2009]. This is easy to do, as follows:
+Another possibility is to create `whr` before imputation, and impute
+`whr` as just another variable, known as *JAV* [@WHITE2011], or under
+the name *Transform, then impute* [@VONHIPPEL2009]. This is easy to
+do, as follows:
 
-`      `\
-`        `
+```{r derived2, cache = TRUE}
+```
 
 The warning results from the linear dependencies among the predictors,
-which were introduced by adding `whr`. The
-`mice()` function checks for linear
-dependencies during the iterations, and temporarily removes predictors
-from the univariate imputation models where needed. Each removal action
-is documented in the the `loggedEvents`
-component of the `imp.jav1` object. The last
-three removal events are
+which were introduced by adding `whr`. The `mice()` function checks
+for linear dependencies during the iterations, and temporarily removes
+predictors from the univariate imputation models where needed. Each
+removal action is documented in the the `loggedEvents` component of
+the `imp.jav1` object. The last three removal events are
 
-` `
+```{r derived3}
+```
 
-       it im dep meth out
-    43  5  4 whr  pmm wgt
-    44  5  5 wgt  pmm whr
-    45  5  5 whr  pmm wgt
+which informs us that `wgt` was removed while imputing `whr`, and vice
+versa. We may prevent automatic removal by setting the relevant
+entries in the `predictorMatrix` to zero.
 
-which informs us that `wgt` was removed while
-imputing `whr`, and vice versa. We may prevent
-automatic removal by setting the relevant entries in the
-`predictorMatrix` to zero.
-
-`  `\
-`     `\
-`     `\
-
-        age hgt wgt hc reg whr
-    age   0   1   1  1   1   1
-    hgt   1   0   1  1   1   0
-    wgt   1   1   0  1   1   0
-    hc    1   1   1  0   1   1
-    reg   1   1   1  1   0   1
-    whr   1   0   0  1   1   0
-
-`          `
+```{r derivedjavpred}
+```
 
 This is a little faster (5-10%) and cleans out the warning.
 
@@ -464,93 +397,66 @@ done on-the-fly within the imputation algorithm. Since the transformed
 variable is available for imputation, the hope is that passive
 imputation removes the bias of the *Impute, then transform* methods,
 while restoring consistency among the imputations that was broken in
-*JAV*. Figure \@ref(fig:passive) visualizes the consistency of the three
-methods.
+*JAV*. Figure \@ref(fig:passive) visualizes the consistency of the
+three methods.
 
-In `mice` passive imputation is invoked by
-specifying the tilde symbol as the first character of the imputation
-method. This provides a simple method for specifying dependencies among
-the variables, such as transformed variables, recodes, interactions, sum
-scores and so on. In the above example, we invoke passive imputation by
+In `mice` passive imputation is invoked by specifying the tilde symbol
+as the first character of the imputation method. This provides a
+simple method for specifying dependencies among the variables, such as
+transformed variables, recodes, interactions, sum scores and so on. In
+the above example, we invoke passive imputation by
 
-`       `\
-`      `\
-`  `\
-`  `\
-`  `\
-`    `\
-`      `\
-`                     `
+```{r derived5}
+```
 
-The `I()` operator in the
-`meth` definitions instructs
-`R` to interpret the argument as
-literal. So `I(100 * wgt / hgt)` calculates
-`whr` by dividing
-`wgt` by `hgt` (in
-meters). The imputed values for `whr` are thus
-derived from `hgt` and
-`wgt` according to the stated transformation,
-and hence are consistent. Since `whr` is that
-last column in the data, it is updated after
-`wgt` and `hgt` are
-imputed. The changes to the default predictor matrix are needed to break
-any feedback loops between the derived variables and their originals. It
-is important to do this since otherwise `whr`
-may contain absurd imputations and the algorithm may have difficulties
-in convergence.
+The `I()` operator in the `meth` definitions instructs `R` to
+interpret the argument as literal. So `I(100 * wgt / hgt)` calculates
+`whr` by dividing `wgt` by `hgt` (in meters). The imputed values for
+`whr` are thus derived from `hgt` and `wgt` according to the stated
+transformation, and hence are consistent. Since `whr` is that last
+column in the data, it is updated after `wgt` and `hgt` are imputed.
+The changes to the default predictor matrix are needed to break any
+feedback loops between the derived variables and their originals. It
+is important to do this since otherwise `whr` may contain absurd
+imputations and the algorithm may have difficulties in convergence.
 
-![Three imputation models to impute weight/height ratio
-(`whr`). Methods *Impute, then transform* and
-*Passive imputation* respect the relation between
-`whr` and height
-(`hgt`) in the imputed data, whereas *JAV*
-does not.<span
-data-label="fig:passive">](fig/ch6_derived11-1){width="\maxwidth"}
+```{r passive,  echo=FALSE, fig.asp = 0.5, fig.cap = '(ref:passive)'}
+```
+
+(ref:passive) Three imputation models to impute weight/height ratio
+(`whr`). Methods *Impute, then transform* and *Passive imputation*
+respect the relation between `whr` and height (`hgt`) in the imputed
+data, whereas *JAV* does not.
 
 How well do these methods impute a ratio? The simulation studies by
 @VONHIPPEL2009 and @SEAMAN2012 favored the use of *JAV*, but neither
 addressed imputation of the ratio of two variables. Let us look at a
-small simulation comparing the three methods. As the population data,
-take the 681 complete records of variables
-`age`, `hgt`,
-`wgt`, `hc` and
-`reg`, and create a model for predicting
-height circumference from `hc` from more
-easily measured variables, including `whr`.
+small simulation comparing the three methods. As the population
+data, take the 681 complete records of variables `age`, `hgt`,
+`wgt`, `hc` and `reg`, and create a model for predicting height
+circumference from `hc` from more easily measured variables,
+including `whr`.
 
-`       `\
-`       `\
-`          `
+```{r simratio}
+```
 
-             term estimate std.error statistic   p.value
-    1 (Intercept)   23.714   0.65602     36.15 4.25e-160
-    2         age   -0.308   0.05383     -5.72  1.56e-08
-    3         hgt    0.176   0.00736     23.97  2.41e-92
-    4         wgt   -0.496   0.02843    -17.44  1.62e-56
-    5         whr    1.062   0.05827     18.22  1.22e-60
+This is a simple linear model, but the proportion of explained
+variance is very high, about 0.9. The ratio variable `whr` explains
+about 5% of the variance on top of the other variables. Let us
+randomly delete 25% of `hgt` and 25% of `wgt`, apply each of the three
+methods 200 times using $m = 5$, and evaluate the parameter for `whr`.
 
-This is a simple linear model, but the proportion of explained variance
-is very high, about 0.9. The ratio variable
-`whr` explains about 5% of the variance on top
-of the other variables. Let us randomly delete 25% of
-`hgt` and 25% of
-`wgt`, apply each of the three methods 200
-times using $m = 5$, and evaluate the parameter for
-`whr`.
+Method                 Bias   % Bias   Coverage   CI Width    RMSE
+-------------------- ------- -------- ---------- ---------- -------
+*Impute, transform*   -0.28     26.4       0.09      0.322   0.289
+*JAV*                 -0.90     84.5       0.00      0.182   0.897
+*Passive imputation*  -0.28     26.8       0.06      0.328   0.293
+`smcfcs`              -0.03      2.6       0.90      0.334   0.094
+Listwise deletion      0.01      0.7       0.90      0.307   0.094
 
-  Method                                  Bias   % Bias   Coverage   CI Width    RMSE
-  ------------------------------------ ------- -------- ---------- ---------- -------
-  *Impute, transform*                    -0.28     26.4       0.09      0.322   0.289
-  *JAV*                                  -0.90     84.5       0.00      0.182   0.897
-  *Passive imputation*                   -0.28     26.8       0.06      0.328   0.293
-  `smcfcs`     -0.03      2.6       0.90      0.334   0.094
-  Listwise deletion                       0.01      0.7       0.90      0.307   0.094
-
-  : Evaluation of parameter for `whr` with 25%
-  MCAR missing in `hgt` and 25% MCAR missing
-  in `wgt` using four imputation strategies
-  ($n_\mathrm{sim} = 200$).<span data-label="tab:simratio">
+: (\#tab:simratio) Evaluation of parameter for `whr` with 25% MCAR
+missing in `hgt` and 25% MCAR missing in `wgt` using four imputation
+strategies ($n_\mathrm{sim} = 200$).
 
 Table \@ref(tab:simratio) shows that all three methods have substantial
 negative biases. Method *JAV* almost nullifies the parameter. The other
@@ -560,31 +466,21 @@ these methods can be recommended for imputing a ratio.
 @BARTLETT2015 proposed a novel rejection sampling method that creates
 imputations that are congenial in the sense of @MENG1994 with the
 substantive (complete-data) model. The method was applied to squared
-terms and interactions, and here we investigate whether it extends to
-ratios. The method has been implemented in the
-`smcfcs` package. The imputation method
-requires a specification of the complete-data model, as arguments
-`smtype` and
-`smformula`. An example of how to generate
-imputations, fit models, and pool the results is:
+terms and interactions, and here we investigate whether it extends
+to ratios. The method has been implemented in the `smcfcs` package.
+The imputation method requires a specification of the complete-data
+model, as arguments `smtype` and `smformula`. An example of how to
+generate imputations, fit models, and pool the results is:
 
-\
-`  `\
-`      `\
-`      `\
-`      `\
-`       `\
-`        `\
-`                 `\
-`  `\
-`                       `\
+```{r ratiofcs, eval = FALSE}
+```
 
-The results of the simulations are also in Table \@ref(tab:simratio) under
-the heading of the `smcfcs`. The
-`smcfcs` method is far better than the three
-previous alternatives, and almost as good as one could wish for.
-Rejection sampling for imputation is still new and relatively
-unexplored, so this seems a promising area for further work.
+The results of the simulations are also in Table \@ref(tab:simratio)
+under the heading of the `smcfcs`. The `smcfcs` method is far better
+than the three previous alternatives, and almost as good as one could
+wish for. Rejection sampling for imputation is still new and
+relatively unexplored, so this seems a promising area for further
+work.
 
 ### Interaction terms {#sec:interactions}
 
@@ -598,59 +494,50 @@ added to the imputation model.
 
 The usual type of interactions between two continuous variables is to
 subtract the mean and take the product. The following code adds an
-interaction betwen `wgt` and
-`hc` to the `boys`
-data and imputes the data by passive imputation:
+interaction betwen `wgt` and `hc` to the `boys` data and imputes the
+data by passive imputation:
 
-`        `\
-`   `\
-`  `\
-`      `\
-`  `\
-`  `\
-`    `\
-`         `\
-`                        `
 
-![The relation between the interaction term
-`wgt.hc` (on the horizontal axes) and its
-components `wgt` and
-`hc` (on the vertical axes).<span
-data-label="fig:interaction">](fig/ch6_inter2-1){width="\maxwidth"}
+```{r inter1, cache = TRUE}
+```
 
-Figure \@ref(fig:interaction) illustrates that the scatterplots of the real
-and synthetic values are similar. Furthermore, the imputations adhere to
-the stated recipe `(wgt - 40) * (hc - 50)`.
-Interactions involving categorical variables can be done in similar ways
-[@VANBUUREN2011B], for example by imputing the data in separate groups.
-One may do this in `mice` by splitting the
-dataset into two or more parts, run `mice()`
-on each part and then combine the imputed datasets with
-`rbind()`.
+```{r interaction, echo = FALSE, duo = TRUE, fig.asp = 0.5, fig.cap = '(ref:interaction)'}
 
-  Method                                  Bias   % Bias   Coverage   CI Width    RMSE
-  ------------------------------------ ------- -------- ---------- ---------- -------
-  *Impute, transform*                     0.20     22.7       0.17      0.290   0.207
-  *JAV*                                   0.63     71.5       0.00      0.229   0.632
-  *Passive imputation*                    0.20     22.6       0.17      0.283   0.207
-  `scmfcs`     -0.01      0.8       0.92      0.306   0.083
-  Listwise deletion                      -0.01      0.8       0.91      0.237   0.076
+```
 
-  : Evaluation of parameter for `wgt.hc` with
-  25% MCAR missing in `hc` and 25% MCAR
-  missing in `wgt` using four imputation
-  strategies ($n_\mathrm{sim} = 200$).<span
-  data-label="tab:siminteraction">
+(ref:interaction) The relation between the interaction term `wgt.hc` (on
+the horizontal axes) and its components `wgt` and `hc` (on the
+vertical axes).
+
+Figure \@ref(fig:interaction) illustrates that the scatterplots of the
+real and synthetic values are similar. Furthermore, the imputations
+adhere to the stated recipe `(wgt - 40) * (hc - 50)`. Interactions
+involving categorical variables can be done in similar ways
+[@VANBUUREN2011B], for example by imputing the data in separate
+groups. One may do this in `mice` by splitting the dataset into two or
+more parts, run `mice()` on each part and then combine the imputed
+datasets with `rbind()`.
+
+  Method                  Bias   % Bias   Coverage   CI Width    RMSE
+  -------------------- ------- -------- ---------- ---------- -------
+  *Impute, transform*     0.20     22.7       0.17      0.290   0.207
+  *JAV*                   0.63     71.5       0.00      0.229   0.632
+  *Passive imputation*    0.20     22.6       0.17      0.283   0.207
+  `scmfcs`               -0.01      0.8       0.92      0.306   0.083
+  Listwise deletion      -0.01      0.8       0.91      0.237   0.076
+
+: (\#tab:siminteraction) Evaluation of parameter for `wgt.hc` with 25%
+MCAR missing in `hc` and 25% MCAR missing in `wgt` using four
+imputation strategies ($n_\mathrm{sim} = 200$).
 
 Other methods for imputing interactions are *JAV*, *Impute, then
-transform* and `smcfcs`. Table
-\@ref(tab:siminteraction) contains the results of simulations similar to
-those in Section \@ref(sec:ratio), but adapted to include the interaction
-effect shown in Figure \@ref(fig:interaction) by using the complete-data
-model `lm(hgt wgt + hc + wgt.hc)`. The results
-tell the same story as before, with `smcfcs`
-the best method, followed by *Passive imputation* and *Impute, then
-transform*.
+transform* and `smcfcs`. Table \@ref(tab:siminteraction) contains the
+results of simulations similar to those in Section \@ref(sec:ratio),
+but adapted to include the interaction effect shown in Figure
+\@ref(fig:interaction) by using the complete-data model `lm(hgt wgt +
+hc + wgt.hc)`. The results tell the same story as before, with
+`smcfcs` the best method, followed by *Passive imputation* and
+*Impute, then transform*.
 
 @VONHIPPEL2009 stated that *JAV* would give consistent results under
 MAR, but @SEAMAN2012 showed that consistency actually required MCAR. It
@@ -668,375 +555,365 @@ limitations of these approaches still need to be sorted out.
 ### Quadratic relations$^\spadesuit$ {#sec:quadratic}
 
 One way to analyze nonlinear relations by a linear model is to include
-quadratic or cubic versions of the explanatory variables into the model.
-Creating imputed values under such models poses some challenges. Current
-imputation methodology either preserves the quadratic relation in the
-data and biases the estimates of interest, or provides unbiased
-estimates but does not preserve the quadratic relation [@VONHIPPEL2009].
-It seems that we either have a congenial but misspecified model, or an
-uncongenial model that is specified correctly. This section describes an
-approach that aims to resolve this problem.
+quadratic or cubic versions of the explanatory variables into the
+model. Creating imputed values under such models poses some
+challenges. Current imputation methodology either preserves the
+quadratic relation in the data and biases the estimates of interest,
+or provides unbiased estimates but does not preserve the quadratic
+relation [@VONHIPPEL2009]. It seems that we either have a congenial
+but misspecified model, or an uncongenial model that is specified
+correctly. This section describes an approach that aims to resolve
+this problem.
 
 The model of scientific interest is
 
-$$X=\alpha + Y\beta_1 + Y^2\beta_2 + \epsilon (\#eq:quadratic)$$
+$$
+X=\alpha + Y\beta_1 + Y^2\beta_2 + \epsilon (\#eq:quadratic)
+$$
 
 with $\epsilon\sim N(0,\sigma^2)$. We assume that $X$ is complete, and
-that $Y=(Y_{\rm obs},Y_{\rm mis})$ is partially missing. The problem is
-to find imputations for $Y$ such that estimates of $\alpha$, $\beta_1$,
-$\beta_2$ and $\sigma^2$ based on the imputed data are unbiased, while
-ensuring that the quadratic relation between $Y$ and $Y^2$ will hold in
-the imputed data.
+that $Y=(Y_{\rm obs},Y_{\rm mis})$ is partially missing. The problem
+is to find imputations for $Y$ such that estimates of $\alpha$,
+$\beta_1$, $\beta_2$ and $\sigma^2$ based on the imputed data are
+unbiased, while ensuring that the quadratic relation between $Y$ and
+$Y^2$ will hold in the imputed data.
 
-Define the *polynomial combination* $Z$ as $Z =
-Y\beta_1 + Y^2\beta_2$ for some $\beta_1$ and $\beta_2$. The idea is to
-impute $Z$ instead of $Y$ and $Y^2$, followed by a decomposition of the
-imputed data $Z$ into components $Y$ and $Y^2$. Imputing $Z$ reduces the
-multivariate imputation problem to a univariate problem, which is easier
-to manage. Under the assumption that $P(X,Z)$ is multivariate normal, we
-can impute the missing part of $Z$ by Algorithm \@ref(alg:norm). In cases
+Define the *polynomial combination* $Z$ as $Z = Y\beta_1 + Y^2\beta_2$
+for some $\beta_1$ and $\beta_2$. The idea is to impute $Z$ instead of
+$Y$ and $Y^2$, followed by a decomposition of the imputed data $Z$
+into components $Y$ and $Y^2$. Imputing $Z$ reduces the multivariate
+imputation problem to a univariate problem, which is easier to manage.
+Under the assumption that $P(X,Z)$ is multivariate normal, we can
+impute the missing part of $Z$ by Algorithm \@ref(def:norm). In cases
 where a normal residual distribution is suspect, we replace the linear
 model by predictive mean matching. The next step is to decompose $Z$
-into $Y$ and $Y^2$. Under the model in Equation \@ref(eq:quadratic) the
-value $Y$ has two roots:
+into $Y$ and $Y^2$. Under the model in Equation \@ref(eq:quadratic)
+the value $Y$ has two roots:
 
-$$\begin{aligned}
+\begin{align}
 Y_- &=- { 1 \over 2\beta_2 }  \left( \sqrt{4 \beta_2 Z + \beta_1^2} + \beta_1 \right)(\#eq:leftroot)\\
 Y_+ &=  { 1 \over 2\beta_2 }  \left( \sqrt{4\beta_2 Z + \beta_1^2} - \beta_1 \right)(\#eq:rightroot)
-\end{aligned}$$
+\end{align}
 
-where we assume that the discriminant $4\beta_2 Z + \beta_1^2$ is larger
-than zero. For a given $Z$, we can take either $Y=Y_-$ or $Y=Y_+$, and
-square it to obtain $Y^2$. Either root is consistent with
+where we assume that the discriminant $4\beta_2 Z + \beta_1^2$ is
+larger than zero. For a given $Z$, we can take either $Y=Y_-$ or
+$Y=Y_+$, and square it to obtain $Y^2$. Either root is consistent with
 $Z = Y\beta_1 + Y^2\beta_2$, but the choice among these two options
 requires care. Suppose we choose $Y_-$ for all $Z$. Then all $Y$ will
-correspond to points located on the left arm of the parabolic function.
-The minimum of the parabola is located at $Y_{\rm
-min}=-\beta_1/2\beta_2$, so all imputations will occur in the left-hand
-side of the parabola. This is probably not intended.
+correspond to points located on the left arm of the parabolic
+function. The minimum of the parabola is located at $Y_{\rm
+min}=-\beta_1/2\beta_2$, so all imputations will occur in the
+left-hand side of the parabola. This is probably not intended.
 
 The choice between the roots is made by random sampling. Let $V$ be a
 binary random variable defined as 1 if $Y > Y_{\rm min}$, and as 0 if
-$Y \leq Y_{\rm min}$. Let us model the probability $P(V=1)$ by logistic
-regression as
+$Y \leq Y_{\rm min}$. Let us model the probability $P(V=1)$ by
+logistic regression as
 
-$${\rm logit} (P(V=1)) = X\psi_X + Z\psi_Z + XZ\psi_{YZ}$$
+$$
+{\rm logit} (P(V=1)) = X\psi_X + Z\psi_Z + XZ\psi_{YZ}
+$$
 
-where the $\psi$s are parameters in the logistic regression model. Under
-the assumption of ignorability, we calculate the predicted probability
-$P(V=1)$ from $X_{\rm mis}$ and $Z_{\rm mis}$. As a final step, a random
-draw from the binomial distribution is made, and the corresponding
-(negative or positive) root is selected as the imputation. This is
-repeated for each missing value.
+where the $\psi$s are parameters in the logistic regression model.
+Under the assumption of ignorability, we calculate the predicted
+probability $P(V=1)$ from $X_{\rm mis}$ and $Z_{\rm mis}$. As a final
+step, a random draw from the binomial distribution is made, and the
+corresponding (negative or positive) root is selected as the
+imputation. This is repeated for each missing value.
 
-Algorithm \@ref(alg:squares) provides a detailed overview of all steps
+------
+
+```{definition squares, echo=TRUE, name = '(ref:squares)'}
+    
+
+1. Calculate $Y_\mathrm{obs}^2$ for the observed $Y$.
+
+2. Multiply impute $Y_\mathrm{mis}$ and $Y_\mathrm{mis}^2$ as 
+   if they  were unrelated by linear regression or predictive mean 
+   matching, resulting in imputations $\dot Y$ and $\dot Y^2$.
+   
+3. Estimate $\hat\beta_1$ and $\hat\beta_2$ by pooled linear 
+   regression of $X$ given $Y = (Y_\mathrm{obs},\dot Y)$ 
+   and $Y^2 = (Y_\mathrm{obs}^2,\dot Y^2)$.
+
+4. Calculate the polynomial combination 
+   $Z = Y\hat\beta_1 + Y^2\hat\beta_2$.
+
+5. Multiply impute $Z_\mathrm{mis}$ by linear regression or 
+   predictive mean matching, resulting in imputed $\dot Z$.
+
+6. Calculate roots $\dot Y_-$ and $\dot Y_+$ given $\hat\beta_1$,
+   $\hat\beta_2$ and $\dot Z$ using Equations~\ref{eq:leftroot} 
+   and \ref{eq:rightroot}. 
+
+7. Calculate the value on the horizontal axis at the parabolic
+   minimum/maximum $Y_\mathrm{min}=-\hat\beta_1/2\hat\beta_2$.
+   
+8. Calculate $V_\mathrm{obs}=0$ if $Y_\mathrm{obs}\leq 
+   Y_\mathrm{min}$, else $V_{\rm obs}=1$. 
+
+9. Impute $V_\mathrm{mis}$ by logistic regression of $V$ given 
+   $X$, $Z$ and $XZ$, resulting in imputed $\dot V$.
+
+10. If $\dot V<0$ then assign $\dot Y=\dot Y_-$, else set 
+    $\dot Y=\dot Y_+$.
+
+11. Calculate $\dot Y^2$.
+```
+
+(ref:squares) Multiple imputation of quadratic terms.$^\spadesuit$
+
+------
+
+Algorithm \@ref(def:squares) provides a detailed overview of all steps
 involved. The imputations $\dot Z$ satisfy $\dot Z=\dot
 Y\hat\beta_1+\dot Y^2\hat\beta_2$, as required. The technique is
-available in `mice` as the method
-`quadratic`. The evaluation by @VINK2013
-showed that the method provided unbiased estimates under four types of
-extreme MAR mechanisms. The idea can be generalized to polynomial bases
-of higher orders.
+available in `mice` as the method `quadratic`. The evaluation by
+@VINK2013 showed that the method provided unbiased estimates under
+four types of extreme MAR mechanisms. The idea can be generalized to
+polynomial bases of higher orders.
 
 ### Compositional data$^\spadesuit$
 
 Sometimes we know that a set of variables should add up to a given
 total. If one of the additive terms is missing, we can directly
-calculate its value with certainty by deducting the known terms from the
-total. This is known as deductive imputation [@DEWAAL2011]. If two
+calculate its value with certainty by deducting the known terms from
+the total. This is known as deductive imputation [@DEWAAL2011]. If two
 additive terms are missing, imputing one of these terms uses the
 available one degree of freedom, and hence implicitly determines the
-other term. Data of this type are known as compositional data, and they
-occur often in household and business surveys. Imputation of
+other term. Data of this type are known as compositional data, and
+they occur often in household and business surveys. Imputation of
 compositional data has only recently received attention
-[@TEMPELMAN2007; @HRON2010; @DEWAAL2011; @VINK2015]. @HRON2010 proposed
-matching on the Aitchison distance, a measure specifically designed for
-compositional data. The method is available in
-`R` as the
+[@TEMPELMAN2007; @HRON2010; @DEWAAL2011; @VINK2015]. @HRON2010
+proposed matching on the Aitchison distance, a measure specifically
+designed for compositional data. The method is available in `R` as the
 `robCompositions` package [@TEMPL2011B].
 
 This section suggests a somewhat different method for imputing
-compositional data. Let $Y_{123}= Y_1+Y_2+Y_3$ be the known total score
-of the three variables $Y_1$, $Y_2$ and $Y_3$. We assume that $Y_3$ is
-complete and that $Y_1$ and $Y_2$ are jointly missing or observed. The
-problem is to create multiple imputations in $Y_1$ and $Y_2$ such that
-the sum of $Y_1$, $Y_2$ and $Y_3$ equals a given total $Y_{123}$, and
-such that parameters estimated from the imputed data are unbiased and
-have appropriate coverage.
+compositional data. Let $Y_{123}= Y_1+Y_2+Y_3$ be the known total
+score of the three variables $Y_1$, $Y_2$ and $Y_3$. We assume that
+$Y_3$ is complete and that $Y_1$ and $Y_2$ are jointly missing or
+observed. The problem is to create multiple imputations in $Y_1$ and
+$Y_2$ such that the sum of $Y_1$, $Y_2$ and $Y_3$ equals a given total
+$Y_{123}$, and such that parameters estimated from the imputed data
+are unbiased and have appropriate coverage.
 
 Since $Y_3$ is known, we write $Y_{12} = Y_{123} - Y_3$ for the sum
 score $Y_1+Y_2$. The key to the solution is to find appropriate values
-for the ratio $P_1 = Y_1/Y_{12}$, or equivalently for
-$(1-P_1)=Y_2/Y_{12}$. Let $P(P_1|Y_1^\mathrm{obs}, Y_2^\mathrm{obs},
-Y_3, X)$ denote the posterior distribution of $P_1$, which is possibly
-dependent on the observed information. For each incomplete record, we
-make a random draw $\dot P_1$ from this distribution, and calculate
-imputations for $Y_1$ as $\dot Y_1 = \dot
-P_1Y_{12}$. Likewise, imputations for $Y_2$ are calculated by $\dot
-Y_2 = (1-\dot P_1)Y_{12}$. It is easy to show that $\dot Y_1 + \dot
-Y_2 = Y_{12}$, and hence $\dot Y_1 + \dot Y_2 + Y_3 = Y_{123}$, as
-required.
+for the ratio $P_1 = Y_1/Y_{12}$, or equivalently for $(1-P_1)=Y_2/Y_{12}$. 
+Let $P(P_1|Y_1^\mathrm{obs}, Y_2^\mathrm{obs}, Y_3, X)$ denote the
+posterior distribution of $P_1$, which is possibly dependent on the
+observed information. For each incomplete record, we make a random
+draw $\dot P_1$ from this distribution, and calculate imputations for
+$Y_1$ as $\dot Y_1 = \dot P_1Y_{12}$. Likewise, imputations for $Y_2$
+are calculated by $\dot Y_2 = (1-\dot P_1)Y_{12}$. It is easy to show
+that $\dot Y_1 + \dot Y_2 = Y_{12}$, and hence $\dot Y_1 + \dot Y_2 +
+Y_3 = Y_{123}$, as required.
 
-The best way in which the posterior should be specified has still to be
-determined. In this section we apply standard predictive mean matching.
-We study the properties of the method by a small simulation study. The
-first step is to create an artificial dataset with known properties as
-follows:
+The best way in which the posterior should be specified has still to
+be determined. In this section we apply standard predictive mean
+matching. We study the properties of the method by a small simulation
+study. The first step is to create an artificial dataset with known
+properties as follows:
 
-\
-`  `\
-`       `\
-`       `\
-`              `\
-`                                        `\
-`  `\
-`   `\
-`   `
+```{r compos1}
+```
 
-        Y3  Y1  Y2
-    300  1   1   1   0
-    100  1   0   0   2
-         0 100 100 200
+Thus, `Y` is a $400 \times 3$ dataset with 300 complete records and
+with 100 records in which both $Y_1$ and $Y_2$ are missing. Next,
+define three auxiliary variables that are needed for imputation:
 
-Thus, `Y` is a $400 \times 3$ dataset with 300
-complete records and with 100 records in which both $Y_1$ and $Y_2$ are
-missing. Next, define three auxiliary variables that are needed for
-imputation:
-
-`      `\
-`    `\
-`    `\
-`  `
+```{r compos2}
+```
 
 where the naming of the variables corresponds to the total score
 $Y_{123}$, the sum score $Y_{12}$ and the ratio $P_1$.
 
 The imputation model specifies how $Y_1$ and $Y_2$ depend on $P_1$ and
-$Y_{12}$ by means of passive imputation. The predictor matrix specifies
-that only $Y_3$ and $Y_{12}$ may be predictors of $P_1$ in order to
-avoid linear dependencies.
+$Y_{12}$ by means of passive imputation. The predictor matrix
+specifies that only $Y_3$ and $Y_{12}$ may be predictors of $P_1$ in
+order to avoid linear dependencies.
 
-`  `\
-`   `\
-`   `\
-`  `\
-`  `\
-`  `\
-`    `\
-`         `\
-`               `
+```{r compos3}
+```
 
-The code `I(P1 * Y12)` calculates $Y_1$ as the
-product of $P_1$ and $Y_{12}$, and so on. The pooled estimates are
-calculated as
+The code `I(P1 * Y12)` calculates $Y_1$ as the product of $P_1$ and
+$Y_{12}$, and so on. The pooled estimates are calculated as
 
-`       `
-
-                estimate std.error
-    (Intercept)     9.71      0.98
-    Y1              1.99      0.11
-    Y2              0.61      0.05
+```{r compos4}
+```
 
 The estimates are reasonably close to their true values of 10, 2 and
 0.6, respectively. A small simulation study with these data using 100
 simulations and $m = 10$ revealed average estimates of 9.94 (coverage
 0.96), 1.95 (coverage 0.95) and 0.63 (coverage 0.91). Though not
-perfect, the estimates are close to the truth, while the data adhere to
-the summation rule.
+perfect, the estimates are close to the truth, while the data adhere
+to the summation rule.
 
-![Distribution of $P_1$ (relative contribution of $Y_1$ to $Y_1+Y_2$) in
-the observed and imputed data at different levels of $Y_1+Y_2$. The
-strong geometrical shape in the observed data is partially reproduced in
-the model that includes $Y_3$.<span
-data-label="fig:composition">](fig/ch6_compos5-1){width="\maxwidth"}
+```{r composition, echo=FALSE, fig.asp = 4/7, fig.cap = '(ref:composition)'}
+```
 
-Figure \@ref(fig:composition) shows where the solution might be further
-improved. The distribution of $P_1$ in the observed data is strongly
-patterned. This pattern is only partially reflected in the imputed
-$\dot P_1$ after predictive mean matching on both $Y_{12}$ and $Y_3$. It
-is possible to imitate the pattern perfectly by removing $Y_3$ as a
-predictor for $P_1$. However, this introduces bias in the parameter
-estimates. Evidently, some sort of compromise between these two options
-might further remove the remaining bias. This is an area for further
-research.
+(ref:composition) Distribution of $P_1$ (relative contribution of
+$Y_1$ to $Y_1+Y_2$) in the observed and imputed data at different
+levels of $Y_1+Y_2$. The strong geometrical shape in the observed data
+is partially reproduced in the model that includes $Y_3$.
+
+Figure \@ref(fig:composition) shows where the solution might be
+further improved. The distribution of $P_1$ in the observed data is
+strongly patterned. This pattern is only partially reflected in the
+imputed $\dot P_1$ after predictive mean matching on both $Y_{12}$ and
+$Y_3$. It is possible to imitate the pattern perfectly by removing
+$Y_3$ as a predictor for $P_1$. However, this introduces bias in the
+parameter estimates. Evidently, some sort of compromise between these
+two options might further remove the remaining bias. This is an area
+for further research.
 
 For a general missing data pattern, the procedure can be repeated for
 all pairs $(Y_j, Y_{j'})$ that have missing data. First create a
-consistent starting imputation that adheres to the rule of composition,
-then apply the above method to pairs $(Y_j, Y_{j'})$ that belong to the
-composition. This algorithm is a variation on the MICE algorithm with
-iterations occurring over pairs of variables rather than separate
-variables.
+consistent starting imputation that adheres to the rule of
+composition, then apply the above method to pairs $(Y_j, Y_{j'})$ that
+belong to the composition. This algorithm is a variation on the MICE
+algorithm with iterations occurring over pairs of variables rather
+than separate variables.
 
-@VINK2015B extended these ideas to nested compositional data, where a
-given element of the composition is broken down into subelements. The
-method, called *predictive ratio matching*, calculates the ratio of two
-components, and then borrows imputations from donors that have a similar
-ratio. Component pairs are visited in an ingenious way and combined into
-an iterative algorithm.
+@VINK2015B extended these ideas to nested compositional data, where
+a given element of the composition is broken down into subelements.
+The method, called *predictive ratio matching*, calculates the ratio
+of two components, and then borrows imputations from donors that have
+a similar ratio. Component pairs are visited in an ingenious way and
+combined into an iterative algorithm.
 
 ### Sum scores {#sec:sumscores}
 
 The sum score is undefined if one of the variables to be added is
 missing. We can use sum scores of imputed variables within the MICE
-algorithm to economize on the number of predictors. For example, suppose
-we create a summary maturation score of the pubertal measurements
-`gen`, `phb` and
-`tv`, and use that score to impute the other
-variables instead of the three original pubertal measurements.
+algorithm to economize on the number of predictors. For example,
+suppose we create a summary maturation score of the pubertal
+measurements `gen`, `phb` and `tv`, and use that score to impute the
+other variables instead of the three original pubertal measurements.
 
-Another area of application is the imputation of test items that form a
-scale. When the number of items is small relative to the sample size,
-good results can be obtained by imputing the items in a full imputation
-model, where all items are used to impute others [@VANBUUREN2010]. This
-method becomes unfeasible for a larger number of items. In that case,
-one may structure the imputation problem assuming one knows which items
-belong to which scale. Suppose that the data consist of an outcome
-variable `out`, a background variable
-`bck`, a scale `a`
-with ten items
-`a1`-`a10`, a scale
-`b` with twelve items
-`b1`-`b12`, and that
-all variables contain missing values. After filling in starting
-imputations, the imputation model would take the following steps:
+Another area of application is the imputation of test items that form
+a scale. When the number of items is small relative to the sample
+size, good results can be obtained by imputing the items in a full
+imputation model, where all items are used to impute others
+[@VANBUUREN2010]. This method becomes unfeasible for a larger number
+of items. In that case, one may structure the imputation problem
+assuming one knows which items belong to which scale. Suppose that the
+data consist of an outcome variable `out`, a background variable
+`bck`, a scale `a` with ten items `a1`-`a10`, a scale `b` with twelve
+items `b1`-`b12`, and that all variables contain missing values. After
+filling in starting imputations, the imputation model would take the
+following steps:
 
-1.  Impute `out` given
-    `bck`, `a`,
-    `b`, where `a`
-    and `b` are the summed scale scores from
-    `b1`-`b10` and
-    `b1`-`b12`;
+1.  Impute `out` given `bck`, `a`, `b`, where `a` and `b` are the 
+    summed scale scores from `b1`-`b10` and `b1`-`b12`;
 
-2.  Impute `bck` given
-    `out`, `a` and
-    `b`;
+2.  Impute `bck` given `out`, `a` and `b`;
 
-3.  Impute `a1` given
-    `out`, `bck`,
-    `b` and
-    `a2`-`a10`;
+3.  Impute `a1` given `out`, `bck`, `b` and `a2`-`a10`;
 
-4.  Impute `a2` given
-    `out`, `bck`,
-    `b` and `a1`,
-    `a3`-`a10`;
+4.  Impute `a2` given `out`, `bck`, `b` and `a1`, `a3`-`a10`;
 
-5.  Impute
-    `a3`-`a10` along
-    the same way;
+5.  Impute `a3`-`a10` along the same way;
 
-6.  Impute `b1` given
-    `out`, `bck`,
-    `a` and
-    `b2`-`b12`,
-    where `a` is the updated summed scale
-    score;
+6.  Impute `b1` given `out`, `bck`, `a` and `b2`-`b12`, where 
+    `a` is the updated summed scale score;
 
-7.  Impute
-    `b2`-`b12` along
-    the same way.
+7.  Impute `b2`-`b12` along the same way.
 
 This technique will condense the imputation model, so that it will
-become both faster and more stable. It is easy to specify such models in
-`mice`. See @VANBUUREN2011B for examples.
+become both faster and more stable. It is easy to specify such models
+in `mice`. See @VANBUUREN2011B for examples.
 
 @PLUMPTON2016 found that the technique reduced the standard error on
 average by 39% compared to complete-case analysis, resulting in more
 precise conclusions. @EEKHOUT2018 found that the technique outperforms
-existing techniques (complete-case analysis, imputing only total scores)
-with respect to bias and efficiency. As an alternative, one may use the
-mean of the observed items as the scale score (the parcel summary),
-which is easier than calculating the total score. Both studies obtained
-results that were comparable to using the total score. Note that the
-parcel summary mean requires the assumption that the missing items are
-MCAR, which may be problematic for speeded tests and for scales where
-items increase in difficulty. The magnitude of the effect of violations
-of the MCAR assumption on bias is still to be determined.
+existing techniques (complete-case analysis, imputing only total
+scores) with respect to bias and efficiency. As an alternative, one
+may use the mean of the observed items as the scale score (the parcel
+summary), which is easier than calculating the total score. Both
+studies obtained results that were comparable to using the total
+score. Note that the parcel summary mean requires the assumption that
+the missing items are MCAR, which may be problematic for speeded tests
+and for scales where items increase in difficulty. The magnitude of
+the effect of violations of the MCAR assumption on bias is still to be
+determined.
 
 ### Conditional imputation
 
 In some cases it makes sense to restrict the imputations, possibly
-conditional on other data. The method in Section \@ref(sec:sri) produced
-negative values for the positive-valued variable
-`Ozone`. One way of dealing with this mismatch
-between the imputed and observed values is to censor the values at some
-specified minimum or maximum value. The
-`mice()` function has an argument called
-`post` that takes a vector of strings of
-`R` commands. These commands are
-parsed and evaluated just after the univariate imputation function
-returns, and thus provide a way to post-process the imputed values. Note
-that `post` only affects the synthetic values,
-and leaves the observed data untouched. The
-`squeeze()` function in
-`mice` replaces values beyond the
-specified bounds by the minimum and maximal scale values. A hacky way to
-ensure positive imputations for `Ozone` under
-stochastic regression imputation is
+conditional on other data. The method in Section \@ref(sec:sri)
+produced negative values for the positive-valued variable `Ozone`. One
+way of dealing with this mismatch between the imputed and observed
+values is to censor the values at some specified minimum or maximum
+value. The `mice()` function has an argument called `post` that takes
+a vector of strings of `R` commands. These commands are parsed and
+evaluated just after the univariate imputation function returns, and
+thus provide a way to post-process the imputed values. Note that
+`post` only affects the synthetic values, and leaves the observed data
+untouched. The `squeeze()` function in `mice` replaces values beyond
+the specified bounds by the minimum and maximal scale values. A hacky
+way to ensure positive imputations for `Ozone` under stochastic
+regression imputation is
 
-`   `\
-`  `\
-` `\
-`  `\
-`        `\
-`                   `
+```{r squeezeprep, results = 'hide'}
+```
 
-![Stochastic regression imputation of `Ozone`,
-where the imputed values are restricted to the range 1–200. Compare to
-Figure \@ref(fig:sri).<span
-data-label="fig:squeeze">](fig/ch6_plotsqueeze-1){width="\maxwidth"}
+```{r squeeze, echo = FALSE, duo = TRUE,  fig.asp = 0.5, fig.cap = '(ref:squeeze)'}
+```
 
-Compare Figure \@ref(fig:squeeze) to 
-Figure \@ref(fig:sri). The negative ozone
-value of $-$18.8 has now been replaced by a value of 1.
+(ref:squeeze) Stochastic regression imputation of `Ozone`, where the
+imputed values are restricted to the range 1–200. Compare to Figure
+\@ref(fig:plotsri).
 
-The previous syntax of the `post` argument is
-a bit cumbersome. The same result can be achieved by neater code:
+Compare Figure \@ref(fig:squeeze) to Figure \@ref(fig:plotsri). The
+negative ozone value of -18.8 has now been replaced by a value of 1.
 
-`  `
+The previous syntax of the `post` argument is a bit cumbersome. The
+same result can be achieved by neater code:
 
-The `ifdo()` function is a convenient way to
-create conditional imputes. For example, in the
-`boys` data puberty is measured only for boys
-older than 8 years. Before this age it is unlikely that puberty has
-started. It is a good idea to bring this extra information into the
-imputation model to stabilize the solution. More precisely, we may
-restrict any imputations of `gen`,
-`phb` and `tv` to
-the lowest possible category for those boys younger than 8years. This
-can be achieved by
+```{r doif}
+```
 
-![Genital development of Dutch boys by age. The free solution does not
-constrain the imputations, whereas the restricted solution requires all
-imputations below the age of 8years to be at the lowest category.<span
-data-label="fig:gen">](fig/ch6_plotgen-1){width="\maxwidth"}
+The `ifdo()` function is a convenient way to create conditional
+imputes. For example, in the `boys` data puberty is measured only for
+boys older than 8 years. Before this age it is unlikely that puberty
+has started. It is a good idea to bring this extra information into
+the imputation model to stabilize the solution. More precisely, we may
+restrict any imputations of `gen`, `phb` and `tv` to the lowest
+possible category for those boys younger than 8 years. This can be
+achieved by
 
-`  `\
-`  `\
-`  `\
-`  `
+```{r post2, cache = TRUE}
+```
 
-Figure \@ref(fig:gen) compares the scatterplot of genital development
-against age for the free and restricted solutions. Around infancy and
-early childhood, the imputations generated under the free solution are
-clearly unrealistic due to the severe extrapolation of the data between
-the ages 0–8 years. The restricted solution remedies this situation by
-requiring that pubertal development does not start before the age of
-8years.
+```{r plotgen, echo = FALSE, fig.asp = 4/7, fig.cap = '(ref:plotgen)'}
+```
 
-The post-processing facility provides almost limitless possibilities to
-customize the imputed values. For example, we could reset the imputed
-value in some subset of the missing data to
-`NA`, thus imputing only some of the
-variables. Of course, appropriate care is needed when using this
-partially imputed variable later on as a predictor. Another possibility
-is to add or multiply the imputed data by a given constant in the
-context of a sensitivity analysis for nonignorable missing data
-mechanisms (see Section \@ref(sec:nonignorable)). More generally, we might
-re-impute some entries in the dataset depending on their current value,
-thus opening up possibilities to specify methods for nonignorable
-missing data.
+(ref:plotgen) Genital development of Dutch boys by age. The free
+solution does not constrain the imputations, whereas the restricted
+solution requires all imputations below the age of 8 years to be at the
+lowest category.
+
+Figure \@ref(fig:plotgen) compares the scatterplot of genital
+development against age for the free and restricted solutions. Around
+infancy and early childhood, the imputations generated under the free
+solution are clearly unrealistic due to the severe extrapolation of
+the data between the ages 0–8 years. The restricted solution remedies
+this situation by requiring that pubertal development does not start
+before the age of 8 years.
+
+The post-processing facility provides almost limitless possibilities
+to customize the imputed values. For example, we could reset the
+imputed value in some subset of the missing data to `NA`, thus
+imputing only some of the variables. Of course, appropriate care is
+needed when using this partially imputed variable later on as a
+predictor. Another possibility is to add or multiply the imputed data
+by a given constant in the context of a sensitivity analysis for
+nonignorable missing data mechanisms (see Section
+\@ref(sec:nonignorable)). More generally, we might re-impute some
+entries in the dataset depending on their current value, thus opening
+up possibilities to specify methods for nonignorable missing data.
 
 ## Algorithmic options {#sec:algoptions}
 
@@ -1046,144 +923,120 @@ The default MICE algorithm imputes incomplete columns in the data from
 left to right. Theoretically, the visit sequence of the MICE algorithm
 is irrelevant as long as each column is visited often enough, though
 some schemes are more efficient than others. In practice, there are
-small order effects of the MICE algorithm, where the parameter estimates
-depend on the sequence of the variables. To date, there is little
-evidence that this matters in practice, even for clearly incompatible
-imputation models [@VANBUUREN2006]. For monotone missing data,
-convergence is immediate if variables are ordered according to their
-missing data rate. Rather than reordering the data, it is more
+small order effects of the MICE algorithm, where the parameter
+estimates depend on the sequence of the variables. To date, there is
+little evidence that this matters in practice, even for clearly
+incompatible imputation models [@VANBUUREN2006]. For monotone missing
+data, convergence is immediate if variables are ordered according to
+their missing data rate. Rather than reordering the data, it is more
 convenient to change the visit sequence of the algorithm by the
-`visitSequence` argument. In its basic form,
-the `visitSequence` argument is a vector of
-names, or a vector of integers in the range
-`1:ncol(data)` of arbitrary length, specifying
-the sequence of blocks (usually variables) for one iteration of the
-algorithm. Any given block may be visited more than once within the same
-iteration, which can be useful to ensure proper synchronization among
-blocks of variables. Consider the `mids`
-object `imp.int` created in Section
+`visitSequence` argument. In its basic form, the `visitSequence`
+argument is a vector of names, or a vector of integers in the range
+`1:ncol(data)` of arbitrary length, specifying the sequence of blocks
+(usually variables) for one iteration of the algorithm. Any given
+block may be visited more than once within the same iteration, which
+can be useful to ensure proper synchronization among blocks of
+variables. Consider the `mids` object `imp.int` created in Section
 \@ref(sec:interactions). The visit sequence is
 
-     [1] "age"    "hgt"    "wgt"    "bmi"    "hc"     "gen"
-     [7] "phb"    "tv"     "reg"    "wgt.hc"
+```{r visit1}
+```
 
-If the `visitSequence` is not specified, the
-`mice()` function imputes the data from left
-to right. Thus here `wgt.hc` is calculated
-after `reg` is imputed, so at this point
-`wgt.hc` is synchronized with both
-`wgt` and `hc`.
-Note, however, that `wgt.hc` is not
-synchronized with `wgt` and
-`hc` when imputing
-`pub`, `gen`,
-`tv` or `reg`, so
-`wgt.hc` is not representing the current
-interaction effect. This could result in wrong imputations. We can
-correct this by including an extra visit to
-`wgt.hc` after `wgt`
-or `hc` has been imputed as follows:
+If the `visitSequence` is not specified, the `mice()` function imputes
+the data from left to right. Thus here `wgt.hc` is calculated after
+`reg` is imputed, so at this point `wgt.hc` is synchronized with both
+`wgt` and `hc`. Note, however, that `wgt.hc` is not synchronized with
+`wgt` and `hc` when imputing `pub`, `gen`, `tv` or `reg`, so `wgt.hc`
+is not representing the current interaction effect. This could result
+in wrong imputations. We can correct this by including an extra visit
+to `wgt.hc` after `wgt` or `hc` has been imputed as follows:
 
-`       `\
-`          `\
-`        `\
-`   `\
-`          `\
-`                    `\
-`                   `
-
-
-     iter imp variable
-      1   1  hgt  wgt  hc  wgt.hc  gen  phb  tv  reg
+```{r visit2a, echo = FALSE}
+```
+```{r visit2}
+```
 
 When the missing data pattern is close to monotone, convergence may be
 speeded by visiting the columns in increasing order of the number of
-missing data. We can specify this order by the
-`monotone` keyword as
+missing data. We can specify this order by the `monotone` keyword as
 
-`            `\
-`                    `\
-`                   `
-
-
-     iter imp variable
-      1   1  reg  wgt  hgt  hc  wgt.hc  gen  phb  tv
+```{r visit3}
+```
 
 ### Convergence {#sec:convergence}
 
-![Mean and standard deviation of the synthetic values plotted against
-iteration number for the imputed `nhanes`
-data.<span
-data-label="fig:converge">](fig/ch6_convergence1-1){width="\maxwidth"}
+```{r convergence1, echo = FALSE, cache = TRUE, fig.cap = '(ref:convergence1)'}
+```
 
-There is no clear-cut method for determining when the MICE algorithm has
-converged. It is useful to plot one or more parameters against the
+(ref:convergence1) Mean and standard deviation of the synthetic values
+plotted against iteration number for the imputed `nhanes` data.
+
+There is no clear-cut method for determining when the MICE algorithm
+has converged. It is useful to plot one or more parameters against the
 iteration number. The mean and variance of the imputations for each
 parallel stream can be plotted by
 
-`           `\
+```{r convergence0, eval = FALSE, echo = TRUE}
+```
 
-which produces Figure \@ref(fig:converge). On convergence, the different
-streams should be freely intermingled with one another, without showing
-any definite trends. Convergence is diagnosed when the variance between
-different sequences is no larger than the variance within each
-individual sequence. Inspection of the streams may reveal particular
-problems of the imputation model. A pathological case of non-convergence
-occurs with the following code:
+which produces Figure \@ref(fig:convergence1). On convergence, the
+different streams should be freely intermingled with one another,
+without showing any definite trends. Convergence is diagnosed when the
+variance between different sequences is no larger than the variance
+within each individual sequence. Inspection of the streams may reveal
+particular problems of the imputation model. A pathological case of
+non-convergence occurs with the following code:
 
-`  `\
-`  `\
-`       `\
-`                      `
+```{r convergence2, cache = TRUE}
+```
 
-![Non-convergence of the MICE algorithm caused by feedback of
-`bmi` into `hgt` and
-`wgt`.<span
-data-label="fig:convergencesteadystate">](fig/ch6_convergence3-1){width="\maxwidth"}
+```{r convergence3, echo = FALSE, fig.cap = '(ref:convergence3)'}
+```
 
-Convergence is problematic here because imputations of
-`bmi` feed back into
-`hgt` and `wgt`.
-Figure \@ref(fig:convergencesteadystate) shows that the streams hardly mix
-and slowly resolve into a steady state. The problem is solved by
-breaking the feedback loop as follows:
+(ref:convergence3) Non-convergence of the MICE algorithm caused by
+feedback of `bmi` into `hgt` and `wgt`.
 
-`  `\
-`    `\
-`         `\
-`                      `
+Convergence is problematic here because imputations of `bmi` feed back
+into `hgt` and `wgt`. Figure \@ref(fig:convergence3) shows that the
+streams hardly mix and slowly resolve into a steady state. The problem
+is solved by breaking the feedback loop as follows:
 
-![Healthy convergence of the MICE algorithm for
-`hgt`, `wgt` and
-`bmi`.<span
-data-label="fig:convergencehealthy">](fig/ch6_convergence5-1){width="\maxwidth"}
+```{r convergence4, cache = TRUE}
+```
 
-Figure \@ref(fig:convergencehealthy) is the resulting plot for the same
+```{r convergence5, echo = FALSE, fig.cap = '(ref:convergence5)'}
+```
+
+(ref:convergence5) Healthy convergence of the MICE algorithm for `hgt`,
+`wgt` and `bmi`.
+
+Figure \@ref(fig:convergence5) is the resulting plot for the same
 three variables. There is little trend and the streams mingle well.
 
-The default `plot()` function for
-`mids` objects plots the mean and variance of
-the imputations. While these parameters are informative for the behavior
-of the MICE algorithm, they may not always be the parameter of greatest
-interest. It is easy to replace the mean and variance by other
-parameters, and monitor these. @SCHAFER1997 [pp. 129–131] suggested
-monitoring the “worst linear function” of the model parameters, i.e., a
-combination of parameters that will experience the most problematic
-convergence. If convergence can be established for this parameter, then
-it is likely that convergence will also be achieved for parameters that
-converge faster. Alternatively, we may monitor some statistic of
-scientific interest, e.g., a correlation or a proportion. See Sections
+The default `plot()` function for `mids` objects plots the mean and
+variance of the imputations. While these parameters are informative
+for the behavior of the MICE algorithm, they may not always be the
+parameter of greatest interest. It is easy to replace the mean and
+variance by other parameters, and monitor these. 
+@SCHAFER1997 [pp. 129–131] suggested monitoring the “worst linear
+function” of the model parameters, i.e., a combination of parameters
+that will experience the most problematic convergence. If convergence
+can be established for this parameter, then it is likely that
+convergence will also be achieved for parameters that converge faster.
+Alternatively, we may monitor some statistic of scientific interest,
+e.g., a correlation or a proportion. See Sections
 \@ref(sec:slowconvergence) (Pearson correlation) and
 \@ref(sec:walkingimputation) (Kendall’s $\tau$) for examples.
 
-It is possible to use formal convergence statistics. Several expository
-reviews are available that assess convergence diagnostics for MCMC
-methods [@COWLES1996; @BROOKS1998; @ELADLOUNI2006]. @COWLES1996 conclude
-that “automated convergence monitoring (as by a machine) is unsafe and
-should be avoided.” No method works best in all circumstances. The
-consensus is to assess convergence with a combination of tools. The
-added value of using a combination of convergence diagnostics for
-missing data imputation has not yet been systematically studied.
+It is possible to use formal convergence statistics. Several
+expository reviews are available that assess convergence diagnostics
+for MCMC methods [@COWLES1996; @BROOKS1998; @ELADLOUNI2006].
+@COWLES1996 conclude that “automated convergence monitoring (as by a
+machine) is unsafe and should be avoided.” No method works best in all
+circumstances. The consensus is to assess convergence with a
+combination of tools. The added value of using a combination of
+convergence diagnostics for missing data imputation has not yet been
+systematically studied.
 
 ## Diagnostics {#sec:diagnostics}
 
@@ -1192,160 +1045,163 @@ the plausibility of the generated imputations. Diagnostics for
 statistical models are procedures to find departures from the
 assumptions underlying the model. Model evaluation is a huge field in
 which many special tools are available, e.g., Q-Q plots, residual and
-influence statistics, formal statistical tests, information criteria and
-posterior predictive checks. In principle, all these techniques can be
-applied to evaluate the imputation model. Conventional model evaluation
-concentrates on the fit between the data and the model. In imputation it
-is often more informative to focus on *distributional discrepancy*, the
-difference between the observed and imputed data. The next section
-illustrates this with an example.
+influence statistics, formal statistical tests, information criteria
+and posterior predictive checks. In principle, all these techniques
+can be applied to evaluate the imputation model. Conventional model
+evaluation concentrates on the fit between the data and the model. In
+imputation it is often more informative to focus on *distributional
+discrepancy*, the difference between the observed and imputed data.
+The next section illustrates this with an example.
 
 ### Model fit versus distributional discrepancy {#sec:fitversus}
 
 The MICE algorithm fits the imputation model to the records with
 observed $Y_j^\mathrm{obs}$, and applies the fitted model to generate
-imputations for the records with unobserved $Y_j^\mathrm{mis}$. The fit
-of the imputation model to the data can thus be studied from
+imputations for the records with unobserved $Y_j^\mathrm{mis}$. The
+fit of the imputation model to the data can thus be studied from
 $Y_j^\mathrm{obs}$.
 
 The worm plot is a diagnostic tool to assess the fit of a nonlinear
 regression [@VANBUUREN2001; @VANBUUREN2007A]. In technical terms, the
-worm plot is a detrended Q-Q plot conditional on a covariate. The model
-fits the data if the worms are close to the horizontal axis.
+worm plot is a detrended Q-Q plot conditional on a covariate. The
+model fits the data if the worms are close to the horizontal axis.
 
-![Worm plot of the predictive mean matching imputations for body weight.
-Different panels correspond to different age ranges. While the
-imputation model does not fit the data in many age groups, the
-distributions of the observed and imputed data often match up very
-well.<span
-data-label="fig:wormpmm">](fig/ch6_wormplot6-1){width="\maxwidth"}
+```{r wormplot5, echo = FALSE, results = 'hide'}
+```
 
-Figure \@ref(fig:wormpmm) is the worm plot calculated from imputed data
-after predictive mean matching. The fit between the observed data and
-the imputation model is bad. The gray points are far from
-the horizontal axis, especially for the youngest children. The shapes
-indicate that the model variance is much larger than the data variance.
-In contrast to this, the red and gray worms are generally
+```{r wormplot6, solo = TRUE, echo = FALSE, fig.asp = 1, fig.cap = '(ref:wormplot6)'}
+```
+
+(ref:wormplot6) Worm plot of the predictive mean matching imputations
+for body weight. Different panels correspond to different age ranges.
+While the imputation model does not fit the data in many age groups,
+the distributions of the observed and imputed data often match up very
+well.
+
+Figure \@ref(fig:wormplot6) is the worm plot calculated from imputed
+data after predictive mean matching. The fit between the observed data
+and the imputation model is bad. The blue points are far from the
+horizontal axis, especially for the youngest children. The shapes
+indicate that the model variance is much larger than the data
+variance. In contrast to this, the red and blue worms are generally
 close, indicating that the distributions of the imputed and observed
-body weights are similar. Thus, despite the fact that the model does not
-fit the data, the distributions of the observed and imputed data are
-similar. This distributional similarity is more relevant for the final
-inferences than model fit per se.
+body weights are similar. Thus, despite the fact that the model does
+not fit the data, the distributions of the observed and imputed data
+are similar. This distributional similarity is more relevant for the
+final inferences than model fit per se.
 
 ### Diagnostic graphs
 
-![A stripplot of the multiply imputed `nhanes`
-data with $m=5$.<span
-data-label="fig:stripplot">](fig/ch6_stripplot2-1){width="\maxwidth"}
-
 One of the best tools to assess the plausibility of imputations is to
-study the discrepancy between the observed and imputed data. The idea is
-that good imputations have a distribution similar to the observed data.
-In other words, the imputations could have been real values had they
-been observed. Except under MCAR, the distributions do not need to be
-identical, since strong MAR mechanisms may induce systematic differences
-between the two distributions. However, any dramatic differences between
-the imputed and observed data should certainly alert us to the
-possibility that something is wrong.
+study the discrepancy between the observed and imputed data. The idea
+is that good imputations have a distribution similar to the observed
+data. In other words, the imputations could have been real values had
+they been observed. Except under MCAR, the distributions do not need
+to be identical, since strong MAR mechanisms may induce systematic
+differences between the two distributions. However, any dramatic
+differences between the imputed and observed data should certainly
+alert us to the possibility that something is wrong.
 
 This book contains many colored figures that emphasize the relevant
 contrasts. Graphs allow for a quick identification of discrepancies of
 various types:
 
--   the points have different means (Figure \@ref(fig:mcarmar));
+-   the points have different means (Figure \@ref(fig:marplot));
 
--   the points have different spreads (Figures \@ref(fig:meanimp),
-    \@ref(fig:regimp) and
-    \@ref(fig:locf));
+-   the points have different spreads (Figures \@ref(fig:plotmeanimp),
+    \@ref(fig:plotregimp) and \@ref(fig:locf2));
 
--   the points have different scales (Figure \@ref(fig:jm));
+-   the points have different scales (Figure \@ref(fig:pubfigjm));
 
 -   the points have different relations (Figure \@ref(fig:passive));
 
 -   the points do not overlap and they defy common sense
-    (Figure \@ref(fig:gen)).
+    (Figure \@ref(fig:plotgen)).
 
 Differences between the densities of the observed and imputed data may
-suggest a problem that needs to be further checked. The
-`mice` package contains several graphic
-functions that can be used to gain insight into the correspondence of
-the observed and imputed data: `bwplot()`,
-`stripplot()`,
-`densityplot()` and
-`xyplot()`.
+suggest a problem that needs to be further checked. The `mice` package
+contains several graphic functions that can be used to gain insight
+into the correspondence of the observed and imputed data: `bwplot()`,
+`stripplot()`, `densityplot()` and `xyplot()`.
 
-The `stripplot()` function produces the
-individual points for numerical variables per imputation as in Figure
-\@ref(fig:stripplot) by
+```{r stripplot, echo = FALSE, fig.cap = '(ref:stripplot)'}
+```
 
-`     `\
-`        `
+(ref:stripplot) A stripplot of the multiply imputed `nhanes`
+data with $m=5$.
+
+The `stripplot()` function produces the individual points for
+numerical variables per imputation as in Figure \@ref(fig:stripplot)
+by
+
+```{r stripplot1, eval = FALSE}
+```
 
 The stripplot is useful to study the distributions in datasets with a
-low number of data points. For large datasets it is more appropriate to
-use the function `bwplot()` that produces
-side-by-side box-and-whisker plots for the observed and synthetic data.
+low number of data points. For large datasets it is more appropriate
+to use the function `bwplot()` that produces side-by-side
+box-and-whisker plots for the observed and synthetic data.
 
-The `densityplot()` function produces Figure
-\@ref(fig:densityplot) by
+```{r densityplot, solo = TRUE, echo = FALSE, fig.asp = 3/7, fig.cap = '(ref:densityplot)'}
+```
 
-`    `
+(ref:densityplot) Kernel density estimates for the marginal
+distributions of the observed data (blue) and the $m=5$ densities per
+variable calculated from the imputed data (thin red lines).
 
-![Kernel density estimates for the marginal distributions of the
-observed data (gray) and the $m=5$ densities per variable
-calculated from the imputed data (thin red lines).<span
-data-label="fig:densityplot">](fig/ch6_densityplot2-1){width="\maxwidth"}
+The `densityplot()` function produces Figure \@ref(fig:densityplot) by
+
+```{r densityplot1, eval=FALSE}
+```
 
 which shows kernel density estimates of the imputed and observed data.
 In this case, the distributions match up well.
 
 Interpretation is more difficult if there are discrepancies. Such
-discrepancies may be caused by a bad imputation model, by a missing data
-mechanism that is not MCAR or by a combination of both. @BONDARENKO2016
-proposed a more refined diagnostic tool that aims to compare the
-distributions of observed and imputed data conditional on the
-missingness probability. The idea is that under MAR the conditional
-distributions should be similar if the assumed model for creating
-multiple imputations has a good fit. An example is created as:
+discrepancies may be caused by a bad imputation model, by a missing
+data mechanism that is not MCAR or by a combination of both.
+@BONDARENKO2016 proposed a more refined diagnostic tool that aims to
+compare the distributions of observed and imputed data conditional on
+the missingness probability. The idea is that under MAR the
+conditional distributions should be similar if the assumed model for
+creating multiple imputations has a good fit. An example is created
+as:
 
-`           `\
-`                      `\
-`  `\
-`            `\
-`    `\
-`         `\
-`             `
+```{r propensityplot1, eval = FALSE}
+```
 
 These statements first model the probability of each record being
 incomplete as a function of all variables in each imputed dataset. The
-probabilities (propensities) are then averaged over the imputed datasets
-to obtain stability. Figure \@ref(fig:propensity) plots BMI against the
-propensity score in each dataset. Observe that the imputed data points
-are somewhat shifted to the right. In this case, the distributions of
-the gray and red points are quite similar, as expected
-under MAR.
+probabilities (propensities) are then averaged over the imputed
+datasets to obtain stability. Figure \@ref(fig:propensityplot) plots
+BMI against the propensity score in each dataset. Observe that the
+imputed data points are somewhat shifted to the right. In this case,
+the distributions of the blue and red points are quite similar, as
+expected under MAR.
 
-![BMI against missingness probability for observed and imputed
-values.<span
-data-label="fig:propensity">](fig/ch6_propensityplot3-1){width="\maxwidth"}
+```{r propensityplot, solo = TRUE, echo = FALSE, fig.asp = 5/7, fig.cap = '(ref:propensityplot)'}
+```
 
-Realize that the comparison is only as good as the propensity score is.
-If important predictors are omitted from the response model, then we may
-not be able to see the potential misfit. In addition, it could be useful
-to investigate the residuals of the regression of BMI on the propensity
-score. See @VANBUUREN2011B on a technique for how to calculate and plot
-the relevant quantities.
+(ref:propensityplot) BMI against missingness probability for observed
+and imputed values.
+
+Realize that the comparison is only as good as the propensity score
+is. If important predictors are omitted from the response model, then
+we may not be able to see the potential misfit. In addition, it could
+be useful to investigate the residuals of the regression of BMI on the
+propensity score. See @VANBUUREN2011B on a technique for how to
+calculate and plot the relevant quantities.
 
 Compared to conventional diagnostic methods, imputation comes with the
-advantage that we can directly compare the observed and imputed values.
-The marginal distributions of the observed and imputed data may differ
-because the missing data are MAR or MNAR. The diagnostics tell us in
-what way they differ, and hopefully also suggest whether these
-differences are expected and sensible in light of what we know about the
-data. Under MAR, any distributions that are conditional on the missing
-data process should be the same. If our diagnostics suggest otherwise
-(e.g., the gray and red points are very different), there
-might be something wrong with the imputations that we created.
+advantage that we can directly compare the observed and imputed
+values. The marginal distributions of the observed and imputed data
+may differ because the missing data are MAR or MNAR. The diagnostics
+tell us in what way they differ, and hopefully also suggest whether
+these differences are expected and sensible in light of what we know
+about the data. Under MAR, any distributions that are conditional on
+the missing data process should be the same. If our diagnostics
+suggest otherwise (e.g., the blue and red points are very different),
+there might be something wrong with the imputations that we created.
 Alternatively, it could be the case that the observed differences are
 justified, and that the missing data process is MNAR. The art of
 imputation is to distinguish between these two explanations.
@@ -1354,11 +1210,11 @@ imputation is to distinguish between these two explanations.
 
 Multiple imputation is not a quick automatic fix. Creating good
 imputations requires substantive knowledge about the data paired with
-some healthy statistical judgement. Impute close to the data. Real data
-are richer and more complex than the statistical models applied to them.
-Ideally, the imputed values should look like real data in every respect,
-especially if multiple models are to be fit on the imputed data. Keep
-the following points in mind:
+some healthy statistical judgement. Impute close to the data. Real
+data are richer and more complex than the statistical models applied
+to them. Ideally, the imputed values should look like real data in
+every respect, especially if multiple models are to be fit on the
+imputed data. Keep the following points in mind:
 
 -   Plan time to create the imputed datasets. As a rule of thumb,
     reserve for imputation 5% of the time needed to collect the data.
@@ -1400,50 +1256,48 @@ methodologies to check imputation models.
 
 ## Exercises {#ex:ch:practice}
 
-1.  *Worm plot for normal model*. Repeat the imputations in Section
-    \@ref(sec:fitversus) using the linear normal model for the
-    numerical variables. Draw the worm plot.
+```{exercise, name = "Worm plot for normal model", label = "wormplot"}
+Repeat the imputations in Section \@ref(sec:fitversus) using the 
+linear normal model for the numerical variables. Draw the worm plot.
 
-    -   Does the imputation model for
-        `wgt` fit the observed data? If not,
-        describe in which aspects they differ.
+1. Does the imputation model for `wgt` fit the observed data? 
+   If not, describe in which aspects they differ.
 
-    -   Does the imputation model for
-        `wgt` fit the imputed data? If not,
-        describe in which aspects they differ.
+2. Does the imputation model for `wgt` fit the imputed data? 
+   If not, describe in which aspects they differ.
 
-    -   Are there striking differences between your worm plot and
-        Figure \@ref(fig:wormpmm)? If so, describe.
+3. Are there striking differences between your worm plot and
+   Figure \@ref(fig:wormplot6)? If so, describe.
 
-    -   Which imputation model do you prefer? Why?
+4. Which imputation model do you prefer? Why?
+```
 
-    \@ref(ex:wormplot)
+```{exercise, name = "Defaults", label = "defaults2"}
+Select a real dataset that is familiar to you and that contains 
+at least 20% missing data. Impute the data with `mice()` under 
+all the default settings.
 
-2.  *Defaults*. Select a real dataset that is familiar to you and that
-    contains at least 20% missing data. Impute the data with
-    `mice()` under all the default settings.
+1. Inspect the streams of the MICE algorithm. Does the sampler 
+   appear to converge?
 
-    -   Inspect the streams of the MICE algorithm. Does the sampler
-        appear to converge?
+2. Extend the analysis with 20 extra iterations using `mice.mids()`. 
+   Does this affect your conclusion about convergence?
 
-    -   Extend the analysis with 20 extra iterations using
-        `mice.mids()`. Does this affect your
-        conclusion about convergence?
+3. Inspect the data with diagnostic plots for univariate data. Are
+   the univariate distributions of the observed and imputed data
+   similar? Do you have an explanation why they do (or do not)
+   differ?
 
-    -   Inspect the data with diagnostic plots for univariate data. Are
-        the univariate distributions of the observed and imputed data
-        similar? Do you have an explanation why they do (or do not)
-        differ?
+4. Inspect the data with diagnostic plots for the most interesting
+   bivariate relations. Are the relations similar in the observed
+   and imputed data? Do you have an explanation why they do (or
+   do not) differ?
 
-    -   Inspect the data with diagnostic plots for the most interesting
-        bivariate relations. Are the relations similar in the observed
-        and imputed data? Do you have an explanation why they do (or
-        do not) differ?
+5. Consider each of the seven default choices in turn. Do you think
+   the default is appropriate for your data? Explain why.
 
-    -   Consider each of the seven default choices in turn. Do you think
-        the default is appropriate for your data? Explain why.
+6. Do you have particular suggestions for improved choices? Which?
 
-    -   Do you have particular suggestions for improved choices? Which?
-
-    -   Implement one of your suggestions. Do the results now look more
-        plausible or realistic? Explain.
+7. Implement one of your suggestions. Do the results now look more
+   plausible or realistic? Explain.
+```

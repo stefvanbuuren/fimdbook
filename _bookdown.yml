@@ -11,6 +11,7 @@ rmd_files: ["index.Rmd",
             "03-univariate-missing.Rmd",
             "04-multivariate-missing.Rmd",
             "05-analysis.Rmd",
+            "06-imputation-in-practice.Rmd",
             "13-references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"
 
