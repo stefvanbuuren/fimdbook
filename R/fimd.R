@@ -2120,15 +2120,11 @@ testEstimates(as.mitml.result(fit), var.comp = TRUE)$var.comp
 
 ## ----ch8, child = "src/ch8.Rnw"------------------------------------------
 
-## ----start8, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch8_', self.contained = FALSE)
-
 ## ----init8, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
-library(dplyr, warn.conflicts = FALSE)
+opts_chunk$set(fig.path = 'fig/ch8-', self.contained = FALSE)
+pkg <- c("mice", "dplyr")
+loaded <- sapply(pkg, require, character.only = TRUE,
+                 warn.conflicts = FALSE, quietly = TRUE)
 
 ## ----ice.definedata------------------------------------------------------
 ideal <- data.frame(
@@ -2149,7 +2145,7 @@ library(mice)
 data2 <- data[, -1]
 imp <- mice(data2, method = "norm", seed = 188, print = FALSE)
 
-## ----ice.plot1, fig.width=7, fig.height=3.5, echo=FALSE, solo=TRUE-------
+## ----iceplot1, fig.width=7, fig.height=3.5, echo=FALSE, solo=TRUE-------
 trellis.par.set(list(layout.heights = list(strip = 1.3)))
 stripplot(imp, y1 + y0 ~ as.factor(.imp), pch = c(1, 19),
           col = c(mdc(1:2)), ylim = c(-100, 100))
@@ -2182,10 +2178,10 @@ meth <- c("", "norm", "norm", "~ I(y1 - y0)")
 imp <- mice(stacked, maxit = 100, pred = pred,
             meth = meth, print = FALSE)
 
-## ----ice.plottraces, fig.width=7, fig.height=5, echo=FALSE, solo=TRUE----
+## ----icetrace, fig.width=7, fig.height=5, echo=FALSE, solo=TRUE----
 plot(imp)
 
-## ----ice.plot2, fig.width=7, fig.height=3.5, echo=FALSE, solo=TRUE-------
+## ----iceplot2, fig.width=7, fig.height=3.5, echo=FALSE, solo=TRUE-------
 stripplot(imp, y1 + y0 ~ as.factor(.imp), pch = c(1, 19),
           col = c("grey70", mdc(2)), ylim = c(-5, 15))
 
@@ -2193,13 +2189,13 @@ stripplot(imp, y1 + y0 ~ as.factor(.imp), pch = c(1, 19),
 sapply(mice::complete(imp, "all"), function(x) {
   x <- x[x$d == 1, ]; cor(x$y0, x$y1)})
 
-## ----ice.xyplot1, fig.height = 5, echo = FALSE---------------------------
+## ----potential1, fig.height = 5, echo = FALSE---------------------------
 xyplot(imp, y1 ~ y0 | as.factor(.imp), layout = c(3, 2),
        groups = d, col = c("grey70", mdc(2)), pch = c(1, 19))
 
-## ----ice.xyplot1.show, eval = FALSE--------------------------------------
-## xyplot(imp, y1 ~ y0 | as.factor(.imp), layout = c(3, 2),
-##        groups =  d, col = c("grey70", mdc(2)), pch = c(1, 19))
+## ----potential1.show, eval = FALSE--------------------------------------
+xyplot(imp, y1 ~ y0 | as.factor(.imp), layout = c(3, 2),
+       groups =  d, col = c("grey70", mdc(2)), pch = c(1, 19))
 
 ## ----ice.iceplotfunction, echo = FALSE-----------------------------------
 iceplot <- function(data, rho, ynames = c("y1", "y0"),
@@ -2243,7 +2239,7 @@ p50 <- iceplot(data, rho = 0.5, maxit = 10, seed = 1)
 p90 <- iceplot(data, rho = 0.9, seed = 1)
 p99 <- iceplot(data, rho = 0.99, seed = 1)
 
-## ----ice.parallelplot1, fig.width=7, fig.height=10, solo = TRUE, echo = FALSE----
+## ----fanplot, fig.width=7, fig.height=10, solo = TRUE, echo = FALSE----
 library(gridExtra, warn.conflicts = FALSE)
 if (empty_figure) {
   plot.new()
