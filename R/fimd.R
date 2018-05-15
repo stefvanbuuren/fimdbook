@@ -1634,22 +1634,16 @@ print(tp)
 
 ## ----ch7, child = "src/ch7.Rnw"------------------------------------------
 
-## ----start7, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch7_', self.contained = FALSE)
-
 ## ----init7, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
-trellis.par.set(mice.theme())
+opts_chunk$set(fig.path = 'fig/ch7-', self.contained = FALSE)
+pkg <- c("mice", "micemd", "lme4", "tidyr",
+         "dplyr", "purrr", "gridExtra")
+loaded <- sapply(pkg, require, character.only = TRUE,
+                 warn.conflicts = FALSE, quietly = TRUE)
 suppressPackageStartupMessages(library(miceadds, warn.conflicts = FALSE, quietly = TRUE))
+suppressPackageStartupMessages(library(DPpackage, warn.conflicts = FALSE, quietly = TRUE))
 suppressPackageStartupMessages(library(mitml, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(lme4, warn.conflicts = FALSE, quietly = TRUE))
-library(tidyr, warn.conflicts = FALSE)
-library(dplyr, warn.conflicts = FALSE)
-library(purrr)
-library(gridExtra, warn.conflicts = FALSE)
+
 
 ## ----mla.data0-----------------------------------------------------------
 library(mice)
@@ -1676,13 +1670,13 @@ for (meth in methods) {
                          print = FALSE, seed = 82828)
 }
 
-## ----mla.empty2, fig.width=4.5, fig.height=2.25, solo=TRUE, echo = FALSE----
+## ----mlsd, fig.width=4.5, fig.height=2.25, solo=TRUE, echo = FALSE----
 group_by(d, sch) %>%
   summarise(sdg = sd(lpo, na.rm = TRUE)) %>%
   pull(sdg) %>%
   hist(main = "", xlab = "SD(language score) per school")
 
-## ----mla.empty3, echo = FALSE, fig.width = 6, fig.height = 8, solo = TRUE----
+## ----mldist, echo = FALSE, fig.width = 6, fig.height = 8, solo = TRUE----
 imp <- result[[1]]
 imp <- cbind(imp, mis = is.na(imp$data$lpo))
 yobs <- mice::complete(imp, "long") %>%
@@ -1743,7 +1737,7 @@ bwplot(ng ~ lpo | method, data = yom, do.out = FALSE,
          }
        )
 
-## ----mla.empty4, echo = FALSE, fig.width = 6, fig.height = 6, solo = TRUE----
+## ----mldens, echo = FALSE, fig.width = 6, fig.height = 6, solo = TRUE----
 imp <- result[["2l.pan"]]
 imp2 <- cbind(imp, mis = is.na(imp$data$lpo))
 ym <- mice::complete(imp2, "long", include = TRUE) %>%
@@ -1792,12 +1786,7 @@ imp <- mice(data, method = "2l.bin", pred = pred, seed = 12102,
             maxit = 1, m = 5, print = FALSE)
 table(mice::complete(imp)$outcome, useNA = "always")
 
-## ----toenail.plot1, echo = FALSE, cache=TRUE-----------------------------
-# imp <- mice(data, method = "2l.bin", pred = pred, seed = 12102,
-#             maxit = 1, m = 5, print = FALSE)
-# xyplot(imp, outcome ~ visit | ID, subset = ID %in% ids)
-
-## ----toenail.plot2code, echo = FALSE, solo = TRUE, fig.width = 6, fig.height = 6----
+## ----toenailprofiles, echo = FALSE, solo = TRUE, fig.width = 6, fig.height = 6----
 trellis.par.set(strip.background=list(col="grey95"))
 ids <- data %>%
   group_by(ID) %>%
@@ -1855,7 +1844,7 @@ data("brandsma", package = "mice")
 dat <- brandsma[, c("sch", "pup", "lpo",
                     "iqv", "ses", "ssi")]
 
-## ----mla.data4, echo = FALSE, solo = TRUE, fig.height=5------------------
+## ----mdp, echo = FALSE, solo = TRUE, fig.height=5------------------
 z <- md.pattern(dat)
 
 ## ----mla.empty10, cache=TRUE---------------------------------------------
@@ -1883,7 +1872,7 @@ imp <- mice(d, pred = pred, meth = "2l.pmm", seed = 919,
             m = 10, print = FALSE)
 
 ## ----mla.ri1b, eval = FALSE----------------------------------------------
-## d$lpo <- as.vector(scale(d$lpo, scale = FALSE))
+d$lpo <- as.vector(scale(d$lpo, scale = FALSE))
 
 ## ----mla.ri2, cache = TRUE-----------------------------------------------
 fm1 <- lpo + iqv ~ 1 + (1 | sch)
@@ -1897,8 +1886,7 @@ imp2 <- mice(d, meth = "panImpute", blocks = blk, form = fm2,
              print = FALSE, seed = 711)
 
 ## ----mla.ri4-------------------------------------------------------------
-fit <- with(imp, lmer(lpo ~  iqv + (1 | sch),
-                       REML = FALSE))
+fit <- with(imp, lmer(lpo ~  iqv + (1 | sch), REML = FALSE))
 summary(pool(fit))
 testEstimates(as.mitml.result(fit), var.comp = TRUE)$var.comp
 
@@ -1938,7 +1926,7 @@ imp2 <- mice(d, meth = "jomoImpute", blocks = blk, form = fm2,
              print = FALSE, seed = 418, maxit = 1,
              m = 10, n.burn = 100)
 
-## ----mla.ril2p5, echo = FALSE, solo = TRUE, fig.height=6, fig.width=6----
+## ----mladens, echo = FALSE, solo = TRUE, fig.height=6, fig.width=6----
 # convert den back to numeric for plotting
 z <- mice::complete(imp2, "long", include = TRUE)
 z$den <- as.numeric(levels(z$den))[z$den]

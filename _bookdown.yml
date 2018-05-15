@@ -12,6 +12,7 @@ rmd_files: ["index.Rmd",
             "04-multivariate-missing.Rmd",
             "05-analysis.Rmd",
             "06-imputation-in-practice.Rmd",
+            "07-multilevel-imputation.Rmd",
             "13-references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"
 
