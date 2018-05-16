@@ -15,7 +15,6 @@ rmd_files: ["index.Rmd",
             "07-multilevel-imputation.Rmd",
             "08-individual-causal-effects.Rmd",
             "09-measurement.Rmd",
+            "10-selection.Rmd",
             "13-references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"
-
-# rmd_files: ["index.Rmd", "01-introduction.Rmd", "02-multiple-imputation.Rmd", "05-analysis.Rmd"]

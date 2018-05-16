@@ -1207,7 +1207,7 @@ function to overwrite the current `imp` and `tau` object in the global
 environment. This is a dangerous operation, and not really an example
 of good programming in general. However, we may now write
 
-```{r walkingimpute3}
+```{r walkingimpute3, cache = TRUE}
 ```
 
 This code executes 50 iterations of the MICE algorithm. After any number

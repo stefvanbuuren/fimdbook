@@ -2681,39 +2681,21 @@ points(x = -0.4, y = 0.497, pch = 20)
 
 ## ----ch10, child = "src/ch10.Rnw"----------------------------------------
 
-## ----start10, include=FALSE----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch10_', self.contained = FALSE)
-
 ## ----init10, echo = FALSE, results = 'hide'------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-source("R/mice.impute.x.R")
-source("R/fetchandstore.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
-suppressPackageStartupMessages(library(gamlss, warn.conflicts = FALSE, quietly = TRUE))
-
-## ----popinit, echo=FALSE-------------------------------------------------
-library(haven)
-library(mice)
-dataproject <- "Data/pop"
-.store <- file.path(dataproject,"R/store/")
+opts_chunk$set(fig.path = 'fig/ch10-', self.contained = FALSE)
+pkg <- c("mice", "haven")
+loaded <- sapply(pkg, require, character.only = TRUE,
+                 warn.conflicts = FALSE, quietly = TRUE)
 
 ## ----popreaddata, echo=FALSE---------------------------------------------
 ## Incomplete POPS-19 data (n=959, nvar=88)
-file.spss <- file.path(dataproject, "original/incompleet_v3.sav")
+file.spss <- file.path("data/pop/incompleet_v3.sav")
 pops <- read_spss(file=file.spss)
 pops <- as_factor(pops)
 data <- pops[,-(87:88)]
 
-## read with foreign
-#library(foreign)
-#pops <- read.spss(file=file.spss, to.data.frame = TRUE)
-#data <- pops[,-(87:88)]
-
-
 ## Read predictor matrix
-file.pred <- file.path(dataproject, "original/predictor matrix_v3.txt")
+file.pred <- file.path("data/pop/predictor matrix_v3.txt")
 pred <- read.table(file=file.pred, sep="\t")
 pred <- as.matrix(pred[-c(87:89)])
 
@@ -2731,13 +2713,15 @@ pred[,1] <- 0
 imp1 <- mice(data, pred = pred, maxit = 20,
              seed = 51121, print = FALSE)
 
-## ----poptracefig, echo=FALSE, fig.height=4-------------------------------
+## ----popstrace, echo=FALSE, fig.height=4-------------------------------
 trellis.par.set(list(layout.heights = list(strip = 3)))
 plot(imp1, c("a10u"), layout = c(2, 1))
 trellis.par.set(list(layout.heights = list(strip = 1.3)))
 
 ## ----popsbwplot1, echo=FALSE, fig.height=4-------------------------------
-bwplot(imp1, iq + coping ~ .imp)
+thickBoxSettings <- list(box.rectangle=list(lwd=1.5), box.umbrella=list(lwd=1.5))
+bwplot(imp1, iq + coping ~ .imp,
+       par.settings = thickBoxSettings)
 
 ## ----impute2, cache=TRUE-------------------------------------------------
 pred[61:86, 61:86] <- 0
@@ -2745,7 +2729,8 @@ imp2 <- mice(data, pred = pred, maxit = 20,
              seed = 51121, print = FALSE)
 
 ## ----popsbwplot2, echo=FALSE, fig.height=4-------------------------------
-bwplot(imp2, iq + coping ~ .imp)
+bwplot(imp2, iq + coping ~ .imp,
+       par.settings = thickBoxSettings)
 
 ## ----calcprevalence, eval=FALSE, echo=FALSE------------------------------
 ##  summary(lm(as.numeric(a10u)~1,data,na.action=na.omit))
@@ -2803,7 +2788,7 @@ pad <- data.frame(id, reg, age, sex,
                   hgt = NA, wgt = NA, hgt.z = NA, wgt.z = NA)
 data <- rbind(fdgs, pad)
 
-## ----vlgfigsdsbyregion, echo=FALSE, fig.height=4-------------------------
+## ----sdsbyregion, echo=FALSE, fig.height=4-------------------------
 ## inspect the age by region pattern
 means <- aggregate(data$hgt.z, by=list(reg=data$reg,
              age=floor(data$age)), mean, na.rm=TRUE)
@@ -2831,7 +2816,6 @@ imp <- mice(data, meth = "norm", form = form, m = 10,
             maxit = 20, seed = 28107, print = FALSE)
 
 ## ----vlginspect, echo=FALSE, fig.height=4--------------------------------
-# fetch(imp)
 cda <- mice::complete(imp, "long", include=TRUE)
 means2 <- aggregate(cda$hgt.z, by=list(reg=cda$reg, age=floor(cda$age), imp=cda$.imp), mean, na.rm=TRUE)
 xyplot(x~age|reg,means2, group=imp, subset=(reg=="North"|reg=="City"),
@@ -2843,121 +2827,10 @@ xyplot(x~age|reg,means2, group=imp, subset=(reg=="North"|reg=="City"),
                 y=list(tck=c(1,0))),
                 strip = strip.custom(bg="grey95"))
 
-## ----vlglmscalc, echo=FALSE, eval=FALSE----------------------------------
-## ## calculate hgt and wgt from hgt.z and wgt.z
-## library(AGD)   ## V0.21
-## sex2 <- ifelse(cda$sex=="boy","M","F")
-## cda$hgt <- z2y(z=cda$hgt.z, x=cda$age, sex=sex2, ref=nl4.hgt)
-## cda$wgt <- z2y(z=cda$wgt.z, x=cda$age, sex=sex2, ref=nl4.wgt)
-## cda <- cda[,-(11:16)]
-##
-## ### imputed datasets
-##
-## lmscalcboy <- function(d0){
-##   ## select boys, original data
-##   d0 <- na.omit(d0[,c("age","hgt")])
-##   nrow(d0)
-##
-##   ## transform age
-##   d0fit1 <- gamlss(hgt~cs(age,df=10), sigma.formula=~cs(age,df=2),data=d0, family=NO, control=gamlss.control(n.cyc=10))
-##   t.d0 <- fitted(lm(d0$age~fitted(d0fit1)))
-##   t.d0 <- t.d0 - min(t.d0)
-##   sqrt.d0 <- sqrt(d0$age+1)
-##   log.d0 <- log(d0$age+1)
-##   sqrt3.d0 <- (d0$age+1)^(1/3)
-##   d0.t <- data.frame(d0,t.age=t.d0,sqrt.age=sqrt.d0,log.age=log.d0,sqrt3.age=sqrt3.d0)
-##
-##   ## fit final model taken from 'groeidiagrammen Yvonne v6.r'
-##   d0fit3 <- gamlss(hgt~cs(t.age,df=7,c.spar=c(-1.5,2.5)),
-##                    sigma.formula=~cs(t.age,df=5,c.spar=c(-1.5,2.5)),
-##                    data=d0.t, family=NO, control=gamlss.control(n.cyc=10))
-##   wp.twin(d0fit3, d0fit3, xvar=d0.t$age, ylim.worm=0.4, n.inter=16)
-##   centiles(d0fit3, xvar=d0.t$age)
-##
-##   grid.weeks <- c(2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24,26,28,32,36,40,44,48)
-##   grid.age <- c(grid.weeks*7/365.25,seq(1,21,0.5))
-##
-##   t.grid.d0<- approx(x=d0.t$age,y=d0.t$t.age,xout=grid.age)$y
-##   m <- approx(x=d0.t$t.age,y=round(d0fit3$mu.lp,3),xout=t.grid.d0)$y
-##   s <- exp(approx(x=d0fit3$sigma.x[,2],y=d0fit3$sigma.lp,xout=t.grid.d0)$y)
-##   l <- 1
-##   lms <- data.frame(age=round(grid.age,4),l=round(l,4),m=round(m,3),s=round(s/m,4))
-##
-##   return(lms)
-## }
-##
-## ### first imputed dataset
-## lms0 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==0, ])
-## lms1 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==1, ])
-## lms2 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==2, ])
-## lms3 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==3, ])
-## lms4 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==4, ])
-## lms5 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==5, ])
-## lms6 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==6, ])
-## lms7 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==7, ])
-## lms8 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==8, ])
-## lms9 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==9, ])
-## lms10 <- lmscalcboy(cda[cda$sex=="boy" & cda$.imp==10, ])
-##
-## boyslms <- list(lms0, lms1, lms2, lms3, lms4, lms5,
-##                 lms6, lms7, lms8, lms9, lms10)
-## store(boyslms)
-##
-##
-## ## - ----- girls
-##
-## lmscalcgirl <- function(d0){
-##   ## select girls, original data
-##   d0 <- na.omit(d0[,c("age","hgt")])
-##   nrow(d0)
-##
-##   ## transform age
-##   d0fit1 <- gamlss(hgt~cs(age,df=10), sigma.formula=~cs(age,df=2),data=d0, family=NO, control=gamlss.control(n.cyc=10))
-##   t.d0 <- fitted(lm(d0$age~fitted(d0fit1)))
-##   t.d0 <- t.d0 - min(t.d0)
-##   sqrt.d0 <- sqrt(d0$age+1)
-##   log.d0 <- log(d0$age+1)
-##   sqrt3.d0 <- (d0$age+1)^(1/3)
-##   d0.t <- data.frame(d0,t.age=t.d0,sqrt.age=sqrt.d0,log.age=log.d0,sqrt3.age=sqrt3.d0)
-##
-##   ## fit final model taken from 'groeidiagrammen Yvonne v6.r'
-##   d0fit3 <- gamlss(hgt~cs(sqrt.age,df=11,c.spar=c(-1.5,2.5)),
-##                    sigma.formula=~cs(sqrt.age,df=4,c.spar=c(-1.5,2.5)),
-##                    data=d0.t, family=NO, control=gamlss.control(n.cyc=10))
-##   wp.twin(d0fit3, d0fit3, xvar=d0.t$age, ylim.worm=0.4, n.inter=16)
-##   centiles(d0fit3, xvar=d0.t$age)
-##
-##   grid.weeks <- c(2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24,26,28,32,36,40,44,48)
-##   grid.age <- c(grid.weeks*7/365.25,seq(1,21,0.5))
-##
-##   sqrt3.grid.d0<- approx(x=d0.t$age,y=d0.t$sqrt3.age,xout=grid.age)$y
-##   m <- approx(x=d0.t$sqrt3.age,y=round(d0fit3$mu.lp,3),xout=sqrt3.grid.d0)$y
-##   s <- exp(approx(x=d0fit3$sigma.x[,2],y=d0fit3$sigma.lp,xout=sqrt3.grid.d0)$y)
-##   l <- 1
-##   lms <- data.frame(age=round(grid.age,4),l=round(l,4),m=round(m,3),s=round(s/m,4))
-##
-##   return(lms)
-## }
-##
-## ### first imputed dataset
-## lms0 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==0, ])
-## lms1 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==1, ])
-## lms2 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==2, ])
-## lms3 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==3, ])
-## lms4 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==4, ])
-## lms5 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==5, ])
-## lms6 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==6, ])
-## lms7 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==7, ])
-## lms8 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==8, ])
-## lms9 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==9, ])
-## lms10 <- lmscalcgirl(cda[cda$sex=="girl" & cda$.imp==10, ])
-##
-## girlslms <- list(lms0, lms1, lms2, lms3, lms4, lms5,
-##                 lms6, lms7, lms8, lms9, lms10)
-## store(girlslms)
+## ----finalheight, echo=FALSE, fig.height=4------------------------
+load("data/vlg/boyslms")
+load("data/vlg/girlslms")
 
-## ----vlgplotfinalheight, echo=FALSE, fig.height=4------------------------
-fetch(boyslms, girlslms)
 ## plot the mcurves for 16+
 lms <- boyslms
 mcurvesm <- data.frame(sex="Boys", imp=rep(0:10,each=nrow(lms[[1]])),
@@ -2991,18 +2864,11 @@ print(tpm)
 
 ## ----ch11, child = "src/ch11.Rnw"----------------------------------------
 
-## ----start11, include=FALSE----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch11_', self.contained = FALSE)
-
 ## ----init11, echo = FALSE, results = 'hide'------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-source("R/fetchandstore.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
-library(haven)
-suppressPackageStartupMessages(library(lme4, warn.conflicts = FALSE, quietly = TRUE))
-library(splines)
+opts_chunk$set(fig.path = 'fig/ch11-', self.contained = FALSE)
+pkg <- c("mice", "haven", "lme4", "splines")
+loaded <- sapply(pkg, require, character.only = TRUE,
+                 warn.conflicts = FALSE, quietly = TRUE)
 
 ## ----fdddata,results='asis',echo=FALSE-----------------------------------
 yvars <- c("yc1","yc2","yc3", "yp1","yp2","yp3")
