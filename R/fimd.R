@@ -3432,14 +3432,8 @@ print(tbchw)
 
 ## ----ch12, child = "src/ch12.Rnw"----------------------------------------
 
-## ----start12, include=FALSE----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch12_', self.contained = FALSE)
-
 ## ----init12, echo = FALSE, results = 'hide'------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-
+opts_chunk$set(fig.path = 'fig/ch12-', self.contained = FALSE)
 
 ## ----embed, echo=FALSE---------------------------------------------------
 embedMyFonts <- function(project = "",

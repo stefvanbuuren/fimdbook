@@ -17,5 +17,6 @@ rmd_files: ["index.Rmd",
             "09-measurement.Rmd",
             "10-selection.Rmd",
             "11-longitudinal.Rmd",
+            "12-conclusion.Rmd",
             "13-references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"

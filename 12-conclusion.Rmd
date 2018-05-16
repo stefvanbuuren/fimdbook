@@ -6,12 +6,15 @@
 > 
 > --- Thomas Permutt
 
+```{r init12, echo = FALSE, hide = TRUE}
+```
+
 This closing chapter starts with a description of the limitations and
 pitfalls of multiple imputation. Section \@ref(sec:reporting) provides
-reporting guidelines for applications. Section \@ref(sec:otherapps) gives
-an overview of applications that were omitted from the book. Section
-\@ref(sec:future) contains some speculations about possible future
-developments.
+reporting guidelines for applications. Section \@ref(sec:otherapps)
+gives an overview of applications that were omitted from the book.
+Section \@ref(sec:future) contains some speculations about possible
+future developments.
 
 ## Some dangers, some do’s and some don’ts {#sec:limitations}
 
@@ -92,7 +95,7 @@ following list of do’s summarizes some of the advice given in this book.
 -   Evaluate whether the imputed data could have been real data if they
     had not been missing;
 
--   Take $m=5$ for model building, and increase afterward if needed;
+-   Take $m$ = 5 for model building, and increase afterward if needed;
 
 -   Specify simple MNAR models for sensitivity analysis;
 
@@ -193,81 +196,77 @@ The following list contains questions that need to be answered when
 using multiple imputation. Evaluate each question carefully, and report
 the answers.
 
-1.  *Amount of missing data:* What is the number of missing values for
-    each variable of interest? What is the number of cases with complete
-    data for the analyses of interest? If people drop out at various
-    time points, break down the number of participants per
-    occasion.\@ref(lis:amount)
+(@amount) *Amount of missing data:* What is the number of missing
+values for each variable of interest? What is the number of cases with
+complete data for the analyses of interest? If people drop out at
+various time points, break down the number of participants per
+occasion.
 
-2.  *Reasons for missingness:* What is known about the reasons for
-    missing data? Are the missing data intentional? Are the reasons
-    possibly related to the outcome measurements? Are the reasons
-    related to other variables in the study?\@ref(lis:reasons)
+(@reasons) *Reasons for missingness:* What is known about the reasons
+for missing data? Are the missing data intentional? Are the reasons
+possibly related to the outcome measurements? Are the reasons related
+to other variables in the study?
 
-3.  *Consequences:* Are there important differences between individuals
-    with complete and incomplete data? Do these groups differ in mean or
-    spread on the key variables? What are the consequences if
-    complete-case analysis is used?\@ref(lis:differences)
+(@consequences) *Consequences:* Are there important differences
+between individuals with complete and incomplete data? Do these groups
+differ in mean or spread on the key variables? What are the
+consequences if complete-case analysis is used?
 
-4.  *Method:* What method is used to account for missing data (e.g.,
-    complete-case analysis, multiple imputation)? Which assumptions were
-    made (e.g., missing at random)? How were multivariate missing data
-    handled?\@ref(lis:method)
+(@method) *Method:* What method is used to account for missing data
+(e.g., complete-case analysis, multiple imputation)? Which assumptions
+were made (e.g., missing at random)? How were multivariate missing
+data handled?
 
-5.  *Software:* What multiple imputation software is used? Which
-    settings differ from the default?\@ref(lis:software)
+(@software) *Software:* What multiple imputation software is used?
+Which settings differ from the default?
 
-6.  *Number of imputed datasets:* How many imputed datasets were created
-    and analyzed? \@ref(lis:number)
+(@number) *Number of imputed datasets:* How many imputed datasets were
+created and analyzed?
 
-7.  *Imputation model:* Which variables were included in the imputation
-    model? Was any form of automatic variable predictor used? How were
-    non-normally distributed and categorical variables imputed? How were
-    design features (e.g., hierarchical data, complex samples,
-    sampling weights) taken into account?\@ref(lis:model)
+(@model) *Imputation model:* Which variables were included in the
+imputation model? Was any form of automatic variable predictor used?
+How were non-normally distributed and categorical variables imputed?
+How were design features (e.g., hierarchical data, complex samples,
+sampling weights) taken into account?
 
-8.  *Derived variables:* How were derived variables (transformations,
-    recodes, indices, interaction terms, and so on) taken into
-    account?\@ref(lis:derived)
+(@derived) *Derived variables:* How were derived variables
+(transformations, recodes, indices, interaction terms, and so on)
+taken into account?
 
-9.  *Diagnostics:* How has convergence been monitored? How do the
-    observed and imputed data compare? Are imputations plausible in the
-    sense that they could have been plausibly measured if they had not
-    been missing? \@ref(lis:diagnostics)
+(@diagnostics) *Diagnostics:* How has convergence been monitored? How
+do the observed and imputed data compare? Are imputations plausible in
+the sense that they could have been plausibly measured if they had not
+been missing?
 
-10. *Pooling:* How have the repeated estimates been combined (pooled)
-    into the final estimates? Have any statistics been transformed for
-    pooling?\@ref(lis:pooling)
+(@pooling) *Pooling:* How have the repeated estimates been combined
+(pooled) into the final estimates? Have any statistics been
+transformed for pooling?
 
-11. *Complete-case analysis:* Do multiple imputation and complete-case
-    analysis lead to similar similar conclusions? If not, what might
-    explain the difference?\@ref(lis:listwise)
+(@listwise) *Complete-case analysis:* Do multiple imputation and
+complete-case analysis lead to similar similar conclusions? If not,
+what might explain the difference?
 
-12. *Sensitivity analysis:* Do the variables included in the imputation
-    model make the missing at random assumption plausible? Are the
-    conclusions affected if imputations are generated under a plausible
-    nonignorable model?\@ref(lis:sensitivity)
+(@sensitivity) *Sensitivity analysis:* Do the variables included in
+the imputation model make the missing at random assumption plausible?
+Are the conclusions affected if imputations are generated under a
+plausible nonignorable model?
 
-If space is limited, the main text can be restricted to a short summary
-of points \@ref(lis:amount), 
-\@ref(lis:reasons), 
-\@ref(lis:method),
-\@ref(lis:software), 
-\@ref(lis:number) and 
-\@ref(lis:listwise), whereas the
-remaining points are addressed in a appendix or online supplement.
-Section \@ref(sec:template) contains an example template.
+If space is limited, the main text can be restricted to a short
+summary of points @amount, @reasons, @method, @software, 
+@number and @listwise, whereas the remaining points are addressed 
+in an appendix or online supplement. Section \@ref(sec:template) 
+contains an example template.
 
 For clinical trials, reporting in the main text should be extended by
-point \@ref(lis:sensitivity), conform to recommendation 15 of @NRC2010.
-Moreover, the study protocol should specify the statistical methods for
-handling missing data in advance, and their associated assumptions
-should be stated in a way that can be understood by clinicians [@NRC2010
-recommendation 9].
+point @sensitivity, conform to recommendation 15 of
+@NRC2010. Moreover, the study protocol should specify the statistical
+methods for handling missing data in advance, and their associated
+assumptions should be stated in a way that can be understood by
+clinicians [@NRC2010 recommendation 9].
 
 ### Template {#sec:template}
 
-@ENDERS2010 [pp. 340–343] provides four useful templates for reporting
+@ENDERS2010 [pp. 340-343] provides four useful templates for reporting
 the results of a missing data analysis. These templates include
 explanatory notes for uninformed editors and reviewers. It is
 straightforward to adapt the template text to other settings. Below I
@@ -286,11 +285,10 @@ paragraph of the main text.
 > statistical power relative to other missing data techniques.
 > Incomplete variables were imputed under fully conditional
 > specification, using the default settings of the
-> `mice` 3.0.0 package
-> [@VANBUUREN2011B]. The parameters of substantive interest were
-> estimated in each imputed dataset separately, and combined using
-> Rubin’s rules. For comparison, we also performed the analysis on the
-> subset of complete cases.
+> `mice` 3.0 package [@VANBUUREN2011B]. The parameters of 
+> substantive interest were estimated in each imputed dataset 
+> separately, and combined using Rubin’s rules. For comparison, 
+> we also performed the analysis on the subset of complete cases.
 
 This text is about 135 words. If this is too long, then the sentences
 that begin with “Methodologists” and “For comparison” can be deleted. In
@@ -319,8 +317,7 @@ imputation.
 
 ## Other applications {#sec:otherapps}
 
-Chapters \@ref(ch:measurement)–
-\@ref(ch:longitudinal) illustrated several
+Chapters \@ref(ch:measurement)-\@ref(ch:longitudinal) illustrated several
 applications of multiple imputation. This section briefly reviews some
 other applications. These underscore the general nature and broad
 applicability of multiple imputation.
@@ -330,8 +327,8 @@ applicability of multiple imputation.
 Many governmental agencies make microdata available to the public. One
 of the major practical issues is that the identity of anonymous
 respondents can be disclosed through the data they provide. @RUBIN1993
-suggested publishing fully synthetic microdata instead of the real data,
-with the obvious advantage of zero disclosure risk. The released
+suggested publishing fully synthetic microdata instead of the real
+data, with the obvious advantage of zero disclosure risk. The released
 synthetic data should reproduce the essential features of confidential
 microdata.
 
@@ -355,10 +352,9 @@ data can be handled by multiple imputation of true age, given reported
 age and other personal factors. @HEITJAN1993 discussed various other
 biomedical examples and an application to data from the Stanford Heart
 Transplant Program. Related work on measurement error is available from
-several sources
+several sources 
 [@BROWNSTONE1996; @GHOSHDASTIDAR2003; @YUCEL2005; @COLE2006; @GLICKMAN2008].
-@GOLDSTEIN2015 formulated joint models for three types of coarsened
-data.
+@GOLDSTEIN2015 formulated joint models for three types of coarsened data.
 
 ### File matching of multiple datasets
 
@@ -377,11 +373,10 @@ to several alternatives, and found MICE to work well under normality and
 conditional independence. If the assumption of conditional independence
 does not hold, we may bring prior information into MICE by appending a
 third data file that contains records with data that embody the prior
-information. Sections \@ref(sec:convergence) 
-and \@ref(sec:impbridge) put this
-idea into practice in a different context. This techique can perform
-file matching for mixed continuous-discrete data under any data coded
-prior.
+information. Sections \@ref(sec:convergence) and \@ref(sec:impbridge) 
+put this idea into practice in a different context. This techique can 
+perform file matching for mixed continuous-discrete data under any data 
+coded prior.
 
 ### Planned missing data for efficient designs
 
@@ -425,23 +420,24 @@ to be plausible. There are no fail-safe methods for drawing imputations
 that preserve the proper interactions in the substantive models. One
 promising area of development is the rise of model-based forms of
 imputation that essentially take the substantive model as leading
-(cf. Section \@ref(sec:modelbased)). It would be interesting to study how
+(cf. Section \@ref(sec:modelbased)). It would be interesting to study how
 well model-based techniques can cope with derived variables of various
 sorts.
 
 ### Algorithms for blocks and batches
 
-In some applications it is useful to generalize the variable-by-variable
-scheme of the MICE algorithm to blocks. A block can contain just one
-variable, but also groups of variables. An imputation model is specified
-for each block, and the algorithm iterates over the blocks. Starting
-with `mice 3.0`, the user can specify blocks
-of variables that are structurally related, such as dummy variables,
-semi-continuous variables, bracketed responses, compositions, item
-subsets, and so on. It would be useful to obtain experience with the
-practical application of this facility, which could stimulate
-specification of the imputation model on a higher level of abstraction,
-and allow for mixes of joint and conditional models.
+In some applications it is useful to generalize the
+variable-by-variable scheme of the MICE algorithm to blocks. A block
+can contain just one variable, but also groups of variables. An
+imputation model is specified for each block, and the algorithm
+iterates over the blocks. Starting with `mice 3.0`, the user can
+specify blocks of variables that are structurally related, such as
+dummy variables, semi-continuous variables, bracketed responses,
+compositions, item subsets, and so on. It would be useful to obtain
+experience with the practical application of this facility, which
+could stimulate specification of the imputation model on a higher
+level of abstraction, and allow for mixes of joint and conditional
+models.
 
 Likewise, it may be useful to define batches, groups of records that
 form logical entities. For example, batches could consist of different
@@ -451,8 +447,8 @@ defined per batch, and iteration takes place over the batches.
 @ZHU2016 discusses alternatives within an FCS context. The incorporation
 of blocks and batches will allow for tremendous flexibility in the
 specification of imputation models. Such techniques require a keen
-database administration strategy to ensure that the predictors needed at
-any point are completed.
+database administration strategy to ensure that the predictors needed 
+at any point are completed.
 
 ### Nested imputation
 
@@ -530,33 +526,37 @@ thus easier to understand. And that is what matters in the end.
 
 ## Exercises {#ex:ch:conclusion}
 
-1.  *Do’s:* Take the list of do’s in Section \@ref(sec:dos). For each item
-    on the list, answer the following questions:
+```{exercise, name = "Do's", label = "dos"}
+Take the list of do’s in Section \@ref(sec:dos). For each item on the
+list, answer the following questions:
 
-    1.  Why is it on the list?
+1. Why is it on the list?
 
-    2.  Which is the most relevant section in the book?
+2. Which is the most relevant section in the book?
 
-    3.  Can you order the list of elements from most important to least
-        important?
+3. Can you order the list of elements from most important to least
+   important?
 
-    4.  What were your reasons for picking the top three?
+4. What were your reasons for picking the top three?
 
-    5.  And why did you pick the bottom three?
+5. And why did you pick the bottom three?
 
-    6.  Could you make suggestions for new items that should be on the
-        list?
+6. Could you make suggestions for new items that should be on the
+   list?
+```
 
-2.  *Don’ts:* Repeat the previous exercise for the list of don’ts in
-    Section \@ref(sec:donts).
+```{exercise, name = "Don'ts", label = "donts"}
+Repeat the previous exercise for the list of don’ts in Section 
+\@ref(sec:donts).
+```
 
-3.  *Template:* Adapt the template for the
-    `mammalsleep` data in
-    `mice`. Be sure to include your major
-    assumptions and decisions.
+```{exercise, name = "Template", label = "template"}
+Adapt the template for the `mammalsleep` data in `mice`. Be sure to 
+include your major assumptions and decisions.
+```
 
-4.  *Nesting:* Develop an extension of the
-    `mids` object in
-    `mice` that allows for nested
-    multiple imputation. Try to build upon the existing
-    `mids` object.
+```{exercise, name = "Nesting", label = "nesting"}
+Develop an extension of the `mids` object in `mice` that allows 
+for nested multiple imputation. Try to build upon the existing
+`mids` object.
+```
