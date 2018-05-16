@@ -6,49 +6,50 @@
 > 
 > --- Henry Margenau
 
+```{r init9, echo = FALSE, hide = TRUE}
+```
+
 This chapter contains three case studies using real data. The common
 theme is that all have “problems with the columns.” Section
 \@ref(sec:toomany) illustrates a number of useful steps to take when
-confronted with a dataset that has an overwhelming number of variables.
-Section \@ref(sec:sensitivity) continues with the same data, and shows how
-a simple sensitivity analysis can be done. Section \@ref(sec:prevalence)
-illustrates how multiple imputation can be used to estimate overweight
-prevalence from self-reported data. Section \@ref(sec:codingsystems) shows
-a way to do a sensible analysis on data that are incomparable.
+confronted with a dataset that has an overwhelming number of
+variables. Section \@ref(sec:sensitivity) continues with the same
+data, and shows how a simple sensitivity analysis can be done. Section
+\@ref(sec:prevalence) illustrates how multiple imputation can be used
+to estimate overweight prevalence from self-reported data. Section
+\@ref(sec:codingsystems) shows a way to do a sensible analysis on data
+that are incomparable.
 
 ## Too many columns {#sec:toomany}
 
 Suppose that your colleague has become enthusiastic about multiple
 imputation. She asked you to create a multiply imputed version of her
 data, and forwarded you her entire database. As a first step, you use
-`R` to read it into a data frame called
-`data`. After this is done, you type in the
-following commands:
+`R` to read it into a data frame called `data`. After this is done,
+you type in the following commands:
 
-\
-\
-`       `
+```{r c85imputeblind, eval = FALSE}
+```
 
 If you are lucky, the program may run and impute, but after a few
-minutes it becomes clear that it takes a long time to finish. And after
-the wait is over, the imputations turn out to be surprisingly bad. What
-happened?
+minutes it becomes clear that it takes a long time to finish. And
+after the wait is over, the imputations turn out to be surprisingly
+bad. What happened?
 
 Some exploration of the data reveals that your colleague sent you a
 dataset with 351 columns, essentially all the information that was
-sampled in the study. By default, the `mice()`
-function uses all other variables as predictors, so
-`mice()` will try to calculate regression
+sampled in the study. By default, the `mice()` function uses all other
+variables as predictors, so `mice()` will try to calculate regression
 analyses with 350 explanatory variables, and repeat that for every
-incomplete variable. Categorical variables are internally represented as
-dummy variables, so the actual number of predictors could easily double.
-This makes the algorithm extremely slow, if it runs at all.
+incomplete variable. Categorical variables are internally represented
+as dummy variables, so the actual number of predictors could easily
+double. This makes the algorithm extremely slow, if it runs at all.
 
 Some further exploration reveals some variables are free text fields,
-and that some of the missing values were not marked as such in the data.
-As a consequence, `mice()` treats impossible
-values such as “999” or “$-1$” as real data. Just one forgotten missing
-data mark may introduce large errors into the imputations.
+and that some of the missing values were not marked as such in the
+data. As a consequence, `mice()` treats impossible values such as
+“999” or “-1” as real data. Just one forgotten missing data mark may
+introduce large errors into the imputations.
 
 In order to evade such practical issues, it is necessary to spend some
 time exploring the data first. Furthermore, it is helpful if you
@@ -57,26 +58,26 @@ help in creating sensible imputations.
 
 This section concentrates on what can be done based on the data values
 themselves. In practice, it is far more productive and preferable to
-work together with someone who knows the data really well, and who knows
-the questions of scientific interest that one could ask from the data.
-Sometimes the possibilities for cooperation are limited. This may occur,
-for example, if the data have come from several external sources (as in
-meta analysis), or if the dataset is so diverse that no one person can
-cover all of its contents. It will be clear that this situation calls
-for a careful assessment of the data quality, well before attempting
-imputation.
+work together with someone who knows the data really well, and who
+knows the questions of scientific interest that one could ask from the
+data. Sometimes the possibilities for cooperation are limited. This
+may occur, for example, if the data have come from several external
+sources (as in meta analysis), or if the dataset is so diverse that no
+one person can cover all of its contents. It will be clear that this
+situation calls for a careful assessment of the data quality, well
+before attempting imputation.
 
 ### Scientific question {#sec:c85question}
 
-There is a paradoxical inverse relation between blood pressure (BP) and
-mortality in persons over 85 years of age
-[@BOSHUIZEN1998; @VANBEMMEL2006]. Normally, people with a lower BP live
-longer, but the oldest old with lower BP live a shorter time.
+There is a paradoxical inverse relation between blood pressure (BP)
+and mortality in persons over 85 years of age [@BOSHUIZEN1998;
+@VANBEMMEL2006]. Normally, people with a lower BP live longer, but the
+oldest old with lower BP live a shorter time.
 
 The goal of the study was to determine if the relation between BP and
 mortality in the very old is due to frailty. A second goal was to know
-whether high BP was a still risk factor for mortality after the effects
-of poor health had been taken into account.
+whether high BP was a still risk factor for mortality after the
+effects of poor health had been taken into account.
 
 The study compared two models:
 
@@ -89,8 +90,8 @@ The study compared two models:
 Health was measured by 28 different variables, including mental state,
 handicaps, being dependent in activities of daily living, history of
 cancer and others. Including health as a set of covariates in model 2
-might explain the relation between mortality and BP, which, in turn, has
-implications for the treatment of hypertension in the very old.
+might explain the relation between mortality and BP, which, in turn,
+has implications for the treatment of hypertension in the very old.
 
 ### Leiden 85+ Cohort {#sec:leiden85cohort}
 
@@ -100,136 +101,107 @@ were visited by a physician between January 1987 and May 1989. A full
 medical history, information on current use of drugs, a venous blood
 sample, and other health-related data were obtained. BP was routinely
 measured during the visit. Apart from some individuals who were
-bedridden, BP was measured while seated. An Hg manometer was used and BP
-was rounded to the nearest 5mmHg. Measurements were usually taken near
-the end of the interview. The mortality status of each individual on
-March 1, 1994 was retrieved from administrative sources.
+bedridden, BP was measured while seated. An Hg manometer was used and
+BP was rounded to the nearest 5 mmHg. Measurements were usually taken
+near the end of the interview. The mortality status of each individual
+on March 1, 1994 was retrieved from administrative sources.
 
-Of the original cohort, a total of 218 persons died before they could be
-visited, 59 persons did not want to participate (some because of health
-problems), 2 emigrated and 1 was erroneously not interviewed, so 956
-individuals were visited. Effects due to subsampling the visited persons
-from the entire cohort were taken into account by defining the date of
-the home visit as the start [@BOSHUIZEN1998]. This type of selection
-will not be considered further.
+Of the original cohort, a total of 218 persons died before they could
+be visited, 59 persons did not want to participate (some because of
+health problems), 2 emigrated and 1 was erroneously not interviewed,
+so 956 individuals were visited. Effects due to subsampling the
+visited persons from the entire cohort were taken into account by
+defining the date of the home visit as the start [@BOSHUIZEN1998].
+This type of selection will not be considered further.
 
 ### Data exploration {#sec:exploration}
 
-The data are stored as a `SAS` export file.
-The `read.xport()` function from the
-`foreign` package can read the data.
+The data are stored as a `SAS` export file. The `read.xport()`
+function from the `foreign` package can read the data.
 
-\
-`   `\
-\
-`  `\
-`  `\
+```{r c85readdata1}
+```
 
-    [1] 1236  351
-
-The dataset contains 1236 rows and 351 columns. When I tracked down the
-origin of the data, the former investigators informed me that the file
-was composed during the early 1990’s from several parts. The basic
-component consisted of a `Dbase` file with
-many free text fields. A dedicated `Fortran`
-program was used to separate free text fields. All fields with medical
-and drug-related information were hand-checked against the original
-forms. The information not needed for analysis was not cleaned. All
-information was kept, so the file contains several versions of the same
-variable.
+The dataset contains 1236 rows and 351 columns. When I tracked down
+the origin of the data, the former investigators informed me that the
+file was composed during the early 1990’s from several parts. The
+basic component consisted of a `Dbase` file with many free text
+fields. A dedicated `Fortran` program was used to separate free text
+fields. All fields with medical and drug-related information were
+hand-checked against the original forms. The information not needed
+for analysis was not cleaned. All information was kept, so the file
+contains several versions of the same variable.
 
 A first scan of the data makes clear that some variables are free text
 fields, person codes and so on. Since these fields cannot be sensibly
-imputed, they are removed from the data. In addition, only the 956 cases
-that were initially visited are selected, as follows:
+imputed, they are removed from the data. In addition, only the 956
+cases that were initially visited are selected, as follows:
 
-\
-`  `\
-`      `\
-`   ``%in%`` `\
-`    `\
-`  `
+```{r c85readdata2}
+```
 
 The frequency distribution of the missing cases per variable can be
 obtained as:
 
-`        `
-
-
-      0   2   3   5   7  14  15  28  29  32  33  34  35  36  40  42
-     87   2   1   1   1   1   2   1   3   2  34  15  25   4   1   1
-     43  44  45  46  47  48  49  50  51  54  64  72  85 103 121 126
-      2   1   4   2   3  24   4   1  20   2   1   4   1   1   1   1
-    137 155 157 168 169 201 202 228 229 230 231 232 233 238 333 350
-      1   1   1   2   1   7   3   5   4   2   4   1   1   1   3   1
-    501 606 635 636 639 642 722 752 753 812 827 831 880 891 911 913
-      3   1   2   1   1   2   1   5   3   1   1   3   3   3   3   1
-    919 928 953 954 955
-      1   1   3   3   3
+```{r c85inspect1}
+```
 
 Ignoring the warning for a moment, we see that there are 87 variables
 that are complete. The set includes administrative variables (e.g.,
 person number), design factors, date of measurement, survival
 indicators, selection variables and so on. The set also included some
 variables for which the missing data were inadvertently not marked,
-containing values such as “999” or “$-$1.” For example, the frequency
+containing values such as “999” or “-1.” For example, the frequency
 distribution of the complete variable “beroep1” (occupation) is
 
-`   `
+```{r c85inspect2}
+```
 
-
-      -1    0    1    2    3    4    5    6 <NA>
-      42    1  576  125  104   47   44   17    0
-
-There are no missing values, but a variable with just categories “$-$1”
-and “0” is suspect. The category “$-$1” likely indicates that the
+There are no missing values, but a variable with just categories “-1”
+and “0” is suspect. The category “-1” likely indicates that the
 information was missing (this was the case indeed). One option is to
-leave this “as is,” so that `mice()` treats it
-as complete information. All cases with a missing occupation are then
-seen as a homogeneous group.
+leave this “as is,” so that `mice()` treats it as complete
+information. All cases with a missing occupation are then seen as a
+homogeneous group.
 
-Two other variables without missing data markers are
-`syst` and `diast`,
-i.e., systolic and diastolic BP classified into six groups. The
-correlation (using the observed pairs) between
-`syst` and `rrsyst`,
-the variable of primary interest, is 0.97. Including
-`syst` into the imputation model for
-`rrsyst` will ruin the imputations. The “as
-is” option is dangerous, and shares some of the same perils of the
-indicator method (cf. Section \@ref(sec:indicator)). The message is that
-variables that are 100% complete deserve appropriate attention.
+Two other variables without missing data markers are `syst` and
+`diast`, i.e., systolic and diastolic BP classified into six groups.
+The correlation (using the observed pairs) between `syst` and
+`rrsyst`, the variable of primary interest, is 0.97. Including `syst`
+into the imputation model for `rrsyst` will ruin the imputations. The
+“as is” option is dangerous, and shares some of the same perils of the
+indicator method (cf. Section \@ref(sec:indicator)). The message is
+that variables that are 100% complete deserve appropriate attention.
 
 After a first round of screening, I found that 57 of the 87 complete
 variables were uninteresting or problematic in some sense. Their names
-were placed on a list named `outlist1` as
-follows:
+were placed on a list named `outlist1` as follows:
 
-`    `\
-`         `\
-
-    [1] 57
+```{r c85inspect4a}
+```
 
 ### Outflux {#c85:influx}
 
-We should also scrutinize the variables at the other end. Variables with
-high proportions of missing data generally create more problems than
-they solve. Unless some of these variables are of genuine interest to
-the investigator, it is best to leave them out. Virtually every dataset
-contains some parts that could better be removed before imputation. This
-includes, but is not limited to, uninteresting variables with a high
-proportion of missing data, variables without a code for the missing
-data, administrative variables, constant variables, duplicated, recoded
-or standardized variables, and aggregates and indices of other
-information.
+We should also scrutinize the variables at the other end. Variables
+with high proportions of missing data generally create more problems
+than they solve. Unless some of these variables are of genuine
+interest to the investigator, it is best to leave them out. Virtually
+every dataset contains some parts that could better be removed before
+imputation. This includes, but is not limited to, uninteresting
+variables with a high proportion of missing data, variables without a
+code for the missing data, administrative variables, constant
+variables, duplicated, recoded or standardized variables, and
+aggregates and indices of other information.
 
-![Global influx-outflux pattern of the Leiden 85+ Cohort data. Variables
-with higher outflux are (potentially) the more powerful predictors.
-Variables with higher influx depend strongly on the imputation
-model.<span
-data-label="fig:c85influx">](fig/ch9_c85flux-1){width="\maxwidth"}
+```{r c85flux,  solo = TRUE, echo = FALSE, fig.cap = '(ref:c85flux)'}
+```
 
-Figure \@ref(fig:c85influx) is the influx-outflux pattern of Leiden 85+
+(ref:c85flux) Global influx-outflux pattern of the Leiden 85+ Cohort
+data. Variables with higher outflux are (potentially) the more
+powerful predictors. Variables with higher influx depend strongly on
+the imputation model.
+
+Figure \@ref(fig:c85flux) is the influx-outflux pattern of Leiden 85+
 Cohort data. The influx of a variable quantifies how well its missing
 data connect to the observed data on other variables. The outflux of a
 variable quantifies how well its observed data connect to the missing
@@ -238,279 +210,227 @@ Though the display could obviously benefit from a better label-placing
 strategy, we can see three groups. All points are relatively close to
 the diagonal, which indicates that influx and outflux are balanced.
 
-The group at the left-upper corner has (almost) complete information, so
-the number of missing data problems for this group is relatively small.
-The intermediate group has an outflux between 0.5 and 0.8, which is
-small. Missing data problems are more severe, but potentially this group
-could contain important variables. The third group has an outflux with
-0.5 and lower, so its predictive power is limited. Also, this group has
-a high influx, and is thus highly dependent on the imputation model.
+The group at the left-upper corner has (almost) complete information,
+so the number of missing data problems for this group is relatively
+small. The intermediate group has an outflux between 0.5 and 0.8,
+which is small. Missing data problems are more severe, but potentially
+this group could contain important variables. The third group has an
+outflux with 0.5 and lower, so its predictive power is limited. Also,
+this group has a high influx, and is thus highly dependent on the
+imputation model.
 
-Note that there are two variables (`hypert1`
-and `aovar`) in the third group that are
-located above the diagonal. Closer inspection reveals that the missing
-data mark had not been set for these two variables. Variables that might
-cause problems later on in the imputations are located in the
-lower-right corner. Under the assumption that this group does not
-contain variables of scientific interest, I transferred 45 variables
-with an outflux $< 0.5$ to `outlist2`:
+Note that there are two variables (`hypert1` and `aovar`) in the third
+group that are located above the diagonal. Closer inspection reveals
+that the missing data mark had not been set for these two variables.
+Variables that might cause problems later on in the imputations are
+located in the lower-right corner. Under the assumption that this
+group does not contain variables of scientific interest, I transferred
+45 variables with an outflux < 0.5 to `outlist2`:
 
-`    `\
-
-    [1] 45
+```{r c85inspect6}
+```
 
 In these data, the set of selected variables is identical to the group
-with more than 500 missing values, but this need not always be the case.
-I removed the 45 variables, recalculated influx and outflux on the
-smaller dataset and selected 32 new variables with outflux $< 0.5$.
+with more than 500 missing values, but this need not always be the
+case. I removed the 45 variables, recalculated influx and outflux on
+the smaller dataset and selected 32 new variables with outflux < 0.5.
 
-`    ``%in%`` `\
-`  `\
-`    `
+```{r c85inspect7}
+```
 
-Variable `outlist3` contains 32 variable
-names, among which are many laboratory measurements. I prefer to keep
-these for imputation since they may correlate well with BP and survival.
-Note that the outflux changed considerably as I removed the 45 least
-observed variables. Influx remained nearly the same.
+Variable `outlist3` contains 32 variable names, among which are many
+laboratory measurements. I prefer to keep these for imputation since
+they may correlate well with BP and survival. Note that the outflux
+changed considerably as I removed the 45 least observed variables.
+Influx remained nearly the same.
 
 ### Finding problems: `loggedEvents`
 
 Another source of information is the list of logged events produced by
-`mice()`. The warning we ignored previously
-indicates that `mice` found some peculiarities
-in the data that need the user’s attention. The logged events form a
-structured report that identify problems with the data, and details
-which corrective actions were taken by
-`mice()`. It is a component called
-`loggedEvents` of the
-`mids` object.
+`mice()`. The warning we ignored previously indicates that `mice`
+found some peculiarities in the data that need the user’s attention.
+The logged events form a structured report that identify problems with
+the data, and details which corrective actions were taken by `mice()`.
+It is a component called `loggedEvents` of the `mids` object.
 
-` `
-
-      it im dep     meth out
-    1  0  0     constant abr
-    2  0  0     constant vo7
-
-` `
-
-       it im dep      meth    out
-    27  0  0     collinear voor10
-    28  0  0     collinear voor11
+```{r c85inspect8}
+```
 
 At initialization, a log entry is made for the following actions:
 
 -   A constant variable is removed from the imputation model,
-    unless the `remove.constant = FALSE`
-    argument is specified;
+    unless the `remove.constant = FALSE` argument is specified;
 
 -   A variable that is collinear with another variable is removed
-    from the imputation model, unless the
-    `remove.collinear = FALSE` argument
-    is specified.
+    from the imputation model, unless the `remove.collinear = FALSE` 
+    argument is specified.
 
 A variable is removed from the model by internal edits of the
-`predictorMatrix`,
-`method`,
-`visitSequence` and
-`post` components of the model. The data are
-kept intact. Note that setting
-`remove.constant = FALSE` or
-`remove.collinear = FALSE` bypasses usual
-safety measures in `mice`, and could cause
-problems further down the road. If a variable has only
-`NA`’s, it is considered a constant variable,
-and will not be imputed. Setting
-`remove.constant = FALSE` will cause numerical
-problems since there are no observed cases to estimate the imputation
-model, but such variables can be imputed by passive imputation by
-specifying the `allow.na = TRUE` argument.
+`predictorMatrix`, `method`, `visitSequence` and `post` components of
+the model. The data are kept intact. Note that setting
+`remove.constant = FALSE` or `remove.collinear = FALSE` bypasses usual
+safety measures in `mice`, and could cause problems further down the
+road. If a variable has only `NA`’s, it is considered a constant
+variable, and will not be imputed. Setting `remove.constant = FALSE`
+will cause numerical problems since there are no observed cases to
+estimate the imputation model, but such variables can be imputed by
+passive imputation by specifying the `allow.na = TRUE` argument.
 
-During execution of the main algorithm, the entries in
-`loggedEvents` can signal the following
-actions:
+During execution of the main algorithm, the entries in `loggedEvents`
+can signal the following actions:
 
 -   A predictor that is constant or correlates higher than 0.999
     with the target variable is removed from the univariate
     imputation model. The cut-off value can be specified by the
     `threshold` argument;
 
--   If all predictors are removed, this is noted in
-    `loggedEvents`, and the imputation model
-    becomes an intercept-only model;
+-   If all predictors are removed, this is noted in `loggedEvents`, 
+    and the imputation model becomes an intercept-only model;
 
 -   The degrees of freedom can become negative, usually because
     there are too many predictors relative to the number of observed
     values for the target. In that case, the degrees of freedom are set
-    to 1, and a note is written to
-    `loggedEvents`.
+    to 1, and a note is written to `loggedEvents`.
 
 A few events may happen just by chance, in which case they are benign.
 However, if there are many entries, it is likely that the imputation
 model is overparametrized, causing sluggish behavior and unstable
 estimates. In that case, the imputation model needs to be simplified.
 
-The `loggedEvents` component of the
-`mids` object is a data frame with five
-columns. The columns `it`,
-`im` stand for iteration and imputation
-number. The column `dep` contains the name of
-the target variable, and is left blank at initialization. Column
-`meth` entry signals the type of problem, e.g.
-`constant`,
-`df set to 1`, and so on. Finally, the column
-`out` contains the names of the removed
-variables. The `loggedEvents` component
-contains vital hints about possible problems with the imputation model.
-Closer examination of these logs could provide insight into the nature
-of the problem. In general, strive for zero entries, in which case the
-`loggedEvent` component is equal to
-`NULL`.
+The `loggedEvents` component of the `mids` object is a data frame with
+five columns. The columns `it`, `im` stand for iteration and
+imputation number. The column `dep` contains the name of the target
+variable, and is left blank at initialization. Column `meth` entry
+signals the type of problem, e.g. `constant`, `df set to 1`, and so
+on. Finally, the column `out` contains the names of the removed
+variables. The `loggedEvents` component contains vital hints about
+possible problems with the imputation model. Closer examination of
+these logs could provide insight into the nature of the problem. In
+general, strive for zero entries, in which case the `loggedEvent`
+component is equal to `NULL`.
 
-Unfortunately, `loggedEvents` is not available
-if `mice` crashes. If that happens, inspect
-the console output to see what the last variable was, and think of
-reasons that might have caused the breakdown, e.g., using a categorical
-predictor with many categories as a predictor. Then remove this from the
-model. Alternatively, lowering `maxit`,
-setting `ridge` to a high value
-(`ridge = 0.01`), or using a more robust
-imputation method (e.g., `pmm`) may get you
-beyond the point where the program broke down. Then, obtain
-`loggedEvents` to detect any problems.
+Unfortunately, `loggedEvents` is not available if `mice` crashes. If
+that happens, inspect the console output to see what the last variable
+was, and think of reasons that might have caused the breakdown, e.g.,
+using a categorical predictor with many categories as a predictor.
+Then remove this from the model. Alternatively, lowering `maxit`,
+setting `ridge` to a high value (`ridge = 0.01`), or using a more
+robust imputation method (e.g., `pmm`) may get you beyond the point
+where the program broke down. Then, obtain `loggedEvents` to detect
+any problems.
 
-Continuing with the analysis, based on the initial output by
-`mice()`, I placed the names of all constant
-and collinear variables on `outlist4` by
+Continuing with the analysis, based on the initial output by `mice()`,
+I placed the names of all constant and collinear variables on
+`outlist4` by
 
-`   `
+```{r c85inspect9}
+```
 
 This outlist contains 28 variables.
 
 ### Quick predictor selection: `quickpred`
 
-The `mice` package contains the function
-`quickpred()` that implements the predictor
-selection strategy of Section \@ref(sec:predictors). In order to apply this
-strategy to the Leiden 85+ Cohort data, I first deleted the variables on
-three of the four outlists created in the previous sections.
+The `mice` package contains the function `quickpred()` that implements
+the predictor selection strategy of Section \@ref(sec:predictors). In
+order to apply this strategy to the Leiden 85+ Cohort data, I first
+deleted the variables on three of the four outlists created in the
+previous sections.
 
-`  `\
-
-    [1] 108
+```{r c85inspect10}
+```
 
 There are 108 unique variables to be removed. Thus, before doing any
 imputations, I cleaned out about one third of the data that are likely
 to cause problems. The downsized data are
 
-`    ``%in%`` `
+```{r c85inspect11}
+```
 
-The next step is to build the imputation model according to the strategy
-outlined above. The function `quickpred()` is
-applied as follows:
+The next step is to build the imputation model according to the
+strategy outlined above. The function `quickpred()` is applied as
+follows:
 
-`     `\
-`       `
+```{r c85quickpred}
+```
 
-There are 198 incomplete variables in `data2`.
-The character vector `inlist` specifies the
-names of the variables that should be included as covariates in every
-imputation model. Here I specified age, sex and blood pressure. Blood
-pressure is the variable of central interest, so I included it in all
-models. This list could be longer if there are more outcome variables.
-The `inlist` could also include design
+There are 198 incomplete variables in `data2`. The character vector
+`inlist` specifies the names of the variables that should be included
+as covariates in every imputation model. Here I specified age, sex and
+blood pressure. Blood pressure is the variable of central interest, so
+I included it in all models. This list could be longer if there are
+more outcome variables. The `inlist` could also include design
 factors.
 
-The `quickpred()` function creates a binary
-predictor matrix of 198 rows and 198 columns. The rows correspond to the
-incomplete variables and the columns report the same variables in their
-role as predictor. The number of predictors varies per row. We can
-display the distribution of the number of predictors by
+The `quickpred()` function creates a binary predictor matrix of 198
+rows and 198 columns. The rows correspond to the incomplete variables
+and the columns report the same variables in their role as predictor.
+The number of predictors varies per row. We can display the
+distribution of the number of predictors by
 
-
-     0  7 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29
-    30  1  2  1  1  2  5  2 13  8 16  9 13  7  5  6 10  6  3  6  4
-    30 31 32 33 34 35 36 37 38 39 40 41 42 44 45 46 49 50 57 59 60
-     8  3  6  9  2  4  6  2  5  2  4  2  3  4  3  3  3  1  1  1  1
-    61 68 79 83 85
-     1  1  1  1  1
+```{r c85predinspect1}
+```
 
 The variability in model sizes is substantial. The 30 rows with no
-predictors are complete. The mean number of predictors is equal to 24.8.
-It is possible to influence the number of predictors by altering the
-values of `mincor` and
-`minpuc` in
-`quickpred()`. A number of predictors of 15–25
-is about right (cf. Section \@ref(sec:predictors)), so I decided to accept
-this predictor matrix. The number of predictors for systolic and
-diastolic BP are
+predictors are complete. The mean number of predictors is equal to
+24.8. It is possible to influence the number of predictors by altering
+the values of `mincor` and `minpuc` in `quickpred()`. A number of
+predictors of 15–25 is about right (cf. Section
+\@ref(sec:predictors)), so I decided to accept this predictor matrix.
+The number of predictors for systolic and diastolic BP are
 
-` `
+```{r c85predinspect2}
+```
 
-     rrsyst rrdiast
-         41      36
+The names of the predictors for `rrsyst` can be obtained by
 
-The names of the predictors for `rrsyst` can
-be obtained by
-
-`  `
+```{r c85predinspect3, eval = FALSE}
+```
 
 It is sometimes useful the inspect the correlations of the predictors
-selected by `quickpred()`. Table 3 in
-@VANBUUREN1999 provides an example. For a given variable, the
-correlations can be tabulated by
+selected by `quickpred()`. Table 3 in @VANBUUREN1999 provides an
+example. For a given variable, the correlations can be tabulated by
 
-`  `\
-`     `\
-`    `\
-`       `
+```{r c85predinspect4, eval = FALSE}
+```
 
 ### Generating the imputations
 
+```{r c85fetch, echo = FALSE}
+```
+
 Everything is now ready to impute the data as
 
-`       `
+```{r c85imputesmart, eval = FALSE}
+```
 
 Thanks to the smaller dataset and the more compact imputation model,
 this code runs about 50 times faster than “blind imputation” as
-practiced in Section \@ref(sec:toomany). More importantly, the new solution
-is much better. To illustrate the latter, take a look at Figure
-\@ref(fig:blindvsquickpred).
+practiced in Section \@ref(sec:toomany). More importantly, the new
+solution is much better. To illustrate the latter, take a look at
+Figure \@ref(fig:blindvsquickpred).
 
-![Scatterplot of systolic and diastolic blood pressure from the first
-imputation. The left-hand-side plot was obtained after just running
-`mice()` on the data without any data
+```{r blindvsquickpred, echo = FALSE, fig.asp = 4/6, fig.cap = '(ref:blindvsquickpred)'}
+```
+
+(ref:blindvsquickpred) Scatterplot of systolic and diastolic blood
+pressure from the first imputation. The left-hand-side plot was
+obtained after just running `mice()` on the data without any data
 screening. The right-hand-side plot is the result after cleaning the
-data and setting up the predictor matrix with
-`quickpred()`. Leiden 85+ Cohort data.<span
-data-label="fig:blindvsquickpred">](fig/ch9_c85scatterplot-1){width="\maxwidth"}
+data and setting up the predictor matrix with `quickpred()`. Leiden
+85+ Cohort data.
 
-The figure is the scatterplot of `rrsyst` and
-`rrdiast` of the first imputed dataset. The
-left-hand figure shows what can happen if the data are not properly
-screened. In this particular instance, a forgotten missing data mark of
-“$-1$” was counted as a valid blood pressure value, and produced
-imputation that are far off. In contrast, the imputations created with
-the help of `quickpred()` look reasonable.
+The figure is the scatterplot of `rrsyst` and `rrdiast` of the first
+imputed dataset. The left-hand figure shows what can happen if the
+data are not properly screened. In this particular instance, a
+forgotten missing data mark of “-1” was counted as a valid blood
+pressure value, and produced imputation that are far off. In contrast,
+the imputations created with the help of `quickpred()` look
+reasonable.
 
 The plot was created by the following code:
 
-`   `\
-`  `\
-`  `\
-`   `\
-`                    `\
-`  `\
-`    `\
-`      `\
-`      `\
-`          `\
-`          `\
-`         `\
-`            `\
-`          `\
-`           `\
-`               `
+```{r c85trellis, eval = FALSE}
+```
 
 ### A further improvement: Survival as predictor variable
 
@@ -521,26 +441,26 @@ addition, the event indicator should be included into the model. The
 Nelson-Aalen estimate of $H_0(T)$ in the Leiden 85+ Cohort can be
 calculated as
 
-`       `\
-`  `
+```{r c85nelson}
+```
 
-where `dead` is coded such that “1” means
-death. The `nelsonaalen()` function is part of
-`mice`. Table \@ref(tab:c85hazardcor) lists the
+where `dead` is coded such that “1” means death. The `nelsonaalen()`
+function is part of `mice`. Table \@ref(tab:c85hazardcor) lists the
 correlations beween several key variables. The correlation between
 $H_0(T)$ and $T$ is almost equal to 1, so for these data it matters
 little whether we take $H_0(T)$ or $T$ as the predictor. The high
 correlation may be caused by the fact that nearly everyone in this
-cohort has died, so the percentage of censoring is low. The correlation
-between $H_0(T)$ and $T$ could be lower in other epidemiological
-studies, and thus it might matter whether we take $H_0(T)$ or $T$.
-Observe that the correlation between log($T$) and blood pressure is
-higher than for $H_0(T)$ or $T$, so it makes sense to add log($T$) as an
-additional predictor. This strong relation may have been a consequence
-of the design, as the frail people were measured first.
+cohort has died, so the percentage of censoring is low. The
+correlation between $H_0(T)$ and $T$ could be lower in other
+epidemiological studies, and thus it might matter whether we take
+$H_0(T)$ or $T$. Observe that the correlation between log($T$) and
+blood pressure is higher than for $H_0(T)$ or $T$, so it makes sense
+to add log($T$) as an additional predictor. This strong relation may
+have been a consequence of the design, as the frail people were
+measured first.
 
-  ---------- ---------- ------- ---------- ------- -------
                $H_0(T)$     $T$   log($T$)     SBP     DBP
+  ---------- ---------- ------- ---------- ------- -------
   $H_0(T)$        1.000   0.997      0.830   0.169   0.137
   $T$             0.997   1.000      0.862   0.176   0.141
   log($T$)        0.830   0.862      1.000   0.205   0.151
@@ -548,19 +468,19 @@ of the design, as the frail people were measured first.
   DBP             0.137   0.141      0.151   0.592   1.000
   ---------- ---------- ------- ---------- ------- -------
 
-  : Pearson correlations between the cumulative death hazard $H_0(T)$,
-  survival time $T$, log($T$), systolic and diastolic blood
-  pressure.<span data-label="tab:c85hazardcor">
+: (\#tab:c85hazardcor) Pearson correlations between the cumulative
+death hazard $H_0(T)$, survival time $T$, log($T$), systolic and
+diastolic blood pressure.
 
 ### Some guidance
 
-Imputing data with many columns is challenging. Even the most carefully
-designed and well-maintained data may contain information or errors that
-can send the imputations awry. I conclude this section by summarizing
-advice for imputation of data with “too many columns.”
+Imputing data with many columns is challenging. Even the most
+carefully designed and well-maintained data may contain information or
+errors that can send the imputations awry. I conclude this section by
+summarizing advice for imputation of data with “too many columns.”
 
-1.  Inspect all complete variables for forgotten missing
-    data marks. Repair or remove these variables. Even one forgotten
+1.  Inspect all complete variables for forgotten missing data 
+    marks. Repair or remove these variables. Even one forgotten
     mark may ruin the imputation model. Remove outliers with
     improbable values.
 
@@ -569,10 +489,9 @@ advice for imputation of data with “too many columns.”
     important, remove variables with low outflux, or with high fractions
     of missing data.
 
-3.  Perform a dry run with `maxit=0` and
-    inspect the logged events produced by
-    `mice()`. Remove any constant and
-    collinear variables before imputation.
+3.  Perform a dry run with `maxit=0` and inspect the logged events 
+    produced by `mice()`. Remove any constant and collinear variables 
+    before imputation.
 
 4.  Find out what will happen after the data have been imputed.
     Determine a set of variables that are important in subsequent
@@ -580,15 +499,12 @@ advice for imputation of data with “too many columns.”
     variables to improve predictability and coherence in the
     complete-data model.
 
-5.  Run `quickpred()`, and determine
-    values of `mincor` and
-    `minpuc` such that the average number of
-    predictors is around 25.
+5.  Run `quickpred()`, and determine values of `mincor` and `minpuc` 
+    such that the average number of predictors is around 25.
 
 6.  After imputation, determine whether the generated imputations
     are sensible by comparing them to the observed information, and to
-    knowledge external to the data. Revise the model
-    where needed.
+    knowledge external to the data. Revise the model where needed.
 
 7.  Document your actions and decisions, and obtain feedback from
     the owner of the data.
@@ -601,191 +517,192 @@ needs.
 ## Sensitivity analysis {#sec:sensitivity}
 
 The imputations created in Section \@ref(sec:toomany) are based on the
-assumption that the data are MAR (cf. Sections \@ref(sec:MCAR) and
-\@ref(sec:MCARreprise)). While this is often a good starting assumption, it
-may not be realistic for the data at hand. When the data are not MAR, we
-can follow two strategies to obtain plausible imputations. The first
-strategy is to make the data “more MAR.” In particular, this strategy
-requires us to identify additional information that explains differences
-in the probability to be missing. This information is then used to
-generate imputations conditional on that information. The second
-strategy is to perform a sensitivity analysis. The goal of the
-sensitivity analysis is to explore the result of the analysis under
-alternative scenarios for the missing data. See Section
-\@ref(sec:whenignorable) for a more elaborate discussion of these
-strategies.
+assumption that the data are MAR (cf. Sections \@ref(sec:MCAR) and
+\@ref(sec:MCARreprise)). While this is often a good starting
+assumption, it may not be realistic for the data at hand. When the
+data are not MAR, we can follow two strategies to obtain plausible
+imputations. The first strategy is to make the data “more MAR.” In
+particular, this strategy requires us to identify additional
+information that explains differences in the probability to be
+missing. This information is then used to generate imputations
+conditional on that information. The second strategy is to perform a
+sensitivity analysis. The goal of the sensitivity analysis is to
+explore the result of the analysis under alternative scenarios for the
+missing data. See Section \@ref(sec:whenignorable) for a more
+elaborate discussion of these strategies.
 
 This section explores sensitivity analysis for the Leiden 85+ Cohort
 data. In sensitivity analysis, imputations are generated according to
-one or more scenarios. The number of possible scenarios is infinite, but
-these are not equally likely. A scenario could be very simple, like
-assuming that everyone with a missing value had scored a “yes,” or
-assuming that those with missing blood pressures have the minimum
+one or more scenarios. The number of possible scenarios is infinite,
+but these are not equally likely. A scenario could be very simple,
+like assuming that everyone with a missing value had scored a “yes,”
+or assuming that those with missing blood pressures have the minimum
 possible value. While easy to interpret, such extreme scenarios are
-highly unlikely. Preferably, we should attempt to make an educated guess
-about both the direction and the magnitude of the missing data had they
-been observed. By definition, this guess needs to be based on external
-information beyond the data.
+highly unlikely. Preferably, we should attempt to make an educated
+guess about both the direction and the magnitude of the missing data
+had they been observed. By definition, this guess needs to be based on
+external information beyond the data.
 
 ### Causes and consequences of missing data {#sec:c85causes}
 
 We continue with the Leiden 85+ Cohort data described in Section
 \@ref(sec:toomany). The objective is to estimate the effect of blood
-pressure (BP) on mortality. BP was not measured for 126 individuals (121
-systolic, 126 diastolic).
+pressure (BP) on mortality. BP was not measured for 126 individuals
+(121 systolic, 126 diastolic).
 
-![Kaplan–Meier curves of the Leiden 85+ Cohort, stratified according to
-missingness. The figure shows the survival probability since intake for
-the group with observed BP measures (gray) and the group
-with missing BP measures (red).<span
-data-label="fig:c85km">](fig/ch9_c85km-1){width="\maxwidth"}
+```{r c85km, echo=FALSE, fig.cap = '(ref:c85km)'}
+```
 
-The missingness is strongly related to survival. Figure \@ref(fig:c85km)
-displays the Kaplan-Meier survival curves for those with ($n=835$) and
-without ($n=121$) a measurement of systolic BP (SBP). BP measurement was
-missing for a variety of reasons. Sometimes there was a time constraint.
-In other cases the investigator did not want to place an additional
-burden on the respondent. Some subjects were too ill to be measured.
+(ref:c85km) Kaplan–Meier curves of the Leiden 85+ Cohort, stratified
+according to missingness. The figure shows the survival probability
+since intake for the group with observed BP measures (blue) and the
+group with missing BP measures (red).
 
-lcrr Variable&&Observed BP&Missing BP\
-Age (year)&$p<0.0001$\
-85–89&&63&48\
-90–94&&32&34\
-95+&&6&18\
-\
-Type of residence&$p<0.0001$\
-Independent&&52&35\
-Home for elderly&&35&54\
-Nursing home&&13&12\
-\
-Activities of daily living (ADL)&$p<0.001$\
-Independent&&73&54\
-Dependent on help&&27&46\
-\
-History of hypertension&$p=0.06$\
-No&&77&85\
-Yes&&23&15\
+The missingness is strongly related to survival. Figure
+\@ref(fig:c85km) displays the Kaplan-Meier survival curves for those
+with ($n=835$) and without ($n=121$) a measurement of systolic BP
+(SBP). BP measurement was missing for a variety of reasons. Sometimes
+there was a time constraint. In other cases the investigator did not
+want to place an additional burden on the respondent. Some subjects
+were too ill to be measured.
 
-Table \@ref(tab:c85rdist) indicates that BP was measured less frequently
-for very old persons and for persons with health problems. Also, BP was
-measured more often if the BP was too high, for example if the
-respondent indicated a previous diagnosis of hypertension, or if the
-respondent used any medication against hypertension. The missing data
-rate of BP also varied during the period of data collection. The rate
-gradually increases during the first seven months of the sampling period
-from 5 to 40 percent of the cases, and then suddenly drops to a fairly
-constant level of 10–15 percent. A complicating factor here is that the
-sequence in which the respondents were interviewed was not random.
-High-risk groups, that is, elderly in hospitals and nursing homes and
-those over 95, were visited first.
+Variable       |          |Observed BP | Missing BP
+:--------------|---------:|-----------:|-----------:
+Age (year)     |$p<0.0001$|            |
+85–89                 |          |        63  | 48
+90–94                 |          |        32  | 34
+95+                   |          |         6  | 18
+                      |          |            | 
+Type of residence     |$p<0.0001$|            |
+Independent           |          |        52  | 35
+Home for elderly      |          |        35  | 54
+Nursing home          |          |        13  |12
+                      |          |            | 
+Activities of daily living (ADL)|$p<0.001$| | |
+Independent           |          |        73  | 54
+Dependent on help     |          |        27  | 46
+                      |          |            | 
+History of hypertension|$p=0.06$ |            |
+No                    |          |        77  | 85
+Yes                   |          |        23  | 15
 
-  Survived
-  ---------- ------- ---------- ------ ----------
+: (\#tab:c85rdist) Some variables that have different
+distributions in the response ($n=835$) and nonresponse groups
+($n=121$). Shown are rounded percentages. Significance levels
+correspond to the $\chi^2$-test.
 
-  Yes           8.7%   (34/390)   8.1%   (10/124)
-  No           19.2%   (69/360)   9.8%     (8/82)
+Table \@ref(tab:c85rdist) indicates that BP was measured less
+frequently for very old persons and for persons with health problems.
+Also, BP was measured more often if the BP was too high, for example
+if the respondent indicated a previous diagnosis of hypertension, or
+if the respondent used any medication against hypertension. The
+missing data rate of BP also varied during the period of data
+collection. The rate gradually increases during the first seven months
+of the sampling period from 5 to 40 percent of the cases, and then
+suddenly drops to a fairly constant level of 10–15 percent. A
+complicating factor here is that the sequence in which the respondents
+were interviewed was not random. High-risk groups, that is, elderly in
+hospitals and nursing homes and those over 95, were visited first.
 
-  : Proportion of persons for which no BP was measured, cross-classified
-  by three-year survival and previous hypertension history. Shown are
-  proportions per cell (number of cases with missing BP/total cell
-  count).<span data-label="tab:c85pmiss">
+Survived    | Hypertension: No | Hypertension: Yes 
+:-----------|-----------------:|-----------------:
+Yes         |  8.7% (34/390)   |   8.1% (10/124)
+No          | 19.2% (69/360)   |   9.8%   (8/82)
 
-Table \@ref(tab:c85pmiss) contains the proportion of persons for which BP
-was not measured, cross-classified by three-year survival and history of
-hypertension as measured during anamnesis. Of all persons who die within
-three years and that have no history of hypertension, more than 19% have
-no BP score. The rate for other categories is about 9%. This suggests
-that a relatively large group of individuals without hypertension and
-with high mortality risk is missing from the sample for which BP is
-known.
+: (\#tab:c85pmiss) Proportion of persons for which no BP was measured,
+cross-classified by three-year survival and previous hypertension
+history. Shown are proportions per cell (number of cases with missing
+BP/total cell count).
+
+Table \@ref(tab:c85pmiss) contains the proportion of persons for which
+BP was not measured, cross-classified by three-year survival and
+history of hypertension as measured during anamnesis. Of all persons
+who die within three years and that have no history of hypertension,
+more than 19% have no BP score. The rate for other categories is about
+9%. This suggests that a relatively large group of individuals without
+hypertension and with high mortality risk is missing from the sample
+for which BP is known.
 
 Using only the complete cases could lead to confounding by selection.
 The complete-case analysis might underestimate the mortality of the
 lower and normal BP groups, thereby yielding a distorted impression of
-the influence of BP on survival. This reasoning is somewhat tentative as
-it relies on the use of hypertension history as a proxy for BP. If true,
-however, we would expect more missing data from the lower BP measures.
-It is known that BP and mortality are inversely related in this age
-group, that is, lower BP is associated with higher mortality. If there
-are more missing data for those with low BP and high mortality (as in
-Table \@ref(tab:c85pmiss)), selection of the complete cases could blur the
-effect of BP on mortality.
+the influence of BP on survival. This reasoning is somewhat tentative
+as it relies on the use of hypertension history as a proxy for BP. If
+true, however, we would expect more missing data from the lower BP
+measures. It is known that BP and mortality are inversely related in
+this age group, that is, lower BP is associated with higher mortality.
+If there are more missing data for those with low BP and high
+mortality (as in Table \@ref(tab:c85pmiss)), selection of the complete
+cases could blur the effect of BP on mortality.
 
 ### Scenarios
 
-The previous section presented evidence that there might be more missing
-data for the lower blood pressures. Imputing the data under MAR can only
-account for nonresponse that is related to the observed data. However,
-the missing data may also be caused by factors that have not been
-observed. In order to study the influence of such factors on the final
-inferences, let us conduct a sensitivity analysis.
+The previous section presented evidence that there might be more
+missing data for the lower blood pressures. Imputing the data under
+MAR can only account for nonresponse that is related to the observed
+data. However, the missing data may also be caused by factors that
+have not been observed. In order to study the influence of such
+factors on the final inferences, let us conduct a sensitivity
+analysis.
 
-Section \@ref(sec:nonignorable) advocated the use of simple adjustments to
-the imputed data as a way to perform sensitivity analysis. Table
-\@ref(tab:delta) lists possible values for an offset $\delta$, together
-with an interpretation whether the value would be (too) small or (too)
-large. The next section uses the following range for $\delta$: 0mmHg
-(MCAR, too small), $-$5mmHg (small), $-$10mmHg (large), $-$15mmHg
-(extreme) and $-$20mmHg (too extreme). The last value is unrealistically
-low, and is primarily included to study the stability of the analysis in
-the extreme.
+Section \@ref(sec:nonignorable) advocated the use of simple
+adjustments to the imputed data as a way to perform sensitivity
+analysis. Table \@ref(tab:delta) lists possible values for an offset
+$\delta$, together with an interpretation whether the value would be
+(too) small or (too) large. The next section uses the following range
+for $\delta$: 0 mmHg (MCAR, too small), -5 mmHg (small), -10 mmHg
+(large), -15 mmHg (extreme) and -20 mmHg (too extreme). The last value
+is unrealistically low, and is primarily included to study the
+stability of the analysis in the extreme.
 
 ### Generating imputations under the $\delta$-adjustment
 
-Subtracting a fixed amount from the imputed values is easily achieved by
-the `post` processing facility in
-`mice()`. The following code first imputes
-under $\delta = 0$mmHg (MAR), then under $\delta = -5$mmHg, and so on.
+Subtracting a fixed amount from the imputed values is easily achieved
+by the `post` processing facility in `mice()`. The following code
+first imputes under $\delta = 0$mmHg (MAR), then under 
+$\delta$ = -5 mmHg, and so on.
 
-`      `\
-`  `\
-`   `\
-\
-`   ``(delta)) {`\
-`    `\
-`    `\
-`    `\
-`           `\
-`                 `\
-`    `\
+```{r c85undamped, eval = FALSE}
+```
 
 Note that we specify an adjustment in SBP only. Since imputed SBP is
-used to impute other incomplete variables, $\delta$ will also affect the
-imputations in those. The strength of the effect depends on the
+used to impute other incomplete variables, $\delta$ will also affect
+the imputations in those. The strength of the effect depends on the
 correlation between SBP and the variable. Thus, using a
 $\delta$-adjustment for just one variable will affect many.
 
-    $\delta$   Difference
-  ---------- ------------
-           0       $-$8.2
-        $-$5      $-$12.3
-       $-$10      $-$20.7
-       $-$15      $-$26.1
-       $-$20      $-$31.5
+  $\delta$ | Difference 
+----------:|-----------:
+       0   |   -8.2     
+      -5   |  -12.3     
+     -10   |  -20.7     
+     -15   |  -26.1     
+     -20   |  -31.5     
 
-  : Realized difference in means of the observed and imputed SBP (mmHg)
-  data under various $\delta$-adjustments. The number of multiple
-  imputations is $m = 5$.<span data-label="tab:c85diff">
+: (\#tab:c85diff) Realized difference in means of the observed and
+imputed SBP (mmHg) data under various $\delta$-adjustments. The number
+of multiple imputations is $m$ = 5.
 
-The mean of the observed systolic blood pressures is equal to 152.9mmHg.
-Table \@ref(tab:c85diff) provides the differences in means between the
-imputed and observed data as a function of $\delta$. For $\delta = 0$,
-i.e., under MAR, we find that the imputations are on average 8.2mmHg
-lower than the observed blood pressure, which is in line with the
-expectations. As intended, the gap between observed and imputed
-increases as $\delta$ decreases.
+The mean of the observed systolic blood pressures is equal to 152.9
+mmHg. Table \@ref(tab:c85diff) provides the differences in means
+between the imputed and observed data as a function of $\delta$. For
+$\delta$ = 0, i.e., under MAR, we find that the imputations are on
+average 8.2 mmHg lower than the observed blood pressure, which is in
+line with the expectations. As intended, the gap between observed and
+imputed increases as $\delta$ decreases.
 
-Note that for $\delta = -10$mmHg, the magnitude of the difference with
-the MAR case ($-20.7+8.2=-12.5$mmHg) is somewhat larger in size than
-$\delta$. The same holds for $\delta=-15$mmHg and $\delta=-20$mmHg. This
-is due to feedback of the $\delta$-adjustment itself via third
-variables. It is possible to correct for this, for example by
-multiplying $\delta$ by a damping factor $\sqrt{1-r^2}$, with $r^2$ the
-proportion of explained variance of the imputation model for SBP. In
-`R` this can be done by changing the
-expression for `cmd` as
+Note that for $\delta$ = -10 mmHg, the magnitude of the difference
+with the MAR case (-20.7 + 8.2 = -12.5 mmHg) is somewhat larger in
+size than $\delta$. The same holds for $\delta$ = -15 mmHg and
+$\delta$ = -20 mmHg. This is due to feedback of the
+$\delta$-adjustment itself via third variables. It is possible to
+correct for this, for example by multiplying $\delta$ by a damping
+factor $\sqrt{1-r^2}$, with $r^2$ the proportion of explained variance
+of the imputation model for SBP. In `R` this can be done by changing
+the expression for `cmd` as
 
-`  `
+```{r c85damper, eval = FALSE}
+```
 
 As the estimates of the complete-data model turned out to be very
 similar to the “raw” $\delta$, this route is not further explored.
@@ -795,127 +712,130 @@ similar to the “raw” $\delta$, this route is not further explored.
 The complete-data model is a Cox regression with survival since intake
 as the outcome, and with blood pressure groups as the main explanatory
 variable. The analysis is stratified by sex and age group. The
-preliminary data transformations needed for this analysis were performed
-as follows:
+preliminary data transformations needed for this analysis were
+performed as follows:
 
-`  `\
-`              `\
-`                                    `\
-`            `\
-`         `\
-`    `\
-`               `\
-`           `\
-`  `\
-`  `
+```{r c85readimp, echo = FALSE}
+```
 
-The `cda` object is an expression vector
-containing several statements needed for the complete-data model. The
-`cda` object will be evaluated within the
-environment of the imputed data, so (imputed) variables like
-`rrsyst` and
-`survda` are available during execution.
-Derived variables like `sbpgp` and
-`agegp` are temporary and disappear
+```{r c85cda}
+```
+
+The `cda` object is an expression vector containing several statements
+needed for the complete-data model. The `cda` object will be evaluated
+within the environment of the imputed data, so (imputed) variables
+like `rrsyst` and `survda` are available during execution. Derived
+variables like `sbpgp` and `agegp` are temporary and disappear
 automatically. When evaluated, the expression vector returns the value
-of the last expression, in this case the object produced by
-`coxph()`. The expression vector provides a
-flexible way to apply `R` code to the imputed
-data. Do not forget to include commas to separate the individual
-expressions. The pooled hazard ratio per SBP group can be calculated by
+of the last expression, in this case the object produced by `coxph()`.
+The expression vector provides a flexible way to apply `R` code to the
+imputed data. Do not forget to include commas to separate the
+individual expressions. The pooled hazard ratio per SBP group can be
+calculated by
 
-` `
+```{r c85hazardratio}
+```
 
-    [1] 1.758 1.433 1.065 1.108 0.861
+$\delta$ | < 125 mmHg     | 125-140 mmHg   | > 200 mmHG
+--------:|---------------:|---------------:|---------------:
+        0|1.76 (1.36–2.28)|1.43 (1.16–1.77)|0.86 (0.44–1.67)
+       -5|1.81 (1.42–2.30)|1.45 (1.18–1.79)|0.88 (0.50–1.55)
+      -10|1.89 (1.47–2.44)|1.50 (1.21–1.86)|0.90 (0.51–1.59)
+      -15|1.82 (1.39–2.40)|1.45 (1.14–1.83)|0.88 (0.49–1.57)
+      -20|1.80 (1.39–2.35)|1.46 (1.17–1.83)|0.85 (0.48–1.50)
+         |                |                |     
+      CCA|1.76 (1.36–2.28)|1.48 (1.19–1.84)|0.89 (0.51–1.57)
 
-rrrrrrr $\delta$ & &\
-0&1.76&(1.36–2.28)&1.43&(1.16–1.77)&0.86&(0.44–1.67)\
--5&1.81&(1.42–2.30)&1.45&(1.18–1.79)&0.88&(0.50–1.55)\
--10&1.89&(1.47–2.44)&1.50&(1.21–1.86)&0.90&(0.51–1.59)\
--15&1.82&(1.39–2.40)&1.45&(1.14–1.83)&0.88&(0.49–1.57)\
--20&1.80&(1.39–2.35)&1.46&(1.17–1.83)&0.85&(0.48–1.50)\
-\
-CCA&1.76&(1.36–2.28)&1.48&(1.19–1.84)&0.89&(0.51–1.57)\
+: (\#tab:c85sensresults) Hazard ratio estimates (with 95% confidence
+interval) of the classic proportional hazards model. The estimates are
+relative to the reference group (145-160 mmHg). Rows correspond to
+different scenarios in the $\delta$-adjustment. The row labeled “CCA”
+contains results of the complete-case analysis.
 
-Table \@ref(tab:c85sensresults) provides the hazard ratio estimates under
-the different scenarios for three SBP groups. A risk ratio of 1.76 means
-that the mortality risk (after correction for sex and age) in the group
-“&lt;125mmHg” is 1.76 times the risk of the reference group
-“145–160mmHg.” The inverse relation relation between mortality and blood
-pressure in this age group is consistent, where even the group with the
-highest blood pressures have (nonsignificant) lower risks.
+Table \@ref(tab:c85sensresults) provides the hazard ratio estimates
+under the different scenarios for three SBP groups. A risk ratio of
+1.76 means that the mortality risk (after correction for sex and age)
+in the group “< 125mmHg” is 1.76 times the risk of the reference group
+“145-160mmHg.” The inverse relation relation between mortality and
+blood pressure in this age group is consistent, where even the group
+with the highest blood pressures have (nonsignificant) lower risks.
 
-Though the imputations differ dramatically under the various scenarios,
-the hazard ratio estimates for different $\delta$ are close. Thus, the
-results are essentially the same under all specified MNAR mechanisms.
-Also observe that the results are close to those from the analysis of
-the complete cases.
+Though the imputations differ dramatically under the various
+scenarios, the hazard ratio estimates for different $\delta$ are
+close. Thus, the results are essentially the same under all specified
+MNAR mechanisms. Also observe that the results are close to those from
+the analysis of the complete cases.
 
 ### Conclusion
 
 Sensitivity analysis is an important tool for investigating the
-plausibility of the MAR assumption. This section explored the use of an
-informal, simple and direct method to create imputations under
+plausibility of the MAR assumption. This section explored the use of
+an informal, simple and direct method to create imputations under
 nonignorable models by simply deducting some amount from the
 imputations.
 
-Section \@ref(sec:nonignorableoverview) discussed shift, scale and shape
-parameters for nonignorable models. We only used a shift parameter here,
-which suited our purposes in the light of what we knew about the causes
-of the missing data. In other applications, scale or shape parameters
-could be more natural. The calculations are easily adapted to such
-cases.
+Section \@ref(sec:nonignorableoverview) discussed shift, scale and
+shape parameters for nonignorable models. We only used a shift
+parameter here, which suited our purposes in the light of what we knew
+about the causes of the missing data. In other applications, scale or
+shape parameters could be more natural. The calculations are easily
+adapted to such cases.
 
 ## Correct prevalence estimates from self-reported data {#sec:prevalence}
 
+```{r readdata7a, echo = FALSE}
+```
+
 ### Description of the problem
 
-Prevalence estimates for overweight and obesity are preferably based on
-standardized measured data of height and weight. However, obtaining such
-measures is logistically challenging and costly. An alternative is to
-ask persons to report their own height and weight. It is well known that
-such measures are subject to systematic biases. People tend to
-overestimate their height and underestimate their weight. A recent
+Prevalence estimates for overweight and obesity are preferably based
+on standardized measured data of height and weight. However, obtaining
+such measures is logistically challenging and costly. An alternative
+is to ask persons to report their own height and weight. It is well
+known that such measures are subject to systematic biases. People tend
+to overestimate their height and underestimate their weight. A recent
 overview covering 64 studies can be found in @GORBER2007.
 
-![Underestimation of obesity prevalence in self-reported data.
-Self-reported BMI is on average 1–2$\mathrm{kg}/\mathrm{m}^2$ too low.
-Lines are fitted by LOWESS.<span
-data-label="fig:plotbmi">](fig/ch9_plotbmi-1){width="\maxwidth"}
+```{r plotbmi, solo = TRUE, echo = FALSE, fig.asp = 3/4.5, fig.cap = '(ref:plotbmi)'}
+```
+
+(ref:plotbmi) Underestimation of obesity prevalence in self-reported
+data. Self-reported BMI is on average 1–2$\mathrm{kg}/\mathrm{m}^2$
+too low. Lines are fitted by LOWESS.
 
 Body Mass Index (BMI) is calculated from height and weight as
 $\mathrm{kg}/\mathrm{m}^2$. For BMI both biases operate in the same
 direction, so any self-reporting biases are amplified in BMI. Figure
-\@ref(fig:plotbmi) is drawn from data of @KRUL2010. Self-reported BMI is on
-average 1–2$\mathrm{kg}/\mathrm{m}^2$ lower than measured BMI.
+\@ref(fig:plotbmi) is drawn from data of @KRUL2010. Self-reported BMI
+is on average 1–2$\mathrm{kg}/\mathrm{m}^2$ lower than measured BMI.
 
-BMI values can be categorized into underweight (BMI $< 18.5$), normal
-($18.5\leq \mathrm{BMI}<25$), overweight ($25\leq
-\mathrm{BMI}<30$), and obese ($\mathrm{BMI}\geq 30$). Self-reported BMI
-may assign subjects to a category that is too low. In Figure
-\@ref(fig:plotbmi) persons in the white area labeled “1” are obese
-according to both self-reported and measured BMI. Persons in the white
-area labeled “3” are non-obese. The shaded areas represent disagreement
-between measured and self-reported obesity. The shaded area “4” are
-obese according to measured BMI, but not to self-report. The reverse
-holds for the shaded area “2.” Due to self-reporting bias, the number of
-persons located in area “4” is generally larger than in area “2,”
-leading to underestimation. There have been many attempts to correct
-measured height and weight for bias using predictive equations. These
-attempts have generally not been successful. The estimated prevalences
-were often still found to be too low after correction. Moreover, there
-is substantial heterogeneity in the proposed predictive formulae,
-resulting in widely varying prevalence estimates. See @VISSCHER2006 for
-a summary of these issues. The current consensus is that it is not
-possible to estimate overweight and obesity prevalence from
-self-reported data. @DAUPHINOT2008 even suggested to lower cut-off
-values for obesity based on self-reported data.
+BMI values can be categorized into underweight (BMI $<$ 18.5), normal
+(18.5 $\leq$ BMI $<$ 25), overweight (25 $\leq$ BMI $<$ 30), and obese
+(BMI $\geq$ 30). Self-reported BMI may assign subjects to a category
+that is too low. In Figure \@ref(fig:plotbmi) persons in the white
+area labeled “1” are obese according to both self-reported and
+measured BMI. Persons in the white area labeled “3” are non-obese. The
+shaded areas represent disagreement between measured and self-reported
+obesity. The shaded area “4” are obese according to measured BMI, but
+not to self-report. The reverse holds for the shaded area “2.” Due to
+self-reporting bias, the number of persons located in area “4” is
+generally larger than in area “2,” leading to underestimation. There
+have been many attempts to correct measured height and weight for bias
+using predictive equations. These attempts have generally not been
+successful. The estimated prevalences were often still found to be too
+low after correction. Moreover, there is substantial heterogeneity in
+the proposed predictive formulae, resulting in widely varying
+prevalence estimates. See @VISSCHER2006 for a summary of these issues.
+The current consensus is that it is not possible to estimate
+overweight and obesity prevalence from self-reported data.
+@DAUPHINOT2008 even suggested to lower cut-off values for obesity
+based on self-reported data.
 
 The goal is to estimate obesity prevalence in the population from
-self-reported data. This estimate should be unbiased in the sense that,
-on average, it should be equal to the estimate that would have been
-obtained had data been truly measured. Moreover, the estimate must be
-accompanied by a standard error or a confidence interval.
+self-reported data. This estimate should be unbiased in the sense
+that, on average, it should be equal to the estimate that would have
+been obtained had data been truly measured. Moreover, the estimate
+must be accompanied by a standard error or a confidence interval.
 
 ### Don’t count on predictions {#sec:dontcount}
 
@@ -923,75 +843,76 @@ Table 4 in @VISSCHER2006 lists 36 predictive equations that have been
 proposed over the years. @VISSCHER2006 observed that these equations
 predict too low. This section explains why this happens.
 
-![Illustration of the bias of predictive equations. In general, the
-combined region 2 + 3b will have fewer cases than region 4a. Thiscauses
-a downward bias in the prevalence estimate.<span
-data-label="fig:plotexplain">](fig/ch9_plotexplain-1){width="\maxwidth"}
+```{r plotexplain, solo = TRUE, echo = FALSE, fig.cap = '(ref:plotexplain)'}
+```
 
-Figure \@ref(fig:plotexplain) plots 
-the data of Figure \@ref(fig:plotbmi) in a
-different way. The figure is centered around the BMI of
-30$\mathrm{kg}/\mathrm{m}^2$. The two dashed lines divide the area into
-four quadrants. Quadrant 1 contains the cases that are obese according
-to both BMI values. Quadrant 3 contains the cases that are classified as
-non-obese according to both. Quadrant 2 holds the subjects that are
-classified as obese according to self-report, but not according to
-measured BMI. Quadrant 4 has the opposite interpretation. The area and
-quadrant numbers used in Figures \@ref(fig:plotbmi) 
-and \@ref(fig:plotexplain)
-correspond to identical subdivisions in the data.
+(ref:plotexplain) Illustration of the bias of predictive equations. In
+general, the combined region 2 + 3b will have fewer cases than region
+4a. Thiscauses a downward bias in the prevalence estimate.
 
-The “true obese” in Figure \@ref(fig:plotexplain) lie in quadrants 1 and 4.
-The obese according to self-report are located in quadrants 1 and 2.
-Observe that the number of cases in quadrant 2 is smaller than in
-quadrant 4, a result of the systematic bias that is observed in humans.
-Using uncorrected self-report thus leads to an underestimate of the true
-prevalence.
+Figure \@ref(fig:plotexplain) plots the data of Figure
+\@ref(fig:plotbmi) in a different way. The figure is centered around
+the BMI of 30 $\mathrm{kg}/\mathrm{m}^2$. The two dashed lines divide
+the area into four quadrants. Quadrant 1 contains the cases that are
+obese according to both BMI values. Quadrant 3 contains the cases that
+are classified as non-obese according to both. Quadrant 2 holds the
+subjects that are classified as obese according to self-report, but
+not according to measured BMI. Quadrant 4 has the opposite
+interpretation. The area and quadrant numbers used in Figures
+\@ref(fig:plotbmi) and \@ref(fig:plotexplain) correspond to identical
+subdivisions in the data.
 
-The regression line that predicts measured BMI from self-reported BMI is
-added to the display. This line intersects the horizontal line that
+The “true obese” in Figure \@ref(fig:plotexplain) lie in quadrants 1
+and 4. The obese according to self-report are located in quadrants 1
+and 2. Observe that the number of cases in quadrant 2 is smaller than
+in quadrant 4, a result of the systematic bias that is observed in
+humans. Using uncorrected self-report thus leads to an underestimate
+of the true prevalence.
+
+The regression line that predicts measured BMI from self-reported BMI
+is added to the display. This line intersects the horizontal line that
 separates quadrant 3 from quadrant 4 at a (self-reported) BMI value of
-29.4$\mathrm{kg}/\mathrm{m}^2$. Note that using the regression line to
-predict obese versus non-obese is in fact equivalent to classifying all
-cases with a self-report of 29.4$\mathrm{kg}/\mathrm{m}^2$ or higher as
-obese. Thus, the use of the regression line as a predictive equation
-effectively shifts the vertical dashed line from
-30$\mathrm{kg}/\mathrm{m}^2$ to 29.4$\mathrm{kg}/\mathrm{m}^2$. Now we
+29.4 $\mathrm{kg}/\mathrm{m}^2$. Note that using the regression line to
+predict obese versus non-obese is in fact equivalent to classifying
+all cases with a self-report of 29.4 $\mathrm{kg}/\mathrm{m}^2$ or
+higher as obese. Thus, the use of the regression line as a predictive
+equation effectively shifts the vertical dashed line from
+30 $\mathrm{kg}/\mathrm{m}^2$ to 29.4 $\mathrm{kg}/\mathrm{m}^2$. Now we
 can make the same type of comparison as before. We count the number of
-cases in quadrant 2 + section 3b ($n_1$), and compare it to the count in
-region 4a ($n_2$). The difference $n_2-n_1$ is now much smaller, thanks
-to the correction by the predictive equation.
+cases in quadrant 2 + section 3b ($n_1$), and compare it to the count
+in region 4a ($n_2$). The difference $n_2-n_1$ is now much smaller,
+thanks to the correction by the predictive equation.
 
 However, there is still bias remaining. This comes from the fact that
 the distribution on the left side is more dense. The number of subjects
-with a BMI of 28$\mathrm{kg}/\mathrm{m}^2$ is typically larger than the
-number of subjects with a BMI of 32$\mathrm{kg}/\mathrm{m}^2$. Thus,
+with a BMI of 28 $\mathrm{kg}/\mathrm{m}^2$ is typically larger than the
+number of subjects with a BMI of 32 $\mathrm{kg}/\mathrm{m}^2$. Thus,
 even if a symmetric normal distribution around the regression line is
 correct, $n_2$ is on average larger than $n_1$. This yields bias in the
 predictive equation.
 
-Observe that this effect will be stronger if the regression line becomes
-more shallow, or equivalently, if the spread around the regression line
-increases. Both are manifestation of less-than-perfect predictability.
-Thus, predictive equations only work well if the predictability is very
-high, but they are systematically biased in general.
+Observe that this effect will be stronger if the regression line
+becomes more shallow, or equivalently, if the spread around the
+regression line increases. Both are manifestation of less-than-perfect
+predictability. Thus, predictive equations only work well if the
+predictability is very high, but they are systematically biased in
+general.
 
 ### The main idea
 
-  Name                              Description
-  --------------------------------- ----------------------
-  `age`   Age (years)
-  `sex`   Sex (M/F)
-  `hm`    Height measured (cm)
-  `hr`    Height reported (cm)
-  `wm`    Weight measured (kg)
-  `wr`    Weight reported (kg)
+|Name  |Description           |
+|:-----|:---------------------|
+|`age` | Age (years)          |
+|`sex` | Sex (M/F)            |
+|`hm`  | Height measured (cm) |
+|`hr`  | Height reported (cm) |
+|`wm`  | Weight measured (kg) |
+|`wr`  | Weight reported (kg) |
 
-  : Basic variables needed to correct overweight/obesity prevalence for
-  self-reporting.<span data-label="tab:srcvars">
-
-*Note:* The survey data are representative for the
-population of interest, possibly after correction for design factors.
+: (\#tab:srcvars) Basic variables needed to correct overweight/obesity
+prevalence for self-reporting. *Note:* The survey data are
+representative for the population of interest, possibly after
+correction for design factors.
 
 Table \@ref(tab:srcvars) lists the six variable names needed in this
 application. Let us assume that we have two data sources available:
@@ -1006,182 +927,177 @@ We assume that the common variables in these two datasets are
 comparable.
 
 The idea is to stack the datasets, multiply impute the missing values
-for `hm` and `wm` in
-the survey data and estimate the overweight and obesity prevalence (and
-their standard errors) from the imputed survey data. See @SCHENKER2010
-for more background.
+for `hm` and `wm` in the survey data and estimate the overweight and
+obesity prevalence (and their standard errors) from the imputed survey
+data. See @SCHENKER2010 for more background.
 
 ### Data {#sec:srcdata}
 
-The calibration sample is taken from @KRUL2010. The dataset contains of
-$n_c=1257$ Dutch subjects with both measured and self-reported data. The
-survey sample consists of $n_s=803$ subjects of a representative sample
-of Dutch adults aged 18–75years. These data were collected in November
-2007 either online or using paper-and-pencil methods. The missing data
-pattern in the combined data is summarized as
+The calibration sample is taken from @KRUL2010. The dataset contains
+of $n_c$ = 1257 Dutch subjects with both measured and self-reported
+data. The survey sample consists of $n_s$ = 803 subjects of a
+representative sample of Dutch adults aged 18-75 years. These data were
+collected in November 2007 either online or using paper-and-pencil
+methods. The missing data pattern in the combined data is summarized
+as
 
-`        `\
-`   `
-
-         age sex hr wr  hm  wm
-    1257   1   1  1  1   1   1    0
-    803    1   1  1  1   0   0    2
-           0   0  0  0 803 803 1606
+```{r srcpattern}
+```
 
 The row containing all ones corresponds to the 1257 observations from
-the calibration sample with complete data, whereas the rows with a zero
-on `hm` and `wm`
-correspond to 803 observations from the survey sample (where
-`hm` and `wm` were
-not measured).
+the calibration sample with complete data, whereas the rows with a
+zero on `hm` and `wm` correspond to 803 observations from the survey
+sample (where `hm` and `wm` were not measured).
 
-We apply predictive mean matching (cf. Section \@ref(sec:pmm)) to impute
-`hm` and `wm` in the
-803 records from the survey data. The number of imputations $m=10$. The
-complete-data estimates are calculated on each imputed dataset and
-combined using Rubin’s pooling rules to obtain prevalence rates and the
-associated confidence intervals as in Sections \@ref(sec:threesources) and
+We apply predictive mean matching (cf. Section \@ref(sec:pmm)) to
+impute `hm` and `wm` in the 803 records from the survey data. The
+number of imputations $m=10$. The complete-data estimates are
+calculated on each imputed dataset and combined using Rubin’s pooling
+rules to obtain prevalence rates and the associated confidence
+intervals as in Sections \@ref(sec:threesources) and
 \@ref(sec:inference).
 
 ### Application
 
-The `mice()` function can be used to create
-$m=10$ multiply imputed datasets. We imputed measured height, measured
-weight and and measured BMI using the following code:
+The `mice()` function can be used to create $m=10$ multiply imputed
+datasets. We imputed measured height, measured weight and and measured
+BMI using the following code:
 
-`       `\
-`  `\
-`    `\
-`  `\
-`  `\
-`      `\
-`             `\
-`         `\
-`                    `
+```{r imputebmi, cache = TRUE}
+```
 
-The code defines a `bmi()` function for use in
-passive imputation to calculate `bmi`. The
-predictor matrix is set up so that only `age`,
-`sex`, `hr` and
-`wr` are permitted to impute
-`hm` and `wm`.
+The code defines a `bmi()` function for use in passive imputation to
+calculate `bmi`. The predictor matrix is set up so that only `age`,
+`sex`, `hr` and `wr` are permitted to impute `hm` and `wm`.
 
-![Relation between measured BMI and self-reported BMI in the calibration
-(gray) and survey (red) data in the first imputed
-dataset.<span
-data-label="fig:plotimpbmi">](fig/ch9_plotimpbmi-1){width="\maxwidth"}
+```{r plotimpbmi, solo = TRUE, echo = FALSE, fig.cap = 3/4.5, fig.cap = '(ref:plotimpbmi)'}
+```
+
+(ref:plotimpbmi) Relation between measured BMI and self-reported BMI
+in the calibration (blue) and survey (red) data in the first imputed
+dataset.
 
 Figure \@ref(fig:plotimpbmi) is a diagnostic plot to check whether the
 imputations maintain the relation between the measured and the
-self-reported data. The plot is identical to Figure \@ref(fig:plotbmi),
-except that the imputed data from the survey data (in red) have been
-added. Imputations have been taken from the first imputed dataset. The
-figure shows that the red and gray dots are similar in
-terms of location and spread. Observe that BMI in the survey data is
-slightly higher. The very small difference between the smoothed lines
-across all measured BMI values confirms this notion. We conclude that
-the relation between self-reported and measured BMI as observed in the
-calibration data successfully “migrated” to the survey data.
+self-reported data. The plot is identical to Figure
+\@ref(fig:plotbmi), except that the imputed data from the survey data
+(in red) have been added. Imputations have been taken from the first
+imputed dataset. The figure shows that the red and blue dots are
+similar in terms of location and spread. Observe that BMI in the
+survey data is slightly higher. The very small difference between the
+smoothed lines across all measured BMI values confirms this notion. We
+conclude that the relation between self-reported and measured BMI as
+observed in the calibration data successfully “migrated” to the survey
+data.
 
-llrrrrrr &&&&\
-Sex&Age&$n$&% &se &% &se\
-Male&18–29&69& 8.7&3.4& 9.4&3.9\
-&30–39&73&11.0&3.7&15.7&5.0\
-&40–49&66& 9.1&3.6&12.5&4.8\
-&50–59&91&20.9&4.3&25.4&5.2\
-&60–75&101& 7.9&2.7&15.6&4.2\
-&18–75&400&11.7&1.6&16.0&2.0\
-\
-Female&18–29&68&14.7&4.3&16.3 &5.7\
-&30–39&69&26.1&5.3&28.4 &6.6\
-&40–49&68&19.1&4.8&25.4 &6.1\
-&50–59&81&25.9&4.9&32.8 &6.0\
-&60–75&117&11.1&2.9&17.1 &4.6\
-&18–75&403&18.6&1.9&23.0 &2.4\
-\
-M & F&18–75&803&15.2&1.3&19.5 &1.5\
+|      |     |    |Reported|    |Corrected|    |
+|:-----|:----|---:|-------:|---:|--------:|---:|
+|Sex   |Age  | $n$|       %|  se|        %|  se|
+|Male  |18-29|  69|     8.7| 3.4|      9.4| 3.9|
+|      |30-39|  73|    11.0| 3.7|     15.7| 5.0|
+|      |40-49|  66|     9.1| 3.6|     12.5| 4.8|
+|      |50-59|  91|    20.9| 4.3|     25.4| 5.2|
+|      |60-75| 101|     7.9| 2.7|     15.6| 4.2|
+|      |18-75| 400|    11.7| 1.6|     16.0| 2.0|
+|      |     |    |        |    |         |    |
+|Female|18-29|  68|    14.7| 4.3|     16.3| 5.7|
+|      |30-39|  69|    26.1| 5.3|     28.4| 6.6|
+|      |40-49|  68|    19.1| 4.8|     25.4| 6.1|
+|      |50-59|  81|    25.9| 4.9|     32.8| 6.0|
+|      |60-75| 117|    11.1| 2.9|     17.1| 4.6|
+|      |18-75| 403|    18.6| 1.9|     23.0| 2.4|
+|      |     |    |        |    |         |    |
+|All   |18-75| 803|    15.2| 1.3|     19.5| 1.5|
+
+: (\#tab:survey) Obesity prevalence estimate (%) and standard error
+(se) in the survey data ($n=803$), reported (observed data) and
+corrected (imputed).
 
 Table \@ref(tab:survey) contains the prevalence estimates based on the
-survey data given for self-report and corrected for self-reporting bias.
-The estimates themselves are variable and have large standard errors. It
-is easy to infer that the size of the correction depends on age. Note
-that the standard errors of the corrected estimates are always larger
-than for the self-report. This reflects the information lost due to the
-correction. To obtain an equally precise estimate, the sample size of
-the study with only self-reports needs to be larger than the sample size
-of the study with direct measures.
+survey data given for self-report and corrected for self-reporting
+bias. The estimates themselves are variable and have large standard
+errors. It is easy to infer that the size of the correction depends on
+age. Note that the standard errors of the corrected estimates are
+always larger than for the self-report. This reflects the information
+lost due to the correction. To obtain an equally precise estimate, the
+sample size of the study with only self-reports needs to be larger
+than the sample size of the study with direct measures.
 
 ### Conclusion
 
 Predictive equations to correct for self-reporting bias will only work
 if the percentage of explained variance is very high. In the general
-case, they have a systematic downward bias, which makes them unsuitable
-as correction methods. The remedy is to explicitly account for the
-residual distribution. We have done so by applying multiple imputation
-to impute measured height and weight. In addition, multiple imputation
-produces the correct standard errors of the prevalence estimates.
+case, they have a systematic downward bias, which makes them
+unsuitable as correction methods. The remedy is to explicitly account
+for the residual distribution. We have done so by applying multiple
+imputation to impute measured height and weight. In addition, multiple
+imputation produces the correct standard errors of the prevalence
+estimates.
 
 ## Enhancing comparability {#sec:codingsystems}
 
 ### Description of the problem
 
-Comparability of data is a key problem in international comparisons and
-meta analysis. The problem of comparability has many sides. An overview
-of the issues and methodologies can be found in @VANDETH1998,
+Comparability of data is a key problem in international comparisons
+and meta analysis. The problem of comparability has many sides. An
+overview of the issues and methodologies can be found in @VANDETH1998,
 @HARKNESS2002, @SALOMON2004, @KING2004, @MATSUMOTO2010 and
 @CHEVALIER2011.
 
 This section addresses just one aspect, incomparability of the data
 obtained on survey items with different questions or response
-categories. This is a very common problem that hampers many comparisons.
+categories. This is a very common problem that hampers many
+comparisons.
 
 One of the tasks of the European Commission is to provide insight into
 the level of disability of the populations in each of the 27 member
-states of the European Union. Many member states conduct health surveys,
-but the precise way in which disability is measured are very different.
-For example, The U.K. Health Survey contains a question *How far can you
-walk without stopping/experiencing severe discomfort, on your own, with
-aid if normally used?* with response categories “can’t walk,” “a few
-steps only,” “more than a few steps but less than 200 yards” and “200
-yards or more.” The Dutch Health Interview Survey contains the question
-*Can you walk 400 metres without resting (with walking stick if
-necessary)?* with response categories “yes, no difficulty,” “yes, with
-minor difficulty,” “yes, with major difficulty” and “no.” Both items
-obviously intend to measure the ability to walk, but it is far from
-clear how an answer on the U.K. item can be compared with one on the
-Dutch item.
+states of the European Union. Many member states conduct health
+surveys, but the precise way in which disability is measured are very
+different. For example, The U.K. Health Survey contains a question
+*How far can you walk without stopping/experiencing severe discomfort,
+on your own, with aid if normally used?* with response categories
+“can’t walk,” “a few steps only,” “more than a few steps but less than
+200 yards” and “200 yards or more.” The Dutch Health Interview Survey
+contains the question *Can you walk 400 metres without resting (with
+walking stick if necessary)?* with response categories “yes, no
+difficulty,” “yes, with minor difficulty,” “yes, with major
+difficulty” and “no.” Both items obviously intend to measure the
+ability to walk, but it is far from clear how an answer on the U.K.
+item can be compared with one on the Dutch item.
 
-Response conversion [@VANBUUREN2005] is a way to solve this problem. The
-technique transforms responses obtained on different questions onto a
-common scale. Where this can be done, comparisons can be made using the
-common scale. The actual data transformation can be repeatedly done on a
-routine basis as new information arrives. The construction of
-*conversion keys* is only possible if enough overlapping information can
-be identified. Keys have been constructed for dressing disability
-[@VANBUUREN2003], personal care disability, sensory functioning and
-communication, physical well-being [@VANBUUREN2004D], walking disability
-[@VANBUUREN2005] and physical activity [@HOPMAN2012].
+Response conversion [@VANBUUREN2005] is a way to solve this problem.
+The technique transforms responses obtained on different questions
+onto a common scale. Where this can be done, comparisons can be made
+using the common scale. The actual data transformation can be
+repeatedly done on a routine basis as new information arrives. The
+construction of *conversion keys* is only possible if enough
+overlapping information can be identified. Keys have been constructed
+for dressing disability [@VANBUUREN2003], personal care disability,
+sensory functioning and communication, physical well-being
+[@VANBUUREN2004D], walking disability [@VANBUUREN2005] and physical
+activity [@HOPMAN2012].
 
 This section presents an extension based on multiple imputation. The
 approach is more flexible and more general than response conversion.
 Multiple imputation does not require a common items into each other,
-whereas response conversion scales the data on a common scale. Multiple
-imputation does not require a common unidimensional latent scale,
-thereby increasing the range of applications.
+whereas response conversion scales the data on a common scale.
+Multiple imputation does not require a common unidimensional latent
+scale, thereby increasing the range of applications.
 
 ### Full dependence: Simple equating {#sec:equating}
 
-In principle, the comparability problem is easy to solve if all sources
-would collect the same data. In practice, setting up and maintaining a
-centralized, harmonized data collection is easier said than done.
-Moreover, even where such efforts are successful, comparability is
-certainly not guaranteed [@HARKNESS2002]. Many factors contribute to the
-incomparability of data, but we will not go into details here.
+In principle, the comparability problem is easy to solve if all
+sources would collect the same data. In practice, setting up and
+maintaining a centralized, harmonized data collection is easier said
+than done. Moreover, even where such efforts are successful,
+comparability is certainly not guaranteed [@HARKNESS2002]. Many
+factors contribute to the incomparability of data, but we will not go
+into details here.
 
 In the remainder, we take an example of two bureaus that each collect
-health data on its own population. The bureaus use survey items that are
-similar, but not the same. The survey used by bureau A contains an item
-for measuring walking disability (item A):
+health data on its own population. The bureaus use survey items that
+are similar, but not the same. The survey used by bureau A contains an
+item for measuring walking disability (item A):
 
 > Are you able to walk outdoors on flat ground?
 >
@@ -1192,14 +1108,14 @@ for measuring walking disability (item A):
 > 3.  With much difficulty
 >
 > 4.  Unable to do
->
+
 The frequencies observed in sample A are 242, 43, 15 and 0. There are
 six missing values. Bureau A produces a yearly report containing an
 estimate of the mean of the distribution of population A on item A.
 Assuming MCAR, a simple random sample and equal inter-category
-distances, we find
-$\hat\theta_\mathrm{AA}=(242*0+43*1+15*2)/300 = 0.243$, the disability
-estimate for population A using the method of bureau A.
+distances, we find $\hat\theta_\mathrm{AA}$ = 
+(242 $\times$ 0 + 43 $\times$ 1 + 15 $\times$ 2) / 300 = 0.243, 
+the disability estimate for population A using the method of bureau A.
 
 The survey of bureau B contains item B:
 
@@ -1213,35 +1129,35 @@ The survey of bureau B contains item B:
 > 3.  Yes, with much difficulty
 >
 > 4.  No, only with help from others
->
+
 The frequencies observed in sample B are 145, 110, 29 and 8. There were
 no missing values reported by bureau B. Bureau B publishes the
 proportion of cases in category 0 as a yearly health measure. Assuming a
-simple random sample, $P(Y_\mathrm{B}=0)$ is estimated by $\hat
-\theta_\mathrm{BB} = 145/292 = 0.497$, the health estimate for
+simple random sample, $P(Y_\mathrm{B}=0)$ is estimated by 
+$\hat\theta_\mathrm{BB}$ = 145 / 292 = 0.497, the health estimate for
 population B using the method of bureau B.
 
 Note that $\hat\theta_\mathrm{AA}$ and $\hat\theta_\mathrm{BB}$ are
 different statistics calculated on different samples, and hence cannot
-be compared. On the surface, the problem is trivial and can be solved by
-just equating the four categories. After that is done, and we can apply
-the methods of bureau A or B, and compare the results. Such recoding to
-“make data comparable” is widely practiced.
+be compared. On the surface, the problem is trivial and can be solved
+by just equating the four categories. After that is done, and we can
+apply the methods of bureau A or B, and compare the results. Such
+recoding to “make data comparable” is widely practiced.
 
 Let us calculate the result using simple equating. To estimate walking
 disability in population B using the method of bureau A we obtain
-$\hat\theta_\mathrm{BA} =
-(145*0+110*1+29*2+8*3)/292 = 0.658$. Remember that the mean disability
-estimate for population A was equal to 0.243, so population B appears to
-have substantially more walking disability. The difference equals
-$\hat\theta_\mathrm{BA}-\hat\theta_\mathrm{AA} = 0.658-0.243 =
-0.414$ on a scale from 0 to 3.
+$\hat\theta_\mathrm{BA}$ = (145 $\times$ 0 + 110 $\times$ 1 + 29
+$\times$ 2 + 8 $\times$ 3) / 292 = 0.658. Remember that the mean
+disability estimate for population A was equal to 0.243, so population
+B appears to have substantially more walking disability. The
+difference equals $\hat\theta_\mathrm{BA} - \hat\theta_\mathrm{AA}$ =
+0.658 - 0.243 = 0.414 on a scale from 0 to 3.
 
-Likewise, we may estimate bureau’s B health measure $\theta_\mathrm{AB}$
-in population A as $\hat\theta_\mathrm{AB} = 242/300 = 0.807$. Thus,
-over 80% of population A scores in category 0. This is substantially
-more than in population B, which was
-$\hat\theta_\mathrm{BB} = 145/292 = 0.497$.
+Likewise, we may estimate bureau’s B health measure
+$\theta_\mathrm{AB}$ in population A as $\hat\theta_\mathrm{AB}$ = 242
+/ 300 = 0.807. Thus, over 80% of population A scores in category 0.
+This is substantially more than in population B, which was
+$\hat\theta_\mathrm{BB}$ = 145/292 = 0.497.
 
 So by equating categories both bureaus conclude that the healthier
 population is A, and by a fairly large margin. As we will see, this
@@ -1251,109 +1167,91 @@ realistic for these data.
 ### Independence: Imputation without a bridge study {#sec:walkingimputation}
 
 Let $Y_\mathrm{A}$ be the item of bureau A, and let $Y_\mathrm{B}$ be
-the item of bureau B. The comparability problem can be seen as a missing
-data problem, where $Y_\mathrm{A}$ is missing for population B, and
-where $Y_\mathrm{B}$ is missing for population A. This formulation
-suggest that we can use imputation to solve the problem, and calculate
-$\hat\theta_\mathrm{AB}$ and $\hat\theta_\mathrm{BA}$ from the imputed
-data.
+the item of bureau B. The comparability problem can be seen as a
+missing data problem, where $Y_\mathrm{A}$ is missing for population
+B, and where $Y_\mathrm{B}$ is missing for population A. This
+formulation suggest that we can use imputation to solve the problem,
+and calculate $\hat\theta_\mathrm{AB}$ and $\hat\theta_\mathrm{BA}$
+from the imputed data.
 
-Let’s see what happens if we put `mice()` to
-work to solve the problem. We first create the dataset:
+Let’s see what happens if we put `mice()` to work to solve the
+problem. We first create the dataset:
 
-`      `\
-`     `\
-`   `\
-`  `\
-`     `\
-`              `
+```{r walkingimpute1}
+```
 
-![Missing data pattern for walking data without a bridge study.<span
-data-label="fig:walkingpattern1">](fig/ch9_walkingpattern-1){width="\maxwidth"}
+```{r walkingpattern, echo=FALSE, fig.asp = 2.5/7, fig.cap = '(ref:walkingpattern)'}
+```
 
-The data `Y` is a data frame with 604 rows and
-2 columns: `YA` and
-`YB`. Figure \@ref(fig:walkingpattern1) shows
-that the missing data pattern is unconnected (cf. Section
-\@ref(sec:patternoverview)), with no observations linking
-`YA` to `YB`. There
-are six records that contain no data at all.
+(ref:walkingpattern) Missing data pattern for walking data without a
+bridge study.
+
+The data `Y` is a data frame with 604 rows and 2 columns: `YA` and
+`YB`. Figure \@ref(fig:walkingpattern1) shows that the missing data
+pattern is unconnected (cf. Section \@ref(sec:patternoverview)), with
+no observations linking `YA` to `YB`. There are six records that
+contain no data at all.
 
 For this problem, we monitor the behavior of a rank-order correlation,
-Kendall’s $\tau$, between `YA` and
-`YB`. This is not a standard facility in
-`mice()`, but we can easily write a small
-function `micemill()` that calculates
-Kendall’s $\tau$ after each iteration as follows.
+facility in `mice()`, but we can easily write a small function
+`micemill()` that calculates Kendall’s $\tau$ after each iteration as
+follows.
 
-`     ``) {`\
-`    `\
-`    `\
-`     `\
-`  `\
-\
-`  ``) {`\
-`     ``n) {`\
-`         `\
-`        `\
-`                            `\
-`          `\
-`  `\
+```{r walkingimpute2}
+```
 
-This function calls `mice.mids()` to perform
-just one iteration, calculates Kendall’s $\tau$, and stores the result.
-Note that the function contains two double assignment operators. This
-allows the function to overwrite the current
-`imp` and `tau`
-object in the global environment. This is a dangerous operation, and not
-really an example of good programming in general. However, we may now
-write
+This function calls `mice.mids()` to perform just one iteration,
+calculates Kendall’s $\tau$, and stores the result. Note that the
+function contains two double assignment operators. This allows the
+function to overwrite the current `imp` and `tau` object in the global
+environment. This is a dangerous operation, and not really an example
+of good programming in general. However, we may now write
 
-`  `\
-`              `\
+```{r walkingimpute3}
+```
 
 This code executes 50 iterations of the MICE algorithm. After any number
 of iterations, we may plot the trace lines of the MICE algorithm by
 
-`  `\
-`      `\
-`            `\
-`                  `\
+```{r walkingimpute5a, eval = FALSE}
+```
 
-![The trace plot of Kendall’s $\tau$ for $Y_\mathrm{A}$ and
-$Y_\mathrm{B}$ using $m=10$ multiple imputations and 50 iterations. The
-data contain no cases that have observations on both $Y_\mathrm{A}$ and
-$Y_\mathrm{B}$.<span
-data-label="fig:walkingtracenolink">](fig/ch9_walkingimpute5b-1){width="\maxwidth"}
+```{r walkingimpute5b, solo = TRUE, echo = FALSE, fig.asp = 0.5, fig.cap = '(ref:walkingimpute5b)'}
+```
 
-Figure \@ref(fig:walkingtracenolink) contains the trace plot of 50
-iterations. The traces start near zero, but then freely wander off over
-a substantial range of the correlation. In principle, the traces could
-hit values close to +1 or $-1$, but that is an extremely unlikely event.
-The MICE algorithm obviously does not know where to go, and wanders
-pointlessly through parameter space. The reason that this occurs is that
-the data contain no information about the relation between
-$Y_\mathrm{A}$ and $Y_\mathrm{B}$.
+(ref:walkingimpute5b) The trace plot of Kendall’s $\tau$ for
+$Y_\mathrm{A}$ and $Y_\mathrm{B}$ using $m=10$ multiple imputations
+and 50 iterations. The data contain no cases that have observations on
+both $Y_\mathrm{A}$ and $Y_\mathrm{B}$.
+
+Figure \@ref(fig:walkingimpute5b) contains the trace plot of 50
+iterations. The traces start near zero, but then freely wander off
+over a substantial range of the correlation. In principle, the traces
+could hit values close to +1 or -1, but that is an extremely unlikely
+event. The MICE algorithm obviously does not know where to go, and
+wanders pointlessly through parameter space. The reason that this
+occurs is that the data contain no information about the relation
+between $Y_\mathrm{A}$ and $Y_\mathrm{B}$.
 
 Despite the absence of any information about the relation between
 $Y_\mathrm{A}$ and $Y_\mathrm{B}$, we can calculate
-$\hat\theta_\mathrm{AB}$ and $\hat\theta_\mathrm{BA}$ without a problem
-from the imputed data. We find $\hat\theta_\mathrm{AB} = 0.500$ (SD:
-0.031), which is very close to $\hat\theta_\mathrm{BB}$ (0.497), and far
-from the estimate under simple equating (0.807). Likewise, we find
-$\hat\theta_\mathrm{BA} = 0.253$ (SD: 0.034), very close to
-$\hat\theta_\mathrm{AA}$ (0.243) and far from the estimate under
-equating (0.658). Thus, if we perform the analysis without any
+$\hat\theta_\mathrm{AB}$ and $\hat\theta_\mathrm{BA}$ without a
+problem from the imputed data. We find $\hat\theta_\mathrm{AB}$ =
+0.500 (SD: 0.031), which is very close to $\hat\theta_\mathrm{BB}$
+(0.497), and far from the estimate under simple equating (0.807).
+Likewise, we find $\hat\theta_\mathrm{BA}$ = 0.253 (SD: 0.034), very
+close to $\hat\theta_\mathrm{AA}$ (0.243) and far from the estimate
+under equating (0.658). Thus, if we perform the analysis without any
 information that links the items, we consistently find no difference
 between the estimates for populations A and B, despite the huge
 variation in Kendall’s $\tau$.
 
 We have now two estimates of $\hat\theta_\mathrm{AB}$ and
-$\hat\theta_\mathrm{BA}$. In particular, in Section \@ref(sec:equating) we
-calculated $\hat\theta_\mathrm{BA} =
-0.658$ and $\hat\theta_\mathrm{AB} = 0.807$, whereas in the present
-section the results are $\hat\theta_\mathrm{BA} = 0.253$ and
-$\hat\theta_\mathrm{AB} = 0.500$, respectively. Thus, both health
+$\hat\theta_\mathrm{BA}$. In particular, in Section
+\@ref(sec:equating) we calculated $\hat\theta_\mathrm{BA}$ = 0.658 and
+$\hat\theta_\mathrm{AB}$ = 0.807, whereas in the present section the
+results are $\hat\theta_\mathrm{BA}$ = 0.253 and
+$\hat\theta_\mathrm{AB}$ = 0.500, respectively. Thus, both health
 measures are very dissimilar due to the assumptions made. The question
 is which method yields results that are closer to the truth.
 
@@ -1361,26 +1259,24 @@ is which method yields results that are closer to the truth.
 
 Equating categories is equivalent to assuming that the pairs are 100%
 concordant. In that case Kendall’s $\tau$ is equal to 1. Figure
-\@ref(fig:walkingtracenolink) illustrates that it is extremely unlikely
-that $\tau=1$ will happen by chance. On the other hand, the two items
+\@ref(fig:walkingimpute5b) illustrates that it is extremely unlikely
+that $\tau$ = 1 will happen by chance. On the other hand, the two items
 look very similar, so Kendall’s $\tau$ could be high on that basis. In
 order to make progress, we need to look at the data, and estimate
 $\tau$.
 
-  ---------------- ----- ----- ---- --- -------
+|                 |    |$Y_\mathrm{B}$|    |    |      |
+|:----------------|---:|-------------:|---:|---:|-----:|
+|$Y_\mathrm{A}$   |   0|     1        |   2|   3| Total|
+|0                | 128|    45        |   3|   2|   178|
+|1                |  13|    45        |  10|   0|    68|
+|2                |   3|    20        |  14|   5|    42|
+|3                |   0|     0        |   1|   1|     2|
+|NA               |   1|     0        |   1|   0|     2|
+|Total            | 145|   110        |  29|   8|   292|
 
-  $Y_\mathrm{A}$       0     1    2   3   Total
-  0                  128    45    3   2     178
-  1                   13    45   10   0      68
-  2                    3    20   14   5      42
-  3                    0     0    1   1       2
-  NA                   1     0    1   0       2
-  Total              145   110   29   8     292
-  ---------------- ----- ----- ---- --- -------
-
-  : Contingency table of responses on $Y_\mathrm{A}$ and $Y_\mathrm{B}$
-  in an external sample E ($n=292$).<span
-  data-label="tab:walkingcontingency">
+: (\#tab:walkingcontingency) Contingency table of responses on
+$Y_\mathrm{A}$ and $Y_\mathrm{B}$ in an external sample E ($n=292$).
 
 Suppose that item $Y_\mathrm{A}$ and $Y_\mathrm{A}$ had both been
 administered to an external sample, called sample E. Table
@@ -1391,143 +1287,141 @@ $Y_\mathrm{A}$ and $Y_\mathrm{B}$, the contingency table is far from
 diagonal. For example, category 1 of $Y_\mathrm{B}$ has 110
 observations, whereas category 1 of $Y_\mathrm{A}$ contains only 68
 persons. The table is also not symmetric, and suggests that
-$Y_\mathrm{A}$ is more difficult than $Y_\mathrm{B}$. In other words, a
-given score on $Y_\mathrm{A}$ corresponds to more walking disability
+$Y_\mathrm{A}$ is more difficult than $Y_\mathrm{B}$. In other words,
+a given score on $Y_\mathrm{A}$ corresponds to more walking disability
 compare to the same score on $Y_\mathrm{B}$. Kendall’s $\tau$ is equal
 to 0.57, so about 57% of the pairs are concordant. This is far better
 than chance (0%), but also far worse than 100% concordance implied by
 simple equating. Thus even though the four response categories of
 $Y_\mathrm{A}$ and $Y_\mathrm{B}$ look similar, the information from
-sample E suggests that there are large and systematic differences in the
-way the items work. Given these data, the assumption of equal categories
-is in fact untenable. Likewise, the solution that assumes independence
-is also unlikely.
+sample E suggests that there are large and systematic differences in
+the way the items work. Given these data, the assumption of equal
+categories is in fact untenable. Likewise, the solution that assumes
+independence is also unlikely.
 
 The implication is that both estimates of $\theta_\mathrm{AB}$ and
-$\theta_\mathrm{BA}$ presented thus far are doubtful. At this stage, we
-cannot yet tell which of the estimates is the better one.
+$\theta_\mathrm{BA}$ presented thus far are doubtful. At this stage,
+we cannot yet tell which of the estimates is the better one.
 
 ### Imputation using a bridge study {#sec:impbridge}
 
-We will now rerun the imputation, but with sample E appended to the data
-from the sample for populations A and B. Sample E acts as a bridge study
-that connects the missing data patterns from samples A and B.
+We will now rerun the imputation, but with sample E appended to the
+data from the sample for populations A and B. Sample E acts as a
+bridge study that connects the missing data patterns from samples A
+and B.
 
-![Missing data pattern for walking data with a bridge study.<span
-data-label="fig:walkingpattern2">](fig/ch9_walkingimpute5d-1){width="\maxwidth"}
+```{r walkingimpute5d, echo = FALSE, fig.asp = 3/7, fig.cap = '(ref:walkingimpute5d)'}
+```
 
-The combined data are available in
-`mice` as the dataset
-`walking`. Figure \@ref(fig:walkingpattern2)
-shows the missing data pattern of the combined data. Observe that
-`YA` and `YB` are
-now connected by 290 records from the bridge study on sample E. We
-assume that the data are missing at random. More specifically, the
-conditional distributions of $Y_\mathrm{A}$ and $Y_\mathrm{B}$ given the
-other item is equivalent across the three sources. Let $S$ be an
-administrative variable taking on values $A$, $B$ and $E$ for the three
-sources. The assumptions are $$\begin{aligned}
-P(Y_\mathrm{A}|Y_\mathrm{B}, X, S=B) & = & P(Y_\mathrm{A}|Y_\mathrm{B}, X, S=E)\\
-P(Y_\mathrm{B}|Y_\mathrm{A}, X, S=A) & = & P(Y_\mathrm{B}|Y_\mathrm{A}, X, S=E)\end{aligned}$$
+(ref:walkingimpute5d) Missing data pattern for walking data with a
+bridge study.
+
+The combined data are available in `mice` as the dataset `walking`.
+Figure \@ref(fig:walkingimpute5d) shows the missing data pattern of
+the combined data. Observe that `YA` and `YB` are now connected by 290
+records from the bridge study on sample E. We assume that the data are
+missing at random. More specifically, the conditional distributions of
+$Y_\mathrm{A}$ and $Y_\mathrm{B}$ given the other item is equivalent
+across the three sources. Let $S$ be an administrative variable taking
+on values $A$, $B$ and $E$ for the three sources. The assumptions are
+
+\begin{align}
+P(Y_\mathrm{A}|Y_\mathrm{B}, X, S=B) & = P(Y_\mathrm{A}|Y_\mathrm{B}, X, S=E)\\
+P(Y_\mathrm{B}|Y_\mathrm{A}, X, S=A) & = P(Y_\mathrm{B}|Y_\mathrm{A}, X, S=E)
+\end{align}
+
 where $X$ contains any relevant covariates, like age and sex, and/or
 interaction terms. In other words, the way in which $Y_\mathrm{A}$
 depends on $Y_\mathrm{B}$ and $X$ is the same in sources $B$ and $E$.
-Likewise, the way in which $Y_\mathrm{B}$ depends on $Y_\mathrm{A}$ and
-$X$ is the same in sources $A$ and $E$. The inclusion of such covariates
-allows for various forms of differential item functioning
+Likewise, the way in which $Y_\mathrm{B}$ depends on $Y_\mathrm{A}$
+and $X$ is the same in sources $A$ and $E$. The inclusion of such
+covariates allows for various forms of differential item functioning
 [@HOLLAND1993].
 
 The two assumptions need critical evaluation. For example, if the
 respondents in source $S=E$ answered the items in a different language
-than the respondents in sources $A$ or $B$, then the assumption may not
-be sensible unless one has great faith in the translation. It is perhaps
-better then to search for a bridge study that is more comparable. Note
-that it is only required that the conditional distributions are
-identical. The imputations remain valid when the samples have different
-marginal distributions. For efficiency reasons and stability, it is
-generally advisable to have match samples with similar distribution, but
-it is not a requirement. The design is known as the *common-item
-nonequivalent groups* design [@KOLEN1995] or the *non-equivalent group
-anchor test (NEAT)* design [@DORANS2007].
+than the respondents in sources $A$ or $B$, then the assumption may
+not be sensible unless one has great faith in the translation. It is
+perhaps better then to search for a bridge study that is more
+comparable. Note that it is only required that the conditional
+distributions are identical. The imputations remain valid when the
+samples have different marginal distributions. For efficiency reasons
+and stability, it is generally advisable to have match samples with
+similar distribution, but it is not a requirement. The design is known
+as the *common-item nonequivalent groups* design [@KOLEN1995] or the
+*non-equivalent group anchor test (NEAT)* design [@DORANS2007].
 
-Multiple imputation on the dataset `walking`
-is straightforward.
+Multiple imputation on the dataset `walking` is straightforward.
 
-`  `\
-`  `\
-`     `\
-`          `\
-`                 `\
+```{r wasimpute7a, cache = TRUE}
+```
 
-![The trace plot of Kendall’s $\tau$ for $Y_\mathrm{A}$ and
-$Y_\mathrm{B}$ using $m=10$ multiple imputations and 20 iterations. The
-data are linked by the bridge study.<span
-data-label="fig:walkingtracelink">](fig/ch9_walkingimpute7b-1){width="\maxwidth"}
+```{r walkingimpute7b, solo=TRUE, echo = FALSE, fig.asp = 3/6, fig.cap = '(ref:walkingimpute7b)'}
+```
 
-The behavior of the trace plot is very different now (cf. Figure
-\@ref(fig:walkingtracelink)). After the first few iterations, the trace
+(ref:walkingimpute7b) The trace plot of Kendall’s $\tau$ for
+$Y_\mathrm{A}$ and $Y_\mathrm{B}$ using $m=10$ multiple imputations
+and 20 iterations. The data are linked by the bridge study.
+
+The behavior of the trace plot is very different now (cf. Figure
+\@ref(fig:walkingimpute7b)). After the first few iterations, the trace
 lines consistently move around a value of approximately 0.53, with a
 fairly small range. Thus, after five iterations, the conditional
 distributions defined by sample E have percolated into the imputations
 for item A (in sample B) and item B (in sample A).
 
 The behavior of the samplers is dependent on the relative size of the
-bridge study. In these data, the bridge study is about one third of the
-total data. If the bridge study is small relative to the other two data
-sources, the sampler may be slow to converge. As a rule of the thumb,
-the bridge study should be at least 10% of the total sample size. Also,
-carefully monitor convergence of the most critical linkages using
-association measures.
+bridge study. In these data, the bridge study is about one third of
+the total data. If the bridge study is small relative to the other two
+data sources, the sampler may be slow to converge. As a rule of the
+thumb, the bridge study should be at least 10% of the total sample
+size. Also, carefully monitor convergence of the most critical
+linkages using association measures.
 
 Note that we can also monitor the behavior of $\hat\theta_\mathrm{AB}$
 and $\hat\theta_\mathrm{BA}$. In order to calculate
 $\hat\theta_\mathrm{AB}$ after each iteration we add two statements to
 the `micemill()` function:
 
-`       `\
-`      `
+```{r walkingimpute8, eval = FALSE}
+```
 
-The results are assembled in the variable
-`thetaAB` in the working directory. This
-variable should be initialized as
-`thetaAB <- NULL` before milling.
+The results are assembled in the variable `thetaAB` in the working
+directory. This variable should be initialized as `thetaAB <- NULL`
+before milling.
 
 It is possible that the relation between $Y_\mathrm{A}$ and
-$Y_\mathrm{B}$ depends on covariates, like age and sex. If so, including
-covariates into the imputation model allows for differential item
-functioning across the covariates. It is perfectly possible to change
-the imputation model between iterations. For example, after the first 20
-iterations (where we impute $Y_\mathrm{A}$ from $Y_\mathrm{B}$ and vice
-versa) we add age and sex as covariates, and do another 20 iterations.
-This goes as follows:
+$Y_\mathrm{B}$ depends on covariates, like age and sex. If so,
+including covariates into the imputation model allows for differential
+item functioning across the covariates. It is perfectly possible to
+change the imputation model between iterations. For example, after the
+first 20 iterations (where we impute $Y_\mathrm{A}$ from
+$Y_\mathrm{B}$ and vice versa) we add age and sex as covariates, and
+do another 20 iterations. This goes as follows:
 
-`  `\
-`  `\
-`    `\
-`     `\
-`   `\
-`          `\
-`              `\
-\
-`          `\
+```{r walkingimpute10, cache = TRUE}
+```
 
 ### Interpretation {#sec:walkinginterpretation}
 
-![Trace plot of $\hat\theta_\mathrm{AB}$ (proportion of sample A that
-scores in category 0 of item B) after multiple imputation ($m=10$),
-without covariates (iteration 1–20), and with covariates age and sex as
-part of the imputation model (iterations 21–40).<span
-data-label="fig:walkingthetaAB">](fig/ch9_walkingplotthetaAB-1){width="\maxwidth"}
+```{r walkingplotthetaAB, solo=TRUE, echo=FALSE, fig.asp = 3/6, fig.cap = '(ref:walkingplotthetaAB)'}
+```
 
-Figure \@ref(fig:walkingthetaAB) plots the traces of MICE algorithm, where
-we calculated $\theta_\mathrm{AB}$, the proportion of sample A in
-category 0 of item B. Without covariates, the proportion is
+(ref:walkingplotthetaAB) Trace plot of $\hat\theta_\mathrm{AB}$
+(proportion of sample A that scores in category 0 of item B) after
+multiple imputation ($m=10$), without covariates (iteration 1–20), and
+with covariates age and sex as part of the imputation model
+(iterations 21–40).
+
+Figure \@ref(fig:walkingplotthetaAB) plots the traces of MICE algorithm,
+where we calculated $\theta_\mathrm{AB}$, the proportion of sample A
+in category 0 of item B. Without covariates, the proportion is
 approximately 0.587. Under equating, this proportion was found to be
-equal to 0.807 (cf.Section \@ref(sec:equating)). The difference between the
-old (0.807) and the new (0.587) estimate is dramatic. After adding age
-and sex to the imputation model, $\theta_\mathrm{AB}$ drops further to
-about 0.534, close to $\theta_\mathrm{BB}$, the estimate for population
-B (0.497).
+equal to 0.807 (cf.Section \@ref(sec:equating)). The difference
+between the old (0.807) and the new (0.587) estimate is dramatic.
+After adding age and sex to the imputation model, $\theta_\mathrm{AB}$
+drops further to about 0.534, close to $\theta_\mathrm{BB}$, the
+estimate for population B (0.497).
 
   Assumption            $\hat\theta_\mathrm{AA}$   $\hat\theta_\mathrm{BA}$   $\hat\theta_\mathrm{AB}$   $\hat\theta_\mathrm{BB}$
   ------------------- -------------------------- -------------------------- -------------------------- --------------------------
@@ -1536,52 +1430,52 @@ B (0.497).
   MI (no covariate)                        0.243                      0.450                      0.587                      0.497
   MI (covariate)                           0.243                      0.451                      0.534                      0.497
 
-  : Disability and health estimates for populations A and B under four
-  assumptions. $\hat\theta_\mathrm{AA}$ and $\hat\theta_\mathrm{BA}$ are
-  the item means on item A for samples A and B, respectively.
-  $\hat\theta_\mathrm{AB}$ and $\hat\theta_\mathrm{BB}$ are the
-  proportions of cases into category 0 of item B for samples A and B,
-  respectively. MI-multiple imputation.<span
-  data-label="tab:walkingresults">
+  : (\#tab:walkingresults) Disability and health estimates for
+  populations A and B under four assumptions. $\hat\theta_\mathrm{AA}$
+  and $\hat\theta_\mathrm{BA}$ are the item means on item A for
+  samples A and B, respectively. $\hat\theta_\mathrm{AB}$ and
+  $\hat\theta_\mathrm{BB}$ are the proportions of cases into category
+  0 of item B for samples A and B, respectively. MI-multiple
+  imputation.
 
 Table \@ref(tab:walkingresults) summarizes the estimates from the four
-analyses. Large differences are found between population A and B when we
-simply assume that the four categories of both items are identical
-(simple equating). In this case, population A appears much healthier by
-both measures. In constrast, if we assume independence between
+analyses. Large differences are found between population A and B when
+we simply assume that the four categories of both items are identical
+(simple equating). In this case, population A appears much healthier
+by both measures. In constrast, if we assume independence between
 $Y_\mathrm{A}$ and $Y_\mathrm{B}$, all differences vanish, so now it
-appears that the populations A and B are equally healthy. The solutions
-based on multiple imputation strike a balance between these extremes.
-Population A is considerably healthier than B on the item mean statistic
-(0.243 versus 0.451). However, the difference is much smaller on the
-proportion in category 0, especially after taking age and sex into
-account. The solutions based on multiple imputation are preferable over
-the first two because they have taken the relation between items A and B
-into account.
+appears that the populations A and B are equally healthy. The
+solutions based on multiple imputation strike a balance between these
+extremes. Population A is considerably healthier than B on the item
+mean statistic (0.243 versus 0.451). However, the difference is much
+smaller on the proportion in category 0, especially after taking age
+and sex into account. The solutions based on multiple imputation are
+preferable over the first two because they have taken the relation
+between items A and B into account.
 
 Which of the four estimates is best? The method of choice is multiple
 imputation including the covariates. This method not only accounts for
-the relation between $Y_A$ and $Y_B$, but also incorporates the effects
-of age and sex. Consequently, the method provides estimates with the
-lowest bias in $\theta_\mathrm{AB}$ and $\theta_\mathrm{BA}$.
+the relation between $Y_A$ and $Y_B$, but also incorporates the
+effects of age and sex. Consequently, the method provides estimates
+with the lowest bias in $\theta_\mathrm{AB}$ and $\theta_\mathrm{BA}$.
 
 ### Conclusion
 
 Incomparability of data is a key problem in many fields. It is natural
-for scientists to adapt, refine and tweak measurement procedures in the
-hope of obtaining better data. Frequent changes, however, will hamper
-comparisons.
+for scientists to adapt, refine and tweak measurement procedures in
+the hope of obtaining better data. Frequent changes, however, will
+hamper comparisons.
 
 Equating categories is widely practiced to “make the data comparable.”
 It is often not realized that recoding and equating data amplify
 differences. The degree of exaggeration is inversely related to
 Kendall’s $\tau$. For the item mean statistic, the difference in mean
-walking disability after equating is about twice the size of that under
-multiple imputation. Also, the estimate of 0.807 after simple equating
-is a gross overestimate. Overstated differences between populations may
-spur inappropriate interventions, sometimes with substantial financial
-consequences. Unless backed up by appropriate data, equating categories
-is not a solution.
+walking disability after equating is about twice the size of that
+under multiple imputation. Also, the estimate of 0.807 after simple
+equating is a gross overestimate. Overstated differences between
+populations may spur inappropriate interventions, sometimes with
+substantial financial consequences. Unless backed up by appropriate
+data, equating categories is not a solution.
 
 The section used multiple imputation as a natural and attractive
 alternative. The first major application of multiple imputation
@@ -1614,39 +1508,46 @@ explored.
 
 ## Exercises {#ex:ch:measurement}
 
-1.  *Contingency table*. Adapt the
-    `micemill()` function for the
-    `walking` data so that it prints out the
-    contingency table of $Y_\mathrm{A}$ and $Y_\mathrm{B}$ of the first
-    imputation at each iteration. How many statements do you
-    need?
+```{exercise, name = "Contingency table", label = "contingencytable"}
+Adapt the `micemill()` function for the `walking` data so that it
+prints out the contingency table of $Y_\mathrm{A}$ and $Y_\mathrm{B}$
+of the first imputation at each iteration. How many statements do you
+need?
+```
 
-2.  *Pool $\tau$*. Find out what the variance of Kendall’s $\tau$
-    is, and construct its 95% confidence intervals under
-    multiple imputation. Use the auxiliary function
-    `pool.scalar()` for pooling.
+```{exercise, name = "Pool", label = "pooltau"}
+Find out what the variance of Kendall’s $\tau$ is, and construct its
+95% confidence intervals under multiple imputation. Use the auxiliary
+function `pool.scalar()` for pooling.
+```
 
-3.  *Covariates*. Calculate the correlation between age and the
-    items A and B under two imputation models: one without covariates,
-    and one with covariates. Which of the correlations is higher? Which
-    solution do you prefer? Why?
+```{exercise, name = "Covariates", label = "covariates"}
+Calculate the correlation between age and the items A and B under two
+imputation models: one without covariates, and one with covariates.
+Which of the correlations is higher? Which solution do you prefer?
+Why?
+```
 
-4.  *Heterogeneity*. Kendall’s $\tau$ in the source E is 0.57 (cf.
-    Section \@ref(sec:untenable)). The average of the sampler is slightly
-    lower (Figure \@ref(fig:walkingtracelink)). Adapt the
-    `micemill()` function to calculate the
-    $\tau$-values separately for the three sources. Which population has
-    the lowest $\tau$-values?
+```{exercise, name = "Heterogeneity", label = "heterogeneity"}
+Kendall’s $\tau$ in the source E is 0.57 (cf. Section
+\@ref(sec:untenable)). The average of the sampler is slightly lower
+(Figure \@ref(fig:walkingimpute7b)). Adapt the `micemill()` function
+to calculate the $\tau$-values separately for the three sources. Which
+population has the lowest $\tau$-values?
+```
 
-5.  *Sample size*. Repeat the previous exercise, but with the
-    samples for A and B taken 10 times as large. Does the sample size
-    have an effect on convergence? If so, can you come up with an
-    explanation? (Hint: Think of how $\tau$ is calculated.)
+```{exercise, name = "Sample size", label = "samplesize"}
+Repeat the previous exercise, but with the samples for A and B taken
+10 times as large. Does the sample size have an effect on convergence?
+If so, can you come up with an explanation? (Hint: Think of how $\tau$
+is calculated.)
+```
 
-6.  *True values*. For sample B, we do actually have the data on
-    Item A from sample E. Calculate the “true” value
-    $\theta_\mathrm{BA}$, and compare it with the simulated values. How
-    do these values compare? Should these values be the same? If they
-    are different, what could be the explanations? How could you
-    reorganize the `walking` data so that no
-    iteration is needed?
+```{exercise, name = "True values", label = "truevalues"}
+For sample B, we do actually have the data on Item A from sample E.
+Calculate the “true” value $\theta_\mathrm{BA}$, and compare it with
+the simulated values. How do these values compare? Should these values
+be the same? If they are different, what could be the explanations?
+How could you reorganize the `walking` data so that no iteration is
+needed?
+```

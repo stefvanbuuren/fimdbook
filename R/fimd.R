@@ -2122,7 +2122,7 @@ testEstimates(as.mitml.result(fit), var.comp = TRUE)$var.comp
 
 ## ----init8, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch8-', self.contained = FALSE)
-pkg <- c("mice", "dplyr")
+pkg <- c("mice", "dplyr", "gridExtra")
 loaded <- sapply(pkg, require, character.only = TRUE,
                  warn.conflicts = FALSE, quietly = TRUE)
 
@@ -2250,30 +2250,20 @@ grid.arrange(p50, p90, p99, nrow = 3)
 
 ## ----ch9, child = "src/ch9.Rnw"------------------------------------------
 
-## ----start9, include=FALSE-----------------------------------------------
-library(knitr)
-opts_chunk$set(fig.path = 'fig/ch9_', self.contained = FALSE)
-
 ## ----init9, echo = FALSE, results = 'hide'-------------------------------
-rm(list = ls())
-source("R/chapterinit.R")
-source("R/fetchandstore.R")
-library(mice, warn.conflicts = FALSE, quietly = TRUE)
-library("MASS")   # for esqcplot
-
-## ----c85init, echo=FALSE-------------------------------------------------
-library(mice)
-.store <- "Data/c85/R/store/"
-dataproject <- "Data/c85"
+opts_chunk$set(fig.path = 'fig/ch9-', self.contained = FALSE)
+pkg <- c("mice", "MASS", "foreign")
+loaded <- sapply(pkg, require, character.only = TRUE,
+                 warn.conflicts = FALSE, quietly = TRUE)
 
 ## ----c85imputeblind, eval=FALSE------------------------------------------
-## library(mice)
-## ## DO NOT DO THIS
-## imp <- mice(data)     # not recommended
+library(mice)
+## DO NOT DO THIS
+imp <- mice(data)     # not recommended
 
 ## ----c85readdata1--------------------------------------------------------
 library(foreign)
-file.sas <- "original/master85.xport"
+file.sas <- "data/c85/master85.xport"
 original.sas <- read.xport(file.sas)
 names(original.sas) <- tolower(names(original.sas))
 dim(original.sas)
@@ -2340,23 +2330,25 @@ table(rowSums(pred))
 rowSums(pred[c("rrsyst", "rrdiast"),])
 
 ## ----c85predinspect3, eval=FALSE-----------------------------------------
-## names(data2)[pred["rrsyst", ] == 1]
+names(data2)[pred["rrsyst", ] == 1]
 
 ## ----c85predinspect4, eval=FALSE-----------------------------------------
-## vname <- "rrsyst"
-## y <- cbind(data2[vname], r =! is.na(data2[, vname]))
-## vdata <- data2[,pred[vname,] == 1]
-## round(cor(y = y, x = vdata, use = "pair"), 2)
+vname <- "rrsyst"
+y <- cbind(data2[vname], r =! is.na(data2[, vname]))
+vdata <- data2[,pred[vname,] == 1]
+round(cor(y = y, x = vdata, use = "pair"), 2)
 
 ## ----c85fetch, echo=FALSE------------------------------------------------
-fetch(imp.blind, imp.smart)
+load("data/c85/imp.blind")
+load("data/c85/imp.smart")
 imp.qp <- imp.smart
 imp <- imp.blind
+rm(imp.blind, imp.smart)
 
 ## ----c85imputesmart, eval=FALSE------------------------------------------
-## imp.qp <- mice(data2, pred = pred, seed = 29725)
+imp.qp <- mice(data2, pred = pred, seed = 29725)
 
-## ----c85scatterplot,  echo=FALSE, fig.width=6, fig.height=4--------------
+## ----blindvsquickpred,  echo=FALSE, fig.width=6, fig.height=4--------------
 vnames <- c("rrsyst", "rrdiast")
 cd1 <- mice::complete(imp)[, vnames]
 cd2 <- mice::complete(imp.qp)[, vnames]
@@ -2376,32 +2368,32 @@ print(tp)
 }
 
 ## ----c85trellis, eval=FALSE----------------------------------------------
-## vnames <- c("rrsyst", "rrdiast")
-## cd1 <- mice::complete(imp)[, vnames]
-## cd2 <- mice::complete(imp.qp)[, vnames]
-## typ <- factor(rep(c("blind imputation", "quickpred"),
-##                   each = nrow(cd1)))
-## mis <- ici(data2[, vnames])
-## mis <- is.na(imp$data$rrsyst) | is.na(imp$data$rrdiast)
-## cd <- data.frame(typ = typ, mis = mis, rbind(cd1, cd2))
-## xyplot(jitter(rrdiast, 10) ~ jitter(rrsyst, 10) | typ,
-##        data = cd, groups = mis,
-##        col = c(mdc(1), mdc(2)),
-##        xlab = "Systolic BP (mmHg)",
-##        type = c("g","p"), ylab = "Diastolic BP (mmHg)",
-##        pch = c(1, 19),
-##        strip = strip.custom(bg = "grey95"),
-##        scales = list(alternating = 1, tck = c(1, 0)))
+vnames <- c("rrsyst", "rrdiast")
+cd1 <- mice::complete(imp)[, vnames]
+cd2 <- mice::complete(imp.qp)[, vnames]
+typ <- factor(rep(c("blind imputation", "quickpred"),
+                  each = nrow(cd1)))
+mis <- ici(data2[, vnames])
+mis <- is.na(imp$data$rrsyst) | is.na(imp$data$rrdiast)
+cd <- data.frame(typ = typ, mis = mis, rbind(cd1, cd2))
+xyplot(jitter(rrdiast, 10) ~ jitter(rrsyst, 10) | typ,
+       data = cd, groups = mis,
+       col = c(mdc(1), mdc(2)),
+       xlab = "Systolic BP (mmHg)",
+       type = c("g","p"), ylab = "Diastolic BP (mmHg)",
+       pch = c(1, 19),
+       strip = strip.custom(bg = "grey95"),
+       scales = list(alternating = 1, tck = c(1, 0)))
 
 ## ----c85nelson-----------------------------------------------------------
 dat <- cbind(data2, dead = 1 - data2$dwa)
 hazard <- nelsonaalen(dat, survda, dead)
 
 ## ----c85nelsoncorrelation, eval=FALSE, echo=FALSE------------------------
-## tmp <- data.frame(hazard, t = data2$survda,
-##                   logt = log(data2$survda),
-##                   SBP = data2$rrsyst, DBP = data2$rrdiast)
-## round(cor(tmp, use = "pair"), 3)
+# tmp <- data.frame(hazard, t = data2$survda,
+#                   logt = log(data2$survda),
+#                   SBP = data2$rrsyst, DBP = data2$rrdiast)
+# round(cor(tmp, use = "pair"), 3)
 
 ## ----c85km, echo=FALSE, fig.height=4-------------------------------------
 library(survival)
@@ -2420,27 +2412,27 @@ text(4, 0.7, "BP measured")
 text(2, 0.3, "BP missing")
 
 ## ----c85undamped, eval=FALSE---------------------------------------------
-## delta <- c(0, -5, -10, -15, -20)
-## post <- imp.qp$post
-## imp.all.undamped <- vector("list", length(delta))
-##
-## for (i in 1:length(delta)) {
-##   d <- delta[i]
-##   cmd <- paste("imp[[j]][,i] <- imp[[j]][,i] +", d)
-##   post["rrsyst"] <- cmd
-##   imp <- mice(data2, pred = pred, post = post, maxit = 10,
-##               seed = i * 22)
-##   imp.all.undamped[[i]] <- imp
-## }
-##
+delta <- c(0, -5, -10, -15, -20)
+post <- imp.qp$post
+imp.all.undamped <- vector("list", length(delta))
+
+for (i in 1:length(delta)) {
+  d <- delta[i]
+  cmd <- paste("imp[[j]][,i] <- imp[[j]][,i] +", d)
+  post["rrsyst"] <- cmd
+  imp <- mice(data2, pred = pred, post = post, maxit = 10,
+              seed = i * 22)
+  imp.all.undamped[[i]] <- imp
+}
+
 
 ## ----c85damper, eval=FALSE-----------------------------------------------
-## cmd <- paste("fit <- lm(y ~ as.matrix(x));
-##               damp <- sqrt(1 - summary(fit)$r.squared);
-##               imp[[j]][, i] <- imp[[j]][, i] + damp * ", d)
+cmd <- paste("fit <- lm(y ~ as.matrix(x));
+              damp <- sqrt(1 - summary(fit)$r.squared);
+              imp[[j]][, i] <- imp[[j]][, i] + damp * ", d)
 
 ## ----c85readimp, echo=FALSE----------------------------------------------
-fetch(imp.all.damper2)
+load("data/c85/imp.all.damper2")
 imp.all.damped <- imp.all.damper2
 rm(imp.all.damper2)
 
@@ -2459,29 +2451,11 @@ fit <- with(imp, cda)
 ## ----c85hazardratio------------------------------------------------------
 as.vector(exp(summary(pool(fit))[, 1]))
 
-## ----c85results, eval=FALSE, echo=FALSE----------------------------------
-## fit1 <- with(imp.all.damped[[1]], cda)
-## fit2 <- with(imp.all.damped[[2]], cda)
-## fit3 <- with(imp.all.damped[[3]], cda)
-## fit4 <- with(imp.all.damped[[4]], cda)
-## fit5 <- with(imp.all.damped[[5]], cda)
-## r1<-as.vector(t(exp(summary(pool(fit1))[,c(1, 6:7)])))
-## r2<-as.vector(t(exp(summary(pool(fit2))[,c(1, 6:7)])))
-## r3<-as.vector(t(exp(summary(pool(fit3))[,c(1, 6:7)])))
-## r4<-as.vector(t(exp(summary(pool(fit4))[,c(1, 6:7)])))
-## r5<-as.vector(t(exp(summary(pool(fit5))[,c(1, 6:7)])))
-## round(t(matrix(c(r1,r2,r3,r4,r5),nrow = 15)), 2)
-
 ## ----readdata7a, echo=FALSE----------------------------------------------
 library(mice)
 bmi <- function(h, w) w / (h / 100)^2
-.store <- "Data/Daanen/R/store/"
-fetch(nl)
-selfreport <- nl
-krul.original <- krul <- selfreport[selfreport$src == "krul",]
-mgg  <- selfreport[selfreport$src=="mgg",]
+krul <- selfreport[selfreport$src == "krul",]
 males <- krul[krul$sex=="Male",]
-females <- krul[krul$sex=="Female",]
 
 ## ----plotbmi,  fig.width=4.5, fig.height=3,solo=TRUE,echo=FALSE----------
 lwd <- 0.6
@@ -2527,103 +2501,6 @@ text(c("a","b"),x=c(29.1,29.7,29.1,29.7),y=c(34.1,34.1,26.4,26.4),cex=1.8,adj=c(
 data <- selfreport[, c("age", "sex", "hm", "hr", "wm", "wr")]
 md.pattern(data, plot = FALSE)
 
-## ----simulate,eval=FALSE,echo=FALSE--------------------------------------
-## do.calc <- function(idat){
-##   res <- matrix(NA, nr=6, nc=2)
-##   idat2 <- cbind(idat,sex.br=(idat$sex=="Male")*(idat$wr-80),
-##                     sex.hr=(idat$sex=="Male")*(idat$hr-170),
-##                     sex.age=(idat$sex=="Male")*(idat$age-50),
-##                     age.hr=(idat$age-50)*(idat$hr-170),
-##                     age.wr=(idat$age-50)*(idat$wr-80),
-##                     hr.wr=(idat$wr-80)*(idat$hr-170))
-##   idat2 <- idat
-##   imp <- mice(idat2,maxit=0)
-##   pred <- imp$pred
-##   pred[,"cal"] <- 0
-##   imp <- mice(idat2,pred=pred,m=5,print=FALSE)
-##   cdat <- mice::complete(imp)
-##   #
-##   fit <- with(imp, lm(hm~1+cal))
-##   res[1,] <- summary(pool(fit))[1,1:2]
-##   fit <- with(imp, lm(wm~1+cal))
-##   res[2,] <- summary(pool(fit))[1,1:2]
-##   fit <- with(imp, lm(bmi(hm,wm)~1+cal))
-##   res[3,] <- summary(pool(fit))[1,1:2]
-##   res[4,1] <- cor(cdat[1:400,c("hm","wm")])[1,2]
-##   fit <- with(imp, lm(bmi(hm,wm)>=25~1+cal))
-##   res[5,] <- summary(pool(fit))[1,1:2]
-##   fit <- with(imp, lm(bmi(hm,wm)>=30~1+cal))
-##   res[6,] <- summary(pool(fit))[1,1:2]
-##   return(res)
-## }
-##
-## sim <- function(nsim=200){
-##   result <- array(NA,dim=c(nsim,6,5))
-##  for (i in 1:nsim){
-##    set.seed(i)
-##    beta <- matrix(c(-5,0.25),nr=2,nc=1)
-##    x <- cbind(1,cal$br)
-##    p <- 1/(1 + exp(-(x %*% beta)))
-##    # idx <- sample(nrow(krul),400,prob=p)
-##    idx <- sample(nrow(krul),400)
-##    srv <- cal[idx,]
-##    srv$cal <- 0
-##    srv[,c("hm","wm","bm")] <- NA
-##    idat <- rbind(srv,cal)[,c("age","sex","hm","wm","hr","wr","cal")]
-##    result[i,,4:5] <- do.calc(idat)
-##    # true data
-##    result[i,1,1] <- mean(cal[idx,"hm"])
-##    result[i,2,1] <- mean(cal[idx,"wm"])
-##    result[i,3,1] <- mean(cal[idx,"bm"])
-##    result[i,4,1] <- cor(cal[idx,"hm"],cal[idx,"wm"])
-##    result[i,5,1] <- mean(cal[idx,"bm"]>=25)
-##    result[i,6,1] <- mean(cal[idx,"bm"]>=30)
-##    # self-report
-##    result[i,1,2] <- mean(cal[idx,"hr"])
-##    result[i,2,2] <- mean(cal[idx,"wr"])
-##    result[i,3,2] <- mean(cal[idx,"br"])
-##    result[i,4,2] <- cor(cal[idx,"hr"],cal[idx,"wr"])
-##    result[i,5,2] <- mean(cal[idx,"br"]>=25)
-##    result[i,6,2] <- mean(cal[idx,"br"]>=30)
-##    # predictive equation method
-##    fit.h <- lm(hm~hr+sex+age,data=cal)
-##    fit.w <- lm(wm~wr+sex+age,data=cal)
-##    fit.b <- lm(bmi(hm,wm)~bmi(hr,wr)+sex+age,data=cal)
-##    result[i,1,3] <- mean(predict(fit.h,newdata=cal[idx,]))
-##    result[i,2,3] <- mean(predict(fit.w,newdata=cal[idx,]))
-##    result[i,3,3] <- mean(predict(fit.b,newdata=cal[idx,]))
-##    result[i,4,3] <- cor(predict(fit.h,newdata=cal[idx,]),predict(fit.w,newdata=cal[idx,]))
-##    result[i,5,3] <- mean(predict(fit.b,newdata=cal[idx,])>=25)
-##    result[i,6,3] <- mean(predict(fit.b,newdata=cal[idx,])>=30)
-##  }
-##   return(result)
-## }
-## krul.original <- krul
-##
-## krul <- krul.original
-## cal <- cbind(krul,cal=1)
-##
-## ## ----- NO NOISE
-## mcnonoise <- sim(200)
-## round(apply(mcnonoise,c(2,3),mean),4)
-##
-##
-## ## ----- NOISE
-## set.seed(23432)
-## noise <- krul.original
-## noise$hr <- noise$hr + 5*rnorm(nrow(noise))
-## noise$wr <- noise$wr + 5*rnorm(nrow(noise))
-## noise$br <- bmi(noise$hr,noise$wr)
-##
-## round(cor(krul.original[,c("hm","wm","bm","hr","wr","br")]),2)
-## round(cor(noise[,c("hm","wm","bm","hr","wr","br")]),2)
-##
-## krul <- noise
-## cal <- cbind(krul,cal=1)
-##
-## mcnoise <- sim(200)
-## apply(mcnoise,c(2,3),mean)
-##
 
 ## ----imputebmi, cache=TRUE-----------------------------------------------
 bmi <- function(h, w) w / (h / 100)^2
@@ -2666,61 +2543,7 @@ text(1:4, x = c(40, 28, 20, 32), y = c(4, 4, -4, -4), cex = 3)
 box(lwd = lwd)
 }
 
-## ----prevalence, echo=FALSE, eval=FALSE----------------------------------
-##   prev <- matrix(NA,nr=15,nc=4)
-##   prev[1,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg")))))[1,1:2]
-##   prev[1,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg")))))[1,1:2]
-##   prev[2,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male")))))[1,1:2]
-##   prev[2,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male")))))[1,1:2]
-##   prev[3,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female")))))[1,1:2]
-##   prev[3,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female")))))[1,1:2]
-##   prev[4,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&age>=18&age<30)))))[1,1:2]
-##   prev[4,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&age>18&age<30)))))[1,1:2]
-##   prev[5,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&age>=30&age<40)))))[1,1:2]
-##   prev[5,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&age>30&age<40)))))[1,1:2]
-##   prev[6,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&age>=40&age<50)))))[1,1:2]
-##   prev[6,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&age>40&age<50)))))[1,1:2]
-##   prev[7,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&age>=50&age<60)))))[1,1:2]
-##   prev[7,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&age>50&age<60)))))[1,1:2]
-##   prev[8,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&age>=60&age<80)))))[1,1:2]
-##   prev[8,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&age>60&age<80)))))[1,1:2]
-##   prev[10,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&age>=18&age<30)))))[1,1:2]
-##   prev[10,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&age>18&age<30)))))[1,1:2]
-##   prev[11,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&age>=30&age<40)))))[1,1:2]
-##   prev[11,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&age>30&age<40)))))[1,1:2]
-##   prev[12,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&age>=40&age<50)))))[1,1:2]
-##   prev[12,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&age>40&age<50)))))[1,1:2]
-##   prev[13,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&age>=50&age<60)))))[1,1:2]
-##   prev[13,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&age>50&age<60)))))[1,1:2]
-##   prev[14,1:2] <- summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&age>=60&age<80)))))[1,1:2]
-##   prev[14,3:4] <- summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&age>60&age<80)))))[1,1:2]
-##
-
-## ----web, echo=FALSE, eval=FALSE-----------------------------------------
-## table(mgg$sex,mgg$web)
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&web=="No")))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&web=="No")))))[1,1:2]
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&web=="Yes")))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&web=="Yes")))))[1,1:2]
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&web=="No")))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&web=="No")))))[1,1:2]
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&web=="Yes")))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&web=="Yes")))))[1,1:2]
-
-## ----webold, echo=FALSE, eval=FALSE--------------------------------------
-## table(mgg$sex,mgg$web,mgg$age>55)
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&web=="No"&age>55)))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&web=="No"&age>55)))))[1,1:2]
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Male"&web=="Yes"&age>55)))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Male"&web=="Yes"&age>55)))))[1,1:2]
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&web=="No"&age>55)))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&web=="No"&age>55)))))[1,1:2]
-##   summary(pool(with(imp, lm(br>=30~1,subset=(src=="mgg"&sex=="Female"&web=="Yes"&age>55)))))[1,1:2]
-##   summary(pool(with(imp, lm(bm>=30~1,subset=(src=="mgg"&sex=="Female"&web=="Yes"&age>55)))))[1,1:2]
-
 ## ----walkinginit, echo=FALSE---------------------------------------------
-# rm(list = ls())
-# source("~/Documents/Sync/Impute/Boek/FIMD/chapterinit.r")
 library(mice)
 library(foreign)
 dataproject <- "Data/wad"
@@ -2767,17 +2590,12 @@ tau <- NULL
 imp <- mice(Y, maxit = 0, m = 10, seed = 32662, print = FALSE)
 micemill(50)
 
-## ----walkingimpute4, echo=FALSE------------------------------------------
-#fetch(imp.nolink, tau.nolink)
-#imp <- imp.nolink
-#tau <- tau.nolink[1:50,]
-
 ## ----walkingimpute5a, eval = FALSE---------------------------------------
-## plotit <- function()
-##   matplot(x = 1:nrow(tau), y = tau,
-##           ylab = expression(paste("Kendall's ", tau)),
-##           xlab = "Iteration", type = "l", las = 1)
-## plotit()
+plotit <- function()
+  matplot(x = 1:nrow(tau), y = tau,
+          ylab = expression(paste("Kendall's ", tau)),
+          xlab = "Iteration", type = "l", las = 1)
+plotit()
 
 ## ----walkingimpute5b, solo=TRUE, echo=FALSE, fig.width = 6, fig.height = 3----
 plotit2 <- function(lwd = 0.6) {
@@ -2791,30 +2609,8 @@ plotit2 <- function(lwd = 0.6) {
 }
 plotit2()
 
-## ----walkingimpute5c, echo=FALSE-----------------------------------------
-idx <- data$src=="Euri"|data$src=="Ergo"
-vars <- c("sex","age","haq8","grs9")
-ab <- data[idx, vars]
-ab[data$src=="Euri", "haq8"] <- NA
-# ftable(addmargins(table(ab[,c("haq8","grs9")],useNA="ifany")))
-
-euridiss <- data[data$src=="Euri",c("sex","age","haq8","grs9")]
-# ftable(addmargins(table(euridiss[,c("haq8","grs9")],useNA="ifany")))
-
-combined <- rbind(ab,euridiss)
-fA <- table(data$haq8[data$src=="Ergo"], useNA="ifany")
-fB <- table(data$grs9[data$src=="Euri"], useNA="ifany")
-combined$src <- rep(factor(c("A","B","E")), c(sum(fA), sum(fB), nrow(euridiss)))
-names(combined) <- c("sex","age","YA","YB","src")
-walking <- combined
-
 ## ----walkingimpute5d, fig.height=3, echo=FALSE---------------------------
 z <- md.pattern(walking)
-
-## ----walkingimpute6, echo=FALSE------------------------------------------
-#fetch(imp.link, tau.link)
-#imp <- imp.link
-#tau <- tau.link
 
 ## ----wasimpute7a, cache = TRUE-------------------------------------------
 tau <- NULL
@@ -2827,9 +2623,9 @@ micemill(20)
 ## ----walkingimpute7b,  echo=FALSE, fig.height=3, fig.width=6, solo=TRUE----
 plotit2()
 
-## ----walkingimpute8, eval = FALSE----------------------------------------
-## props <- with(imp, mean(YB[src == "A"] == '0'))
-## thetaAB <<- rbind(thetaAB, ra(props, simplify = TRUE))
+## ----walkingimpute8, eval = FALSE----
+props <- with(imp, mean(YB[src == "A"] == '0'))
+thetaAB <<- rbind(thetaAB, ra(props, simplify = TRUE))
 
 ## ----walkingimpute9, echo=FALSE------------------------------------------
 micemill <- function(n) {
@@ -2850,19 +2646,6 @@ micemill <- function(n) {
   }
 }
 thetaBA <- NULL
-
-## imp.2m <- imp
-
-## tau.popB <- tau
-## thetaAB.popB <- thetaAB
-## thetaBA.popB <- thetaBA
-## store(imp.2m, tau.popB, thetaAB.popB, thetaBA.popB)
-
-## tau.popA <- tau
-## thetaAB.popA <- thetaAB
-## thetaBA.popA <- thetaBA
-## store(tau.popA, thetaAB.popA, thetaBA.popA)
-
 
 ## ----walkingimpute10, cache = TRUE---------------------------------------
 tau <- NULL

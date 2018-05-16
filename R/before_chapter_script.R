@@ -5,6 +5,3 @@ rm(list = ls(all = TRUE))
 
 # graphical parameter hooks
 source("R/hooks.R")
-
-# convenience function
-source("R/fetchandstore.R")
