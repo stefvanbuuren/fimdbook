@@ -7,7 +7,12 @@ h2 {
 h3 {
     color: #006CC2B3;
 }
-
+blockquote {
+    color: #B61A51B3;
+}
+.part {
+    color: #B61A51B3;
+}
 .caption {
   color: #006CC2B3;
   margin-top: 10px;
@@ -22,3 +27,4 @@ pre {
 pre code {
   white-space: inherit;
 }
+

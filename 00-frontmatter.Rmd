@@ -1,0 +1,395 @@
+## Foreword {#foreword .unnumbered}
+
+  I’m delighted to see this new book on multiple imputation by Stef van
+  Buuren for several reasons. First, to me at least, having another book
+  devoted to multiple imputation marks the maturing of the topic after an
+  admittedly somewhat shaky initiation. Stef is certainly correct when he
+  states in Section 2.1.2: “The idea to create multiple versions must have
+  seemed outrageous at that time (late 1970’s). Drawing imputations from
+  a distribution, instead of estimating the ‘best’ value, was a severe
+  breach with everything that had been done before.” I remember how this
+  idea of multiple imputation was even ridiculed by some more traditional
+  statisticians, sometimes for just being “silly” and sometimes for being
+  hopelessly inefficient with respect to storage demands and outrageously
+  expensive with respect to computational requirements.
+
+  Some others of us foresaw what was happening to both (a) computational
+  storage (I just acquired a 64 GB flash drive the size of a small finger
+  for under \$60, whereas only a couple of decades ago I paid over \$2500
+  for a 120 KB hard drive larger than a shoebox weighing about 10 kilos),
+  and (b) computational speed and flexibility. To develop statistical
+  methods for the future while being bound by computational limitations of
+  the past was clearly inapposite. Multiple imputation’s early survival
+  was clearly due to the insight of a younger generation of statisticians,
+  including many colleagues and former students, who realized future
+  possibilities.
+
+  A second reason for my delight at the publication of this book is more
+  personal and concerns the maturing of the author, Stef van Buuren. As he
+  mentions, we first met through Jan van Rijckevorsel at TNO. Stef was a
+  young and enthusiastic researcher there, who knew little about the kind
+  of statistics that I felt was essential for making progress on the topic
+  of dealing with missing data. But consider the progress over the decades
+  starting with his earlier work on MICE! Stef has matured into an
+  independent researcher making important and original contributions to
+  the continued development of multiple imputation.
+
+  This book represents a ‘no nonsense’ straightforward approach to the
+  application of multiple imputation. I particularly like Stef’s use of
+  graphical displays, which are badly needed in practice to supplement the
+  more theoretical discussions of the general validity of multiple
+  imputation methods. As I have said elsewhere, and as implied by much of
+  what is written by Stef, “It’s not that multiple imputation is so good;
+  it’s really that other methods for addressing missing data are so bad.”
+  It’s great to have Stef’s book on multiple imputation, and I look
+  forward to seeing more editions as this rapidly developing methodology
+  continues to become even more effective at handling missing data
+  problems in practice.
+
+  Finally, I would like to say that this book reinforces the pride of an
+  academic father who has watched one of his children grow and develop.
+  This book is a step in the growing list of contributions that Stef has
+  made, and, I am confident, will continue to make, in methodology,
+  computational approaches and application of multiple imputation.
+  
+  <div style="text-align: right"> --- Donald B. Rubin </div>
+  \ 
+  \ 
+  \ 
+
+  I am very pleased for the opportunity to add this short addendum to my
+  preface to the first edition of Stef’s wonderfully readable book on
+  multiple imputation. Over the past few years, I’ve recommended that many
+  check out Stef’s first edition for excellent advice to practitioners of
+  multiple imputation. The increased appreciation and use of multiple
+  imputation between these two editions reflects, not only the growing
+  maturity of computational statistics, but also the growing acceptance of
+  multiple imputation as essentially being “the only game in town” for
+  dealing generally with the problem of missing data, especially because
+  it leads so naturally to visual displays of sensitivity of conclusions
+  to differing assumptions about the reasons for the missing data. I am
+  enthusiastic about the growing role of sensitivity analysis using visual
+  displays, always prominent in Stef’s contributions, but also now in
+  other places, such as @LIUBLINSKA2014 — some of us can be slow learners!
+
+  <div style="text-align: right"> --- Donald B. Rubin, May 2018 </div>
+  \ 
+  \ 
+  \ 
+  
+## Preface to second edition {#preface-to-second-edition .unnumbered}
+
+Welcome to the second edition of *Flexible Imputation of Missing
+Data*, a book that can help you to solve missing data problems using
+`mice`. I am tremendously grateful for the success of the first
+edition. The `mice` community has been steadily growing over the last
+years, and the `mice` package is now downloaded from CRAN at a rate of
+about 750 downloads per day. My hope is that this book will sharpen
+your intuition on how to think about missing data, and provide you the
+tools to apply your ideas in practice.
+
+Since the first edition was published in 2012, multiple imputation of
+missing data has become one of the great academic industries. Many
+analysts now employ multiple imputation on a regular basis as a
+generic solution to the omnipresent missing-data problem, and a
+substantial group of practitioners are doing the calculations in
+`mice`. This book aspires to combine a state-of-the-art overview of
+the field with a set of how-to instructions for practical data
+analysis.
+
+Some sections of the first edition are still perfectly fine, but many
+others appear outdated. And of course, some of the newer developments
+are missing from the first edition. The second edition brings the text
+up-to-date. So what’s new?
+
+1.  Multiple imputation of multilevel data has been a hot spot of
+    statistical research. Multilevel data can arise from nested data
+    collection designs, but also emerge when data are combined from
+    multiple sources. Imputers and analysts now have a bewildering array
+    of options. The three pages in the first edition have expanded into
+    a full-blown new chapter on multilevel imputation. This chapter
+    translates the current insights among the leading developers into
+    practical advice for end users.
+
+2.  Another hot spot in statistics and data science is the
+    creation of personalized estimates. Causal inference by multiple
+    imputation of the potential outcomes is an innovative approach that
+    attempts to answer “what if” questions on the level of
+    the individual. This edition contains a short new chapter on
+    individual causal effects that demonstrates how multiple imputation
+    is applied to obtain well-grounded personalized estimates.
+
+3.  Data science has continued to grow at a phenomenal pace. The `R`
+    language is now the dominant software for developing new 
+    statistical techniques. `RStudio` has successfully introduced the
+    open `tidyverse` ecosystem for data acquisition, organization, 
+    analysis and visualization. This edition targets this growing 
+    audience of data scientists by including new sections on parallel
+    computation and MICE workflows using pipes within the `tidyverse` 
+    ecosystem.
+
+4.  New algorithms for creating imputations have appeared, in
+    particular methodology based on predictive mean matching, for
+    imputing binary and ordered variables, for interactions using
+    classification and regression trees, and many types of machine
+    learning methods. Chapters 3 and 4 incorporate
+    these developments.
+
+5.  Important theoretical advances have been made on the convergence, 
+    compatibility, misspecification and stability of the simulation 
+    algorithms underlying MICE. Chapter 4 in this edition highlights 
+    these developments.
+
+In parallel to the book, I worked on a significant update of the
+software: `mice 3.0`. The main MICE algorithm now iterates over blocks
+of variables instead of individual columns, so we may now easily
+combine univariate and multivariate imputation methods. In addition,
+it is now possible to specify exactly which cells in the data should
+be imputed. There are new functions for multivariate tests, the
+support for native formula’s has improved, and, thanks to the `broom`
+package, parameter pooling is now available for a much wider selection
+of complete-data models. The calculations use better numerical
+algorithms for low-level imputation functions. I have tried hard to
+remain code-compatible with previous versions of `mice`. Existing code
+should run properly, but do not expect exact replication of the
+results. All code used in this book was tested with `mice 3.0`.
+
+The previous edition had two colors, and some of the plots did not
+work as well as I had intended. I am very glad that this edition is in
+full color, so that the differences between the blue and red points
+stand out clearly and provide a unifying look to the book. There is
+also syntax coloring of the `R` code, which makes it very easy to
+distinguish the various language elements.
+
+All data are incomplete, and so are all books. I had the luxury that I
+could devote my time during the period December 2017-March 2018 to
+this revision. A block of four months may seem like a formidable
+amount of time, but in retrospect it passed very quickly. While some
+topics I had planned have remained in the conceptual stage, overall I
+think that this edition covers the relevant developments in the field.
+
+New statistical techniques will only be applied if there is
+high-quality and user-friendly software available. I would like to
+thank the following people for their contribution to the `mice`
+package over the years: Karin Groothuis-Oudshoorn, Gerko Vink, Lisa
+Doove, Shahab Jolani, Roel de Jong, Rianne Schouten, Florian
+Meinfelder, Philipp Gaffert, Alexander Robitzsch and Bernie Gray.
+
+There is a growing ecosystem of related `R` packages that extend the
+functionality of `mice` in some way. Currently, these include
+`miceadds`, `mitml`, `micemd`, `countimp`, `CALIBERrfimpute`,
+`miceExt` and `ImputeRobust`. There is also a `Python` version in the
+works, which could result in an enormous expansion of the user base. I
+thank the authors of these packages for the time and effort they have
+put into creating these programs: Alexander Robitzsch, Simon Grund,
+Thorsten Henke, Oliver Lüdtke, Vincent Audigier, Matthieu
+Resche-Rigon, Kristian Kleinke, Jost Reinecke, Anoop Shah, Tobias
+Schumacher, Philipp Gaffert, Daniel Salfran, Martin Spiess, Sergey
+Feldman and Rianne Schouten.
+
+I wish to thank Rob Calver, Statistics Editor at Chapman & Hall/CRC
+for his encouragement during both the first and second edition. Lara
+Spieker, Suzanne Lassandro and Shashi Kumar have been very helpful in
+meeting the ambitious production schedule. I thank Daan Kloet of TNO
+for his support for the idea of a mini-sabbatical, and his assistence
+in realizing the idea within TNO. I also wish to thank Peter van der
+Heijden of the University of Utrecht for his support over the years.
+Several people read and commented on parts of the manuscript. I thank
+Gerko Vink, Shahab Jolani, Iris Eekhout, Simon Grund, Tom Snijders and
+Joop Hox for their insightful and useful feedback. This has helped me
+a lot to understand the details much clearer, allowing me to improve
+my fumbled writings.
+
+Last but not least, I thank my wife Eveline for her patience in living
+with an individual who can be so preoccupied with something else.
+
+<div style="text-align: right"> --- Stef van Buuren, May 2, 2018 </div>
+\ 
+\ 
+\ 
+
+## Preface to first edition {#preface-to-first-edition .unnumbered}
+
+We are surrounded by missing data. Problems created by missing data in
+statistical analysis have long been swept under the carpet. These
+times are now slowly coming to an end. The array of techniques for
+dealing with missing data has expanded considerably during the last
+decades. This book is about one such method: multiple imputation.
+
+Multiple imputation is one of the great ideas in statistical science.
+The technique is simple, elegant and powerful. It is simple because it
+fills the holes in the data with plausible values. It is elegant
+because the uncertainty about the unknown data is coded in the data
+itself. And it is powerful because it can solve “other” problems that
+are actually missing data problems in disguise.
+
+Over the last 20 years, I have applied multiple imputation in a wide
+variety of projects. I believe the time is ripe for multiple
+imputation to enter mainstream statistics. Computers and software are
+now potent enough to do the required calculations with little effort.
+What is still missing is a book that explains the basic ideas and that
+shows how these ideas can be put into practice. My hope is that this
+book can fill this gap.
+
+The text assumes familiarity with basic statistical concepts and
+multivariate methods. The book is intended for two audiences:
+
+-   (bio)statisticians, epidemiologists and methodologists in the 
+    social and health sciences;
+
+-   substantive researchers who do not call themselves statisticians,
+    but who possess the necessary skills to understand the principles
+    and to follow the recipes.
+
+In writing this text, I have tried to avoid mathematical and technical
+details as much as possible. Formulas are accompanied by a verbal
+statement that explains the formula in layperson terms. I hope that
+readers less concerned with the theoretical underpinnings will be able
+to pick up the general idea. The more technical material is marked by
+a club sign $^\spadesuit$, and can be skipped on first reading.
+
+I used various parts of the book to teach a graduate course on
+imputation techniques at the University of Utrecht. The basics are in
+Chapters 1-4. Lecturing this material takes about 10 hours. The
+lectures were interspersed with sessions in which the students worked
+out the exercises from the book.
+
+This book owes much to the ideas of Donald Rubin, the originator of
+multiple imputation. I had the privilege of being able to talk, meet
+and work with him on many occasions. His clear vision and deceptively
+simple ideas have been a tremendous source of inspiration. I am also
+indebted to Jan van Rijckevorsel for bringing me into contact with
+Donald Rubin, and for establishing the scientific climate at TNO in
+which our work on missing data techniques could prosper.
+
+Many people have helped realize this project. I thank Nico van
+Meeteren and Michael Holewijn of TNO for their trust and support. I
+thank Peter van der Heijden of Utrecht University for his support. I
+thank Rob Calver and the staff at Chapman & Hall/CRC for their help
+and advice. Many colleagues have commented on part or all of the
+manuscript: Hendriek Boshuizen, Elise Dusseldorp, Karin
+Groothuis-Oudshoorn, Michael Hermanussen, Martijn Heymans, Nicholas
+Horton, Shahab Jolani, Gerko Vink, Ian White and the research master
+students of the Spring 2011 class. Their comments have been very
+valuable for detecting and eliminating quite a few glitches. I happily
+take the blame for the remaining errors and vagaries.
+
+The major part of the manuscript was written during a six-month
+sabbatical leave. I spent four months in Krukö, Sweden, a small
+village of just eight houses. I thank Frank van den Nieuwenhuijzen and
+Ynske de Koning for making their wonderful green house available to
+me. It was the perfect tranquil environment that, apart from
+snowplowing, provided a minimum of distractions. I also spent two
+months at the residence of Michael Hermanussen and Beate
+Lohse-Hermanussen in Altenhof, Germany. I thank them for their
+hospitality, creativity and wit. It was a wonderful time.
+
+Finally, I thank my family, in particular my beloved wife Eveline, for
+their warm and ongoing support, and for allowing me to devote time,
+often nights and weekends, to work on this book. Eveline liked to
+tease me by telling people that I was writing “a book that no one
+understands.” I fear that her statement is accurate, at least for 99%
+of the people. My hope is that you, my dear reader, will belong to the
+remaining 1%.
+
+<div style="text-align: right"> --- Stef van Buuren </div>
+\ 
+\ 
+\ 
+
+## About the author {#about-the-author .unnumbered}
+
+Stef van Buuren is a statistician at the Netherlands Organization for
+Applied Scientific Research TNO in Leiden, and professor of
+Statistical Analysis of Incomplete Data at Utrecht University. He is
+the originator of the MICE algorithm for multiple imputation of
+multivariate data, and co-developed the `mice` package in `R`. More
+information can be found at
+[stefvanbuuren.name](https://stefvanbuuren.name).
+
+## Symbol Description {#symbols .unnumbered}
+
+|Symbol  | Description                                           | Section |
+|:-------|:------------------------------------------------------|:----------|
+|$Y$     | $n \times p$ matrix of partially observed sample data | \@ref(sec:notation)|
+|$R$     | $n \times p$ matrix, 0-1 response indicator of $Y$    | \@ref(sec:notation)|
+|$X$     | $n \times q$ matrix of predictors, used for various purposes | \@ref(sec:notation)|
+|$Y_\mathrm{obs}$|observed sample data, values of $Y$ with $R=1$ | \@ref(sec:notation)|
+|$Y_\mathrm{mis}$|unobserved sample data, values of $Y$ with $R=0$|\@ref(sec:notation)|
+|$n$     | sample size | \@ref(sec:notation)|
+|$m$     | number of multiple imputations | \@ref(sec:notation)|
+||||
+|$\psi$  | parameters of the missing data model that relates $Y$ to $R$|\@ref(sec:MCARreprise)|
+|$\theta$| parameters of the scientifically interesting model for the full data $Y$|\@ref(sec:ignorable)|
+|$Q$     | $k \times 1$ vector with $k$ scientific estimands | \@ref(sec:migoal)|
+|$\hat Q$| $k \times 1$ vector, estimate of $Q$ calculated from a hypothetically complete sample | |\@ref(sec:migoal)|
+|$U$     | $k \times k$ matrix, within-imputation variance due to sampling | \@ref(sec:migoal)|
+||||
+|$\ell$  | imputation number, where $\ell = 1, \dots, m$ | \@ref(sec:threesources)|
+|$Y_\ell$| $\ell^\mathrm{th}$ imputed dataset, where $\ell = 1, \dots, m$ | \@ref(sec:threesources)|
+|$\bar Q$| $k \times 1$ vector, estimate of $Q$ calculated from the incompletely observed sample | \@ref(sec:threesources)|
+|$\bar U$| $k \times k$, estimate of $U$ from the incomplete data | \@ref(sec:threesources)|
+|$B$     | $k \times k$, between-imputation variance due to nonresponse | \@ref(sec:threesources)|
+|$T$     | total variance of $(Q-\bar Q)$, $k \times k$ matrix | \@ref(sec:threesources)|
+||||
+|$\lambda$|proportion of the variance attributable to the missing data for a scalar parameter | \@ref(sec:varianceratios)|
+|$\gamma$ |fraction of information missing due to nonresponse | \@ref(sec:varianceratios)|
+|$r$      |relative increase of variance due to nonresponse for a scalar parameter | \@ref(sec:varianceratios)|
+|$\bar\lambda$|$\lambda$ for multivariate $Q$ | \@ref(sec:varianceratios)|
+|$\bar r$ | $r$ for multivariate $Q$ | \@ref(sec:varianceratios)|
+||||
+|$\nu_\mathrm{old}$|old degrees of freedom | \@ref(sec:df)|
+|$\nu$    | adjusted degrees of freedom | \@ref(sec:df)|
+||||
+|$y$      | univariate $Y$ | \@ref(sec:linearoverview)|
+|$y_\mathrm{obs}$| vector with $n_1$ observed data values in $y$ | \@ref(sec:linearoverview)|
+|$y_\mathrm{mis}$| vector with $n_0$ missing data values in $y$  | \@ref(sec:linearoverview)|
+|$\dot y$ | vector $n_0$ imputed values in $y$ | \@ref(sec:linearoverview)|
+|$X_\mathrm{obs}$| subset of $n_1$ rows of $X$ for which $y$ is observed | \@ref(sec:linearoverview)|
+|$X_\mathrm{mis}$| subset of $n_0$ rows of $X$ for which $y$ is missing  | \@ref(sec:linearoverview)|
+|$\hat\beta$ | estimate of regression weight $\beta$ | \@ref(sec:linearnormal)|
+|$\dot\beta$ | simulated regression weight for $\beta$ | \@ref(sec:linearoverview)|
+|$\hat\sigma^2$| estimate of residual variance $\sigma^2$ | \@ref(sec:linearoverview)|
+|$\dot\sigma^2$| simulated residual variance for $\sigma^2$ | \@ref(sec:linearoverview)|
+|$\kappa$ | ridge parameter | \@ref(sec:linearalgorithm)|
+|$\eta$ | distance parameter in predictive mean matching | \@ref(sec:pmmcomputation)|
+|$\hat y_i$ | vector of $n_1$ predicted values given $X_\mathrm{obs}$ | \@ref(sec:pmmcomputation)|
+|$\hat y_j$ | vector of $n_0$ predicted values given $X_\mathrm{mis}$ | \@ref(sec:pmmcomputation)|
+|$\delta$ | shift parameter in nonignorable models | \@ref(sec:nonignorableoverview)|
+||||
+|$Y_j$ | $j^\mathrm{th}$ column of $Y$ | \@ref(sec:patternoverview)|
+|$Y_{-j}$ | all columns of $Y$ except $Y_j$ | \@ref(sec:patternoverview)|
+|$I_{jk}$ | proportion of usable cases for imputing $Y_j$ from $Y_k$ | \@ref(sec:mdpattern)|
+|$O_{jk}$ | proportion of observed cases in $Y_j$ to impute $Y_k$ | \@ref(sec:mdpattern)|
+|$I_j$ | influx statistic to impute $Y_j$ from $Y_{-j}$ | \@ref(sec:flux)|
+|$O_j$ | outflux statistic to impute $Y_{-j}$ from $Y_j$ | \@ref(sec:flux)|
+||||
+|$\phi$ | parameters of the imputation model that models the distribution of $Y$ | \@ref(sec:monoverview)|
+|$M$ | number of iterations | \@ref(sec:FCS)|
+||||
+|$D_1$ | test statistic of Wald test | \@ref(sec:wald)|
+|$r_1$ | $r$ for Wald test | \@ref(sec:wald)|
+|$\nu_1$ | $\nu$ for Wald test | \@ref(sec:wald)|
+|$D_2$ | test statistic for $\chi^2$-test | \@ref(sec:chi)|
+|$r_2$ | $r$ for $\chi^2$-test | \@ref(sec:chi)|
+|$\nu_2$ | $\nu$ for $\chi^2$-test | \@ref(sec:chi)|
+|$D_3$ | test statistic for likelihood ratio test | \@ref(sec:likelihoodratio)|
+|$r_3$ | $r$ for likelihood ratio test | \@ref(sec:likelihoodratio)|
+|$\nu_3$ | $\nu$ for likelihood ratio test | \@ref(sec:likelihoodratio)|
+||||
+|$C$ | number of classes | \@ref(sec:threeformulations)|
+|$c$ | class index, $c=1,\dots,C$ | \@ref(sec:threeformulations)|
+|$y_c$ | outcome vector for cluster $c$ | \@ref(sec:threeformulations)|
+|$X_c$ | design matrix, fixed effects | \@ref(sec:threeformulations)|
+|$Z_c$ | design matrix, random effects | \@ref(sec:threeformulations)|
+|$\Omega$ | covariance matrix, random effects | \@ref(sec:threeformulations)|
+|||| 
+|$Y_i(1)$ | outcome of unit $i$ under treatment | \@ref(sec:whyice)|
+|$Y_i(0)$ | outcome of unit $i$ under control | \@ref(sec:whyice)|
+|$\tau_i$ | individual causal effect | \@ref(sec:whyice)|
+|$\tau$ | average causal effect | \@ref(sec:whyice)|
+|$\dot\tau_{i\ell}$ | simulated $\tau_i$ in $\ell^\mathrm{th}$ imputed data set| \@ref(sec:iceframework)|
+|$\hat\tau_{i}$ | estimate of $\tau_i$ | \@ref(sec:iceframework)|
+|$\hat\sigma_i^2$ | variance estimate of $\hat\tau_{i}$ | \@ref(sec:iceframework)|
+|$\dot\tau_{\ell}$ | simulated within-replication average causal effect | \@ref(sec:iceextensions)|
+|$\dot\sigma_{\ell}^2$ | variance of $\dot\tau_{\ell}$ | \@ref(sec:iceextensions)|

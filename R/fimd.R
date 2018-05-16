@@ -461,7 +461,8 @@ apply(res2, c(1, 3), mean, na.rm = TRUE)
 
 ## ----init3, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch03-', self.contained = FALSE)
-pkg <- c("mice", "lattice", "gamlss", "MASS", "ImputeRobust", "rpart")
+suppressPackageStartupMessages(library(gamlss, warn.conflicts = FALSE, quietly = TRUE))
+pkg <- c("mice", "lattice", "MASS", "ImputeRobust", "rpart")
 loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
 source("R/mice.impute.x.R")
 
@@ -915,8 +916,9 @@ box(lwd = 0.7)
 
 ## ----init4, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch04-', self.contained = FALSE)
-pkg <- c("mice", "lattice", "gam")
+pkg <- c("mice", "lattice")
 loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
+suppressPackageStartupMessages(library(gam, warn.conflicts = FALSE, quietly = TRUE))
 source("R/functions.R")
 
 ## ----patterns, echo=FALSE------------------------------------------------
@@ -1312,8 +1314,9 @@ D1(fit.with, fit.without)
 
 ## ----init6, echo = FALSE, results = 'hide'-------------------------------
 opts_chunk$set(fig.path = 'fig/ch6-', self.contained = FALSE)
-pkg <- c("mice", "lattice", "gamlss", "AGD", "smcfcs")
+pkg <- c("mice", "lattice", "gamlss", "smcfcs")
 loaded <- sapply(pkg, require, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)
+suppressPackageStartupMessages(library(AGD, warn.conflicts = FALSE, quietly = TRUE))
 source("R/mi.hist.R")
 
 ## ----pred1---------------------------------------------------------------

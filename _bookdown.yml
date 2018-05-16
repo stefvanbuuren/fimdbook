@@ -6,6 +6,7 @@ language:
   ui:
     chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
+            "00-frontmatter.Rmd",
             "01-introduction.Rmd",
             "02-multiple-imputation.Rmd",
             "03-univariate-missing.Rmd",
