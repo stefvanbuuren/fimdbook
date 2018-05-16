@@ -16,5 +16,6 @@ rmd_files: ["index.Rmd",
             "08-individual-causal-effects.Rmd",
             "09-measurement.Rmd",
             "10-selection.Rmd",
+            "11-longitudinal.Rmd",
             "13-references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"

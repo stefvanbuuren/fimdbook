@@ -2732,44 +2732,10 @@ imp2 <- mice(data, pred = pred, maxit = 20,
 bwplot(imp2, iq + coping ~ .imp,
        par.settings = thickBoxSettings)
 
-## ----calcprevalence, eval=FALSE, echo=FALSE------------------------------
-##  summary(lm(as.numeric(a10u)~1,data,na.action=na.omit))
-##  summary(lm(as.numeric(a10b)~1,data,na.action=na.omit))
-##  summary(lm(as.numeric(adhd)~1,data,na.action=na.omit))
-## summary(pool(with(imp2,lm(as.numeric(a10u)~1))))
-## summary(pool(with(imp2,lm(as.numeric(a10b)~1))))
-## summary(pool(with(imp2,lm(as.numeric(adhd)~1))))
-## summary(pool(with(imp2,lm(as.numeric(visus14)~1))))
-
-## ----impute3, eval=FALSE, echo=FALSE-------------------------------------
-## pred3 <- pred
-## pred3[61:86,61:86] <- round(lower.tri(matrix(1, 26, 26)))
-## imp3 <- mice(data, pred=pred3, maxit=20, seed=51121)
-## pred4 <- pred
-## pred4[61:86,61:86] <- round(upper.tri(matrix(1, 26, 26)))
-## imp4 <- mice(data, pred=pred4, maxit=20, seed=51121)
-
-## ----eval=FALSE, echo=FALSE----------------------------------------------
-## store(imp1, imp2, imp3, imp4)
 
 ## ----vlginit, echo=FALSE-------------------------------------------------
 dataproject <- "Data/vlg"
 .store <- file.path(dataproject,"R/store/")
-
-## ----vlgreaddata, echo=FALSE, eval = FALSE-------------------------------
-## ## Fifth Dutch Growth Study 2009 (n=10030)
-## file.spss <- file.path(dataproject, "original/5lgnl.sav")
-## original <- read_spss(file = file.spss)
-## original <- as_factor(original)
-##
-## ## selection and data transformation
-## vars <- c("record","regio5lg","lftdag","geslacht","lengte","gewicht","l_sd","g_sd")
-## fdgs <- original[original$record<600000,vars]
-## names(fdgs) <- c("id","reg","age","sex","hgt","wgt","hgt.z","wgt.z")
-## fdgs$age <- fdgs$age/365.25
-## levels(fdgs$reg) <- c("North","East","South","West","City")
-## levels(fdgs$sex) <- c("boy","girl")
-## data <- fdgs
 
 ## ----vlgaugment----------------------------------------------------------
 nimp <- c(400, 600, 75, 300, 200, 400)
@@ -2870,14 +2836,6 @@ pkg <- c("mice", "haven", "lme4", "splines")
 loaded <- sapply(pkg, require, character.only = TRUE,
                  warn.conflicts = FALSE, quietly = TRUE)
 
-## ----fdddata,results='asis',echo=FALSE-----------------------------------
-yvars <- c("yc1","yc2","yc3", "yp1","yp2","yp3")
-x <- cbind(fdd[,c("id","trt","pp",yvars)])
-x <- cbind(x[1:26,], x[27:52,])
-write.table(x, sep = " & ", eol="\\\\\n", quote=FALSE,
-            col.names=FALSE, row.names=FALSE, na="--")
-cat("\n")
-
 ## ----fddpattern, duo = TRUE, fig.height=4, echo=FALSE--------------------
 yvars <- c("yc1", "yc2", "yc3", "yp1", "yp2", "yp3")
 z <- md.pattern(fdd[fdd$pp == "Y", yvars])
@@ -2927,20 +2885,17 @@ ss <- lolo$id %in% ic
 
 grp <- 2*as.integer(lolo$.imp) - ivn
 loloss <- data.frame(lolo, grp=grp)
-#iloloss <- lolo[ss & lolo$.imp!=0,]
-#colvec <- colvec[ss & lolo$.imp!=0]
-#loloss <- data.frame(loloss, na = colvec)
-# pm <- lolo[iv,c("id","time")]
-# cv <- ifelse(iv,1,2)
 trellis.par.set(strip.background=list(col="grey95"))
 trellis.par.set(list(layout.heights = list(strip = 1)))
 tp1 <- xyplot(yp~time|factor(id), data=loloss, type="l",
+              layout = c(4,4),
       groups=factor(.imp), col="grey80", subset=ss,
        ylab="UCLA-RI Parent Score", pch=19, cex=1,
        xlab="Time", xlim=c("T1","T2","T3"),
              as.table=TRUE)
 print(tp1)
 tp2 <- xyplot(yp~time|factor(id), data=loloss, type="p",
+              layout = c(4,4),
        groups=grp, col=col12, subset=ss,
        ylab="UCLA-RI Parent Score",
        pch=19,
@@ -2952,10 +2907,6 @@ print(tp2, newpage=FALSE)
 ## ----fddplotparent, fig.height=3.5, echo=FALSE---------------------------
 means <- aggregate(lolo$yp, list(lolo$.imp!=0,lolo$trt,lolo$time), mean, na.rm=TRUE)
 names(means) <- c(".imp","trt","time","yp")
-## imps <- means[means$.imp!=0,]
-## means2 <- aggregate(imps$yp, list(imps$trt,imps$time), mean, na.rm=TRUE)
-## names(means2) <- c("trt","time","yp")
-## means <- rbind(means,data.frame(.imp=NA,means2[]))
 levels(means$trt) <- c("EMDR","CBT")
 tp <- xyplot(yp~time|trt, data=means, type="o", pch=19,
       groups=factor(.imp), col=c(mdc(4), mdc(6)),
@@ -2974,24 +2925,22 @@ tp <- xyplot(yc~time|trt, data=means, type="o", pch=19,
 print(tp)
 
 ## ----tbcinit, echo=FALSE-------------------------------------------------
-dataproject <- "Data/tbc"
-.store <- file.path(dataproject,"R/store/")
-fetch(imp.1745, fit.hgt, fit.wgt, fit.bmi)
+load("data/tbc/imp.1745")
+load("data/tbc/fit.hgt")
+load("data/tbc/fit.wgt")
+load("data/tbc/fit.bmi")
 
-spssfile <- file.path(dataproject,"original/long_spss2splus.sav")
-original <- read_spss(file = spssfile)
+original <- read_spss(file = "data/tbc/long_spss2splus.sav")
 names(original) <- c("id", "age", "occ", "nocc", "sex",
                     "hgt",  "wgt", "bmi",
                     "hgt.z", "wgt.z", "bmi.z", "wfh.z", "sys140")
-
-# get the target variable
-broad <- read_spss(file =file.path(dataproject, "broad_spss2splus.sav"))
+broad <- read_spss(file = "data/tbc/broad_spss2splus.sav")
 broad <- as_factor(broad)
 names(broad) <- tolower(names(broad))
 target <- data.frame(id=broad$koppel, ao = broad$ovjv, bmi.z.jv = broad$b_sdjv)
 
 # merge the target variables
-original <- merge(original, target, all.x=TRUE)
+original <- merge(original, target, all.x = TRUE)
 
 ### define subsets
 subset <- !is.na(original$age) & !(is.na(original$hgt.z) & is.na(original$wgt.z) & is.na(original$bmi.z))
@@ -3005,8 +2954,6 @@ first <- diff(ord)>=1
 typ <- factor(rep("obs",nrow(tbc)),levels=c("obs","sup","pred"))
 tbc <- data.frame(tbc[,1:3],first=c(TRUE,first),typ,tbc[4:ncol(tbc)])
 
-## md.pattern(tbc)
-
 ### make small dataset
 six <- c(1259,7019,2447,7460,8046,7646)
 set.seed(23221)
@@ -3018,7 +2965,7 @@ data <- tbc[idx,]
 data <- tbc
 
 ### remove those with nocc 1 or 2 or 3
-data <- data[data$nocc>=3,]
+data <- data[data$nocc >= 3,]
 
 ### missing data heat map
 tbc <- data
@@ -3034,25 +2981,25 @@ k <- length(brk)
 ### calculate B-spline
 X <- bs(data$age,
         knots = brk,
-        B = c(brk[1],brk[k]+0.0001),
+        B = c(brk[1], brk[k] + 0.0001),
         degree = 1)
-X <- X[,-(k+1)]
-dimnames(X)[[2]] <- paste("x",1:ncol(X),sep="")
-data <- cbind(data,X)
-round(head(X,3),2)
+X <- X[,-(k + 1)]
+dimnames(X)[[2]] <- paste("x", 1:ncol(X), sep = "")
+data <- cbind(data, X)
+round(head(X, 3), 2)
 
 ## ----tbcfitstick, eval=FALSE---------------------------------------------
-## library(lme4)
-## fit <- lmer(wgt.z ~ 0 + x1 + x2 + x3 + x4 + x5 +
-##               x6 + x7 + x8 + x9 + (0 + x1 + x2 +
-##               x3 + x4 + x5 + x6 + x7 + x8 + x9 | id),
-##             data = data)
-##
-## ### calculate size and increment per person
-## tsiz <- t(ranef(fit)$id) + fixef(fit)
-## tinc <- diff(tsiz)
-##
-## round(head(t(tsiz)), 2)
+library(lme4)
+fit <- lmer(wgt.z ~ 0 + x1 + x2 + x3 + x4 + x5 +
+              x6 + x7 + x8 + x9 + (0 + x1 + x2 +
+              x3 + x4 + x5 + x6 + x7 + x8 + x9 | id),
+            data = data)
+
+### calculate size and increment per person
+tsiz <- t(ranef(fit)$id) + fixef(fit)
+tinc <- diff(tsiz)
+
+round(head(t(tsiz)), 2)
 
 ## ----tbctimewarp, echo=FALSE---------------------------------------------
 warp.setup <- data.frame(age = brk,
@@ -3069,18 +3016,6 @@ id <- unique(data$id)
 data2 <- appendbreak(data, brk, id = id,
                      warp.model = warp.model, typ = "sup")
 table(data2$typ)
-## Figure: time warping function
-## par(fin=c(3,3),omi=c(0,0,0,0),mai=c(1,1,1,1),mfrow=c(1,1),lwd=0.5)
-## eqscplot(x=brk, y=warp.model$y,
-##          ylab="Warped age",
-##          xlab="Age (years)",
-##          axes=F,type="o",lwd=1,pch=16)
-## axis(1, ticks=0.01, at=seq(0,32,4), cex=0.5, pos=c(-0.5,0))
-## axis(2,ticks=F,at=warp.setup$age2,
-##      labels=c("0y","8d","4m","1y","2y","6y","10y","18y","29y"),
-##      line=0.5,cex=0.5)
-## lines(x=c(0,29), y=c(0,29), lwd=1)
-
 
 ## ----tbcdecimal, echo=FALSE----------------------------------------------
 options(digits = 2)
@@ -3108,13 +3043,12 @@ pred[Y[3], Y[1:2]] <- 1
 vis <- c("hgt.z","wgt.z","bmi.z")
 
 ## ----tbcimpmice, eval=FALSE----------------------------------------------
-## imp.1745 <- mice(data2, meth = meth, pred = pred, m = 10,
-##                  maxit = 10, seed = 52711, print = FALSE)
+imp.1745 <- mice(data2, meth = meth, pred = pred, m = 10,
+                 maxit = 10, seed = 52711, print = FALSE)
 
 ## ----tbcplotimp,  echo=FALSE---------------------------------------------
-fetch(imp.1745)
-cd <- mice::complete(imp.1745,"long")
-sup <- cd[cd$typ=="sup",]
+cd <- mice::complete(imp.1745, "long")
+sup <- cd[cd$typ=="sup", ]
 # sup <- cd[cd$typ=="imp",-c(2,10:12)]
 # sup$ao <- NA
 data3 <- data.frame(.imp=0,data2)
