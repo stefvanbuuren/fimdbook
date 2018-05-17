@@ -1,4 +1,4 @@
-# Preface to first edition {#preface-to-first-edition .unnumbered}
+# Preface to first edition {-}
 
 We are surrounded by missing data. Problems created by missing data in
 statistical analysis have long been swept under the carpet. These times

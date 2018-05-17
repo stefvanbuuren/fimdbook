@@ -1,19 +1,18 @@
 ---
-title: "Flexible Imputation of Missing Data"
-author: "Stef van Buuren"
-date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [fimd2.bib]
 biblio-style: apalike
 link-citations: yes
-description: "Online version of Flexible Imputation of Missing Data"
+description: "Flexible Imputation of Missing Data, Second Edition"
 ---
 
-# Hello {-}
-
-notation: $a^2 + c^3$.
+# {-}
 
 ```{r external-code, cache=FALSE, echo = FALSE}
 source("R/before_book_script.R")
+```
+
+```{r cover, echo = FALSE}
+knitr::include_graphics("fig/tempcover.png")
 ```

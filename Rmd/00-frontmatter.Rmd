@@ -1,11 +1,11 @@
-# Foreword {#foreword .unnumbered}
+# Foreword {#foreword .unnumbered} {-}
 
   I’m delighted to see this new book on multiple imputation by Stef van
   Buuren for several reasons. First, to me at least, having another book
   devoted to multiple imputation marks the maturing of the topic after an
   admittedly somewhat shaky initiation. Stef is certainly correct when he
   states in Section 2.1.2: “The idea to create multiple versions must have
-  seemed outrageous at that time \[late 1970s\]. Drawing imputations from
+  seemed outrageous at that time (late 1970’s). Drawing imputations from
   a distribution, instead of estimating the ‘best’ value, was a severe
   breach with everything that had been done before.” I remember how this
   idea of multiple imputation was even ridiculed by some more traditional
@@ -51,6 +51,11 @@
   This book is a step in the growing list of contributions that Stef has
   made, and, I am confident, will continue to make, in methodology,
   computational approaches and application of multiple imputation.
+  
+  <div style="text-align: right"> --- Donald B. Rubin </div>
+  \ 
+  \ 
+  \ 
 
   I am very pleased for the opportunity to add this short addendum to my
   preface to the first edition of Stef’s wonderfully readable book on
@@ -66,3 +71,5 @@
   enthusiastic about the growing role of sensitivity analysis using visual
   displays, always prominent in Stef’s contributions, but also now in
   other places, such as @LIUBLINSKA2014 — some of us can be slow learners!
+
+  <div style="text-align: right"> --- Donald B. Rubin, May 2018 </div>

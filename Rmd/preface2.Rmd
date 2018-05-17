@@ -1,0 +1,127 @@
+# Preface to second edition {-}
+
+Welcome to the second edition of *Flexible Imputation of Missing
+Data*, a book that can help you to solve missing data problems using
+`mice`. I am tremendously grateful for the success of the first
+edition. The `mice` community has been steadily growing over the last
+years, and the `mice` package is now downloaded from CRAN at a rate of
+about 750 downloads per day. My hope is that this book will sharpen
+your intuition on how to think about missing data, and provide you the
+tools to apply your ideas in practice.
+
+Since the first edition was published in 2012, multiple imputation of
+missing data has become one of the great academic industries. Many
+analysts now employ multiple imputation on a regular basis as a
+generic solution to the omnipresent missing-data problem, and a
+substantial group of practitioners are doing the calculations in
+`mice`. This book aspires to combine a state-of-the-art overview of
+the field with a set of how-to instructions for practical data
+analysis.
+
+Some sections of the first edition are still perfectly fine, but many
+others appear outdated. And of course, some of the newer developments
+are missing from the first edition. The second edition brings the text
+up-to-date. So what’s new?
+
+1.  Multiple imputation of multilevel data has been a hot spot of
+    statistical research. Multilevel data can arise from nested data
+    collection designs, but also emerge when data are combined from
+    multiple sources. Imputers and analysts now have a bewildering array
+    of options. The three pages in the first edition have expanded into
+    a full-blown new chapter on multilevel imputation. This chapter
+    translates the current insights among the leading developers into
+    practical advice for end users.
+
+2.  Another hot spot in statistics and data science is the
+    creation of personalized estimates. Causal inference by multiple
+    imputation of the potential outcomes is an innovative approach that
+    attempts to answer “what if” questions on the level of
+    the individual. This edition contains a short new chapter on
+    individual causal effects that demonstrates how multiple imputation
+    is applied to obtain well-grounded personalized estimates.
+
+3.  Data science has continued to grow at a phenomenal pace. The `R`
+    language is now the dominant software for developing new
+    statistical techniques. `RStudio` has successfully introduced the
+    open `tidyverse` ecosystem for data acquisition, organization,
+    analysis and visualization. This edition targets this growing
+    audience of data scientists by including new sections on parallel
+    computation and MICE workflows using pipes within the `tidyverse`
+    ecosystem.
+
+4.  New algorithms for creating imputations have appeared, in
+    particular methodology based on predictive mean matching, for
+    imputing binary and ordered variables, for interactions using
+    classification and regression trees, and many types of machine
+    learning methods. Chapters 3 and 4 incorporate
+    these developments.
+
+5.  Important theoretical advances have been made on the convergence,
+    compatibility, misspecification and stability of the simulation
+    algorithms underlying MICE. Chapter 4 in this edition highlights
+    these developments.
+
+In parallel to the book, I worked on a significant update of the
+software: `mice 3.0`. The main MICE algorithm now iterates over blocks
+of variables instead of individual columns, so we may now easily
+combine univariate and multivariate imputation methods. In addition,
+it is now possible to specify exactly which cells in the data should
+be imputed. There are new functions for multivariate tests, the
+support for native formula’s has improved, and, thanks to the `broom`
+package, parameter pooling is now available for a much wider selection
+of complete-data models. The calculations use better numerical
+algorithms for low-level imputation functions. I have tried hard to
+remain code-compatible with previous versions of `mice`. Existing code
+should run properly, but do not expect exact replication of the
+results. All code used in this book was tested with `mice 3.0`.
+
+The previous edition had two colors, and some of the plots did not
+work as well as I had intended. I am very glad that this edition is in
+full color, so that the differences between the blue and red points
+stand out clearly and provide a unifying look to the book. There is
+also syntax coloring of the `R` code, which makes it very easy to
+distinguish the various language elements.
+
+All data are incomplete, and so are all books. I had the luxury that I
+could devote my time during the period December 2017-March 2018 to
+this revision. A block of four months may seem like a formidable
+amount of time, but in retrospect it passed very quickly. While some
+topics I had planned have remained in the conceptual stage, overall I
+think that this edition covers the relevant developments in the field.
+
+New statistical techniques will only be applied if there is
+high-quality and user-friendly software available. I would like to
+thank the following people for their contribution to the `mice`
+package over the years: Karin Groothuis-Oudshoorn, Gerko Vink, Lisa
+Doove, Shahab Jolani, Roel de Jong, Rianne Schouten, Florian
+Meinfelder, Philipp Gaffert, Alexander Robitzsch and Bernie Gray.
+
+There is a growing ecosystem of related `R` packages that extend the
+functionality of `mice` in some way. Currently, these include
+`miceadds`, `mitml`, `micemd`, `countimp`, `CALIBERrfimpute`,
+`miceExt` and `ImputeRobust`. There is also a `Python` version in the
+works, which could result in an enormous expansion of the user base. I
+thank the authors of these packages for the time and effort they have
+put into creating these programs: Alexander Robitzsch, Simon Grund,
+Thorsten Henke, Oliver Lüdtke, Vincent Audigier, Matthieu
+Resche-Rigon, Kristian Kleinke, Jost Reinecke, Anoop Shah, Tobias
+Schumacher, Philipp Gaffert, Daniel Salfran, Martin Spiess, Sergey
+Feldman and Rianne Schouten.
+
+I wish to thank Rob Calver, Statistics Editor at Chapman & Hall/CRC
+for his encouragement during both the first and second edition. Lara
+Spieker, Suzanne Lassandro and Shashi Kumar have been very helpful in
+meeting the ambitious production schedule. I thank Daan Kloet of TNO
+for his support for the idea of a mini-sabbatical, and his assistence
+in realizing the idea within TNO. I also wish to thank Peter van der
+Heijden of the University of Utrecht for his support over the years.
+Several people read and commented on parts of the manuscript. I thank
+Gerko Vink, Shahab Jolani, Iris Eekhout, Simon Grund, Tom Snijders and
+Joop Hox for their insightful and useful feedback. This has helped me
+a lot to understand the details much clearer, allowing me to improve
+my fumbled writings.
+
+Last but not least, I thank my wife Eveline for her patience in living
+with an individual who can be so preoccupied with something else.
+
+<div style="text-align: right"> --- Stef van Buuren, May 2, 2018 </div>

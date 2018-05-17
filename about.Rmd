@@ -1,8 +1,0 @@
-# About the author {#about-the-author .unnumbered}
-
-Stef van Buuren is a statistician at the Netherlands Organization for
-Applied Scientific Research TNO in Leiden, and professor of Statistical
-Analysis of Incomplete Data at Utrecht University. He is the originator
-of the MICE algorithm for multiple imputation of multivariate data, and
-co-developed the `mice` package in `R`. More information can be found at
-[www.stefvanbuuren.name](www.stefvanbuuren.name).

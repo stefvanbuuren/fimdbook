@@ -1,0 +1,75 @@
+# Foreword {-}
+
+  I’m delighted to see this new book on multiple imputation by Stef van
+  Buuren for several reasons. First, to me at least, having another book
+  devoted to multiple imputation marks the maturing of the topic after an
+  admittedly somewhat shaky initiation. Stef is certainly correct when he
+  states in Section 2.1.2: “The idea to create multiple versions must have
+  seemed outrageous at that time (late 1970’s). Drawing imputations from
+  a distribution, instead of estimating the ‘best’ value, was a severe
+  breach with everything that had been done before.” I remember how this
+  idea of multiple imputation was even ridiculed by some more traditional
+  statisticians, sometimes for just being “silly” and sometimes for being
+  hopelessly inefficient with respect to storage demands and outrageously
+  expensive with respect to computational requirements.
+
+  Some others of us foresaw what was happening to both (a) computational
+  storage (I just acquired a 64 GB flash drive the size of a small finger
+  for under \$60, whereas only a couple of decades ago I paid over \$2500
+  for a 120 KB hard drive larger than a shoebox weighing about 10 kilos),
+  and (b) computational speed and flexibility. To develop statistical
+  methods for the future while being bound by computational limitations of
+  the past was clearly inapposite. Multiple imputation’s early survival
+  was clearly due to the insight of a younger generation of statisticians,
+  including many colleagues and former students, who realized future
+  possibilities.
+
+  A second reason for my delight at the publication of this book is more
+  personal and concerns the maturing of the author, Stef van Buuren. As he
+  mentions, we first met through Jan van Rijckevorsel at TNO. Stef was a
+  young and enthusiastic researcher there, who knew little about the kind
+  of statistics that I felt was essential for making progress on the topic
+  of dealing with missing data. But consider the progress over the decades
+  starting with his earlier work on MICE! Stef has matured into an
+  independent researcher making important and original contributions to
+  the continued development of multiple imputation.
+
+  This book represents a ‘no nonsense’ straightforward approach to the
+  application of multiple imputation. I particularly like Stef’s use of
+  graphical displays, which are badly needed in practice to supplement the
+  more theoretical discussions of the general validity of multiple
+  imputation methods. As I have said elsewhere, and as implied by much of
+  what is written by Stef, “It’s not that multiple imputation is so good;
+  it’s really that other methods for addressing missing data are so bad.”
+  It’s great to have Stef’s book on multiple imputation, and I look
+  forward to seeing more editions as this rapidly developing methodology
+  continues to become even more effective at handling missing data
+  problems in practice.
+
+  Finally, I would like to say that this book reinforces the pride of an
+  academic father who has watched one of his children grow and develop.
+  This book is a step in the growing list of contributions that Stef has
+  made, and, I am confident, will continue to make, in methodology,
+  computational approaches and application of multiple imputation.
+  
+  <div style="text-align: right"> --- Donald B. Rubin </div>
+  \ 
+  \ 
+  \ 
+
+  I am very pleased for the opportunity to add this short addendum to my
+  preface to the first edition of Stef’s wonderfully readable book on
+  multiple imputation. Over the past few years, I’ve recommended that many
+  check out Stef’s first edition for excellent advice to practitioners of
+  multiple imputation. The increased appreciation and use of multiple
+  imputation between these two editions reflects, not only the growing
+  maturity of computational statistics, but also the growing acceptance of
+  multiple imputation as essentially being “the only game in town” for
+  dealing generally with the problem of missing data, especially because
+  it leads so naturally to visual displays of sensitivity of conclusions
+  to differing assumptions about the reasons for the missing data. I am
+  enthusiastic about the growing role of sensitivity analysis using visual
+  displays, always prominent in Stef’s contributions, but also now in
+  other places, such as @LIUBLINSKA2014 — some of us can be slow learners!
+
+  <div style="text-align: right"> --- Donald B. Rubin, May 2018 </div>

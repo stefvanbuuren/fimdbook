@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Flexible Imputation of Missing Data, Second Edition">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="sec-structure.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://stefvanbuuren.name/fimd/"> Flexible Imputation of Missing Data</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="foreword.html"><a href="foreword.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="chapter" data-level="" data-path="preface-to-second-edition.html"><a href="preface-to-second-edition.html"><i class="fa fa-check"></i>Preface to second edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-first-edition.html"><a href="preface-to-first-edition.html"><i class="fa fa-check"></i>Preface to first edition</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a></li>
+<li class="chapter" data-level="" data-path="symbol-description.html"><a href="symbol-description.html"><i class="fa fa-check"></i>Symbol Description</a></li>
+<li class="part"><span><b>I Part I: Basics</b></span></li>
+<li class="chapter" data-level="1" data-path="ch-introduction.html"><a href="ch-introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="sec-problem.html"><a href="sec-problem.html"><i class="fa fa-check"></i><b>1.1</b> The problem of missing data</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-problem.html"><a href="sec-problem.html#sec:current"><i class="fa fa-check"></i><b>1.1.1</b> Current practice</a></li>
+<li class="chapter" data-level="1.1.2" data-path="sec-problem.html"><a href="sec-problem.html#sec:changingperspective"><i class="fa fa-check"></i><b>1.1.2</b> Changing perspective on missing data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-MCAR.html"><a href="sec-MCAR.html"><i class="fa fa-check"></i><b>1.2</b> Concepts of MCAR, MAR and MNAR</a></li>
+<li class="chapter" data-level="1.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html"><i class="fa fa-check"></i><b>1.3</b> Ad-hoc solutions</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:listwise"><i class="fa fa-check"></i><b>1.3.1</b> Listwise deletion</a></li>
+<li class="chapter" data-level="1.3.2" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:pairwise"><i class="fa fa-check"></i><b>1.3.2</b> Pairwise deletion</a></li>
+<li class="chapter" data-level="1.3.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:meanimp"><i class="fa fa-check"></i><b>1.3.3</b> Mean imputation</a></li>
+<li class="chapter" data-level="1.3.4" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:regimp"><i class="fa fa-check"></i><b>1.3.4</b> Regression imputation</a></li>
+<li class="chapter" data-level="1.3.5" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:sri"><i class="fa fa-check"></i><b>1.3.5</b> Stochastic regression imputation</a></li>
+<li class="chapter" data-level="1.3.6" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:locf"><i class="fa fa-check"></i><b>1.3.6</b> LOCF and BOCF</a></li>
+<li class="chapter" data-level="1.3.7" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:indicator"><i class="fa fa-check"></i><b>1.3.7</b> Indicator method</a></li>
+<li class="chapter" data-level="1.3.8" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:simplesummary"><i class="fa fa-check"></i><b>1.3.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="sec-nutshell.html"><a href="sec-nutshell.html"><i class="fa fa-check"></i><b>1.4</b> Multiple imputation in a nutshell</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-nutshell.html"><a href="sec-nutshell.html#procedure"><i class="fa fa-check"></i><b>1.4.1</b> Procedure</a></li>
+<li class="chapter" data-level="1.4.2" data-path="sec-nutshell.html"><a href="sec-nutshell.html#reasons-to-use-multiple-imputation"><i class="fa fa-check"></i><b>1.4.2</b> Reasons to use multiple imputation</a></li>
+<li class="chapter" data-level="1.4.3" data-path="sec-nutshell.html"><a href="sec-nutshell.html#sec:miexample"><i class="fa fa-check"></i><b>1.4.3</b> Example of multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-goal.html"><a href="sec-goal.html"><i class="fa fa-check"></i><b>1.5</b> Goal of the book</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html"><i class="fa fa-check"></i><b>1.6</b> What the book does not cover</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:prevention"><i class="fa fa-check"></i><b>1.6.1</b> Prevention</a></li>
+<li class="chapter" data-level="1.6.2" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:weighting"><i class="fa fa-check"></i><b>1.6.2</b> Weighting procedures</a></li>
+<li class="chapter" data-level="1.6.3" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:likelihood"><i class="fa fa-check"></i><b>1.6.3</b> Likelihood-based approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="sec-structure.html"><a href="sec-structure.html"><i class="fa fa-check"></i><b>1.7</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.8" data-path="ex-ch1.html"><a href="ex-ch1.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org/yihui/bookdown/" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ex:ch1" class="section level2">
+<h2><span class="header-section-number">1.8</span> Exercises</h2>
+
+<div class="exercise">
+<p><span id="exr:report" class="exercise"><strong>Exercise 1.1  (Reporting practice)  </strong></span>What are the reporting practices in your field? Take a random sample of articles that have appeared during the last 10 years in the leading journal in your field. Select only those that present quantitative analyses, and address the following topics:</p>
+<ol style="list-style-type: decimal">
+<li><p>Did the authors report that there were missing data?</p></li>
+<li><p>If not, can you infer from the text that there must have been missing data?</p></li>
+<li><p>Did the authors discuss how they handled the missing data?</p></li>
+<li><p>Were the missing data properly addressed?</p></li>
+<li><p>Can you detect a trend over time in reporting practice?</p></li>
+<li>Would the editors of the journal be interested in your findings?</li>
+</ol>
+</div>
+
+
+<div class="exercise">
+<span id="exr:caseslost" class="exercise"><strong>Exercise 1.2  (Loss of information)  </strong></span>Suppose that a dataset consists of 100 cases and 10 variables. Each variable contains 10% missing values. What is the largest possible subsample under listwise deletion? What is the smallest? If each variable is MCAR, how many cases will remain?
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:sriexr" class="exercise"><strong>Exercise 1.3  (Stochastic regression imputation)  </strong></span>The correlation of the data in Figure <a href="sec-simplesolutions.html#fig:plotsri">1.4</a> is equal to 0.33. This is relatively low compared to the other correlations reported in Section <a href="sec-simplesolutions.html#sec:simplesolutions">1.3</a>. This seems to contradict the statement that stochastic regression imputation does not bias the correlation. Could this low correlation be due to random variation?</p>
+<ol style="list-style-type: decimal">
+<li><p>Rerun the code with a different <code>seed</code> value. What is the correlation now?</p></li>
+<li><p>Write a loop to apply apply stochastic regression imputation with the <code>seed</code> increasing from 1 to 1000. Calculate the regression weight and the correlation for each solution, and plot the histogram. What are the mean, minimum and maximum values of the correlation?</p></li>
+<li>Do your results indicate that stochastic regression imputation alters the correlation?</li>
+</ol>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:sricontinued" class="exercise"><strong>Exercise 1.4  (Stochastic regression imputation (continued))  </strong></span>The largest correlation found in the previous exercise exceeds the value found in Section <a href="sec-simplesolutions.html#sec:regimp">1.3.4</a>. This seems odd since the correlation of the imputed values under regression imputation is equal to 1, and hence the imputed data have a maximal contribution to the overall correlation.</p>
+<ol style="list-style-type: decimal">
+<li><p>Can you explain why this could happen?</p></li>
+<li><p>Adapt the code from the previous exercise to test your explanation. Was your explanation satisfactory?</p></li>
+<li>If not, can you think of another reason, and test that? Hint: Find out what is special about the solutions with the largest correlations.</li>
+</ol>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:nonlinear" class="exercise"><strong>Exercise 1.5  (Nonlinear model)  </strong></span>The model fitted to the <code>airquality</code> data in Section <a href="sec-nutshell.html#sec:miexample">1.4.3</a> is a simple linear model. Inspection of the residuals reveals that there is a slight curvature in the average of the residuals.</p>
+<ol style="list-style-type: decimal">
+<li><p>Start from the completed cases, and use <code>plot(fit)</code> to obtain diagnostic plots. Can you explain why the curvature shows up?</p></li>
+<li><p>Experiment with solutions, e.g., by transforming <code>Ozone</code> or by adding a quadratic term to the model. Can you make the curvature disappear? Does the amount of explained variance increase?</p></li>
+<li><p>Does the curvature also show up in the imputed data? If so, does the same solution work? Hint: You can assess the <span class="math inline">\(j^\mathrm{th}\)</span> fitted model by <code>getfit(fit, j)</code>, where <code>fit</code> was created by <code>with(imp,...)</code>.</p></li>
+<li>Advanced: Do you think your solution would necessitate drawing new imputations?</li>
+</ol>
+</div>
+
+
+<div id="refs" class="references">
+<div id="ref-ABAYOMI2008">
+<p>Abayomi, K., A. Gelman, and M. Levy. 2008. “Diagnostics for Multivariate Imputations.” <em>Journal of the Royal Statistical Society C</em> 57 (3): 273–91.</p>
+</div>
+<div id="ref-AKL2015">
+<p>Akl, E. A., K. Shawwa, L. A. Kahale, T. Agoritsas, R. Brignardello-Petersen, J. W. Busse, A. Carrasco-Labra, et al. 2015. “Reporting Missing Participant Data in Randomised Trials: Systematic Survey of the Methodological Literature and a Proposed Guide.” <em>BMJ Open</em> 5 (12): e008431.</p>
+</div>
+<div id="ref-AYLWARD2010">
+<p>Aylward, D. S., R. A. Anderson, and T. D. Nelson. 2010. “Approaches to Handling Missing Data Within Developmental and Behavioral Pediatric Research.” <em>Journal of Developmental &amp; Behavioral Pediatrics</em> 31 (1): 54–60.</p>
+</div>
+<div id="ref-BANG2005">
+<p>Bang, K., and J. M. Robins. 2005. “Doubly Robust Estimation in Missing Data and Causal Inference Models.” <em>Biometrics</em> 61 (4): 962–72.</p>
+</div>
+<div id="ref-BETHLEHEM2002">
+<p>Bethlehem, J. G. 2002. “Weighting Adjustments for Ignorable Nonresponse.” In <em>Survey Nonresponse</em>, edited by R. M. Groves, D. A. Dillman, J. L. Eltinge, and R. J. A. Little, 275–87. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-BURTON2004">
+<p>Burton, A., and D. G. Altman. 2004. “Missing Covariate Data Within Cancer Prognostic Studies: A Review of Current Reporting and Proposed Guidelines.” <em>British Journal of Cancer</em> 91 (1): 4–8.</p>
+</div>
+<div id="ref-COCHRAN1977">
+<p>Cochran, W. G. 1977. <em>Sampling Techniques</em>. 3rd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-DELEEUW2008">
+<p>De Leeuw, E. D., J. J. Hox, and D. A. Dillman. 2008. <em>International Handbook of Survey Methodology</em>. New York: Lawrence Erlbaum Associates.</p>
+</div>
+<div id="ref-DILLMAN2008">
+<p>Dillman, D. A., J. D. Smyth, and L. Melani Christian. 2008. <em>Internet, Mail, and Mixed-Mode Surveys: The Tailored Design Method</em>. 3rd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-DIAZ2014">
+<p>Díaz-Ordaz, K., M. G. Kenward, A. Cohen, C. L. Coleman, and S. Eldridge. 2014. “Are Missing Data Adequately Handled in Cluster Randomised Trials? A Systematic Review and Guidelines.” <em>Clinical Trials</em> 11 (5): 590–600.</p>
+</div>
+<div id="ref-ENDERS2010">
+<p>Enders, C. K. 2010. <em>Applied Missing Data Analysis</em>. New York: Guilford Press.</p>
+</div>
+<div id="ref-GOMES2016">
+<p>Gomes, M., N. Gutacker, C. Bojke, and A. Street. 2016. “Addressing Missing Data in Patient-Reported Outcome Measures (PROMS): Implications for the Use of PROMS for Comparing Provider Performance.” <em>Health Economics</em> 25 (5): 515–28.</p>
+</div>
+<div id="ref-GREENLAND1995">
+<p>Greenland, S., and W. D. Finkle. 1995. “A Critical Look at Methods for Handling Missing Covariates in Epidemiologic Regression Analyses.” <em>American Journal of Epidemiology</em> 142 (12): 1255–64.</p>
+</div>
+<div id="ref-GROENWOLD2012">
+<p>Groenwold, R. H. H., I. R. White, A. R. T. Donders, J. R. Carpenter, D. G. Altman, and K. G. M. Moons. 2012. “Missing Covariate Data in Clinical Research: When and When Not to Use the Missing-Indicator Method for Analysis.” <em>Canadian Medical Association Journal</em> 184 (11): 1265–9.</p>
+</div>
+<div id="ref-GROVES2009">
+<p>Groves, R. M., F. J. Fowler Jr., M. P. Couper, J. M. Lepkowski, E. Singer, and R. Tourangeau. 2009. <em>Survey Methodology</em>. 2nd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-HAND1994">
+<p>Hand, D. J., F. Daly, A. D. Lunn, K. J. McConway, and E. Ostrowski. 1994. <em>A Handbook of Small Data Sets</em>. London: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-HARVEY1981">
+<p>Harvey, A. C. 1981. <em>The Econometric Analysis of Time Series</em>. Oxford: Philip Allen.</p>
+</div>
+<div id="ref-JELICIC2009">
+<p>Jeliĉić, H., E. Phelps, and R. M. Lerner. 2009. “Use of Missing Data Methods in Longitudinal Studies: The Persistence of Bad Practices in Developmental Psychology.” <em>Developmental Psychology</em> 45 (4): 1195–9.</p>
+</div>
+<div id="ref-KANG2007">
+<p>Kang, J. D. Y., and J. L. Schafer. 2007. “Demystifying Double Robustness: A Comparison of Alternative Strategies for Estimating a Population Mean from Incomplete Data.” <em>Statistical Science</em> 22 (4): 523–39.</p>
+</div>
+<div id="ref-KARAHALIOS2012">
+<p>Karahalios, A., L. Baglietto, J. B. Carlin, D. R. English, and J. A. Simpson. 2012. “A Review of the Reporting and Handling of Missing Data in Cohort Studies with Repeated Assessment of Exposure Measures.” <em>BMC Medical Research Methodology</em> 12. Cancer Epidemiology Centre, Cancer Council Victoria, Carlton, VIC, Australia.: 96.</p>
+</div>
+<div id="ref-KATSIKATSOU2012">
+<p>Katsikatsou, M., I. Moustaki, F. Yang-Wallentin, and K.G. Jöreskog. 2012. “Pairwise Likelihood Estimation for Factor Analysis Models with Ordinal Data.” <em>Computational Statistics &amp; Data Analysis</em> 56 (12): 4243–58.</p>
+</div>
+<div id="ref-KENWARD2009">
+<p>Kenward, M. G., and G. Molenberghs. 2009. “Last Observation Carried Forward: A Crystal Ball?” <em>Journal of Biopharmaceutical Statistics</em> 19 (5): 872–88.</p>
+</div>
+<div id="ref-KING2001">
+<p>King, G., J. Honaker, A. Joseph, and K. Scheve. 2001. “Analyzing Incomplete Political Science Data: An Alternative Algorithm for Multiple Imputation.” <em>American Political Science Review</em> 95 (1): 49–69.</p>
+</div>
+<div id="ref-KLEBANOFF2008">
+<p>Klebanoff, M. A., and S. R. Cole. 2008. “Use of Multiple Imputation in the Epidemiologic Literature.” <em>American Journal of Epidemiology</em> 168 (4): 355–57.</p>
+</div>
+<div id="ref-KNOL2010">
+<p>Knol, M. J., K. J. M. Janssen, A. R. T. Donders, A. C. G. Egberts, E. R. Heerdink, D. E. Grobbee, K. G. M. Moons, and M. I. Geerlings. 2010. “Unpredictable Bias When Using the Missing Indicator Method or Complete Case Analysis for Missing Confounder Values: An Empirical Example.” <em>Journal of Clinical Epidemiology</em> 63: 728–36.</p>
+</div>
+<div id="ref-LITTLE1992">
+<p>Little, R. J. A. 1992. “Regression with Missing X’s: A Review.” <em>Journal of the American Statistical Association</em> 87 (420): 1227–37.</p>
+</div>
+<div id="ref-LITTLE2002">
+<p>Little, R. J. A., and D. B. Rubin. 2002. <em>Statistical Analysis with Missing Data</em>. 2nd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-LIUBLINSKA2014">
+<p>Liublinska, V., and D. B. Rubin. 2014. “Sensitivity Analysis for a Partially Missing Binary Outcome in a Two-Arm Randomized Clinical Trial.” <em>Statistics in Medicine</em> 33 (24): 4170–85.</p>
+</div>
+<div id="ref-MACKINNON2010">
+<p>Mackinnon, A. 2010. “The Use and Reporting of Multiple Imputation in Medical Research – A Review.” <em>Journal of Internal Medicine</em> 268 (6): 586–93.</p>
+</div>
+<div id="ref-MARSH1998">
+<p>Marsh, H. W. 1998. “Pairwise Deletion for Missing Data in Structural Equation Models: Nonpositive Definite Matrices, Parameter Estimates, Goodness of Fit, and Adjusted Sample Sizes.” <em>Structural Equation Modeling</em> 5 (1): 22–36.</p>
+</div>
+<div id="ref-MCKNIGHT2007">
+<p>McKnight, P. E., K. M. McKnight, S. Sidani, and A. J. Figueredo. 2007. <em>Missing Data: A Gentle Introduction</em>. New York: Guilford Press.</p>
+</div>
+<div id="ref-MIETTINEN1985">
+<p>Miettinen, O. S. 1985. <em>Theoretical Epidemiology: Principles of Occurence Research in Medicine</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-MOLENBERGHS2007">
+<p>Molenberghs, G., and M. G. Kenward. 2007. <em>Missing Data in Clinical Studies</em>. Chichester: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-NRC2010">
+<p>National Research Council. 2010. <em>The Prevention and Treatment of Missing Data in Clinical Trials</em>. Washington, D.C.: The National Academies Press.</p>
+</div>
+<div id="ref-NETTEN2017">
+<p>Netten, A. P., F. W. Dekker, C. Rieffe, W. Soede, J. J. Briaire, and J. H. Frijns. 2017. “Missing Data in the Field of Otorhinolaryngology and Head &amp; Neck Surgery: Need for Improvement.” <em>Ear and Hearing</em> 38 (1). 1Department of Otorhinolaryngology; Head &amp; Neck Surgery, 2Department of Epidemiology, Leiden University Medical Center, Leiden, The Netherlands; 3Department of Developmental Psychology, Leiden University, Leiden, The Netherlands; 4Dutch Foundation for the Deaf; Hard of Hearing Child, Amsterdam, The Netherlands;; 5Leiden Institute for Brain; Cognition, Leiden, The Netherlands.: 1–6.</p>
+</div>
+<div id="ref-ORCHARD1972">
+<p>Orchard, T., and M. A. Woodbury. 1972. “A Missing Information Principle: Theory and Applications.” In <em>Proceedings of the Sixth Berkeley Symposium on Mathematical Statistics and Probability</em>, 1:697–715.</p>
+</div>
+<div id="ref-PALMER2017">
+<p>Palmer, M. J., R. Mercieca-Bebber, M. King, M. Calvert, H. Richardson, and M. Brundage. 2018. “A Systematic Review and Development of a Classification Framework for Factors Associated with Missing Patient-Reported Outcome Data.” <em>Clinical Trials</em> 15 (1): 95–106.</p>
+</div>
+<div id="ref-PEUGH2004">
+<p>Peugh, J. L., and C. K. Enders. 2004. “Missing Data in Educational Research: A Review of Reporting Practices and Suggestions for Improvement.” <em>Review of Educational Research</em> 74 (4): 525–56.</p>
+</div>
+<div id="ref-POWNEY2014">
+<p>Powney, M., P. Williamson, J. Kirkham, and R. Kolamunnage-Dona. 2014. “A Review of the Handling of Missing Longitudinal Outcome Data in Clinical Trials.” <em>Trials</em> 15. Institute of Translational Medicine, University of Liverpool, Crown Street, L69 3GS Liverpool, UK. M.Powney@liv.ac.uk.: 237.</p>
+</div>
+<div id="ref-ROSSEEL2012">
+<p>Rosseel, Y. 2012. “‘Lavaan‘: An ‘R‘ Package for Structural Equation Modeling.” <em>Journal of Statistical Software</em> 48 (2): 1–36. doi:<a href="https://doi.org/10.18637/jss.v048.i02">10.18637/jss.v048.i02</a>.</p>
+</div>
+<div id="ref-RUBIN1976">
+<p>Rubin, D. B. 1976. “Inference and Missing Data.” <em>Biometrika</em> 63 (3): 581–90.</p>
+</div>
+<div id="ref-RUBIN1987">
+<p>———. 1987. <em>Multiple Imputation for Nonresponse in Surveys</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-RUBIN1996">
+<p>———. 1996. “Multiple Imputation After 18+ Years.” <em>Journal of the American Statistical Association</em> 91 (434): 473–89.</p>
+</div>
+<div id="ref-SARNDAL1992">
+<p>Särndal, C. E., B. Swensson, and J. Wretman. 1992. <em>Model Assisted Survey Sampling</em>. New York: Springer-Verlag.</p>
+</div>
+<div id="ref-SCHAFER2002">
+<p>Schafer, J. L., and J. W. Graham. 2002. “Missing Data: Our View of the State of the Art.” <em>Psychological Methods</em> 7 (2): 147–77.</p>
+</div>
+<div id="ref-SCHAFER2000">
+<p>Schafer, J. L., and N. Schenker. 2000. “Inference with Imputed Conditional Means.” <em>Journal of the American Statistical Association</em> 95 (449): 144–54.</p>
+</div>
+<div id="ref-SCHARFSTEIN1999">
+<p>Scharfstein, D. O., A. Rotnitzky, and J. M. Robins. 1999. “Adjusting for Nonignorable Drop-Out Using Semiparametric Nonresponse Models (with Discussion).” <em>Journal of the American Statistical Association</em> 94 (448): 1096–1120.</p>
+</div>
+<div id="ref-SCHULZ2010">
+<p>Schulz, K. F., D. G. Altman, and D. Moher. 2010. “CONSORT 2010 Statement: Updated Guidelines for Reporting Parallel Group Randomised Trials.” <em>British Medical Journal</em> 340. Family Health International, Research Triangle Park, NC 27709, USA. kschulz@fhi.org: c332.</p>
+</div>
+<div id="ref-SHADISH2001">
+<p>Shadish, W. R., T. D. Cook, and D. T. Campbell. 2001. <em>Experimental and Quasi-Experimental Designs for Generalized Causal Inference</em>. 2nd ed. Florence, KY: Wadsworth Publishing.</p>
+</div>
+<div id="ref-SULLIVAN2016">
+<p>Sullivan, T. R., I. R. White, A. B. Salter, P. Ryan, and K. J. Lee. 2018. “Should Multiple Imputation Be the Method of Choice for Handling Missing Data in Randomized Trials?” <em>Statistical Methods in Medical Research</em> doi.org/10.1177/0962280216683570.</p>
+</div>
+<div id="ref-VACH1994">
+<p>Vach, W. 1994. <em>Logistic Regression with Missing Values in the Covariates</em>. Berlin: Springer-Verlag.</p>
+</div>
+<div id="ref-VACH1991">
+<p>Vach, W., and M. Blettner. 1991. “Biased Estimation of the Odds Ratio in Case-Control Studies Due to the Use of Ad Hoc Methods of Correcting for Missing Values for Confounding Variables.” <em>American Journal of Epidemiology</em> 134 (8): 895–907.</p>
+</div>
+<div id="ref-VANBUUREN2011B">
+<p>Van Buuren, S., and C. G. M. Groothuis-Oudshoorn. 2011. “‘Mice‘: Multivariate Imputation by Chained Equations in R.” <em>Journal of Statistical Software</em> 45 (3): 1–67.</p>
+</div>
+<div id="ref-VANPRAAG1985">
+<p>Van Praag, B. M. S., T. K. Dijkstra, and J. Van Velzen. 1985. “Least-Squares Theory Based on General Distributional Assumptions with an Application to the Incomplete Observations Problem.” <em>Psychometrika</em> 50 (1): 25–36.</p>
+</div>
+<div id="ref-VANDENBROUCKE2007">
+<p>Vandenbroucke, J. P., E. Von Elm, D. G. Altman, P. C. Gotzsche, C. D. Mulrow, S. J. Pocock, C. Poole, J. J. Schlesselman, and M. Egger. 2007. “Strengthening the Reporting of Observational Studies in Epidemiology (STROBE): Explanation and Elaboration.” <em>Annals of Internal Medicine</em> 147 (8). Leiden University Medical Center, Leiden, The Netherlands.: W163–94.</p>
+</div>
+<div id="ref-WHITE2005">
+<p>White, I. R., and S. G. Thompson. 2005. “Adjusting for Partially Missing Baseline Measurements in Randomized Trials.” <em>Statistics in Medicine</em> 24 (7): 993–1007.</p>
+</div>
+<div id="ref-WOOD2004">
+<p>Wood, A. M., I. R. White, and S. G. Thompson. 2004. “Are Missing Outcome Data Adequately Handled? A Review of Published Randomized Controlled Trials in Major Medical Journals.” <em>Clinical Trials</em> 1 (4): 368–76.</p>
+</div>
+</div>
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-structure.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

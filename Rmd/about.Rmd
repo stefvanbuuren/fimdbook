@@ -1,0 +1,20 @@
+# About the author {-}
+
+<table><tr><td>
+Stef van Buuren is a statistician at the [Netherlands Organization for
+Applied Scientific Research TNO](https://www.tno.nl/en/) in Leiden, and
+professor of Statistical Analysis of Incomplete Data at [Utrecht
+University](https://www.uu.nl/en). He is the originator of the 
+MICE algorithm for multiple imputation of multivariate data, and 
+co-developed the 
+[`mice`](https://cran.r-project.org/web/packages/mice/index.html) 
+package in `R`. More information can be found at
+[stefvanbuuren.name](https://stefvanbuuren.name).
+</td>
+<td><img src = "fig/DSC02061_2.jpg"></td>
+</tr></table>
+\ 
+\ 
+\ 
+<h2 style = "text-align: center;">Voor Eveline, Guus, Otto en Maaike</h2>
+
