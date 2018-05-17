@@ -1,0 +1,7 @@
+# (APPENDIX) Appendix {-}
+
+# Technical information
+
+```{r}
+sessionInfo()
+```

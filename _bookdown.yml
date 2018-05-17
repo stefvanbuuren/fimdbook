@@ -6,12 +6,26 @@ language:
   ui:
     chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
+            "Rmd/hardcopy.Rmd",
             "Rmd/foreword.Rmd",
             "Rmd/preface2.Rmd",
             "Rmd/preface1.Rmd",
             "Rmd/about.Rmd",
             "Rmd/symbols.Rmd",
-            "Rmd/01-introduction.Rmd"]
+            "Rmd/01-introduction.Rmd",
+            "Rmd/02-multiple-imputation.Rmd",
+            "Rmd/03-univariate-missing.Rmd",
+            "Rmd/04-multivariate-missing.Rmd",
+            "Rmd/05-analysis.Rmd",
+            "Rmd/06-imputation-in-practice.Rmd",
+            "Rmd/07-multilevel-imputation.Rmd",
+            "Rmd/08-individual-causal-effects.Rmd",
+            "Rmd/09-measurement.Rmd",
+            "Rmd/10-selection.Rmd",
+            "Rmd/11-longitudinal.Rmd",
+            "Rmd/12-conclusion.Rmd",
+            "Rmd/appendix.Rmd",
+            "Rmd/references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"
 url: https\://stefvanbuuren.name/fimd/
 output_dir: "fimd"
@@ -19,15 +33,3 @@ github-repo: "stefvanbuuren/fimd"
 cover-image: "fig/tempcover.png"
 
 
-#            "Rmd/02-multiple-imputation.Rmd",
-#            "Rmd/03-univariate-missing.Rmd",
-#            "Rmd/04-multivariate-missing.Rmd",
-#            "Rmd/05-analysis.Rmd",
-#            "Rmd/06-imputation-in-practice.Rmd",
-#            "Rmd/07-multilevel-imputation.Rmd",
-#            "Rmd/08-individual-causal-effects.Rmd",
-#            "Rmd/09-measurement.Rmd",
-#            "Rmd/10-selection.Rmd",
-#            "Rmd/11-longitudinal.Rmd",
-#            "Rmd/12-conclusion.Rmd",
-#            "Rmd/13-references.Rmd"
