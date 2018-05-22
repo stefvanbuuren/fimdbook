@@ -14,5 +14,5 @@ source("R/before_book_script.R")
 ```
 
 ```{r cover, echo = FALSE}
-knitr::include_graphics("fig/tempcover.png")
+knitr::include_graphics("fig/cover_border.png")
 ```
