@@ -17,8 +17,8 @@ mean(y)
 mean(y, na.rm = TRUE)
 
 ## ----air2, eval = FALSE--------------------------------------------------
-## fit <- lm(Ozone ~ Wind, data = airquality)
-## Error in na.fail.default: missing values in object}
+fit <- lm(Ozone ~ Wind, data = airquality)
+# Error in na.fail.default: missing values in object}
 
 ## ----air3----------------------------------------------------------------
 fit <- lm(Ozone ~ Wind, data = airquality, na.action = na.omit)
@@ -27,8 +27,8 @@ fit <- lm(Ozone ~ Wind, data = airquality, na.action = na.omit)
 options(na.action = na.omit)
 
 ## ----air4, eval = FALSE--------------------------------------------------
-## airquality2 <- cbind(airquality, predict(fit))
-## Error: arguments imply differing number of rows: 153, 116
+airquality2 <- cbind(airquality, predict(fit))
+# Error: arguments imply differing number of rows: 153, 116
 
 ## ----air5----------------------------------------------------------------
 head(na.action(fit))
@@ -320,7 +320,6 @@ plot(x = cit$Year, y = cit$Abstract, type="o",log="y",
      axes=FALSE)
 axis(1, at = seq(1977, 2017, 5), lwd = par("lwd"))
 axis(2, lwd = par("lwd"), las=1)
-# box(lwd=0.5)
 lines(x=cit$Year, y=cit$Title, pch=15, type="o")
 lines(x=cit$Year, y=cit$All, pch=16, type="o")
 legend(x=1975,y=200,legend=c('early publications',
@@ -559,11 +558,11 @@ ai <- an + coef(m1)[3]
 b <- coef(m1)[2]
 abline(a=ai, b=b, col=mdc(4))
 abline(a=an, b=b, col=mdc(4))
-## for (i in 1:1) {
-##   abline(a=unlist(betadump[i,1]), b=unlist(betadump[i,2]), col=mdc(5))
-##   abline(a=unlist(betadump[i,1])+unlist(betadump[i,3]), b=unlist(betadump[i,2]), col=mdc(5))
-## }
-## points(rep(5,5),imp$imp$Gas, lwd=lwd, col=mdc(2), pch=20)
+# for (i in 1:1) {
+#   abline(a=unlist(betadump[i,1]), b=unlist(betadump[i,2]), col=mdc(5))
+#   abline(a=unlist(betadump[i,1])+unlist(betadump[i,3]), b=unlist(betadump[i,2]), col=mdc(5))
+# }
+# points(rep(5,5),imp$imp$Gas, lwd=lwd, col=mdc(2), pch=20)
 eta <- 0.6
 ylo <- ai+b*(5-eta)
 yhi <- ai+b*(5+eta)
@@ -793,11 +792,11 @@ ai <- an + coef(m1)[3]
 b <- coef(m1)[2]
 abline(a=ai, b=b, col=mdc(4))
 abline(a=an, b=b, col=mdc(4))
-## for (i in 56:56) {
-##    abline(a=unlist(betadump[i,1]), b=unlist(betadump[i,2]), col=mdc(5))
-##    abline(a=unlist(betadump[i,1])+unlist(betadump[i,3]), b=unlist(betadump[i,2]), col=mdc(5))
-## }
-## points(rep(5,5),imp$imp$Gas, lwd=lwd, col=mdc(2), pch=20)
+# for (i in 56:56) {
+#    abline(a=unlist(betadump[i,1]), b=unlist(betadump[i,2]), col=mdc(5))
+#    abline(a=unlist(betadump[i,1])+unlist(betadump[i,3]), b=unlist(betadump[i,2]), col=mdc(5))
+# }
+# points(rep(5,5),imp$imp$Gas, lwd=lwd, col=mdc(2), pch=20)
 eta <- 0.6
 ylo <- ai+b*(5-eta)
 yhi <- ai+b*(5+eta)
@@ -814,7 +813,6 @@ lines(x=c(xlo2,xhi2),y=c(ylo,yhi),lwd=3,col=mdc(5))
 abline(v=c(5-eta,5+eta),h=c(ylo,yhi),col=mdc(4),lty=3)
 rect(xlo1,0,xhi1,8,col=hcl(0,100,40,0.05),border=NA)
 rect(xlo2,0,xhi2,8,col=hcl(0,100,40,0.05),border=NA)
-# abline(v=c(xlo1,xhi1,xlo2,xhi2),col=mdc(5),lty=3)
 
 donors <- subset(data, (Insul=="After"&Temp>xlo1&Temp<xhi1)
                  |    (Insul=="Before"&Temp>xlo2&Temp<xhi2))
@@ -823,20 +821,20 @@ legend(x="bottomleft", legend=c("before insulation","after insulation"), pch=c(3
 
 
 ## ----pmmsim, eval=FALSE, echo=FALSE--------------------------------------
-## simulate <- function(nsim=10, seed=41872){
-##   set.seed(seed)
-##   res <- array(NA,dim=c(3, nsim, 6))
-##   for(i in 1:nsim){
-##     data <- createdata()
-##     data <- makemissing(data)
-##     res[1,i,] <- test.impute(data, m=5)
-##     res[2,i,] <- test.impute(data, m=5, donors=1)
-##     res[3,i,] <- test.impute(data, m=5, donors=10)
-##   }
-##   return(res)
-## }
-## res.pmm <- simulate(10000)
-## res <- res.pmm
+simulate <- function(nsim=10, seed=41872){
+  set.seed(seed)
+  res <- array(NA,dim=c(3, nsim, 6))
+  for(i in 1:nsim){
+    data <- createdata()
+    data <- makemissing(data)
+    res[1,i,] <- test.impute(data, m=5)
+    res[2,i,] <- test.impute(data, m=5, donors=1)
+    res[3,i,] <- test.impute(data, m=5, donors=10)
+  }
+  return(res)
+}
+res.pmm <- simulate(10000)
+res <- res.pmm
 
 ## ----cart, echo=FALSE,  duo=TRUE, fig.width=4.5, fig.height=2.25---------
 library("rpart")
@@ -856,24 +854,24 @@ box(lwd = 0.7)
 text(x=whiteside$Temp, y=whiteside$Gas, label=label, col=mdc(4), cex=0.6)
 
 ## ----echo=FALSE, eval=FALSE----------------------------------------------
-## library(survival)
-## library(foreign)
-## library(car)
-## file <- "~/Documents/Sync/Impute/ice/datasets/breastcancer.dta"
-## breastcancer <- read.dta(file)
-##
-## data <- breastcancer
-## nstage <- recode(data$nodes, '0=0;1:3=1;4:9=2;10:hi=3;else=NA')
-## lonodes <- 0.5*(nstage==1) + 3.5*(nstage==2) + 9.5*(nstage==3)
-## upnodes <- 3.5*(nstage==1) + 9.5*(nstage==2) + 55*(nstage==3)
-## llnodes <- log(lonodes)
-## lunodes <- log(upnodes)
-## lnodes <- as.numeric(NA)
-## data <- data.frame(data[,c("size","gradd1","gradd2","nodes")], nstage, lonodes, upnodes, lnodes)
-## imp <- mice(data)
-##
-## fit <- survreg(Surv(lonodes, upnodes, rep(3, nrow(data)),type="interval") ~ size + gradd1 + gradd2, data=data)
-##
+# library(survival)
+# library(foreign)
+# library(car)
+# file <- "~/Documents/Sync/Impute/ice/datasets/breastcancer.dta"
+# breastcancer <- read.dta(file)
+#
+# data <- breastcancer
+# nstage <- recode(data$nodes, '0=0;1:3=1;4:9=2;10:hi=3;else=NA')
+# lonodes <- 0.5*(nstage==1) + 3.5*(nstage==2) + 9.5*(nstage==3)
+# upnodes <- 3.5*(nstage==1) + 9.5*(nstage==2) + 55*(nstage==3)
+# llnodes <- log(lonodes)
+# lunodes <- log(upnodes)
+# lnodes <- as.numeric(NA)
+# data <- data.frame(data[,c("size","gradd1","gradd2","nodes")], nstage, lonodes, upnodes, lnodes)
+# imp <- mice(data)
+#
+# fit <- survreg(Surv(lonodes, upnodes, rep(3, nrow(data)),type="interval") ~ size + gradd1 + gradd2, data=data)
+#
 
 ## ----c85sensfig, duo = TRUE, echo=FALSE, fig.width=4.5, fig.height=2.25----
 s <- c(
@@ -1127,9 +1125,9 @@ four.gen <- function(formula=gen~age|reorder(factor(c("JM: multivariate normal",
       ires[[i]] <-fitTannerStages(data=cda,var="gen",nstages=5,counts=boy.count.gen)
     }
     panel.grid(h=-1, v=-1)
-    ## panel.abline(0.1,0,lty=2,...)
-    ## panel.abline(0.5,0,lty=2,...)
-    ## panel.abline(0.9,0,lty=2,...)
+    # panel.abline(0.1,0,lty=2,...)
+    # panel.abline(0.5,0,lty=2,...)
+    # panel.abline(0.9,0,lty=2,...)
     x <- seq(8.75,20.5,0.25)
     for (s in 1:4) {
       panel.lines(x=x,y=boys.gen.cc[[s]][[2]]$predicted,lwd=4,col=mdc(1))
@@ -1159,7 +1157,7 @@ tp<-four.gen(layout=c(2,2),ylab="",strip=function(...,bg) strip.default(..., bg=
 print(tp)
 
 ## ----ex.slow1, eval=FALSE------------------------------------------------
-# slow2 <- simulate(ns = ns2, maxit = 50, seed = 62771)
+slow2 <- simulate(ns = ns2, maxit = 50, seed = 62771)
 
 ## ----ch5, child = "src/ch5.Rnw"------------------------------------------
 
@@ -1812,7 +1810,6 @@ tp1 <- xyplot(outcome ~ visit | factor(ID),
 fit <- with(imp,
             lme4::glmer(outcome ~ treatment * visit + (1 | ID),
                         family = binomial))
-# library(purrr)
 prob <- imp %>%
   mice::complete("all") %>%
   purrr::map(lme4::glmer,
@@ -2161,7 +2158,6 @@ set.seed(84409)
 rho <- 0.9
 mu <- mean(unlist(data2[, c("y1", "y0")]), na.rm = TRUE)
 sigma2 <- var(unlist(data2), na.rm = TRUE)
-# sigma2 <- 1
 cv <- rho * sigma2
 s2 <- matrix(c(sigma2, cv, cv, sigma2), nrow = 2)
 prior <- data.frame(MASS::mvrnorm(n = 100, mu = rep(mu, 2),
@@ -2393,10 +2389,10 @@ dat <- cbind(data2, dead = 1 - data2$dwa)
 hazard <- nelsonaalen(dat, survda, dead)
 
 ## ----c85nelsoncorrelation, eval=FALSE, echo=FALSE------------------------
-# tmp <- data.frame(hazard, t = data2$survda,
-#                   logt = log(data2$survda),
-#                   SBP = data2$rrsyst, DBP = data2$rrdiast)
-# round(cor(tmp, use = "pair"), 3)
+tmp <- data.frame(hazard, t = data2$survda,
+                  logt = log(data2$survda),
+                  SBP = data2$rrsyst, DBP = data2$rrdiast)
+round(cor(tmp, use = "pair"), 3)
 
 ## ----c85km, echo=FALSE, fig.height=4-------------------------------------
 library(survival)
@@ -2494,7 +2490,6 @@ axis(side = 1, lwd = lwd)
 axis(side = 2, lwd = lwd, las = 1)
 box(lwd = lwd)
 abline(h=30,v=30,lty=2, lwd = lwd)
-# abline(a = 0, b = 1, lty = 2, lwd = lwd)
 abline(coef(fit),col=mdc(4), lwd = lwd)
 abline(v=(30-coef(fit)[1])/coef(fit)[2],col=mdc(4), lwd = lwd)
 text(1:4,x=c(33.8,33.8,26.2,26.2),y=c(33.8,26.2,26.2,33.8),cex=2.5)
@@ -2645,7 +2640,6 @@ micemill <- function(n) {
     tabs <- with(imp, ftable(addmargins(
                       table(YA[src=="A"],YB[src=="A"],
                             useNA="ifany", dnn=c("YA","YB")))))
-    # print(ra(tabs)[[2]])
   }
 }
 thetaBA <- NULL
@@ -2875,7 +2869,6 @@ row.names(lolo) <- 1:nrow(lolo)
 ## ----fddplotimp, echo = FALSE--------------------------------------------
 iv <- is.na(lolo[lolo$.imp==0,]$yp)
 ivn <- ifelse(iv,1,0)
-# colvec <- rep(mdc(1:2)[ivn],6)
 col12  <- c("grey80","grey80",
             mdc(2),mdc(1),
             mdc(2),"transparent",
@@ -3093,11 +3086,6 @@ cd <- mice::complete(imp.1745, 1)
 idx <- (cd$id) %in% sample
 cd <- cd[idx,]
 
-#sel <- cd$occ==(-2)
-#cor(cd$hgt.z[sel], cd$wgt.z[ssel])
-#cor(original$hgt.z, original$wgt.z, use="pair")
-#plot(cd$hgt.z[sel], cd$wgt.z[sel])
-
 shingle <- cut(cd$age,breaks=c(brk,29.01),right=FALSE, inc=TRUE,
                labels=c("0d-8d","8d-4m","4m-1y","1y-2y","2y-6y",
                  "6y-10y","10y-18y","18y-29y","29y"))
@@ -3114,349 +3102,105 @@ print(tbchw)
 }
 
 ## ----tbccomplete,echo=FALSE,eval=FALSE-----------------------------------
-## imp <- imp.1745
-## cd <- mice::complete(imp,"long")
-## sup <- cd[cd$typ=="sup",]
-##
-## sup$age <- round(sup$age,2)
-## sup$hgt.z <- round(sup$hgt.z,2)
-## sup$wgt.z <- round(sup$wgt.z,2)
-## sup$bmi.z <- round(sup$bmi.z,2)
-##
-## lowi <- reshape(sup, idvar=c('id','.imp'), timevar = 'age',
-##                 v.names=c('hgt.z','wgt.z','bmi.z'),
-##                 direction="wide",
-##                 drop=c(".id","occ","first","typ","hgt","wgt","bmi",
-##                   paste("x",1:9,sep=""),"age2"))
-## hsiz <- lowi[,c(".imp","id","nocc","sex",
-##                 "hgt.z.0","hgt.z.0.02","hgt.z.0.33",
-##                 "hgt.z.1","hgt.z.2","hgt.z.6","hgt.z.10","hgt.z.18",
-##                 "hgt.z.29")]
-## wsiz <- lowi[,c(".imp","id","nocc","sex",
-##                 "wgt.z.0","wgt.z.0.02","wgt.z.0.33",
-##                 "wgt.z.1","wgt.z.2","wgt.z.6","wgt.z.10","wgt.z.18",
-##                 "wgt.z.29")]
-## bsiz <- lowi[,c(".imp","id","nocc","sex",
-##                 "bmi.z.0","bmi.z.0.02","bmi.z.0.33",
-##                 "bmi.z.1","bmi.z.2","bmi.z.6","bmi.z.10","bmi.z.18",
-##                 "bmi.z.29")]
-## # merge outcome data
-## bsiz <- merge(bsiz, target,all.x=TRUE)
-##
-##
-## hinc <- cbind(hsiz[,1:4],t(diff(t(hsiz[,-1:-4]))))
-## winc <- cbind(wsiz[,1:4],t(diff(t(wsiz[,-1:-4]))))
-## binc <- cbind(bsiz[,1:4],t(diff(t(bsiz[,-1:-4]))))
-##
-## # merge outcome data
-## binc <- merge(binc, target,all.x=TRUE)
-##
-## bmi.z.0.02 <- by(binc, binc$.imp, function(x) lm(bmi.z.0.02~ao, data = x, na.action='na.omit'))
-## bmi.z.0.33 <- by(binc, binc$.imp, function(x) lm(bmi.z.0.33~ao, data = x, na.action='na.omit'))
-## bmi.z.1    <- by(binc, binc$.imp, function(x) lm(bmi.z.1   ~ao, data = x, na.action='na.omit'))
-## bmi.z.2    <- by(binc, binc$.imp, function(x) lm(bmi.z.2   ~ao, data = x, na.action='na.omit'))
-## bmi.z.6    <- by(binc, binc$.imp, function(x) lm(bmi.z.6   ~ao, data = x, na.action='na.omit'))
-## bmi.z.10   <- by(binc, binc$.imp, function(x) lm(bmi.z.10  ~ao, data = x, na.action='na.omit'))
-## bmi.z.18   <- by(binc, binc$.imp, function(x) lm(bmi.z.18  ~ao, data = x, na.action='na.omit'))
-## bmi.z.29   <- by(binc, binc$.imp, function(x) lm(bmi.z.29  ~ao, data = x, na.action='na.omit'))
-##
-## tab.bmi.z.0.02 <- summary(pool(as.mira(bmi.z.0.02)))
-## tab.bmi.z.0.33 <- summary(pool(as.mira(bmi.z.0.33)))
-## tab.bmi.z.1    <- summary(pool(as.mira(bmi.z.1)))
-## tab.bmi.z.2    <- summary(pool(as.mira(bmi.z.2)))
-## tab.bmi.z.6    <- summary(pool(as.mira(bmi.z.6)))
-## tab.bmi.z.10   <- summary(pool(as.mira(bmi.z.10)))
-## tab.bmi.z.18   <- summary(pool(as.mira(bmi.z.18)))
-## tab.bmi.z.29   <- summary(pool(as.mira(bmi.z.29)))
-##
-## (bmi.z.0.33 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.0.33+bmi.z.0.02, data = x, na.action='na.omit'))))))
-## (bmi.z.1 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.1+bmi.z.0.33, data = x, na.action='na.omit'))))))
-## (bmi.z.2 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.2+bmi.z.1, data = x, na.action='na.omit'))))))
-## (bmi.z.6 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.6+bmi.z.2, data = x, na.action='na.omit'))))))
-## (bmi.z.10 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.10+bmi.z.6, data = x, na.action='na.omit'))))))
-## (bmi.z.18 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.18+bmi.z.10, data = x, na.action='na.omit'))))))
-##
-## (bmi.z.6 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.6+bmi.z.2, data = x, na.action='na.omit'))))))
-## summary(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.6+bmi.z.2, data = x, na.action='na.omit'))[[2]])
-##
-##
-## # repeat the analysis for the broken stick
-## bsiz.bs <- as.data.frame(t(t(ranef(fit.bmi)[[1]]) + fixef(fit.bmi)))
-## dimnames(bsiz.bs)[[2]] <- names(bsiz)[5:13]
-## binc.bs <- t(diff(t(bsiz.bs)))
-## bsiz.bs <- data.frame(id=bsiz[bsiz$.imp==1,"id"], bsiz.bs)
-## binc.bs <- data.frame(id=bsiz[bsiz$.imp==1,"id"], binc.bs)
-## bsiz.bs <- merge(bsiz.bs, target)
-## binc.bs <- merge(binc.bs, target)
-##
-## bmi.z.0.02.bs <- lm(bmi.z.0.02~ao, data = binc.bs, na.action='na.omit')
-## bmi.z.0.33.bs <- lm(bmi.z.0.33~ao, data = binc.bs, na.action='na.omit')
-## bmi.z.1.bs    <- lm(bmi.z.1   ~ao, data = binc.bs, na.action='na.omit')
-## bmi.z.2.bs    <- lm(bmi.z.2   ~ao, data = binc.bs, na.action='na.omit')
-## bmi.z.6.bs    <- lm(bmi.z.6   ~ao, data = binc.bs, na.action='na.omit')
-## bmi.z.10.bs   <- lm(bmi.z.10  ~ao, data = binc.bs, na.action='na.omit')
-## bmi.z.18.bs   <- lm(bmi.z.18  ~ao, data = binc.bs, na.action='na.omit')
-##
-## summary(bmi.z.0.02.bs)
-## summary(bmi.z.0.33.bs)
-## summary(bmi.z.1.bs)
-## summary(bmi.z.2.bs)
-## summary(bmi.z.6.bs)
-## summary(bmi.z.10.bs)
-## summary(bmi.z.18.bs)
-##
-## a<-round(cor(bsiz[,-(1:4)],use="pair"),2)
-## b<-round(cor(bsiz.bs,use="pair"),2)
-##
-##
-## a2<-round(cor(bsiz[!is.na(bsiz$ao),-(1:4)],use="complete.obs"),2)
-## b2<-round(cor(bsiz.bs[!is.na(bsiz$ao),],use="complete.obs"),2)
-##
+imp <- imp.1745
+cd <- mice::complete(imp,"long")
+sup <- cd[cd$typ=="sup",]
 
-## ----phread, echo=FALSE, eval=FALSE--------------------------------------
-## ph.wide <- read.table(file=file.path(dataproject,"R/potthoff.txt"))
-## names(ph.wide) <- c("id","sex","d8","d10","d12","d14")
-## ph <- reshape(data=ph.wide, varying=c("d8","d10","d12","d14"),
-##               times=seq(8,14,2), v.names="dist", time="age",
-##               idvar="id", direction="long")
-## data <- ph
-## data$first <- FALSE
-## data$first[data$age==8] <- TRUE
-## data$typ <- "obs"
+sup$age <- round(sup$age,2)
+sup$hgt.z <- round(sup$hgt.z,2)
+sup$wgt.z <- round(sup$wgt.z,2)
+sup$bmi.z <- round(sup$bmi.z,2)
 
-## ----phmakemiss, echo=FALSE, eval=FALSE----------------------------------
-## idmis <- c(3,6,9,10,13,16,23,24,27)
-## ph.mis <- ph.wide
-## ph.mis[idmis,4] <- NA
+lowi <- reshape(sup, idvar=c('id','.imp'), timevar = 'age',
+                v.names=c('hgt.z','wgt.z','bmi.z'),
+                direction="wide",
+                drop=c(".id","occ","first","typ","hgt","wgt","bmi",
+                  paste("x",1:9,sep=""),"age2"))
+hsiz <- lowi[,c(".imp","id","nocc","sex",
+                "hgt.z.0","hgt.z.0.02","hgt.z.0.33",
+                "hgt.z.1","hgt.z.2","hgt.z.6","hgt.z.10","hgt.z.18",
+                "hgt.z.29")]
+wsiz <- lowi[,c(".imp","id","nocc","sex",
+                "wgt.z.0","wgt.z.0.02","wgt.z.0.33",
+                "wgt.z.1","wgt.z.2","wgt.z.6","wgt.z.10","wgt.z.18",
+                "wgt.z.29")]
+bsiz <- lowi[,c(".imp","id","nocc","sex",
+                "bmi.z.0","bmi.z.0.02","bmi.z.0.33",
+                "bmi.z.1","bmi.z.2","bmi.z.6","bmi.z.10","bmi.z.18",
+                "bmi.z.29")]
+# merge outcome data
+bsiz <- merge(bsiz, target,all.x=TRUE)
 
-## ----phbs, echo=FALSE, eval=FALSE----------------------------------------
-## brk <- seq(8,14,2)
-## k <- length(brk)
-##
-## ### calculate B-spline
-## X <- bs(data$age,
-##         knots = brk,
-##         B = c(brk[1],brk[k]+0.00001),
-##         degree = 1)
-## X <- X[,-(k+1)]
-## dimnames(X)[[2]] <- paste("x",1:ncol(X),sep="")
-## data <- cbind(data,X)
-##
-## fit <- lmer(dist~0+x1+x2+x3+x4 +
-##                  (0+x1+x2+x3+x4|id),
-##                  data=data)
-##
-## ### calculate size and increment per person
-## tsiz <- t(ranef(fit)$id) + fixef(fit)
-## tinc <- diff(tsiz)
-##
-## t(tsiz)
-##
 
-## ----phplotstick, echo=FALSE, eval=FALSE---------------------------------
-## dsiz.bs <- extractBS(fit)
-## id <- unique(fit@flist$id)
-##
-## # # append random effects for plotting
-##   app <- data[data$first,]
-##   if (!is.null(id)) {
-##     idx <- app$id %in% id
-##     app <- app[idx,]
-##     }
-##   nap <- nrow(app)
-##
-##   ## update administrative variables
-##   app$first <- FALSE
-##   app$typ <- typ
-##   app <- app[rep(1:nap,length(brk)),]
-##
-##   ## update age variables
-##   app$age <- rep(brk,each=nap)
-##   X <- bs(app$age,
-##         knots = brk,
-##         B = c(brk[1],brk[k]+0.0001),
-##         degree = 1)
-##   X <- X[,-(k+1)]
-##   app[,paste("x",1:ncol(X),sep="")] <- X
-##
-##   ## update outcome variable (set to missing)
-##   app[,c("dist")] <- NA
-##   app <- rbind(data, app)
-##   data2 <- app[order(app$id, app$age),]
-## data2[data2$typ=="pred",c("dist")] <- round(dsiz.bs,3)
-##
-## # plot the weight, height and BMI profiles for six cases
-##
-## pd  <- data2
-## pd$id <- as.factor(pd$id)
-## pdr <- reshape(pd,
-##                varying = c("dist"),
-##                idvar = "rowname",
-##                direction="long",
-##                v.names="y")
-## # pdr$grp[pdr$typ=="pred"] <- pdr$grp[pdr$typ=="pred"] + 3
-##
-## phstick <- xyplot(y~age|id, data=pdr,
-##        as.table = TRUE,
-##        pch=20,
-##        type=c("p","o"), distribute.type=TRUE,
-##        groups = typ,
-##        strip = strip.custom(bg="grey95"),
-##        )
-## print(phstick)
-##
-## OLS <- by(data, data$id, function(x) lm(dist~0+x1+x2+x3+x4, data=x))
-## summary(OLS[[1]])
-##
-##
-##
+hinc <- cbind(hsiz[,1:4],t(diff(t(hsiz[,-1:-4]))))
+winc <- cbind(wsiz[,1:4],t(diff(t(wsiz[,-1:-4]))))
+binc <- cbind(bsiz[,1:4],t(diff(t(bsiz[,-1:-4]))))
 
-## ----phimp, echo=FALSE, eval=FALSE---------------------------------------
-## id <- unique(data$id)
-##
-## # append data
-##   app <- data[data$first,]
-##   if (!is.null(id)) {
-##     idx <- app$id %in% id
-##     app <- app[idx,]
-##     }
-##   nap <- nrow(app)
-##
-##   ## update administrative variables
-##   app$first <- FALSE
-##   app$typ <- "sup"
-##   app <- app[rep(1:nap,length(brk)),]
-##
-##   ## update age variables
-##   app$age <- rep(brk,each=nap)
-##   X <- bs(app$age,
-##         knots = brk,
-##         B = c(brk[1],brk[k]+0.0001),
-##         degree = 1)
-##   X <- X[,-(k+1)]
-##   app[,paste("x",1:ncol(X),sep="")] <- X
-##
-##   ## update outcome variable (set to missing)
-##   app[,c("dist")] <- NA
-##   app <- rbind(data, app)
-##   data2 <- app[order(app$id, app$age),]
-##
-## table(data2$typ)
-##
-## Y <- c("dist")
-## imp <- mice(data2, maxit=0)
-## meth <- imp$method
-## meth[1:length(meth)] <- ""
-## mice.impute.2l.norm.noint <- mice.impute.2l.norm
-## meth[Y] <- "2l.norm.noint"
-##
-## pred <- imp$pred
-## pred[1:nrow(pred),1:ncol(pred)] <- 0
-## pred[Y,"id"] <- (-2) # class variable
-## pred[Y,"sex"] <- 1 # fixed effect
-## pred[Y, paste("x",1:4,sep="")] <- 2
-##
-## imp.ph <- mice(data2, meth=meth, pred=pred, m=10, maxit=10, seed=65540)
-##
-## cd <- mice::complete(imp.ph,"long")
-## sup <- cd[cd$typ=="sup",]
-## data3 <- data.frame(.imp=0,data2)
-## data3 <- rbind(data3, sup[,-2])
-##
-##
-## # prepare for correlation
-## imp <- imp.ph
-## cd <- mice::complete(imp,"long")
-## sup <- cd[cd$typ=="sup",]
-##
-## sup$age <- round(sup$age,2)
-## sup$dist <- round(sup$dist,2)
-##
-##
-##
-## cd <- mice::complete(imp.ph,"long")
-## sup <- cd[cd$typ=="sup",]
-## data3 <- data.frame(.imp=0,data2)
-## data3 <- rbind(data3, sup[,-2])
-## six <- c(1, 7, 20, 21, 22, 24)
-## idx <- data3$id %in% six
-## pd  <- data3[idx,]
-## pd$id <- as.factor(pd$id)
-## pd$grp <- pd$.imp
-## pd$grp[pd$grp==0] <- NA
-## pd$grp[pd$typ=="obs"] <- 11
-## pd$grp <- reorder(pd$grp, as.numeric(pd$grp))
-## phimp <- xyplot(dist~age|id, data=pd,
-##         as.table = TRUE,
-##         xlab = "Age", ylab = "Distance (mm)",
-##         groups=grp, layout = c(2,3),
-##         pch=c(rep(20,10), 19),
-##         type=c(rep("l",10),"p"), lwd=c(rep(1,10),1),
-##         col=c(rep(mdc(5),10),mdc(1)), distribute.type=TRUE,
-##         panel = function(...) {
-##           panel.abline(v=seq(8,14,2), lty=2, col="grey80")
-##           panel.abline(h=c(20,25,30), lty=1, col="grey80")
-##           panel.xyplot(...)
-##         },
-##         strip=strip.custom(bg="grey95")
-##         )
-## print(phimp)
-##
-##
-## lowi <- reshape(sup, idvar=c('id','.imp'), timevar = 'age',
-##                 v.names=c('dist'),
-##                 direction="wide",
-##                 drop=c(".id","first","typ",
-##                   paste("x",1:4,sep="")))
-## dist <- lowi[,c(".imp","id","sex",
-##                 "dist.8","dist.10","dist.12","dist.14")]
-##
-##
-##
-##
-##
-##
-##
-##
-## # original correlation
-## round(cor(ph.wide[,3:6]),2)
-## # bs correlation
-## round(cor(t(tsiz)),2)
-## # imputation correlation
-## round(cor(dist[,-(1:3)]),2)
-##
-##
-## ### subset
-## id <- c(1:19,21:23,25:27)
-## round(cor(t(tsiz)[id,]),2)
-## round(cor(dist[dist$id!=20&dist$id!=24,-(1:3)]),2)
-##
+# merge outcome data
+binc <- merge(binc, target,all.x=TRUE)
 
+bmi.z.0.02 <- by(binc, binc$.imp, function(x) lm(bmi.z.0.02~ao, data = x, na.action='na.omit'))
+bmi.z.0.33 <- by(binc, binc$.imp, function(x) lm(bmi.z.0.33~ao, data = x, na.action='na.omit'))
+bmi.z.1    <- by(binc, binc$.imp, function(x) lm(bmi.z.1   ~ao, data = x, na.action='na.omit'))
+bmi.z.2    <- by(binc, binc$.imp, function(x) lm(bmi.z.2   ~ao, data = x, na.action='na.omit'))
+bmi.z.6    <- by(binc, binc$.imp, function(x) lm(bmi.z.6   ~ao, data = x, na.action='na.omit'))
+bmi.z.10   <- by(binc, binc$.imp, function(x) lm(bmi.z.10  ~ao, data = x, na.action='na.omit'))
+bmi.z.18   <- by(binc, binc$.imp, function(x) lm(bmi.z.18  ~ao, data = x, na.action='na.omit'))
+bmi.z.29   <- by(binc, binc$.imp, function(x) lm(bmi.z.29  ~ao, data = x, na.action='na.omit'))
+
+tab.bmi.z.0.02 <- summary(pool(as.mira(bmi.z.0.02)))
+tab.bmi.z.0.33 <- summary(pool(as.mira(bmi.z.0.33)))
+tab.bmi.z.1    <- summary(pool(as.mira(bmi.z.1)))
+tab.bmi.z.2    <- summary(pool(as.mira(bmi.z.2)))
+tab.bmi.z.6    <- summary(pool(as.mira(bmi.z.6)))
+tab.bmi.z.10   <- summary(pool(as.mira(bmi.z.10)))
+tab.bmi.z.18   <- summary(pool(as.mira(bmi.z.18)))
+tab.bmi.z.29   <- summary(pool(as.mira(bmi.z.29)))
+
+(bmi.z.0.33 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.0.33+bmi.z.0.02, data = x, na.action='na.omit'))))))
+(bmi.z.1 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.1+bmi.z.0.33, data = x, na.action='na.omit'))))))
+(bmi.z.2 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.2+bmi.z.1, data = x, na.action='na.omit'))))))
+(bmi.z.6 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.6+bmi.z.2, data = x, na.action='na.omit'))))))
+(bmi.z.10 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.10+bmi.z.6, data = x, na.action='na.omit'))))))
+(bmi.z.18 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.18+bmi.z.10, data = x, na.action='na.omit'))))))
+
+(bmi.z.6 <- summary(pool(as.mira(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.6+bmi.z.2, data = x, na.action='na.omit'))))))
+summary(by(bsiz, bsiz$.imp, function(x) lm(bmi.z.jv~bmi.z.6+bmi.z.2, data = x, na.action='na.omit'))[[2]])
+
+
+# repeat the analysis for the broken stick
+bsiz.bs <- as.data.frame(t(t(ranef(fit.bmi)[[1]]) + fixef(fit.bmi)))
+dimnames(bsiz.bs)[[2]] <- names(bsiz)[5:13]
+binc.bs <- t(diff(t(bsiz.bs)))
+bsiz.bs <- data.frame(id=bsiz[bsiz$.imp==1,"id"], bsiz.bs)
+binc.bs <- data.frame(id=bsiz[bsiz$.imp==1,"id"], binc.bs)
+bsiz.bs <- merge(bsiz.bs, target)
+binc.bs <- merge(binc.bs, target)
+
+bmi.z.0.02.bs <- lm(bmi.z.0.02~ao, data = binc.bs, na.action='na.omit')
+bmi.z.0.33.bs <- lm(bmi.z.0.33~ao, data = binc.bs, na.action='na.omit')
+bmi.z.1.bs    <- lm(bmi.z.1   ~ao, data = binc.bs, na.action='na.omit')
+bmi.z.2.bs    <- lm(bmi.z.2   ~ao, data = binc.bs, na.action='na.omit')
+bmi.z.6.bs    <- lm(bmi.z.6   ~ao, data = binc.bs, na.action='na.omit')
+bmi.z.10.bs   <- lm(bmi.z.10  ~ao, data = binc.bs, na.action='na.omit')
+bmi.z.18.bs   <- lm(bmi.z.18  ~ao, data = binc.bs, na.action='na.omit')
+
+summary(bmi.z.0.02.bs)
+summary(bmi.z.0.33.bs)
+summary(bmi.z.1.bs)
+summary(bmi.z.2.bs)
+summary(bmi.z.6.bs)
+summary(bmi.z.10.bs)
+summary(bmi.z.18.bs)
+
+a<-round(cor(bsiz[,-(1:4)],use="pair"),2)
+b<-round(cor(bsiz.bs,use="pair"),2)
+
+a2<-round(cor(bsiz[!is.na(bsiz$ao),-(1:4)],use="complete.obs"),2)
+b2<-round(cor(bsiz.bs[!is.na(bsiz$ao),],use="complete.obs"),2)
 
 ## ----ch12, child = "src/ch12.Rnw"----------------------------------------
 
 ## ----init12, echo = FALSE, results = 'hide'------------------------------
 opts_chunk$set(fig.path = 'fig/ch12-', self.contained = FALSE)
-
-## ----embed, echo=FALSE---------------------------------------------------
-embedMyFonts <- function(project = "",
-                         figdir = "fig") {
-  # specific for MacOS
-  wd <- file.path(project, figdir)
-  files <- dir(file.path(wd))
-  files <- file.path(wd, files)
-  for (i in 1:length(files)) {
-    embedFonts(files[i], "pdfwrite",
-               fontpaths = c(
-                 file.path(project, "Fonts"),
-                 "/System/Library/Fonts",
-                 "/Library/Fonts",
-                 path.expand("~/Library/Fonts"))
-    )
-  }
-}
-embedMyFonts()
-
-## ----authorindex, echo = FALSE-------------------------------------------
-system("authorindex main.aux")
 

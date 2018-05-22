@@ -46,7 +46,7 @@ built-in `airquality` dataset. We fit a linear
 regression model by calling the `lm()`
 function to predict daily ozone levels, as follows:
 
-```{r air2}
+```{r air2, eval = FALSE}
 ```
 
 Many `R` users have seen this
@@ -74,7 +74,7 @@ can progress silently. Next, we wish to plot the predicted ozone levels
 against the observed data, so we use `predict()` to calculate the 
 predicted values, and add these to the data to prepare for plotting.
 
-```{r air4}
+```{r air4, eval = FALSE}
 ```
 
 Argg... that doesn’t work either. The error message tells us that the

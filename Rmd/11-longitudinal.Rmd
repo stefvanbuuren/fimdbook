@@ -600,10 +600,10 @@ which the measurements were made.
 The broken stick model requires the user to specify an ordered set of
 $k$ break ages, collected in the vector
 $\kappa=(\kappa_1,\dots,\kappa_k)$. The set should cover the entire
-range of the measured ages, so $\kappa_1 \leq \min(t_i)$ and 
-$\kappa_k \geq \max(t_i)$ for all $i$. It is convenient to set
-$\kappa_1$ and $\kappa_k$ to rounded values just below and above the
-minimum and maximum ages in the data, respectively. specified nine
+range of the measured ages, so $\kappa_1 \leq \min(t_i)$ and $\kappa_k
+\geq \max(t_i)$ for all $i$. It is convenient to set $\kappa_1$ and
+$\kappa_k$ to rounded values just below and above the minimum and
+maximum ages in the data, respectively. @DEKROON2010 specified nine
 break ages: birth (0d), 8 days (8d), 4 months (4m), 1 year (1y), 2
 years (2y), 6 years (6y), 10 years (10y), 18 years (18y) and 29 years
 (29y).
@@ -624,7 +624,7 @@ Matrix $X$ has only two nonzero elements in each row. Each row sums to
 entry is equal to 1, and all remaining elements are zero. In the data
 example, this occurs in the first record, at birth. A small constant
 of 0.0001 was added to the last break age. This was done to
-accommodate for a pseudo time point with an exact age of 29years,
+accommodate for a pseudo time point with an exact age of 29 years,
 which will be inserted later in Section \@ref(sec:tbcimpute).
 
 The measurements $y_i$ for person $i$ are modeled by the linear mixed
@@ -735,7 +735,7 @@ illness. Child 7019 is also typical. The pattern hovers around the
 mean. Observe that no data beyond 10 years are available for this
 child. Child 7460 experienced a substantial change in the
 height/weight proportions during the first year. Child 7646 was born
-prematurely with a gestational age of 32weeks. This individual has an
+prematurely with a gestational age of 32 weeks. This individual has an
 unusually large increase in weight between birth and puberty. Child
 8046 is aberrant with an unusually large number of weight measurements
 around the age of 8 days, but was subsequently not measured for about

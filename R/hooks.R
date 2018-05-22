@@ -37,12 +37,3 @@ knitr::knit_hooks$set(solo = solo, duo = duo, four = four, six = six)
 
 # switch for selected empty figures
 empty_figure <- FALSE
-
-# hook for formulatilde
-# https://stackoverflow.com/questions/14710477/pretty-tilde-from-r-chunk-with-knitr
-
-# hook_source <- knit_hooks$get('source')
-# knit_hooks$set(source = function(x, options) {
-#   txt <- hook_source(x, options)
-#   gsub('~', '\\\\formulatilde', txt)
-# })
