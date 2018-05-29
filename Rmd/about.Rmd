@@ -17,4 +17,3 @@ package in `R`. More information can be found at
 \ 
 \ 
 <h2 style = "text-align: center;">Voor Eveline, Guus, Otto en Maaike</h2>
-
