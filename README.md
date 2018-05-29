@@ -1,4 +1,4 @@
-## Flexible Imputation of Missing Data, Second Edition
+## Flexible Imputation of Missing Data, Online Version
 
 This repository contains the R Markdown source for the online 
 version of *Flexible Imputation of Missing Data, Second Edition*
