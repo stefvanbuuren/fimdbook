@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Flexible Imputation of Missing Data, Second Edition">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="technical-information.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://stefvanbuuren.name/fimd/"> Flexible Imputation of Missing Data</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="want-the-hardcopy.html"><a href="want-the-hardcopy.html"><i class="fa fa-check"></i>Want the hardcopy?</a></li>
+<li class="chapter" data-level="" data-path="foreword.html"><a href="foreword.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="chapter" data-level="" data-path="preface-to-second-edition.html"><a href="preface-to-second-edition.html"><i class="fa fa-check"></i>Preface to second edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-first-edition.html"><a href="preface-to-first-edition.html"><i class="fa fa-check"></i>Preface to first edition</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a></li>
+<li class="chapter" data-level="" data-path="symbol-description.html"><a href="symbol-description.html"><i class="fa fa-check"></i>Symbol Description</a></li>
+<li class="part"><span><b>I Part I: Basics</b></span></li>
+<li class="chapter" data-level="1" data-path="ch-introduction.html"><a href="ch-introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="sec-problem.html"><a href="sec-problem.html"><i class="fa fa-check"></i><b>1.1</b> The problem of missing data</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-problem.html"><a href="sec-problem.html#sec:current"><i class="fa fa-check"></i><b>1.1.1</b> Current practice</a></li>
+<li class="chapter" data-level="1.1.2" data-path="sec-problem.html"><a href="sec-problem.html#sec:changingperspective"><i class="fa fa-check"></i><b>1.1.2</b> Changing perspective on missing data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-MCAR.html"><a href="sec-MCAR.html"><i class="fa fa-check"></i><b>1.2</b> Concepts of MCAR, MAR and MNAR</a></li>
+<li class="chapter" data-level="1.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html"><i class="fa fa-check"></i><b>1.3</b> Ad-hoc solutions</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:listwise"><i class="fa fa-check"></i><b>1.3.1</b> Listwise deletion</a></li>
+<li class="chapter" data-level="1.3.2" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:pairwise"><i class="fa fa-check"></i><b>1.3.2</b> Pairwise deletion</a></li>
+<li class="chapter" data-level="1.3.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:meanimp"><i class="fa fa-check"></i><b>1.3.3</b> Mean imputation</a></li>
+<li class="chapter" data-level="1.3.4" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:regimp"><i class="fa fa-check"></i><b>1.3.4</b> Regression imputation</a></li>
+<li class="chapter" data-level="1.3.5" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:sri"><i class="fa fa-check"></i><b>1.3.5</b> Stochastic regression imputation</a></li>
+<li class="chapter" data-level="1.3.6" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:locf"><i class="fa fa-check"></i><b>1.3.6</b> LOCF and BOCF</a></li>
+<li class="chapter" data-level="1.3.7" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:indicator"><i class="fa fa-check"></i><b>1.3.7</b> Indicator method</a></li>
+<li class="chapter" data-level="1.3.8" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:simplesummary"><i class="fa fa-check"></i><b>1.3.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="sec-nutshell.html"><a href="sec-nutshell.html"><i class="fa fa-check"></i><b>1.4</b> Multiple imputation in a nutshell</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-nutshell.html"><a href="sec-nutshell.html#procedure"><i class="fa fa-check"></i><b>1.4.1</b> Procedure</a></li>
+<li class="chapter" data-level="1.4.2" data-path="sec-nutshell.html"><a href="sec-nutshell.html#reasons-to-use-multiple-imputation"><i class="fa fa-check"></i><b>1.4.2</b> Reasons to use multiple imputation</a></li>
+<li class="chapter" data-level="1.4.3" data-path="sec-nutshell.html"><a href="sec-nutshell.html#sec:miexample"><i class="fa fa-check"></i><b>1.4.3</b> Example of multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-goal.html"><a href="sec-goal.html"><i class="fa fa-check"></i><b>1.5</b> Goal of the book</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html"><i class="fa fa-check"></i><b>1.6</b> What the book does not cover</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:prevention"><i class="fa fa-check"></i><b>1.6.1</b> Prevention</a></li>
+<li class="chapter" data-level="1.6.2" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:weighting"><i class="fa fa-check"></i><b>1.6.2</b> Weighting procedures</a></li>
+<li class="chapter" data-level="1.6.3" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:likelihood"><i class="fa fa-check"></i><b>1.6.3</b> Likelihood-based approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="sec-structure.html"><a href="sec-structure.html"><i class="fa fa-check"></i><b>1.7</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.8" data-path="ex-ch1.html"><a href="ex-ch1.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-mi.html"><a href="ch-mi.html"><i class="fa fa-check"></i><b>2</b> Multiple imputation</a><ul>
+<li class="chapter" data-level="2.1" data-path="sec-historic.html"><a href="sec-historic.html"><i class="fa fa-check"></i><b>2.1</b> Historic overview</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="sec-historic.html"><a href="sec-historic.html#imputation"><i class="fa fa-check"></i><b>2.1.1</b> Imputation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="sec-historic.html"><a href="sec-historic.html#multiple-imputation"><i class="fa fa-check"></i><b>2.1.2</b> Multiple imputation</a></li>
+<li class="chapter" data-level="2.1.3" data-path="sec-historic.html"><a href="sec-historic.html#the-expanding-literature-on-multiple-imputation"><i class="fa fa-check"></i><b>2.1.3</b> The expanding literature on multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html"><i class="fa fa-check"></i><b>2.2</b> Concepts in incomplete data</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#incomplete-data-perspective"><i class="fa fa-check"></i><b>2.2.1</b> Incomplete-data perspective</a></li>
+<li class="chapter" data-level="2.2.2" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#causes-of-missing-data"><i class="fa fa-check"></i><b>2.2.2</b> Causes of missing data</a></li>
+<li class="chapter" data-level="2.2.3" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:notation"><i class="fa fa-check"></i><b>2.2.3</b> Notation</a></li>
+<li class="chapter" data-level="2.2.4" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:MCARreprise"><i class="fa fa-check"></i><b>2.2.4</b> MCAR, MAR and MNAR again</a></li>
+<li class="chapter" data-level="2.2.5" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:ignorable"><i class="fa fa-check"></i><b>2.2.5</b> Ignorable and nonignorable<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.2.6" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:ignorability"><i class="fa fa-check"></i><b>2.2.6</b> Implications of ignorability</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html"><i class="fa fa-check"></i><b>2.3</b> Why and when multiple imputation works</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:migoal"><i class="fa fa-check"></i><b>2.3.1</b> Goal of multiple imputation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:threesources"><i class="fa fa-check"></i><b>2.3.2</b> Three sources of variation<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.3" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:proper"><i class="fa fa-check"></i><b>2.3.3</b> Proper imputation</a></li>
+<li class="chapter" data-level="2.3.4" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#scope-of-the-imputation-model"><i class="fa fa-check"></i><b>2.3.4</b> Scope of the imputation model</a></li>
+<li class="chapter" data-level="2.3.5" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:varianceratios"><i class="fa fa-check"></i><b>2.3.5</b> Variance ratios<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.6" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:df"><i class="fa fa-check"></i><b>2.3.6</b> Degrees of freedom<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.7" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#numerical-example"><i class="fa fa-check"></i><b>2.3.7</b> Numerical example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="sec-inference.html"><a href="sec-inference.html"><i class="fa fa-check"></i><b>2.4</b> Statistical intervals and tests</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="sec-inference.html"><a href="sec-inference.html#scalar-or-multi-parameter-inference"><i class="fa fa-check"></i><b>2.4.1</b> Scalar or multi-parameter inference?</a></li>
+<li class="chapter" data-level="2.4.2" data-path="sec-inference.html"><a href="sec-inference.html#sec:singlepar"><i class="fa fa-check"></i><b>2.4.2</b> Scalar inference</a></li>
+<li class="chapter" data-level="2.4.3" data-path="sec-inference.html"><a href="sec-inference.html#numerical-example-1"><i class="fa fa-check"></i><b>2.4.3</b> Numerical example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="sec-evaluation.html"><a href="sec-evaluation.html"><i class="fa fa-check"></i><b>2.5</b> How to evaluate imputation methods</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="sec-evaluation.html"><a href="sec-evaluation.html#simulation-designs-and-performance-measures"><i class="fa fa-check"></i><b>2.5.1</b> Simulation designs and performance measures</a></li>
+<li class="chapter" data-level="2.5.2" data-path="sec-evaluation.html"><a href="sec-evaluation.html#sec:evaluationcriteria"><i class="fa fa-check"></i><b>2.5.2</b> Evaluation criteria</a></li>
+<li class="chapter" data-level="2.5.3" data-path="sec-evaluation.html"><a href="sec-evaluation.html#sec:quantifyingbias"><i class="fa fa-check"></i><b>2.5.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="sec-true.html"><a href="sec-true.html"><i class="fa fa-check"></i><b>2.6</b> Imputation is not prediction</a></li>
+<li class="chapter" data-level="2.7" data-path="sec-when.html"><a href="sec-when.html"><i class="fa fa-check"></i><b>2.7</b> When not to use multiple imputation</a></li>
+<li class="chapter" data-level="2.8" data-path="sec-howmany.html"><a href="sec-howmany.html"><i class="fa fa-check"></i><b>2.8</b> How many imputations?</a></li>
+<li class="chapter" data-level="2.9" data-path="sec-exmi.html"><a href="sec-exmi.html"><i class="fa fa-check"></i><b>2.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch-univariate.html"><a href="ch-univariate.html"><i class="fa fa-check"></i><b>3</b> Univariate missing data</a><ul>
+<li class="chapter" data-level="3.1" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html"><i class="fa fa-check"></i><b>3.1</b> How to generate multiple imputations</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#predict-method"><i class="fa fa-check"></i><b>3.1.1</b> Predict method</a></li>
+<li class="chapter" data-level="3.1.2" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#sec:meth2"><i class="fa fa-check"></i><b>3.1.2</b> Predict + noise method</a></li>
+<li class="chapter" data-level="3.1.3" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#sec:meth3"><i class="fa fa-check"></i><b>3.1.3</b> Predict + noise + parameter uncertainty</a></li>
+<li class="chapter" data-level="3.1.4" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#a-second-predictor"><i class="fa fa-check"></i><b>3.1.4</b> A second predictor</a></li>
+<li class="chapter" data-level="3.1.5" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#drawing-from-the-observed-data"><i class="fa fa-check"></i><b>3.1.5</b> Drawing from the observed data</a></li>
+<li class="chapter" data-level="3.1.6" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#conclusion"><i class="fa fa-check"></i><b>3.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html"><i class="fa fa-check"></i><b>3.2</b> Imputation under the normal linear normal</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:linearoverview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:linearalgorithm"><i class="fa fa-check"></i><b>3.2.2</b> Algorithms<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.2.3" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:perflin"><i class="fa fa-check"></i><b>3.2.3</b> Performance</a></li>
+<li class="chapter" data-level="3.2.4" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:generateuni"><i class="fa fa-check"></i><b>3.2.4</b> Generating MAR missing data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:generatemulti"><i class="fa fa-check"></i><b>3.2.5</b> MAR missing data generation in multivariate data</a></li>
+<li class="chapter" data-level="3.2.6" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#conclusion-1"><i class="fa fa-check"></i><b>3.2.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html"><i class="fa fa-check"></i><b>3.3</b> Imputation under non-normal distributions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html#overview"><i class="fa fa-check"></i><b>3.3.1</b> Overview</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html#sec:tdist"><i class="fa fa-check"></i><b>3.3.2</b> Imputation from the <span class="math inline">\(t\)</span>-distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="sec-pmm.html"><a href="sec-pmm.html"><i class="fa fa-check"></i><b>3.4</b> Predictive mean matching</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="sec-pmm.html"><a href="sec-pmm.html#overview-1"><i class="fa fa-check"></i><b>3.4.1</b> Overview</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sec-pmm.html"><a href="sec-pmm.html#sec:pmmcomputation"><i class="fa fa-check"></i><b>3.4.2</b> Computational details<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.4.3" data-path="sec-pmm.html"><a href="sec-pmm.html#number-of-donors"><i class="fa fa-check"></i><b>3.4.3</b> Number of donors</a></li>
+<li class="chapter" data-level="3.4.4" data-path="sec-pmm.html"><a href="sec-pmm.html#pitfalls"><i class="fa fa-check"></i><b>3.4.4</b> Pitfalls</a></li>
+<li class="chapter" data-level="3.4.5" data-path="sec-pmm.html"><a href="sec-pmm.html#conclusion-2"><i class="fa fa-check"></i><b>3.4.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="sec-cart.html"><a href="sec-cart.html"><i class="fa fa-check"></i><b>3.5</b> Classification and regression trees</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="sec-cart.html"><a href="sec-cart.html#sec:cartoverview"><i class="fa fa-check"></i><b>3.5.1</b> Overview</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="sec-categorical.html"><a href="sec-categorical.html"><i class="fa fa-check"></i><b>3.6</b> Categorical data</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="sec-categorical.html"><a href="sec-categorical.html#sec:categoricaloverview"><i class="fa fa-check"></i><b>3.6.1</b> Generalized linear model</a></li>
+<li class="chapter" data-level="3.6.2" data-path="sec-categorical.html"><a href="sec-categorical.html#perfect-predictionspadesuit"><i class="fa fa-check"></i><b>3.6.2</b> Perfect prediction<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.6.3" data-path="sec-categorical.html"><a href="sec-categorical.html#evaluation"><i class="fa fa-check"></i><b>3.6.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="other-data-types.html"><a href="other-data-types.html"><i class="fa fa-check"></i><b>3.7</b> Other data types</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="other-data-types.html"><a href="other-data-types.html#sec:count"><i class="fa fa-check"></i><b>3.7.1</b> Count data</a></li>
+<li class="chapter" data-level="3.7.2" data-path="other-data-types.html"><a href="other-data-types.html#sec:semi"><i class="fa fa-check"></i><b>3.7.2</b> Semi-continuous data</a></li>
+<li class="chapter" data-level="3.7.3" data-path="other-data-types.html"><a href="other-data-types.html#sec:censored"><i class="fa fa-check"></i><b>3.7.3</b> Censored, truncated and rounded data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html"><i class="fa fa-check"></i><b>3.8</b> Nonignorable missing data</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:nonignorableoverview"><i class="fa fa-check"></i><b>3.8.1</b> Overview</a></li>
+<li class="chapter" data-level="3.8.2" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:selectionmodel"><i class="fa fa-check"></i><b>3.8.2</b> Selection model</a></li>
+<li class="chapter" data-level="3.8.3" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:patternmixturemodel"><i class="fa fa-check"></i><b>3.8.3</b> Pattern-mixture model</a></li>
+<li class="chapter" data-level="3.8.4" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:convert"><i class="fa fa-check"></i><b>3.8.4</b> Converting selection and pattern-mixture models</a></li>
+<li class="chapter" data-level="3.8.5" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:ch3sensitivity"><i class="fa fa-check"></i><b>3.8.5</b> Sensitivity analysis</a></li>
+<li class="chapter" data-level="3.8.6" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#role-of-sensitivity-analysis"><i class="fa fa-check"></i><b>3.8.6</b> Role of sensitivity analysis</a></li>
+<li class="chapter" data-level="3.8.7" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#recent-developments"><i class="fa fa-check"></i><b>3.8.7</b> Recent developments</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="ex-ch-univariate.html"><a href="ex-ch-univariate.html"><i class="fa fa-check"></i><b>3.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-multivariate.html"><a href="ch-multivariate.html"><i class="fa fa-check"></i><b>4</b> Multivariate missing data</a><ul>
+<li class="chapter" data-level="4.1" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html"><i class="fa fa-check"></i><b>4.1</b> Missing data pattern</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:patternoverview"><i class="fa fa-check"></i><b>4.1.1</b> Overview</a></li>
+<li class="chapter" data-level="4.1.2" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:mdpattern"><i class="fa fa-check"></i><b>4.1.2</b> Summary statistics</a></li>
+<li class="chapter" data-level="4.1.3" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:flux"><i class="fa fa-check"></i><b>4.1.3</b> Influx and outflux</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="sec-issues.html"><a href="sec-issues.html"><i class="fa fa-check"></i><b>4.2</b> Issues in multivariate imputation</a></li>
+<li class="chapter" data-level="4.3" data-path="sec-monotone.html"><a href="sec-monotone.html"><i class="fa fa-check"></i><b>4.3</b> Monotone data imputation</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="sec-monotone.html"><a href="sec-monotone.html#sec:monoverview"><i class="fa fa-check"></i><b>4.3.1</b> Overview</a></li>
+<li class="chapter" data-level="4.3.2" data-path="sec-monotone.html"><a href="sec-monotone.html#sec:monalgorithm"><i class="fa fa-check"></i><b>4.3.2</b> Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="sec-JM.html"><a href="sec-JM.html"><i class="fa fa-check"></i><b>4.4</b> Joint modeling</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="sec-JM.html"><a href="sec-JM.html#overview-2"><i class="fa fa-check"></i><b>4.4.1</b> Overview</a></li>
+<li class="chapter" data-level="4.4.2" data-path="sec-JM.html"><a href="sec-JM.html#continuous-data"><i class="fa fa-check"></i><b>4.4.2</b> Continuous data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="sec-JM.html"><a href="sec-JM.html#sec:jmcategorical"><i class="fa fa-check"></i><b>4.4.3</b> Categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="sec-FCS.html"><a href="sec-FCS.html"><i class="fa fa-check"></i><b>4.5</b> Fully conditional specification</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="sec-FCS.html"><a href="sec-FCS.html#overview-3"><i class="fa fa-check"></i><b>4.5.1</b> Overview</a></li>
+<li class="chapter" data-level="4.5.2" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:MICE"><i class="fa fa-check"></i><b>4.5.2</b> The MICE algorithm</a></li>
+<li class="chapter" data-level="4.5.3" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:compatibility"><i class="fa fa-check"></i><b>4.5.3</b> Compatibility<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="4.5.4" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:congeniality"><i class="fa fa-check"></i><b>4.5.4</b> Congeniality or compatibility?</a></li>
+<li class="chapter" data-level="4.5.5" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:modelbased"><i class="fa fa-check"></i><b>4.5.5</b> Model-based and data-based imputation</a></li>
+<li class="chapter" data-level="4.5.6" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:howlarget"><i class="fa fa-check"></i><b>4.5.6</b> Number of iterations</a></li>
+<li class="chapter" data-level="4.5.7" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:slowconvergence"><i class="fa fa-check"></i><b>4.5.7</b> Example of slow convergence</a></li>
+<li class="chapter" data-level="4.5.8" data-path="sec-FCS.html"><a href="sec-FCS.html#performance"><i class="fa fa-check"></i><b>4.5.8</b> Performance</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html"><i class="fa fa-check"></i><b>4.6</b> FCS and JM</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#relations-between-fcs-and-jm"><i class="fa fa-check"></i><b>4.6.1</b> Relations between FCS and JM</a></li>
+<li class="chapter" data-level="4.6.2" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#comparisons"><i class="fa fa-check"></i><b>4.6.2</b> Comparisons</a></li>
+<li class="chapter" data-level="4.6.3" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#illustration"><i class="fa fa-check"></i><b>4.6.3</b> Illustration</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="mice-extensions.html"><a href="mice-extensions.html"><i class="fa fa-check"></i><b>4.7</b> MICE extensions</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="mice-extensions.html"><a href="mice-extensions.html#skipping-imputations-and-overimputation"><i class="fa fa-check"></i><b>4.7.1</b> Skipping imputations and overimputation</a></li>
+<li class="chapter" data-level="4.7.2" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:blockvar"><i class="fa fa-check"></i><b>4.7.2</b> Blocks of variables, hybrid imputation</a></li>
+<li class="chapter" data-level="4.7.3" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:blockunit"><i class="fa fa-check"></i><b>4.7.3</b> Blocks of units, monotone blocks</a></li>
+<li class="chapter" data-level="4.7.4" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:tile"><i class="fa fa-check"></i><b>4.7.4</b> Tile imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="conclusion-3.html"><a href="conclusion-3.html"><i class="fa fa-check"></i><b>4.8</b> Conclusion</a></li>
+<li class="chapter" data-level="4.9" data-path="ex-ch-multivariate.html"><a href="ex-ch-multivariate.html"><i class="fa fa-check"></i><b>4.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-analysis.html"><a href="ch-analysis.html"><i class="fa fa-check"></i><b>5</b> Analysis of imputed data</a><ul>
+<li class="chapter" data-level="5.1" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>5.1</b> Workflow</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="workflow.html"><a href="workflow.html#sec:goodworkflows"><i class="fa fa-check"></i><b>5.1.1</b> Recommended workflows</a></li>
+<li class="chapter" data-level="5.1.2" data-path="workflow.html"><a href="workflow.html#sec:badworkflowa"><i class="fa fa-check"></i><b>5.1.2</b> Not recommended workflow: Averaging the data</a></li>
+<li class="chapter" data-level="5.1.3" data-path="workflow.html"><a href="workflow.html#sec:badworkflowb"><i class="fa fa-check"></i><b>5.1.3</b> Not recommended workflow: Stack imputed data</a></li>
+<li class="chapter" data-level="5.1.4" data-path="workflow.html"><a href="workflow.html#sec:repeated"><i class="fa fa-check"></i><b>5.1.4</b> Repeated analyses</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sec-pooling.html"><a href="sec-pooling.html"><i class="fa fa-check"></i><b>5.2</b> Parameter pooling</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-pooling.html"><a href="sec-pooling.html#scalar-inference-of-normal-quantities"><i class="fa fa-check"></i><b>5.2.1</b> Scalar inference of normal quantities</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pooling.html"><a href="sec-pooling.html#sec:poolnon"><i class="fa fa-check"></i><b>5.2.2</b> Scalar inference of non-normal quantities</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html"><i class="fa fa-check"></i><b>5.3</b> Multi-parameter inference</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:wald"><i class="fa fa-check"></i><b>5.3.1</b> <span class="math inline">\(D_1\)</span> Multivariate Wald test</a></li>
+<li class="chapter" data-level="5.3.2" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:chi"><i class="fa fa-check"></i><b>5.3.2</b> <span class="math inline">\(D_2\)</span> Combining test statistics<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="5.3.3" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:likelihoodratio"><i class="fa fa-check"></i><b>5.3.3</b> <span class="math inline">\(D_3\)</span> Likelihood ratio test<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="5.3.4" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#d_1-d_2-or-d_3"><i class="fa fa-check"></i><b>5.3.4</b> <span class="math inline">\(D_1\)</span>, <span class="math inline">\(D_2\)</span> or <span class="math inline">\(D_3\)</span>?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="sec-stepwise.html"><a href="sec-stepwise.html"><i class="fa fa-check"></i><b>5.4</b> Stepwise model selection</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="sec-stepwise.html"><a href="sec-stepwise.html#variable-selection-techniques"><i class="fa fa-check"></i><b>5.4.1</b> Variable selection techniques</a></li>
+<li class="chapter" data-level="5.4.2" data-path="sec-stepwise.html"><a href="sec-stepwise.html#computation"><i class="fa fa-check"></i><b>5.4.2</b> Computation</a></li>
+<li class="chapter" data-level="5.4.3" data-path="sec-stepwise.html"><a href="sec-stepwise.html#sec:optimism"><i class="fa fa-check"></i><b>5.4.3</b> Model optimism</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="parallel-computation.html"><a href="parallel-computation.html"><i class="fa fa-check"></i><b>5.5</b> Parallel computation</a></li>
+<li class="chapter" data-level="5.6" data-path="conclusion-4.html"><a href="conclusion-4.html"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.7" data-path="ex-ch-analysis.html"><a href="ex-ch-analysis.html"><i class="fa fa-check"></i><b>5.7</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II: Advanced techniques</b></span></li>
+<li class="chapter" data-level="6" data-path="ch-practice.html"><a href="ch-practice.html"><i class="fa fa-check"></i><b>6</b> Imputation in practice</a><ul>
+<li class="chapter" data-level="6.1" data-path="sec-choices.html"><a href="sec-choices.html"><i class="fa fa-check"></i><b>6.1</b> Overview of modeling choices</a></li>
+<li class="chapter" data-level="6.2" data-path="sec-whenignorable.html"><a href="sec-whenignorable.html"><i class="fa fa-check"></i><b>6.2</b> Ignorable or nonignorable?</a></li>
+<li class="chapter" data-level="6.3" data-path="sec-modelform.html"><a href="sec-modelform.html"><i class="fa fa-check"></i><b>6.3</b> Model form and predictors</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="sec-modelform.html"><a href="sec-modelform.html#model-form"><i class="fa fa-check"></i><b>6.3.1</b> Model form</a></li>
+<li class="chapter" data-level="6.3.2" data-path="sec-modelform.html"><a href="sec-modelform.html#sec:predictors"><i class="fa fa-check"></i><b>6.3.2</b> Predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="sec-knowledge.html"><a href="sec-knowledge.html"><i class="fa fa-check"></i><b>6.4</b> Derived variables</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:ratio"><i class="fa fa-check"></i><b>6.4.1</b> Ratio of two variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:interactions"><i class="fa fa-check"></i><b>6.4.2</b> Interaction terms</a></li>
+<li class="chapter" data-level="6.4.3" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:quadratic"><i class="fa fa-check"></i><b>6.4.3</b> Quadratic relations<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="6.4.4" data-path="sec-knowledge.html"><a href="sec-knowledge.html#compositional-dataspadesuit"><i class="fa fa-check"></i><b>6.4.4</b> Compositional data<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="6.4.5" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:sumscores"><i class="fa fa-check"></i><b>6.4.5</b> Sum scores</a></li>
+<li class="chapter" data-level="6.4.6" data-path="sec-knowledge.html"><a href="sec-knowledge.html#conditional-imputation"><i class="fa fa-check"></i><b>6.4.6</b> Conditional imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="sec-algoptions.html"><a href="sec-algoptions.html"><i class="fa fa-check"></i><b>6.5</b> Algorithmic options</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="sec-algoptions.html"><a href="sec-algoptions.html#sec:visit"><i class="fa fa-check"></i><b>6.5.1</b> Visit sequence</a></li>
+<li class="chapter" data-level="6.5.2" data-path="sec-algoptions.html"><a href="sec-algoptions.html#sec:convergence"><i class="fa fa-check"></i><b>6.5.2</b> Convergence</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html"><i class="fa fa-check"></i><b>6.6</b> Diagnostics</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html#sec:fitversus"><i class="fa fa-check"></i><b>6.6.1</b> Model fit versus distributional discrepancy</a></li>
+<li class="chapter" data-level="6.6.2" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html#diagnostic-graphs"><i class="fa fa-check"></i><b>6.6.2</b> Diagnostic graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="conclusion-5.html"><a href="conclusion-5.html"><i class="fa fa-check"></i><b>6.7</b> Conclusion</a></li>
+<li class="chapter" data-level="6.8" data-path="ex-ch-practice.html"><a href="ex-ch-practice.html"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-multilevel.html"><a href="ch-multilevel.html"><i class="fa fa-check"></i><b>7</b> Multilevel multiple imputation</a><ul>
+<li class="chapter" data-level="7.1" data-path="sec-multi-intro.html"><a href="sec-multi-intro.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-threeformulations.html"><a href="sec-threeformulations.html"><i class="fa fa-check"></i><b>7.2</b> Notation for multilevel models</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-missmult.html"><a href="sec-missmult.html"><i class="fa fa-check"></i><b>7.3</b> Missing values in multilevel data</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="sec-missmult.html"><a href="sec-missmult.html#practical-issues-in-multilevel-imputation"><i class="fa fa-check"></i><b>7.3.1</b> Practical issues in multilevel imputation</a></li>
+<li class="chapter" data-level="7.3.2" data-path="sec-missmult.html"><a href="sec-missmult.html#ad-hoc-solutions-for-multilevel-data"><i class="fa fa-check"></i><b>7.3.2</b> Ad-hoc solutions for multilevel data</a></li>
+<li class="chapter" data-level="7.3.3" data-path="sec-missmult.html"><a href="sec-missmult.html#likelihood-solutions"><i class="fa fa-check"></i><b>7.3.3</b> Likelihood solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="sec-mljoint.html"><a href="sec-mljoint.html"><i class="fa fa-check"></i><b>7.4</b> Multilevel imputation by joint modeling</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html"><i class="fa fa-check"></i><b>7.5</b> Multilevel imputation by fully conditional specification</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html#sec:clustermeans"><i class="fa fa-check"></i><b>7.5.1</b> Add cluster means of predictors</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html#sec:hetero"><i class="fa fa-check"></i><b>7.5.2</b> Model cluster heterogeneity</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html"><i class="fa fa-check"></i><b>7.6</b> Continuous outcome</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#general-principle"><i class="fa fa-check"></i><b>7.6.1</b> General principle</a></li>
+<li class="chapter" data-level="7.6.2" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#methods"><i class="fa fa-check"></i><b>7.6.2</b> Methods</a></li>
+<li class="chapter" data-level="7.6.3" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#sec:contexam"><i class="fa fa-check"></i><b>7.6.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html"><i class="fa fa-check"></i><b>7.7</b> Discrete outcome</a><ul>
+<li class="chapter" data-level="7.7.1" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html#methods-1"><i class="fa fa-check"></i><b>7.7.1</b> Methods</a></li>
+<li class="chapter" data-level="7.7.2" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html#example"><i class="fa fa-check"></i><b>7.7.2</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="sec-level2pred.html"><a href="sec-level2pred.html"><i class="fa fa-check"></i><b>7.8</b> Imputation of level-2 variable</a></li>
+<li class="chapter" data-level="7.9" data-path="sec-comparative.html"><a href="sec-comparative.html"><i class="fa fa-check"></i><b>7.9</b> Comparative work</a></li>
+<li class="chapter" data-level="7.10" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html"><i class="fa fa-check"></i><b>7.10</b> Guidelines and advice</a><ul>
+<li class="chapter" data-level="7.10.1" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:emptymodel"><i class="fa fa-check"></i><b>7.10.1</b> Intercept-only model, missing outcomes</a></li>
+<li class="chapter" data-level="7.10.2" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:ri1pred"><i class="fa fa-check"></i><b>7.10.2</b> Random intercepts, missing level-1 predictor</a></li>
+<li class="chapter" data-level="7.10.3" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:wbg"><i class="fa fa-check"></i><b>7.10.3</b> Random intercepts, contextual model</a></li>
+<li class="chapter" data-level="7.10.4" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:ril2"><i class="fa fa-check"></i><b>7.10.4</b> Random intercepts, missing level-2 predictor</a></li>
+<li class="chapter" data-level="7.10.5" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:mlint"><i class="fa fa-check"></i><b>7.10.5</b> Random intercepts, interactions</a></li>
+<li class="chapter" data-level="7.10.6" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:randomslopes"><i class="fa fa-check"></i><b>7.10.6</b> Random slopes, missing outcomes and predictors</a></li>
+<li class="chapter" data-level="7.10.7" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:rsinteractions"><i class="fa fa-check"></i><b>7.10.7</b> Random slopes, interactions</a></li>
+<li class="chapter" data-level="7.10.8" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:recipes"><i class="fa fa-check"></i><b>7.10.8</b> Recipes</a></li>
+</ul></li>
+<li class="chapter" data-level="7.11" data-path="future-research.html"><a href="future-research.html"><i class="fa fa-check"></i><b>7.11</b> Future research</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ch-ice.html"><a href="ch-ice.html"><i class="fa fa-check"></i><b>8</b> Individual causal effects</a><ul>
+<li class="chapter" data-level="8.1" data-path="sec-whyice.html"><a href="sec-whyice.html"><i class="fa fa-check"></i><b>8.1</b> Need for individual causal effects</a></li>
+<li class="chapter" data-level="8.2" data-path="problem-of-causal-inference.html"><a href="problem-of-causal-inference.html"><i class="fa fa-check"></i><b>8.2</b> Problem of causal inference</a></li>
+<li class="chapter" data-level="8.3" data-path="sec-iceframework.html"><a href="sec-iceframework.html"><i class="fa fa-check"></i><b>8.3</b> Framework</a></li>
+<li class="chapter" data-level="8.4" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html"><i class="fa fa-check"></i><b>8.4</b> Generating imputations by FCS</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#naive-fcs"><i class="fa fa-check"></i><b>8.4.1</b> Naive FCS</a></li>
+<li class="chapter" data-level="8.4.2" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#sec:fcsprior"><i class="fa fa-check"></i><b>8.4.2</b> FCS with a prior for <span class="math inline">\(\rho\)</span></a></li>
+<li class="chapter" data-level="8.4.3" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#sec:iceextensions"><i class="fa fa-check"></i><b>8.4.3</b> Extensions</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="bibliographic-notes.html"><a href="bibliographic-notes.html"><i class="fa fa-check"></i><b>8.5</b> Bibliographic notes</a></li>
+</ul></li>
+<li class="part"><span><b>III Part III: Case studies</b></span></li>
+<li class="chapter" data-level="9" data-path="ch-measurement.html"><a href="ch-measurement.html"><i class="fa fa-check"></i><b>9</b> Measurement issues</a><ul>
+<li class="chapter" data-level="9.1" data-path="sec-toomany.html"><a href="sec-toomany.html"><i class="fa fa-check"></i><b>9.1</b> Too many columns</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:c85question"><i class="fa fa-check"></i><b>9.1.1</b> Scientific question</a></li>
+<li class="chapter" data-level="9.1.2" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:leiden85cohort"><i class="fa fa-check"></i><b>9.1.2</b> Leiden 85+ Cohort</a></li>
+<li class="chapter" data-level="9.1.3" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:exploration"><i class="fa fa-check"></i><b>9.1.3</b> Data exploration</a></li>
+<li class="chapter" data-level="9.1.4" data-path="sec-toomany.html"><a href="sec-toomany.html#c85:influx"><i class="fa fa-check"></i><b>9.1.4</b> Outflux</a></li>
+<li class="chapter" data-level="9.1.5" data-path="sec-toomany.html"><a href="sec-toomany.html#finding-problems-loggedevents"><i class="fa fa-check"></i><b>9.1.5</b> Finding problems: <code>loggedEvents</code></a></li>
+<li class="chapter" data-level="9.1.6" data-path="sec-toomany.html"><a href="sec-toomany.html#quick-predictor-selection-quickpred"><i class="fa fa-check"></i><b>9.1.6</b> Quick predictor selection: <code>quickpred</code></a></li>
+<li class="chapter" data-level="9.1.7" data-path="sec-toomany.html"><a href="sec-toomany.html#generating-the-imputations"><i class="fa fa-check"></i><b>9.1.7</b> Generating the imputations</a></li>
+<li class="chapter" data-level="9.1.8" data-path="sec-toomany.html"><a href="sec-toomany.html#a-further-improvement-survival-as-predictor-variable"><i class="fa fa-check"></i><b>9.1.8</b> A further improvement: Survival as predictor variable</a></li>
+<li class="chapter" data-level="9.1.9" data-path="sec-toomany.html"><a href="sec-toomany.html#some-guidance"><i class="fa fa-check"></i><b>9.1.9</b> Some guidance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html"><i class="fa fa-check"></i><b>9.2</b> Sensitivity analysis</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#sec:c85causes"><i class="fa fa-check"></i><b>9.2.1</b> Causes and consequences of missing data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#scenarios"><i class="fa fa-check"></i><b>9.2.2</b> Scenarios</a></li>
+<li class="chapter" data-level="9.2.3" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#generating-imputations-under-the-delta-adjustment"><i class="fa fa-check"></i><b>9.2.3</b> Generating imputations under the <span class="math inline">\(\delta\)</span>-adjustment</a></li>
+<li class="chapter" data-level="9.2.4" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#complete-data-model"><i class="fa fa-check"></i><b>9.2.4</b> Complete-data model</a></li>
+<li class="chapter" data-level="9.2.5" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#conclusion-6"><i class="fa fa-check"></i><b>9.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="sec-prevalence.html"><a href="sec-prevalence.html"><i class="fa fa-check"></i><b>9.3</b> Correct prevalence estimates from self-reported data</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="sec-prevalence.html"><a href="sec-prevalence.html#description-of-the-problem"><i class="fa fa-check"></i><b>9.3.1</b> Description of the problem</a></li>
+<li class="chapter" data-level="9.3.2" data-path="sec-prevalence.html"><a href="sec-prevalence.html#sec:dontcount"><i class="fa fa-check"></i><b>9.3.2</b> Don’t count on predictions</a></li>
+<li class="chapter" data-level="9.3.3" data-path="sec-prevalence.html"><a href="sec-prevalence.html#the-main-idea"><i class="fa fa-check"></i><b>9.3.3</b> The main idea</a></li>
+<li class="chapter" data-level="9.3.4" data-path="sec-prevalence.html"><a href="sec-prevalence.html#sec:srcdata"><i class="fa fa-check"></i><b>9.3.4</b> Data</a></li>
+<li class="chapter" data-level="9.3.5" data-path="sec-prevalence.html"><a href="sec-prevalence.html#application"><i class="fa fa-check"></i><b>9.3.5</b> Application</a></li>
+<li class="chapter" data-level="9.3.6" data-path="sec-prevalence.html"><a href="sec-prevalence.html#conclusion-7"><i class="fa fa-check"></i><b>9.3.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html"><i class="fa fa-check"></i><b>9.4</b> Enhancing comparability</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#description-of-the-problem-1"><i class="fa fa-check"></i><b>9.4.1</b> Description of the problem</a></li>
+<li class="chapter" data-level="9.4.2" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:equating"><i class="fa fa-check"></i><b>9.4.2</b> Full dependence: Simple equating</a></li>
+<li class="chapter" data-level="9.4.3" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:walkingimputation"><i class="fa fa-check"></i><b>9.4.3</b> Independence: Imputation without a bridge study</a></li>
+<li class="chapter" data-level="9.4.4" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:untenable"><i class="fa fa-check"></i><b>9.4.4</b> Fully dependent or independent?</a></li>
+<li class="chapter" data-level="9.4.5" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:impbridge"><i class="fa fa-check"></i><b>9.4.5</b> Imputation using a bridge study</a></li>
+<li class="chapter" data-level="9.4.6" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:walkinginterpretation"><i class="fa fa-check"></i><b>9.4.6</b> Interpretation</a></li>
+<li class="chapter" data-level="9.4.7" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#conclusion-8"><i class="fa fa-check"></i><b>9.4.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="ex-ch-measurement.html"><a href="ex-ch-measurement.html"><i class="fa fa-check"></i><b>9.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch-selection.html"><a href="ch-selection.html"><i class="fa fa-check"></i><b>10</b> Selection issues</a><ul>
+<li class="chapter" data-level="10.1" data-path="sec-selective.html"><a href="sec-selective.html"><i class="fa fa-check"></i><b>10.1</b> Correcting for selective drop-out</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="sec-selective.html"><a href="sec-selective.html#pops-study-19-years-follow-up"><i class="fa fa-check"></i><b>10.1.1</b> POPS study: 19 years follow-up</a></li>
+<li class="chapter" data-level="10.1.2" data-path="sec-selective.html"><a href="sec-selective.html#characterization-of-the-drop-out"><i class="fa fa-check"></i><b>10.1.2</b> Characterization of the drop-out</a></li>
+<li class="chapter" data-level="10.1.3" data-path="sec-selective.html"><a href="sec-selective.html#sec:popsmodel"><i class="fa fa-check"></i><b>10.1.3</b> Imputation model</a></li>
+<li class="chapter" data-level="10.1.4" data-path="sec-selective.html"><a href="sec-selective.html#sec:degenerate"><i class="fa fa-check"></i><b>10.1.4</b> A solution “that does not look good”</a></li>
+<li class="chapter" data-level="10.1.5" data-path="sec-selective.html"><a href="sec-selective.html#results"><i class="fa fa-check"></i><b>10.1.5</b> Results</a></li>
+<li class="chapter" data-level="10.1.6" data-path="sec-selective.html"><a href="sec-selective.html#conclusion-9"><i class="fa fa-check"></i><b>10.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html"><i class="fa fa-check"></i><b>10.2</b> Correcting for nonresponse</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#fifth-dutch-growth-study"><i class="fa fa-check"></i><b>10.2.1</b> Fifth Dutch Growth Study</a></li>
+<li class="chapter" data-level="10.2.2" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#nonresponse"><i class="fa fa-check"></i><b>10.2.2</b> Nonresponse</a></li>
+<li class="chapter" data-level="10.2.3" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#comparison-to-known-population-totals"><i class="fa fa-check"></i><b>10.2.3</b> Comparison to known population totals</a></li>
+<li class="chapter" data-level="10.2.4" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#sec:augmentsample"><i class="fa fa-check"></i><b>10.2.4</b> Augmenting the sample</a></li>
+<li class="chapter" data-level="10.2.5" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#imputation-model"><i class="fa fa-check"></i><b>10.2.5</b> Imputation model</a></li>
+<li class="chapter" data-level="10.2.6" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#sec:finalheight"><i class="fa fa-check"></i><b>10.2.6</b> Influence of nonresponse on final height</a></li>
+<li class="chapter" data-level="10.2.7" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#discussion"><i class="fa fa-check"></i><b>10.2.7</b> Discussion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="ex-ch-selection.html"><a href="ex-ch-selection.html"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ch-longitudinal.html"><a href="ch-longitudinal.html"><i class="fa fa-check"></i><b>11</b> Longitudinal data</a><ul>
+<li class="chapter" data-level="11.1" data-path="sec-longandwide.html"><a href="sec-longandwide.html"><i class="fa fa-check"></i><b>11.1</b> Long and wide format</a></li>
+<li class="chapter" data-level="11.2" data-path="sec-fdd.html"><a href="sec-fdd.html"><i class="fa fa-check"></i><b>11.2</b> SE Fireworks Disaster Study</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="sec-fdd.html"><a href="sec-fdd.html#intention-to-treat"><i class="fa fa-check"></i><b>11.2.1</b> Intention to treat</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sec-fdd.html"><a href="sec-fdd.html#imputation-model-1"><i class="fa fa-check"></i><b>11.2.2</b> Imputation model</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sec-fdd.html"><a href="sec-fdd.html#inspecting-imputations"><i class="fa fa-check"></i><b>11.2.3</b> Inspecting imputations</a></li>
+<li class="chapter" data-level="11.2.4" data-path="sec-fdd.html"><a href="sec-fdd.html#complete-data-model-1"><i class="fa fa-check"></i><b>11.2.4</b> Complete-data model</a></li>
+<li class="chapter" data-level="11.2.5" data-path="sec-fdd.html"><a href="sec-fdd.html#results-from-the-complete-data-model"><i class="fa fa-check"></i><b>11.2.5</b> Results from the complete-data model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sec-rastering.html"><a href="sec-rastering.html"><i class="fa fa-check"></i><b>11.3</b> Time raster imputation</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="sec-rastering.html"><a href="sec-rastering.html#change-score"><i class="fa fa-check"></i><b>11.3.1</b> Change score</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:tbcquestion"><i class="fa fa-check"></i><b>11.3.2</b> Scientific question: Critical periods</a></li>
+<li class="chapter" data-level="11.3.3" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:brokenstick"><i class="fa fa-check"></i><b>11.3.3</b> Broken stick model<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="11.3.4" data-path="sec-rastering.html"><a href="sec-rastering.html#terneuzen-birth-cohort"><i class="fa fa-check"></i><b>11.3.4</b> Terneuzen Birth Cohort</a></li>
+<li class="chapter" data-level="11.3.5" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:shrinkage"><i class="fa fa-check"></i><b>11.3.5</b> Shrinkage and the change score<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="11.3.6" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:tbcimpute"><i class="fa fa-check"></i><b>11.3.6</b> Imputation</a></li>
+<li class="chapter" data-level="11.3.7" data-path="sec-rastering.html"><a href="sec-rastering.html#complete-data-model-2"><i class="fa fa-check"></i><b>11.3.7</b> Complete-data model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="conclusion-10.html"><a href="conclusion-10.html"><i class="fa fa-check"></i><b>11.4</b> Conclusion</a></li>
+<li class="chapter" data-level="11.5" data-path="ex-ch-longitudinal.html"><a href="ex-ch-longitudinal.html"><i class="fa fa-check"></i><b>11.5</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>IV Part IV: Extensions</b></span></li>
+<li class="chapter" data-level="12" data-path="ch-conclusion.html"><a href="ch-conclusion.html"><i class="fa fa-check"></i><b>12</b> Conclusion</a><ul>
+<li class="chapter" data-level="12.1" data-path="sec-limitations.html"><a href="sec-limitations.html"><i class="fa fa-check"></i><b>12.1</b> Some dangers, some do’s and some don’ts</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="sec-limitations.html"><a href="sec-limitations.html#some-dangers"><i class="fa fa-check"></i><b>12.1.1</b> Some dangers</a></li>
+<li class="chapter" data-level="12.1.2" data-path="sec-limitations.html"><a href="sec-limitations.html#sec:dos"><i class="fa fa-check"></i><b>12.1.2</b> Some do’s</a></li>
+<li class="chapter" data-level="12.1.3" data-path="sec-limitations.html"><a href="sec-limitations.html#sec:donts"><i class="fa fa-check"></i><b>12.1.3</b> Some don’ts</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="sec-reporting.html"><a href="sec-reporting.html"><i class="fa fa-check"></i><b>12.2</b> Reporting</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="sec-reporting.html"><a href="sec-reporting.html#sec:guidelines"><i class="fa fa-check"></i><b>12.2.1</b> Reporting guidelines</a></li>
+<li class="chapter" data-level="12.2.2" data-path="sec-reporting.html"><a href="sec-reporting.html#sec:template"><i class="fa fa-check"></i><b>12.2.2</b> Template</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="sec-otherapps.html"><a href="sec-otherapps.html"><i class="fa fa-check"></i><b>12.3</b> Other applications</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="sec-otherapps.html"><a href="sec-otherapps.html#synthetic-datasets-for-data-protection"><i class="fa fa-check"></i><b>12.3.1</b> Synthetic datasets for data protection</a></li>
+<li class="chapter" data-level="12.3.2" data-path="sec-otherapps.html"><a href="sec-otherapps.html#analysis-of-coarsened-data"><i class="fa fa-check"></i><b>12.3.2</b> Analysis of coarsened data</a></li>
+<li class="chapter" data-level="12.3.3" data-path="sec-otherapps.html"><a href="sec-otherapps.html#file-matching-of-multiple-datasets"><i class="fa fa-check"></i><b>12.3.3</b> File matching of multiple datasets</a></li>
+<li class="chapter" data-level="12.3.4" data-path="sec-otherapps.html"><a href="sec-otherapps.html#planned-missing-data-for-efficient-designs"><i class="fa fa-check"></i><b>12.3.4</b> Planned missing data for efficient designs</a></li>
+<li class="chapter" data-level="12.3.5" data-path="sec-otherapps.html"><a href="sec-otherapps.html#adjusting-for-verification-bias"><i class="fa fa-check"></i><b>12.3.5</b> Adjusting for verification bias</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="sec-future.html"><a href="sec-future.html"><i class="fa fa-check"></i><b>12.4</b> Future developments</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="sec-future.html"><a href="sec-future.html#derived-variables"><i class="fa fa-check"></i><b>12.4.1</b> Derived variables</a></li>
+<li class="chapter" data-level="12.4.2" data-path="sec-future.html"><a href="sec-future.html#algorithms-for-blocks-and-batches"><i class="fa fa-check"></i><b>12.4.2</b> Algorithms for blocks and batches</a></li>
+<li class="chapter" data-level="12.4.3" data-path="sec-future.html"><a href="sec-future.html#nested-imputation"><i class="fa fa-check"></i><b>12.4.3</b> Nested imputation</a></li>
+<li class="chapter" data-level="12.4.4" data-path="sec-future.html"><a href="sec-future.html#better-trials-with-dynamic-treatment-regimes"><i class="fa fa-check"></i><b>12.4.4</b> Better trials with dynamic treatment regimes</a></li>
+<li class="chapter" data-level="12.4.5" data-path="sec-future.html"><a href="sec-future.html#sec:free"><i class="fa fa-check"></i><b>12.4.5</b> Distribution-free pooling rules</a></li>
+<li class="chapter" data-level="12.4.6" data-path="sec-future.html"><a href="sec-future.html#improved-diagnostic-techniques"><i class="fa fa-check"></i><b>12.4.6</b> Improved diagnostic techniques</a></li>
+<li class="chapter" data-level="12.4.7" data-path="sec-future.html"><a href="sec-future.html#building-block-in-modular-statistics"><i class="fa fa-check"></i><b>12.4.7</b> Building block in modular statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="ex-ch-conclusion.html"><a href="ex-ch-conclusion.html"><i class="fa fa-check"></i><b>12.5</b> Exercises</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="technical-information.html"><a href="technical-information.html"><i class="fa fa-check"></i><b>A</b> Technical information</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org/yihui/bookdown/" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+
+<div id="refs" class="references">
+<div id="ref-AARTS2010">
+<p>Aarts, E., S. Van Buuren, and L. E. Frank. 2010. <em>A Novel Method to Obtain the Treatment Effect Assessed for a Completely Randomized Design: Multiple Imputation of Unobserved Potential Outcomes</em>. Utrecht: Master thesis. University of Utrecht.</p>
+</div>
+<div id="ref-ABAYOMI2008">
+<p>Abayomi, K., A. Gelman, and M. Levy. 2008. “Diagnostics for Multivariate Imputations.” <em>Journal of the Royal Statistical Society C</em> 57 (3): 273–91.</p>
+</div>
+<div id="ref-AGRESTI1990">
+<p>Agresti, A. 1990. <em>Categorical Data Analysis</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-AITKIN2009">
+<p>Aitkin, M., B. Francis, J. Hinde, and R. Darnell. 2009. <em>Statistical Modelling in R</em>. Oxford: Oxford University Press.</p>
+</div>
+<div id="ref-AKANDE2017">
+<p>Akande, O., F. Li, and J. P. Reiter. 2017. “An Empirical Comparison of Multiple Imputation Methods for Categorical Data.” <em>The American Statistician</em> 71 (2): 162–70.</p>
+</div>
+<div id="ref-AKE2005">
+<p>Ake, C. F. 2005. “Rounding After Multiple Imputation with Non-Binary Categorical Covariates.” In <em>Proceedings of the Sas Users Group International (Sugi)</em>, 30:112–30.</p>
+</div>
+<div id="ref-AKL2015">
+<p>Akl, E. A., K. Shawwa, L. A. Kahale, T. Agoritsas, R. Brignardello-Petersen, J. W. Busse, A. Carrasco-Labra, et al. 2015. “Reporting Missing Participant Data in Randomised Trials: Systematic Survey of the Methodological Literature and a Proposed Guide.” <em>BMJ Open</em> 5 (12): e008431.</p>
+</div>
+<div id="ref-ALBERT1984">
+<p>Albert, A., and J. A. Anderson. 1984. “On the Existence of Maximum Likelihood Estimates in Logistic Regression Models.” <em>Biometrika</em> 71 (1): 1–10.</p>
+</div>
+<div id="ref-ALLAN1930">
+<p>Allan, F. E., and J. Wishart. 1930. “A Method of Estimating the Yield of a Missing Plot in Field Experiment Work.” <em>Journal of Agricultural Science</em> 20 (3): 399–406.</p>
+</div>
+<div id="ref-ALLISON2005">
+<p>Allison, P. D. 2005. “Imputation of Categorical Variables with PROC MI.” In <em>Proceedings of the Sas Users Group International (Sugi)</em>, 30:113–30.</p>
+</div>
+<div id="ref-ALLISON2010">
+<p>———. 2010. <em>Survival Analysis Using Sas: A Practical Guide</em>. 2nd ed. Cary, NC: SAS Press.</p>
+</div>
+<div id="ref-ALLISON1976">
+<p>Allison, T., and D. Cicchetti. 1976. “Sleep in Mammals: Ecological and Constitutional Correlates.” <em>Science</em> 194 (4266): 732–34.</p>
+</div>
+<div id="ref-ANDRIDGE2011">
+<p>Andridge, R. R. 2011. “Quantifying the Impact of Fixed Effects Modeling of Clusters in Multiple Imputation for Cluster Randomized Trials.” <em>Biometrical Journal</em> 53 (1): 57–74.</p>
+</div>
+<div id="ref-ANDRIDGE2010">
+<p>Andridge, R. R., and R. J. A. Little. 2010. “A Review of Hot Deck Imputation for Survey Non-Response.” <em>International Statistical Review</em> 78 (1): 40–64.</p>
+</div>
+<div id="ref-ANGRIST2004">
+<p>Angrist, J. D. 2004. “Treatment Effect Heterogeneity in Theory and Practice.” <em>The Economic Journal</em> 114 (494): C52–C83.</p>
+</div>
+<div id="ref-ARNOLD1989">
+<p>Arnold, B. C., and S. J. Press. 1989. “Compatible Conditional Distributions.” <em>Journal of the American Statistical Association</em> 84 (405): 152–56.</p>
+</div>
+<div id="ref-ARNOLD1999">
+<p>Arnold, B. C., E. Castillo, and J. M. Sarabia. 1999. <em>Conditional Specification of Statistical Models</em>. New York: Springer.</p>
+</div>
+<div id="ref-ARNOLD2002">
+<p>———. 2002. “Exact and Near Compatibility of Discrete Conditional Distributions.” <em>Computational Statistics &amp; Data Analysis</em> 40 (2): 231–52.</p>
+</div>
+<div id="ref-ASPAROUHOV2010">
+<p>Asparouhov, T., and B. O. Muthén. 2010. “Multiple Imputation with M<em>plus</em>.” <em>M<span style="font-style:normal;">plus</span> Web Notes</em>.</p>
+</div>
+<div id="ref-MICEMD">
+<p>Audigier, V., and M. Resche-Rigon. 2018. <em>‘Micemd‘: Multiple Imputation by Chained Equations with Multilevel Data</em>. <a href="https://CRAN.R-project.org/package=micemd" class="uri">https://CRAN.R-project.org/package=micemd</a>.</p>
+</div>
+<div id="ref-AUDIGIER2016">
+<p>Audigier, V., F. Husson, and J. Josse. 2016. “Multiple Imputation for Continuous Variables Using a Bayesian Principal Component Analysis.” <em>Journal of Statistical Computation and Simulation</em> 86 (11): 2140–56.</p>
+</div>
+<div id="ref-AUDIGIER2017">
+<p>———. 2017. “MIMCA: Multiple Imputation for Categorical Variables with Multiple Correspondence Analysis.” <em>Statistics and Computing</em> 27 (2): 501–18.</p>
+</div>
+<div id="ref-AUDIGIER2018">
+<p>Audigier, V., I. R. White, S. Jolani, T. P. A. Debray, M. Quartagno, J. R. Carpenter, S. Van Buuren, and M. Resche-Rigon. 2018. “Multiple Imputation for Multilevel Data with Continuous and Binary Variables.” <em>Statistical Science</em> 33 (2): 160–83.</p>
+</div>
+<div id="ref-AUSTIN2008">
+<p>Austin, P. C. 2008. “Bootstrap Model Selection Had Similar Performance for Selecting Authentic and Noise Variables Compared to Backward Variable Elimination: A Simulation Study.” <em>Journal of Clinical Epidemiology</em> 61 (10): 1009–17.</p>
+</div>
+<div id="ref-AYLWARD2010">
+<p>Aylward, D. S., R. A. Anderson, and T. D. Nelson. 2010. “Approaches to Handling Missing Data Within Developmental and Behavioral Pediatric Research.” <em>Journal of Developmental &amp; Behavioral Pediatrics</em> 31 (1): 54–60.</p>
+</div>
+<div id="ref-BANG2005">
+<p>Bang, K., and J. M. Robins. 2005. “Doubly Robust Estimation in Missing Data and Causal Inference Models.” <em>Biometrics</em> 61 (4): 962–72.</p>
+</div>
+<div id="ref-BARNARD1999A">
+<p>Barnard, J., and D. B. Rubin. 1999. “Small-Sample Degrees of Freedom with Multiple Imputation.” <em>Biometrika</em> 86 (4): 948–55.</p>
+</div>
+<div id="ref-BARTLETT2018">
+<p>Bartlett, J. W., and R. Keogh. 2018. <em>‘Smcfcs‘: Multiple Imputation of Covariates by Substantive Model Compatible Fully Conditional Specification</em>.</p>
+</div>
+<div id="ref-BARTLETT2015">
+<p>Bartlett, J. W., S. R. Seaman, I. R. White, and J. R. Carpenter. 2015. “Multiple Imputation of Covariates by Fully Conditional Specification: Accommodating the Substantive Model.” <em>Statistical Methods in Medical Research</em> 24 (4): 462–87.</p>
+</div>
+<div id="ref-BARTLETT1978">
+<p>Bartlett, M. S. 1978. <em>An Introduction to Stochastic Processes</em>. 3rd ed. Press Syndicate of the University of Cambridge.</p>
+</div>
+<div id="ref-BATES2015">
+<p>Bates, D. M., M. Mächler, B. Bolker, and S. Walker. 2015. “Fitting Linear Mixed-Effects Models Using ‘Lme4‘.” <em>Journal of Statistical Software</em> 67 (1): 1–48. doi:<a href="https://doi.org/10.18637/jss.v067.i01">10.18637/jss.v067.i01</a>.</p>
+</div>
+<div id="ref-BARCENA2000">
+<p>Bárcena, M. J., and F. Tusell. 2000. “Tree-Based Algorithms for Missing Data Imputation.” In <em>COMPSTAT 2000: Proceedings in Computational Statistics</em>, edited by J. G. Bethlehem and P. G. M. Van der Heijden, 193–98. Heidelberg, Germany: Physica-Verlag.</p>
+</div>
+<div id="ref-BEATON1964">
+<p>Beaton, A. E. 1964. “The Use of Special Matrix Operations in Statistical Calculus.” Research Bulletin RB-64-51. Princeton, NJ: Educational Testing Service.</p>
+</div>
+<div id="ref-BEBCHUK2000">
+<p>Bebchuk, J. D., and R. A. Betensky. 2000. “Multiple Imputation for Simple Estimation of the Hazard Function Based on Interval Censored Data.” <em>Statistics in Medicine</em> 19 (3): 405–19.</p>
+</div>
+<div id="ref-BEDDO2002">
+<p>Beddo, V. 2002. “Applications of Parallel Programming in Statistics.” PhD thesis, Los Angeles: University of California.</p>
+</div>
+<div id="ref-BELIN1999">
+<p>Belin, T. R., M. Y. Hu, A. S. Young, and O. Grusky. 1999. “Performance of a General Location Model with an Ignorable Missing-Data Assumption in a Multivariate Mental Health Services Study.” <em>Statistics in Medicine</em> 18 (22): 3123–35.</p>
+</div>
+<div id="ref-BERNAARDS2007">
+<p>Bernaards, C. A., T. R. Belin, and J. L. Schafer. 2007. “Robustness of a Multivariate Normal Approximation for Imputation of Incomplete Binary Data.” <em>Statistics in Medicine</em> 26 (6): 1368–82.</p>
+</div>
+<div id="ref-BESAG1974">
+<p>Besag, J. 1974. “Spatial Interaction and the Statistical Analysis of Lattice Systems.” <em>Journal of the Royal Statistical Society B</em> 36 (2): 192–236.</p>
+</div>
+<div id="ref-BETHLEHEM2002">
+<p>Bethlehem, J. G. 2002. “Weighting Adjustments for Ignorable Nonresponse.” In <em>Survey Nonresponse</em>, edited by R. M. Groves, D. A. Dillman, J. L. Eltinge, and R. J. A. Little, 275–87. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-BODNER2008">
+<p>Bodner, T. E. 2008. “What Improves with Increased Missing Data Imputations?” <em>Structural Equation Modeling</em> 15 (4): 651–75.</p>
+</div>
+<div id="ref-BONDARENKO2010">
+<p>Bondarenko, I., and T. E. Raghunathan. 2010. “Multiple Imputation for Causal Inference.” In <em>Section on Survey Research Methods - Jsm 2010</em>, 3934–44. Alexandria VA: American Statistical Association.</p>
+</div>
+<div id="ref-BONDARENKO2016">
+<p>———. 2016. “Graphical and Numerical Diagnostic Tools to Assess Suitability of Multiple Imputations and Imputation Models.” <em>Statistics in Medicine</em> 35 (17): 3007–20.</p>
+</div>
+<div id="ref-BOSHUIZEN1998">
+<p>Boshuizen, H. C., G. J. Izaks, S. Van Buuren, and G. J. Ligthart. 1998. “Blood Pressure and Mortality in Elderly People Aged 85 and Older: Community Based Study.” <em>British Medical Journal</em> 316 (7147): 1780–4. <a href="http://www.stefvanbuuren.nl/publications/Blood%20pressure%20-%20BMJ%201998.pdf">http://www.stefvanbuuren.nl/publications/Blood%20pressure%20-%20BMJ%201998.pdf</a>.</p>
+</div>
+<div id="ref-BOX1973">
+<p>Box, G. E. P., and G. C. Tiao. 1973. <em>Bayesian Inference in Statistical Analysis</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-BRAND2010">
+<p>Brand, J. E., and Y. Xie. 2010. “Who Benefits Most from College? Evidence for Negative Selection in Heterogeneous Economic Returns to Higher Education.” <em>American Sociological Review</em> 75 (2): 273–302.</p>
+</div>
+<div id="ref-BRAND1999">
+<p>Brand, J. P. L. 1999. “Development, Implementation and Evaluation of Multiple Imputation Strategies for the Statistical Analysis of Incomplete Data Sets.” PhD thesis, Rotterdam: Erasmus University.</p>
+</div>
+<div id="ref-BRAND2003">
+<p>Brand, J. P. L., S. Van Buuren, C. G. M. Groothuis-Oudshoorn, and E. S. Gelsema. 2003. “A Toolkit in SAS for the Evaluation of Multiple Imputation Methods.” <em>Statistica Neerlandica</em> 57 (1): 36–45. <a href="http://www.stefvanbuuren.nl/publications/Toolkit%20-%20Stat%20Neerl%202003.pdf">http://www.stefvanbuuren.nl/publications/Toolkit%20-%20Stat%20Neerl%202003.pdf</a>.</p>
+</div>
+<div id="ref-BRANDSMA1989">
+<p>Brandsma, H. P., and J. W. M. Knuver. 1989. “Effects of School and Classroom Characteristics on Pupil Progress in Language and Arithmetic.” <em>International Journal of Educational Research</em> 13 (7): 777–88.</p>
+</div>
+<div id="ref-BREIMAN1984">
+<p>Breiman, L., J. Friedman, R. Olshen, and C. Stone. 1984. <em>Classification and Regression Trees</em>. New York: Wadsworth Publishing.</p>
+</div>
+<div id="ref-BRICK1996">
+<p>Brick, J. M., and G. Kalton. 1996. “Handling Missing Data in Survey Research.” <em>Statistical Methods in Medical Research</em> 5 (3): 215–38.</p>
+</div>
+<div id="ref-BROOKS1998">
+<p>Brooks, S. P., and A. Gelman. 1998. “General Methods for Monitoring Convergence of Iterative Simulations.” <em>Journal of Computational and Graphical Statistics</em> 7 (4): 434–55.</p>
+</div>
+<div id="ref-BROWNSTONE1996">
+<p>Brownstone, D., and R. G. Valletta. 1996. “Modeling Earnings Measurement Error: A Multiple Imputation Approach.” <em>Review of Economics and Statistics</em> 78 (4): 705–17.</p>
+</div>
+<div id="ref-BRYK1992">
+<p>Bryk, A. S., and S. W. Raudenbush. 1992. <em>Hierarchical Linear Models</em>. Newbury Park, CA: Sage.</p>
+</div>
+<div id="ref-BURGETTE2010">
+<p>Burgette, L. F., and J. P. Reiter. 2010. “Multiple Imputation for Missing Data via Sequential Regression Trees.” <em>American Journal of Epidemiology</em> 172 (9): 1070–6.</p>
+</div>
+<div id="ref-BURTON2004">
+<p>Burton, A., and D. G. Altman. 2004. “Missing Covariate Data Within Cancer Prognostic Studies: A Review of Current Reporting and Proposed Guidelines.” <em>British Journal of Cancer</em> 91 (1): 4–8.</p>
+</div>
+<div id="ref-CAMERON2002">
+<p>Cameron, N. L., and E. W. Demerath. 2002. “Critical Periods in Human Growth and Their Relationship to Diseases of Aging.” <em>American Journal of Physical Anthropology</em> Suppl 35: 159–84.</p>
+</div>
+<div id="ref-CARPENTER2013">
+<p>Carpenter, J. R., and M. G. Kenward. 2013. <em>Multiple Imputation and Its Applications</em>. Chichester, UK: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-CARPENTER2011">
+<p>Carpenter, J. R., H. Goldstein, and M. G. Kenward. 2011. “‘REALCOM-Impute‘ Software for Multilevel Multiple Imputation with Mixed Response Types.” <em>Journal of Statistical Software</em> 45 (5): 1–14.</p>
+</div>
+<div id="ref-CASELLA1992">
+<p>Casella, G., and E. I. George. 1992. “Explaining the Gibbs Sampler.” <em>The American Statistician</em> 46 (3): 167–74.</p>
+</div>
+<div id="ref-CHEN2011B">
+<p>Chen, H. Y. 2011. “Compatibility of Conditionally Specified Models.” <em>Statistics and Probability Letters</em> 80 (7-8): 670–77.</p>
+</div>
+<div id="ref-CHEN2011">
+<p>Chen, H. Y., H. Xie, and Y. Qian. 2011. “Multiple Imputation for Missing Values Through Conditional Semiparametric Odds Ratio Models.” <em>Biometrics</em> 67 (3): 799–809.</p>
+</div>
+<div id="ref-CHEN2010">
+<p>Chen, L., and J. Sun. 2010. “A Multiple Imputation Approach to the Analysis of Interval-Censored Failure Time Data with the Additive Hazards Model.” <em>Computational Statistics &amp; Data Analysis</em> 54 (4): 1109–16.</p>
+</div>
+<div id="ref-CHEN2013">
+<p>Chen, Q., and S. Wang. 2013. “Variable Selection for Multiply-Imputed Data with Application to Dioxin Exposure Study.” <em>Statistics in Medicine</em> 32 (21): 3646–59.</p>
+</div>
+<div id="ref-CHEUNG2007">
+<p>Cheung, M. W. L. 2007. “Comparison of Methods of Handling Missing Time-Invariant Covariates in Latent Growth Models Under the Assumption of Missing Completely at Random.” <em>Organizational Research Methods</em> 10 (4): 609–34.</p>
+</div>
+<div id="ref-CHEVALIER2011">
+<p>Chevalier, A., and A. Fielding. 2011. “An Introduction to Anchoring Vignettes.” <em>Journal of the Royal Statistical Society A</em> 174 (3): 569–74.</p>
+</div>
+<div id="ref-CHUNG2013">
+<p>Chung, Y., S. Rabe-Hesketh, V. Dorie, A. Gelman, and J. Liu. 2013. “A Nondegenerate Penalized Likelihood Estimator for Variance Parameters in Multilevel Models.” <em>Psychometrika</em> 78 (4). Springer: 685–709. <a href="http://gllamm.org/" class="uri">http://gllamm.org/</a>.</p>
+</div>
+<div id="ref-CLOGG1991">
+<p>Clogg, C. C., D. B. Rubin, N. Schenker, B. Schultz, and L. Weidman. 1991. “Multiple Imputation of Industry and Occupation Codes in Census Public-Use Samples Using Bayesian Logistic Regression.” <em>Journal of the American Statistical Association</em> 86 (413): 68–78.</p>
+</div>
+<div id="ref-COCHRAN1977">
+<p>Cochran, W. G. 1977. <em>Sampling Techniques</em>. 3rd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-COLE2006">
+<p>Cole, S. R., H. Chu, and S. Greenland. 2006. “Multiple Imputation for Measurement Error Correction.” <em>International Journal of Epidemiology</em> 35: 1074–81.</p>
+</div>
+<div id="ref-COLE1992">
+<p>Cole, T. J., and P. J. Green. 1992. “Smoothing Reference Centile Curves: The LMS Method and Penalized Likelihood.” <em>Statistics in Medicine</em> 11 (10): 1305–19.</p>
+</div>
+<div id="ref-COLLINS2001">
+<p>Collins, L. M., J. L. Schafer, and C. M. Kam. 2001. “A Comparison of Inclusive and Restrictive Strategies in Modern Missing Data Procedures.” <em>Psychological Methods</em> 6 (3): 330–51.</p>
+</div>
+<div id="ref-CONVERSANO2003">
+<p>Conversano, C., and C. Cappelli. 2003. “Missing Data Incremental Imputation Through Tree Based Methods.” In <em>COMPSTAT 2002: Proceedings in Computational Statistics</em>, edited by W. Härdle and B. Rönz, 455–60. Heidelberg, Germany: Physica-Verlag.</p>
+</div>
+<div id="ref-CONVERSANO2009">
+<p>Conversano, C., and R. Siciliano. 2009. “Incremental Tree-Based Missing Data Imputation with Lexicographic Ordering.” <em>Journal of Classification</em> 26 (3): 361–79.</p>
+</div>
+<div id="ref-COWLES1996">
+<p>Cowles, M. K., and B. P. Carlin. 1996. “Markov Chain Monte Carlo Convergence Diagnostics: A Comparative Review.” <em>Journal of the American Statistical Association</em> 91 (434): 883–904.</p>
+</div>
+<div id="ref-CREEL2006">
+<p>Creel, D. V., and K. Krotki. 2006. “Creating Imputation Classes Using Classification Tree Methodology.” In <em>Proceeding of the Joint Statistical Meeting 2006, Asa Section on Survey Research Methods</em>, 2884–7. Alexandria, VA: American Statistical Association.</p>
+</div>
+<div id="ref-DANIELS2008">
+<p>Daniels, M. J., and J. W. Hogan. 2008. <em>Missing Data in Longitudinal Studies. Strategies for Bayesian Modeling and Sensitivity Analysis</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.</p>
+</div>
+<div id="ref-DAUPHINOT2008">
+<p>Dauphinot, V., H. Wolff, F. Naudin, R. Guéguen, C. Sermet, J.M. Gaspoz, and M.P. Kossovsky. 2008. “New Obesity Body Mass Index Threshold for Self-Reported Data.” <em>Journal of Epidemiology and Community Health</em> 63 (2): 128–32.</p>
+</div>
+<div id="ref-DEGROOT2011">
+<p>De Groot, J. A. H., K. J. M. Janssen, A. H. Zwinderman, P. M. M. Bossuyt, J. B. Reitsma, and K. G. M. Moons. 2011. “Adjusting for Partial Verification Bias in Diagnostic Accuracy Studies: A Comparison of Methods.” <em>Annals of Epidemiology</em> 21 (2): 139–48.</p>
+</div>
+<div id="ref-DEGROOT2008">
+<p>De Groot, J. A. H., K. J. M. Janssen, A. H. Zwinderman, K. G. M. Moons, and J. B. Reitsma. 2008. “Multiple Imputation to Correct for Partial Verification Bias: A Revision of the Literature.” <em>Statistics in Medicine</em> 27 (28): 5880–9.</p>
+</div>
+<div id="ref-DEJONG2012">
+<p>De Jong, R. 2012. “Robust Multiple Imputation.” PhD thesis, Hamburg, Germany: University of Hamburg.</p>
+</div>
+<div id="ref-DEJONG2016">
+<p>De Jong, R., S. Van Buuren, and M. Spiess. 2016. “Multiple Imputation of Predictor Variables Using Generalized Additive Models.” <em>Communications in Statistics - Simulation and Computation</em> 45 (3): 968–85.</p>
+</div>
+<div id="ref-DEKROON2008">
+<p>De Kroon, M. L. A., C. M. Renders, E. C. Kuipers, J. P. Van Wouwe, S. Van Buuren, G. A. De Jonge, and R. A. Hirasing. 2008. “Identifying Metabolic Syndrome Without Blood Tests in Young Adults - the Terneuzen Birth Cohort.” <em>European Journal of Public Health</em> 18 (6): 656–60.</p>
+</div>
+<div id="ref-DEKROON2010">
+<p>De Kroon, M. L. A., C. M. Renders, J. P. Van Wouwe, S. Van Buuren, and R. A. Hirasing. 2010. “The Terneuzen Birth Cohort: BMI Changes Between 2 and 6 Years Correlate Strongest with Adult Overweight.” <em>PloS ONE</em> 5 (2): e9155.</p>
+</div>
+<div id="ref-DELEEUW2008">
+<p>De Leeuw, E. D., J. J. Hox, and D. A. Dillman. 2008. <em>International Handbook of Survey Methodology</em>. New York: Lawrence Erlbaum Associates.</p>
+</div>
+<div id="ref-DELEEUW2008A">
+<p>De Leeuw, J., and E. Meijer. 2008. <em>Handbook of Multilevel Analysis</em>. New York: Springer.</p>
+</div>
+<div id="ref-DEROOS2011">
+<p>De Roos, C., R. Greenwald, M. Den Hollander-Gijsman, E. Noorthoorn, S. Van Buuren, and A. De Jong. 2011. “A Randomized Comparison of Cognitive Behavioral Therapy (CBT) and Eye Movement Desensitization and Reprocessing (EMDR) in Disaster-Exposed Children.” <em>European Journal of Psychotraumatology</em> 2: 5694.</p>
+</div>
+<div id="ref-DEWAAL2011">
+<p>De Waal, T., J. Pannekoek, and S. Scholtus. 2011. <em>Handbook of Statistical Data Editing and Imputation</em>. Hoboken, NJ: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-DELORD2016">
+<p>Delord, M., and E. Génin. 2016. “Multiple Imputation for Competing Risks Regression with Interval-Censored Data.” <em>Journal of Statistical Computation and Simulation</em> 86 (11): 2217–28.</p>
+</div>
+<div id="ref-DEMETS2008">
+<p>DeMets, D. L., T. D. Cook, and E. Roecker. 2007. “Selected Issues in the Analysis.” In <em>Introduction to Statistical Methods for Clinical Trials</em>, edited by T.D. Cook and D.L. DeMets, 339–76. Boca Raton, FL: Chapman &amp; Hall /CRC.</p>
+</div>
+<div id="ref-DEMIRTAS2009B">
+<p>Demirtas, H. 2009. “Rounding Strategies for Multiply Imputed Binary Data.” <em>Biometrical Journal</em> 51 (4): 677–88.</p>
+</div>
+<div id="ref-DEMIRTAS2010">
+<p>———. 2010. “A Distance-Based Rounding Strategy for Post-Imputation Ordinal Data.” <em>Journal of Applied Statistics</em> 37 (3): 489–500.</p>
+</div>
+<div id="ref-DEMIRTAS2008">
+<p>Demirtas, H., and D. Hedeker. 2008a. “Imputing Continuous Data Under Some Non-Gaussian Distributions.” <em>Statistica Neerlandica</em> 62 (2): 193–205.</p>
+</div>
+<div id="ref-DEMIRTAS2008B">
+<p>———. 2008b. “Multiple Imputation Under Power Polynomials.” <em>Communications in Statistics - Simulation and Computation</em> 37 (8): 1682–95.</p>
+</div>
+<div id="ref-DEMIRTAS2008C">
+<p>Demirtas, H., S. A. Freels, and R. M. Yucel. 2008. “Plausibility of Multivariate Normality Assumption When Multiply Imputing Non-Gaussian Continuous Outcomes: A Simulation Assessment.” <em>Journal of Statistical Computation and Simulation</em> 78 (1): 69–84.</p>
+</div>
+<div id="ref-DEMPSTER1983">
+<p>Dempster, A. P., and D. B. Rubin. 1983. “Introduction.” In <em>Incomplete Data in Sample Surveys</em>, 2:3–10. New York: Academic Press.</p>
+</div>
+<div id="ref-DEMPSTER1977">
+<p>Dempster, A. P., N. M. Laird, and D. B. Rubin. 1977. “Maximum Likelihood Estimation from Incomplete Data via the EM Algorithm (with Discussion).” <em>Journal of the Royal Statistical Society B</em> 39 (1): 1–38.</p>
+</div>
+<div id="ref-DIETZ1994">
+<p>Dietz, W. H. 1994. “Critical Periods in Childhood for the Development of Obesity.” <em>American Journal of Clinical Nutrition</em> 59 (5): 955–59.</p>
+</div>
+<div id="ref-DIGGLE2002">
+<p>Diggle, P. J., P. Heagerty, K. Y. Liang, and S. L. Zeger. 2002. <em>Analysis of Longitudinal Data</em>. 2nd ed. Oxford: Clarendon Press.</p>
+</div>
+<div id="ref-DILLMAN2008">
+<p>Dillman, D. A., J. D. Smyth, and L. Melani Christian. 2008. <em>Internet, Mail, and Mixed-Mode Surveys: The Tailored Design Method</em>. 3rd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-DIAZ2014">
+<p>Díaz-Ordaz, K., M. G. Kenward, A. Cohen, C. L. Coleman, and S. Eldridge. 2014. “Are Missing Data Adequately Handled in Cluster Randomised Trials? A Systematic Review and Guidelines.” <em>Clinical Trials</em> 11 (5): 590–600.</p>
+</div>
+<div id="ref-DOOVE2014">
+<p>Doove, L. L., S. Van Buuren, and E. Dusseldorp. 2014. “Recursive Partitioning for Missing Data Imputation in the Presence of Interaction Effects.” <em>Computational Statistics &amp; Data Analysis</em> 72: 92–104.</p>
+</div>
+<div id="ref-DORANS2007">
+<p>Dorans, N. J. 2007. “Linking Scores from Multiple Health Outcome Instruments.” <em>Quality of Life Research</em> 16 (Suppl 1): 85–94.</p>
+</div>
+<div id="ref-DOREY1993">
+<p>Dorey, F. J., R. J. A. Little, and N. Schenker. 1993. “Multiple Imputation for Threshold-Crossing Data with Interval Censoring.” <em>Statistics in Medicine</em> 12 (17): 1589–1603.</p>
+</div>
+<div id="ref-DRESCHLER2015">
+<p>Drechsler, J. 2015. “Multiple Imputation of Multilevel Missing Data: Rigor Versus Simplicity.” <em>Journal of Educational and Behavioral Statistics</em> 40 (1): 69–95.</p>
+</div>
+<div id="ref-DRECHSLER2010">
+<p>Drechsler, J., and J. P. Reiter. 2010. “Sampling with Synthesis: A New Approach for Releasing Public Use Census Microdata.” <em>Journal of the American Statistical Association</em> 105 (492): 1347–57.</p>
+</div>
+<div id="ref-ORAZIO2006">
+<p>D’Orazio, M., M. Di Zio, and M. Scanu. 2006. <em>Statistical Matching: Theory and Practice</em>. Chichester, UK: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-EEKHOUT2018">
+<p>Eekhout, I., H. C. W. De Vet, M. R. De Boer, J. W. R. Twisk, and M. W. Heymans. 2018. “Passive Imputation and Parcel Summaries Are Both Valid to Handle Missing Items in Studies with Many Multi-Item Scales.” <em>Statistical Methods in Medical Research</em> 27 (4): 1128–40.</p>
+</div>
+<div id="ref-EEKHOUT2017">
+<p>Eekhout, I., M. A. Wiel, and M. W. Heymans. 2017. “Methods for Significance Testing of Categorical Covariates in Logistic Regression Models After Multiple Imputation: Power and Applicability Analysis.” <em>BMC Medical Research Methodology</em> 17 (1): 129.</p>
+</div>
+<div id="ref-EFRON1993">
+<p>Efron, B., and R. J. Tibshirani. 1993. <em>An Introduction to the Bootstrap</em>. London: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-ELADLOUNI2006">
+<p>El Adlouni, S., A.-C. Favre, and B. Bobée. 2006. “Comparison of Methodologies to Assess the Convergence of Markov Chain Monte Carlo Methods.” <em>Computational Statistics &amp; Data Analysis</em> 50 (10): 2685–2701.</p>
+</div>
+<div id="ref-ENDERS2010">
+<p>Enders, C. K. 2010. <em>Applied Missing Data Analysis</em>. New York: Guilford Press.</p>
+</div>
+<div id="ref-ENDERS2016a">
+<p>Enders, C. K., and M. Mansolf. 2018. “Assessing the Fit of Structural Equation Models with Multiply Imputed Data.” <em>Psychological Methods</em> 23 (1): 76–93.</p>
+</div>
+<div id="ref-ENDERS2007">
+<p>Enders, C. K., and D. Tofighi. 2007. “Centering Predictor Variables in Cross-Sectional Multilevel Models: A New Look at an Old Issue.” <em>Psychological Methods</em> 12 (2): 121.</p>
+</div>
+<div id="ref-ENDERS2018">
+<p>Enders, C. K., B. T. Keller, and R. Levy. 2018. “A Fully Conditional Specification Approach to Multilevel Imputation of Categorical and Continuous Variables.” <em>Psychological Methods</em> dx.doi.org/10.1037/met0000148.</p>
+</div>
+<div id="ref-ENDERS2016">
+<p>Enders, C. K., S. A. Mistler, and B. T. Keller. 2016. “Multilevel Multiple Imputation: A Review and Evaluation of Joint Modeling and Chained Equations Imputation.” <em>Psychological Methods</em> 21 (2). Department of Psychology, Arizona State University, United States; University of California, Los Angeles, United States; SAS, Cary, NC, United States: 222–40.</p>
+</div>
+<div id="ref-ERLER2018">
+<p>Erler, N. S., D. Rizopoulos, V. W. V. Jaddoe, O. H. Franco, and E. M. Lesaffre. 2018. “Bayesian Imputation of Time-Varying Covariates in Linear Mixed Models.” <em>Statistical Methods in Medical Research</em> to appear.</p>
+</div>
+<div id="ref-ERLER2016">
+<p>Erler, N. S., D. Rizopoulos, J. Van Rosmalen, V. W. V. Jaddoe, O. H. Franco, and E. M. Lesaffre. 2016. “Dealing with Missing Covariates in Epidemiologic Studies: A Comparison Between Multiple Imputation and a Full Bayesian Approach.” <em>Statistics in Medicine</em> 35 (17): 2955–74.</p>
+</div>
+<div id="ref-FAY1992">
+<p>Fay, R. E. 1992. “When Are Inferences from Multiple Imputation Valid?” In <em>ASA 1992 Proceedings of the Survey Research Methods Section</em>, 227–32. Alexandria, VA.</p>
+</div>
+<div id="ref-FAY1996">
+<p>———. 1996. “Alternative Paradigms for the Analysis of Imputed Survey Data.” <em>Journal of the American Statistical Association</em> 91 (434): 490–98.</p>
+</div>
+<div id="ref-FIRTH1993">
+<p>Firth, D. 1993. “Bias Reduction of Maximum Likelihood Estimates.” <em>Biometrika</em> 80 (1): 27–38.</p>
+</div>
+<div id="ref-FISHER1925">
+<p>Fisher, R. A. 1925. <em>Statistical Methods for Research Workers</em>. Edinburgh, London: Oliver &amp; Boyd.</p>
+</div>
+<div id="ref-FITZMAURICE2009">
+<p>Fitzmaurice, G. M., M. Davidian, G. Verbeke, and G. Molenberghs. 2009. <em>Longitudinal Data Analysis</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.</p>
+</div>
+<div id="ref-FITZMAURICE2011">
+<p>Fitzmaurice, G. M., N. M. Laird, and J. H. Ware. 2011. <em>Applied Longitudinal Analysis, Second Edition</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-FORD1983">
+<p>Ford, B. L. 1983. “An Overview of Hot-Deck Procedures.” In <em>Incomplete Data in Sample Surveys</em>, edited by W.G. Madow, I. Olkin, and D. B. Rubin, 2:185–207. Academic Press.</p>
+</div>
+<div id="ref-FREDRIKS2000B">
+<p>Fredriks, A. M., S. Van Buuren, R. J. F. Burgmeijer, J. F. Meulmeester, R. J. Beuker, E. Brugman, M. J. Roede, S. P. Verloove-Vanhorick, and J. M. Wit. 2000. “Continuing Positive Secular Growth Change in The Netherlands 1955–1997.” <em>Pediatric Research</em> 47 (3): 316–23.</p>
+</div>
+<div id="ref-FREDRIKS2000A">
+<p>Fredriks, A. M., S. Van Buuren, J. M. Wit, and S. P. Verloove-Vanhorick. 2000. “Body Index Measurements in 1996–7 Compared with 1980.” <em>Archives of Disease in Childhood</em> 82 (2): 107–12.</p>
+</div>
+<div id="ref-GAFFERT2016">
+<p>Gaffert, P., F. Koller-Meinfelder, and V. Bosch. 2016. <em>Towards an Mi-Proper Predictive Mean Matching</em>. Vol. Working Paper. Bamberg, Germany: University of Bamberg.</p>
+</div>
+<div id="ref-GALIMARD2016">
+<p>Galimard, J. E., S. Chevret, C. Protopopescu, and M. Resche-Rigon. 2016. “A Multiple Imputation Approach for MNAR Mechanisms Compatible with Heckman’s Model.” <em>Statistics in Medicine</em> 35 (17): 2907–20.</p>
+</div>
+<div id="ref-GELFAND1990">
+<p>Gelfand, A. E., and A. F. M. Smith. 1990. “Sampling-Based Approaches to Calculating Marginal Densities.” <em>Journal of the American Statistical Association</em> 85 (410): 398–409.</p>
+</div>
+<div id="ref-GELMAN2004">
+<p>Gelman, A. 2004. “Parameterization and Bayesian Modeling.” <em>Journal of the American Statistical Association</em> 99 (466): 537–45.</p>
+</div>
+<div id="ref-GELMAN2007">
+<p>Gelman, A., and J. Hill. 2007. <em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em>. Cambridge: Cambridge University Press.</p>
+</div>
+<div id="ref-GELMAN2004B">
+<p>Gelman, A., and X. L. Meng, eds. 2004. <em>Applied Bayesian Modeling and Causal Inference from Incomplete-Data Perspectives</em>. Chichester, UK: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-GELMAN1993">
+<p>Gelman, A., and T. P. Speed. 1993. “Characterizing a Joint Probability Distribution by Conditionals.” <em>Journal of the Royal Statistical Society B</em> 55 (1): 185–88.</p>
+</div>
+<div id="ref-GELMAN2004C">
+<p>Gelman, A., J. B. Carlin, H. S. Stern, and D. B. Rubin. 2004. <em>Bayesian Data Analysis</em>. 2nd ed. London: Chapman &amp; Hall/CRC.</p>
+</div>
+<div id="ref-GELMAN2008B">
+<p>Gelman, A., A. Jakulin, M. Grazia Pittau, and Y. S. Su. 2008. “A Weakly Informative Default Prior Distribution for Logistic and Other Regression Models.” <em>Annals of Applied Statistics</em> 2 (4): 1360–83.</p>
+</div>
+<div id="ref-GELMAN1998">
+<p>Gelman, A., G. King, and C. Liu. 1998. “Not Asked and Not Answered: Multiple Imputation for Multiple Surveys.” <em>Journal of the American Statistical Association</em> 93 (443): 846–57.</p>
+</div>
+<div id="ref-GESKUS2001">
+<p>Geskus, R. B. 2001. “Methods for Estimating the AIDS Incubation Time Distribution When Date of Seroconversion Is Censored.” <em>Statistics in Medicine</em> 20 (5): 795–812.</p>
+</div>
+<div id="ref-GHOSHDASTIDAR2003">
+<p>Ghosh-Dastidar, B., and J. L. Schafer. 2003. “Multiple Edit/Multiple Imputation for Multivariate Continuous Data.” <em>Journal of the American Statistical Association</em> 98 (464): 807–17.</p>
+</div>
+<div id="ref-GIBSON2003">
+<p>Gibson, N. M., and S. Olejnik. 2003. “Treatment of Missing Data at the Second Level of Hierarchical Linear Models.” <em>Educational and Psychological Measurement</em> 63 (2): 204–38.</p>
+</div>
+<div id="ref-GILKS1996B">
+<p>Gilks, W. R. 1996. “Full Conditional Distributions.” In <em>Markov Chain Monte Carlo in Practice</em>, edited by W. R. Gilks, S. Richardson, and D. J. Spiegelhalter, 75–88. London: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-GILL1997">
+<p>Gill, R. D., M. L. Van der Laan, and J. M. Robins. 1997. “Coarsening at Random: Characterizations, Conjectures and Counter-Examples.” In <em>Proceedings of the First Seattle Conference on Biostatistics</em>, edited by D. Y. Lin and T. R. Fleming, 255–94. Berlin: Springer-Verlag.</p>
+</div>
+<div id="ref-GLEASON1975">
+<p>Gleason, T. C., and R. Staelin. 1975. “A Proposal for Handling Missing Data.” <em>Psychometrika</em> 40 (2): 229–52.</p>
+</div>
+<div id="ref-GLICKMAN2008">
+<p>Glickman, M. E., Y. He, R. M. Yucel, and A. M. Zaslavsky. 2008. “Misreporting, Missing Data, and Multiple Imputation: Improving Accuracy of Cancer Registry Databases.” <em>Chance</em> 21 (3): 55–58.</p>
+</div>
+<div id="ref-GLYNN2004">
+<p>Glynn, R. J., and B. Rosner. 2004. “Multiple Imputation to Estimate the Association Between Eyes in Disease Progression with Interval-Censored Data.” <em>Statistics in Medicine</em> 23 (21): 3307–18.</p>
+</div>
+<div id="ref-GLYNN1986B">
+<p>Glynn, R. J., N. M. Laird, and D. B. Rubin. 1986. “Selection Modeling Versus Mixture Modeling with Nonignorable Nonresponse.” In <em>Drawing Inferences from Self-Selected Samples</em>, edited by H. Wainer, 115–42. Springer-Verlag.</p>
+</div>
+<div id="ref-GOLDSTEIN2011">
+<p>Goldstein, H. 2011a. “Bootstrapping in Multilevel Models.” In <em>The Handbook of Advanced Multilevel Analysis</em>, edited by J.J. Hox and J.K. Roberts, 163–71. Milton Park, UK: Routledge.</p>
+</div>
+<div id="ref-GOLDSTEIN2011B">
+<p>———. 2011b. <em>Multilevel Statistical Models</em>. 4th ed. Chichester, UK: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-GOLDSTEIN2015">
+<p>Goldstein, H., and J. R. Carpenter. 2015. “Multilevel Multiple Imputation.” In <em>Handbook of Missing Data Methodology</em>, edited by G. Molenberghs, G. M. Fitzmaurice, M. G. Kenward, A. A. Tsiatis, and G. Verbeke, 295–316. Boca Raton, FL: Chapman &amp; Hall/CRC Press.</p>
+</div>
+<div id="ref-GOLDSTEIN2014">
+<p>Goldstein, H., J. R. Carpenter, and W. J. Browne. 2014. “Fitting Multilevel Multivariate Models with Missing Data in Responses and Covariates That May Include Interactions and Non‐linear Terms.” <em>Journal of the Royal Statistical Society: Series A</em> 177 (2): 553–64.</p>
+</div>
+<div id="ref-GOLDSTEIN2009">
+<p>Goldstein, H., J. R. Carpenter, M. G. Kenward, and K. A. Levin. 2009. “Multilevel Models with Multivariate Mixed Response Types.” <em>Statistical Modelling</em> 9 (3): 173–79.</p>
+</div>
+<div id="ref-GOMES2016">
+<p>Gomes, M., N. Gutacker, C. Bojke, and A. Street. 2016. “Addressing Missing Data in Patient-Reported Outcome Measures (PROMS): Implications for the Use of PROMS for Comparing Provider Performance.” <em>Health Economics</em> 25 (5): 515–28.</p>
+</div>
+<div id="ref-GONZALEZ2007">
+<p>Gonzalez, J. M., and J. L. Eltinge. 2007. “Multiple Matrix Sampling: A Review.” In <em>ASA 2007 Proceedings of the Section on Survey Research Methods</em>, 3069–75. Alexandria, VA.</p>
+</div>
+<div id="ref-GOODMAN1970">
+<p>Goodman, L. A. 1970. “The Multivariate Analysis of Qualitative Data: Interactions Among Multiple Classifications.” <em>Journal of the American Statistical Association</em> 65 (329): 226–56.</p>
+</div>
+<div id="ref-GORBER2007">
+<p>Gorber, S. C., M. Tremblay, D. Moher, and B. Gorber. 2007. “A Comparison of Direct Vs. Self-Report Measures for Assessing Height, Weight and Body Mass Index: A Systematic Review.” <em>Obesity Reviews</em> 8 (4): 307–26.</p>
+</div>
+<div id="ref-GORDON2014">
+<p>Gordon, M. 2014. “Parallel Computation of Multiple Imputation by Using ‘Mice‘ R Package.” <em>Https://Stackoverflow.com/Questions/24040280/Parallel-Computation-of-Multiple-Imputation-by-Using-Mice-R-Package</em>.</p>
+</div>
+<div id="ref-GRAHAM2012">
+<p>Graham, J. W. 2012. <em>Missing Data: Analysis and Design</em>. New York: Springer.</p>
+</div>
+<div id="ref-GRAHAM2007">
+<p>Graham, J. W., A. E. Olchowski, and T. D. Gilreath. 2007. “How Many Imputations Are Really Needed? Some Practical Clarifications of Multiple Imputation Theory.” <em>Preventive Science</em> 8 (3): 206–13.</p>
+</div>
+<div id="ref-GRAHAM2006">
+<p>Graham, J. W., B. J. Taylor, A. E. Olchowski, and P. E. Cumsille. 2006. “Planned Missing Data Designs in Psychological Research.” <em>Psychological Methods</em> 11 (4): 323–43.</p>
+</div>
+<div id="ref-GREENLAND1995">
+<p>Greenland, S., and W. D. Finkle. 1995. “A Critical Look at Methods for Handling Missing Covariates in Epidemiologic Regression Analyses.” <em>American Journal of Epidemiology</em> 142 (12): 1255–64.</p>
+</div>
+<div id="ref-GREENWALD1999">
+<p>Greenwald, R., and A. Rubin. 1999. “Brief Assessment of Children’s Post-Traumatic Symptoms: Development and Preliminary Validation of Parent and Child Scales.” <em>Research on Social Work Practice</em> 9 (1): 61–75.</p>
+</div>
+<div id="ref-GROENWOLD2012">
+<p>Groenwold, R. H. H., I. R. White, A. R. T. Donders, J. R. Carpenter, D. G. Altman, and K. G. M. Moons. 2012. “Missing Covariate Data in Clinical Research: When and When Not to Use the Missing-Indicator Method for Analysis.” <em>Canadian Medical Association Journal</em> 184 (11): 1265–9.</p>
+</div>
+<div id="ref-OUDSHOORN1999">
+<p>Groothuis-Oudshoorn, C. G. M., S. Van Buuren, and J. L. A. Van Rijckevorsel. 1999. “Flexible Multiple Imputation by Chained Equations of the AVO-95 Survey.” PG/VGZ/00.045. Leiden: TNO Prevention; Health.</p>
+</div>
+<div id="ref-GROVES2009">
+<p>Groves, R. M., F. J. Fowler Jr., M. P. Couper, J. M. Lepkowski, E. Singer, and R. Tourangeau. 2009. <em>Survey Methodology</em>. 2nd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-GRUND2016">
+<p>Grund, S., O. Lüdtke, and A. Robitzsch. 2016a. “Multiple Imputation of Missing Covariate Values in Multilevel Models with Random Slopes: A Cautionary Note.” <em>Behavior Research Methods</em> 48 (2). Centre for International Student Assessment, Leibniz Institute for Science; Mathematics Education, Kiel, Germany; Innovation; Development of the Austrian School System, Federal Institute for Education Research, Salzburg, Austria: 640–49.</p>
+</div>
+<div id="ref-GRUND2016a">
+<p>———. 2016b. “Pooling ANOVA Results from Multiply Imputed Datasets.” <em>Methodology</em> 12 (3): 75–88.</p>
+</div>
+<div id="ref-GRUND2018B">
+<p>———. 2018a. “Multiple Imputation of Missing Data at Level 2: A Comparison of Fully Conditional and Joint Modeling in Multilevel Designs.” <em>Journal of Educational and Behavioral Statistics</em> doi.org/10.3102/1076998617738087.</p>
+</div>
+<div id="ref-GRUND2018">
+<p>———. 2018b. “Multiple Imputation of Missing Data for Multilevel Models: Simulations and Recommendations.” <em>Organizational Research Methods</em> 21 (1). Leibniz Institute for Science; Mathematics Education, Kiel, Germany; Centre for International Student Assessment, Germany: 111–49.</p>
+</div>
+<div id="ref-MITML">
+<p>Grund, S., A. Robitzsch, and O. Lüdtke. 2018. <em>‘Mitml‘: Tools for Multiple Imputation in Multilevel Modeling</em>.</p>
+</div>
+<div id="ref-GUTMAN2015">
+<p>Gutman, R., and D. B. Rubin. 2015. “Estimation of Causal Effects of Binary Treatments in Unconfounded Studies.” <em>Statistics in Medicine</em> 34 (26): 3381–98.</p>
+</div>
+<div id="ref-HAND1994">
+<p>Hand, D. J., F. Daly, A. D. Lunn, K. J. McConway, and E. Ostrowski. 1994. <em>A Handbook of Small Data Sets</em>. London: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-HARDT2013">
+<p>Hardt, J., M. Herke, T. Brian, and W. Laubach. 2013. “Multiple Imputation of Missing Data: A Simulation Study on a Binary Response.” <em>Open Journal of Statistics</em> 3 (5).</p>
+</div>
+<div id="ref-HARE2000">
+<p>Hare, R. D., D. Clark, M. Grann, and D. Thornton. 2000. “Psychopathy and the Predictive Validity of the PCL-R: An International Perspective.” <em>Behavioral Sciences &amp; the Law</em> 18 (5): 623–45.</p>
+</div>
+<div id="ref-HAREL2009">
+<p>Harel, O. 2009. “The Estimation of <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span> in Incomplete Data Sets Using Multiple Imputation.” <em>Journal of Applied Statistics</em> 36 (10): 1109–18.</p>
+</div>
+<div id="ref-HAREL2006">
+<p>Harel, O., and X. H. Zhou. 2006. “Multiple Imputation for Correcting Verification Bias.” <em>Statistics in Medicine</em> 25 (22): 3769–86.</p>
+</div>
+<div id="ref-HARKNESS2002">
+<p>Harkness, J. A., F. J. R. Van de Vijver, and P. Ph. Mohler, eds. 2002. <em>Cross-Cultural Survey Methods</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-HARRELL2001">
+<p>Harrell, F. E. 2001. <em>Regression Modeling Strategies</em>. New York: Springer-Verlag.</p>
+</div>
+<div id="ref-HARVEY1981">
+<p>Harvey, A. C. 1981. <em>The Econometric Analysis of Time Series</em>. Oxford: Philip Allen.</p>
+</div>
+<div id="ref-HE2006">
+<p>He, Y., and T. E. Raghunathan. 2006. “Tukey’s <span class="math inline">\(gh\)</span> Distribution for Multiple Imputation.” <em>The American Statistician</em> 60 (3): 251–56.</p>
+</div>
+<div id="ref-HEYAN2006">
+<p>He, Y.N. 2006. “Missing Data Imputation for Tree-Based Models.” PhD thesis, Los Angeles, CA: University of California.</p>
+</div>
+<div id="ref-HECKERMAN2001">
+<p>Heckerman, D., D. M. Chickering, C. Meek, R. Rounthwaite, and C. Kadie. 2001. “Dependency Networks for Inference, Collaborative Filtering, and Data Visualisation.” <em>Journal of Machine Learning Research</em> 1 (1): 49–75.</p>
+</div>
+<div id="ref-HECKMAN1976">
+<p>Heckman, J. J. 1976. “The Common Structure of Statistical Models of Truncation, Sample Selection and Limited Dependent Variables and a Simple Estimator for Such Models.” <em>Annals of Economic and Social Measurement</em> 5 (4): 475–92.</p>
+</div>
+<div id="ref-HEINZE2002">
+<p>Heinze, G., and M. Schemper. 2002. “A Solution to the Problem of Separation in Logistic Regression.” <em>Statistics in Medicine</em> 21 (16): 2409–19.</p>
+</div>
+<div id="ref-HEITJAN1993">
+<p>Heitjan, D. F. 1993. “Ignorability and Coarse Data: Some Biomedical Examples.” <em>Biometrics</em> 49 (4): 1099–1109.</p>
+</div>
+<div id="ref-HEITJAN1991">
+<p>Heitjan, D. F., and R. J. A. Little. 1991. “Multiple Imputation for the Fatal Accident Reporting System.” <em>Journal of the Royal Statistical Society C</em> 40 (1): 13–29.</p>
+</div>
+<div id="ref-HEITJAN1990">
+<p>Heitjan, D. F., and D. B. Rubin. 1990. “Inference from Coarse Data via Multiple Imputation with Application to Age Heaping.” <em>Journal of the American Statistical Association</em> 85 (410): 304–14.</p>
+</div>
+<div id="ref-HEITJAN1991B">
+<p>———. 1991. “Ignorability and Coarse Data.” <em>Annals of Statistics</em> 19 (4): 2244–53.</p>
+</div>
+<div id="ref-HERRINGTON2002">
+<p>Herrington, D. M., T. D. Howard, G. A. Hawkins, D. M. Reboussin, J. Xu, S. L. Zheng, K. B. Brosnihan, D. A. Meyers, and E. R. Bleecker. 2002. “Estrogen-Receptor Polymorphisms and Effects of Estrogen Replacement on High-Density Lipoprotein Cholesterol in Women with Coronary Disease.” <em>New England Journal of Medicine</em> 346 (13): 967–74.</p>
+</div>
+<div id="ref-HERZOG1983">
+<p>Herzog, T. N., and D. B. Rubin. 1983. “Using Multiple Imputations to Handle Nonresponse in Sample Surveys.” In <em>Incomplete Data in Sample Surveys</em>, edited by W.G. Madow, I. Olkin, and D. B. Rubin, 2:209–45. Academic Press.</p>
+</div>
+<div id="ref-HERZOG2007">
+<p>Herzog, T. N., F. J. Scheuren, and W. E. Winkler. 2007. <em>Data Quality and Record Linking Techniques</em>. New York: Springer.</p>
+</div>
+<div id="ref-HEYMANS2007">
+<p>Heymans, M. W., S. Van Buuren, D. L. Knol, W. Van Mechelen, and H. C. W. De Vet. 2007. “Variable Selection Under Multiple Imputation Using the Bootstrap in a Prognostic Study.” <em>BMC Medical Research Methodology</em> 7: 33.</p>
+</div>
+<div id="ref-HILL1998">
+<p>Hill, P. W., and H. Goldstein. 1998. “Multilevel Modeling of Educational Data with Cross-Classification and Missing Identification for Units.” <em>Journal of Educational and Behavioral Statistics</em> 23 (2): 117–28.</p>
+</div>
+<div id="ref-HILLE2005">
+<p>Hille, E. T. M., L. Elbertse, J. Bennebroek Gravenhorst, R. Brand, and S. P. Verloove-Vanhorick. 2005. “Nonresponse Bias in a Follow-up Study of 19-Year-Old Adolescents Born as Preterm Infants.” <em>Pediatrics</em> 116 (5): 662–66.</p>
+</div>
+<div id="ref-HILLE2007">
+<p>Hille, E. T. M., N. Weisglas-Kuperus, J. B. Van Goudoever, G. W. Jacobusse, M. H. Ens-Dokkum, L. De Groot, J. M. Wit, et al. 2007. “Functional Outcomes and Participation in Young Adulthood for Very Preterm and Very Low Birth Weight Infants: The Dutch Project on Preterm and Small for Gestational Age Infants at 19 Years of Age.” <em>Pediatrics</em> 120 (3): 587–95.</p>
+</div>
+<div id="ref-HOLLAND1986">
+<p>Holland, P. W. 1986. “Statistics and Causal Inference.” <em>Journal of the American Statistical Association</em> 81 (396): 945–60.</p>
+</div>
+<div id="ref-HOLLAND2007">
+<p>———. 2007. “A Framework and History for Score Linking.” In <em>Linking and Aligning Scores and Scales</em>, edited by N. J. Dorans, M. Pommerich, and P. W. Holland, 5–30. New York: Springer.</p>
+</div>
+<div id="ref-HOLLAND1993">
+<p>Holland, P. W., and H. Wainer, eds. 1993. <em>Differential Item Functioning</em>. Hillsdale, NJ: Lawrence Erlbaum Associates.</p>
+</div>
+<div id="ref-HOPKE2001">
+<p>Hopke, P. K., C. Liu, and D. B. Rubin. 2001. “Multiple Imputation for Multivariate Data with Missing and Below-Threshold Measurements: Time-Series Concentrations of Pollutants in the Arctic.” <em>Biometrics</em> 57 (1): 22–33.</p>
+</div>
+<div id="ref-HOPMAN2012">
+<p>Hopman-Rock, M., E. Dusseldorp, A. M. J. Chorus, G. W. Jacobusse, A. Rütten, and S. Van Buuren. 2012. “Response Conversion for Improving Comparability of International Physical Activity Data.” <em>Journal of Physical Activity &amp; Health</em>.</p>
+</div>
+<div id="ref-HORTON2007">
+<p>Horton, N. J., and K. P. Kleinman. 2007. “Much Ado About Nothing: A Comparison of Missing Data Methods and Software to Fit Incomplete Data Regression Models.” <em>The American Statistician</em> 61 (1): 79–90.</p>
+</div>
+<div id="ref-HORTON2003">
+<p>Horton, N. J., S. R. Lipsitz, and M. Parzen. 2003. “A Potential for Bias When Rounding in Multiple Imputation.” <em>The American Statistician</em> 57 (4): 229–32.</p>
+</div>
+<div id="ref-HOSMER2000">
+<p>Hosmer, D. W., and S. Lemeshow. 2000. <em>Applied Logistic Regression</em>. 2nd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-HOSMER2008">
+<p>Hosmer, D. W., S. Lemeshow, and S. May. 2008. <em>Applied Survival Analysis: Regression Modeling of Time to Event Data</em>. 2nd ed. Hoboken, NJ: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-HOX2018">
+<p>Hox, J. J., M. Moerbeek, and R. Van de Schoot. 2018. <em>Multilevel Analysis: Techniques and Applications. Third Edition</em>. New York: Routledge.</p>
+</div>
+<div id="ref-HRON2010">
+<p>Hron, K., M. Templ, and P. Filzmoser. 2010. “Imputation of Missing Values for Compositional Data Using Classical and Robust Methods.” <em>Computational Statistics &amp; Data Analysis</em> 54 (12): 3095–3107.</p>
+</div>
+<div id="ref-HSU2007">
+<p>Hsu, C. H. 2007. “Multiple Imputation for Interval Censored Data with Auxiliary Variables.” <em>Statistics in Medicine</em> 26 (4): 769–81.</p>
+</div>
+<div id="ref-HSU2015">
+<p>Hsu, C. H., J. M. G. Taylor, and C. Hu. 2015. “Analysis of Accelerated Failure Time Data with Dependent Censoring Using Auxiliary Variables via Nonparametric Multiple Imputation.” <em>Statistics in Medicine</em> 34 (19): 2768–80.</p>
+</div>
+<div id="ref-HSU2006">
+<p>Hsu, C. H., J. M. G. Taylor, S. Murray, and D. Commenges. 2006. “Survival Analysis Using Auxiliary Variables via Non-Parametric Multiple Imputation.” <em>Statistics in Medicine</em> 25 (20): 3503–17.</p>
+</div>
+<div id="ref-HUGHES2014">
+<p>Hughes, R. A., I. R. White, S. R. Seaman, J. R. Carpenter, K. Tilling, and J. A. C. Sterne. 2014. “Joint Modelling Rationale for Chained Equations.” <em>BMC Medical Research Methodology</em> 14 (1): 28.</p>
+</div>
+<div id="ref-HUI1983">
+<p>Hui, S. L., and J. O. Berger. 1983. “Empirical Bayes Estimation of Rates in Longitudinal Studies.” <em>Journal of the American Statistical Association</em> 78 (384): 753–60.</p>
+</div>
+<div id="ref-IMAI2013">
+<p>Imai, K., and M. Ratkovic. 2013. “Estimating Treatment Effect Heterogeneity in Randomized Program Evaluation.” <em>Annals of Applied Statistics</em> 7 (1): 443–70.</p>
+</div>
+<div id="ref-IMBENS2015">
+<p>Imbens, G. W., and D. B. Rubin. 2015. <em>Causal Inference in Statistics, Social, and Biomedical Sciences</em>. Cambridge, U.K.: Cambridge University Press.</p>
+</div>
+<div id="ref-IP2009">
+<p>Ip, E. H., and Y. J. Wang. 2009. “Canonical Representation of Conditionally Specified Multivariate Discrete Distributions.” <em>Journal of Multivariate Analysis</em> 100 (6): 1282–90.</p>
+</div>
+<div id="ref-ISHWARAN2008">
+<p>Ishwaran, H., U. B. Kogalur, E. H. Blackstone, and M. S. Lauer. 2008. “Random Survival Forests.” <em>Annals of Applied Statistics</em> 2 (3): 841–60.</p>
+</div>
+<div id="ref-IZAKS1997">
+<p>Izaks, G. J., H. C. Van Houwelingen, G. M. Schreuder, and G. J. Ligthart. 1997. “The Association Between Human Leucocyte Antigens (HLA) and Mortality in Community Residents Aged 85 and Older.” <em>Journal of the American Geriatrics Society</em> 45 (1): 56–60.</p>
+</div>
+<div id="ref-JACKSON2014">
+<p>Jackson, D., I. R. White, S. R. Seaman, H. Evans, K. Baisley, and J. R. Carpenter. 2014. “Relaxing the Independent Censoring Assumption in the Cox Proportional Hazards Model Using Multiple Imputation.” <em>Statistics in Medicine</em> 33 (27): 4681–94.</p>
+</div>
+<div id="ref-JAMES1995">
+<p>James, I. R., and M. A. Tanner. 1995. “A Note on the Analysis of Censored Regression Data by Multiple Imputation.” <em>Biometrics</em> 51 (1): 358–62.</p>
+</div>
+<div id="ref-JAVARAS2003">
+<p>Javaras, K. N., and D. A. Van Dyk. 2003. “Multiple Imputation for Incomplete Data with Semicontinuous Variables.” <em>Journal of the American Statistical Association</em> 98 (463): 703–15.</p>
+</div>
+<div id="ref-JELICIC2009">
+<p>Jeliĉić, H., E. Phelps, and R. M. Lerner. 2009. “Use of Missing Data Methods in Longitudinal Studies: The Persistence of Bad Practices in Developmental Psychology.” <em>Developmental Psychology</em> 45 (4): 1195–9.</p>
+</div>
+<div id="ref-JENNRICH1986">
+<p>Jennrich, R. I., and M. D. Schluchter. 1986. “Unbalanced Repeated-Measures Models with Structured Covariance Matrices.” <em>Biometrics</em> 42 (4): 805–20.</p>
+</div>
+<div id="ref-JOLANI2012">
+<p>Jolani, S. 2012. “Dual Imputation Strategies for Analyzing Incomplete Data.” PhD thesis, Utrecht: University of Utrecht.</p>
+</div>
+<div id="ref-JOLANI2017">
+<p>———. 2018. “Hierarchical Imputation of Systematically and Sporadically Missing Data: An Approximate Bayesian Approach Using Chained Equations.” <em>Biometrical Journal</em> 60 (2): 333–51.</p>
+</div>
+<div id="ref-JOLANI2015">
+<p>Jolani, S., T. P. A. Debray, H. Koffijberg, S. Van Buuren, and K. G. M. Moons. 2015. “Imputation of Systematically Missing Predictors in an Individual Participant Data Meta-Analysis: A Generalized Approach Using MICE.” <em>Statistics in Medicine</em> 34 (11): 1841–63.</p>
+</div>
+<div id="ref-JONES2009">
+<p>Jones, H. E., and D. J. Spiegelhalter. 2009. “Accounting for Regression-to-the-Mean in Tests for Recent Changes in Institutional Performance: Analysis and Power.” <em>Statistics in Medicine</em> 30 (12): 1645–67.</p>
+</div>
+<div id="ref-KACIROTO2014">
+<p>Kaciroti, N. A., and T. E. Raghunathan. 2014. “Bayesian Sensitivity Analysis of Incomplete Data: Bridging Pattern-Mixture and Selection Models.” <em>Statistics in Medicine</em> 33 (27): 4841–57.</p>
+</div>
+<div id="ref-KANG2007">
+<p>Kang, J. D. Y., and J. L. Schafer. 2007. “Demystifying Double Robustness: A Comparison of Alternative Strategies for Estimating a Population Mean from Incomplete Data.” <em>Statistical Science</em> 22 (4): 523–39.</p>
+</div>
+<div id="ref-KARAHALIOS2012">
+<p>Karahalios, A., L. Baglietto, J. B. Carlin, D. R. English, and J. A. Simpson. 2012. “A Review of the Reporting and Handling of Missing Data in Cohort Studies with Repeated Assessment of Exposure Measures.” <em>BMC Medical Research Methodology</em> 12. Cancer Epidemiology Centre, Cancer Council Victoria, Carlton, VIC, Australia.: 96.</p>
+</div>
+<div id="ref-KASIM1998">
+<p>Kasim, R. M., and S. W. Raudenbush. 1998. “Application of Gibbs Sampling to Nested Variance Components Models with Heterogeneous Within-Group Variance.” <em>Journal of Educational and Behavioral Statistics</em> 23 (2): 93–116.</p>
+</div>
+<div id="ref-KATSIKATSOU2012">
+<p>Katsikatsou, M., I. Moustaki, F. Yang-Wallentin, and K.G. Jöreskog. 2012. “Pairwise Likelihood Estimation for Factor Analysis Models with Ordinal Data.” <em>Computational Statistics &amp; Data Analysis</em> 56 (12): 4243–58.</p>
+</div>
+<div id="ref-BLIMP">
+<p>Keller, B. T., and C. K. Enders. 2017. <em>Blimp Users Guide 1.0</em>. Los Angeles, CA.</p>
+</div>
+<div id="ref-KENNICKELL1991">
+<p>Kennickell, A. B. 1991. “Imputation of the 1989 Survey of Consumer Finances: Stochastic Relaxation and Multiple Imputation.” <em>ASA 1991 Proceedings of the Section on Survey Research Methods</em>, 1–10.</p>
+</div>
+<div id="ref-KENWARD2009">
+<p>Kenward, M. G., and G. Molenberghs. 2009. “Last Observation Carried Forward: A Crystal Ball?” <em>Journal of Biopharmaceutical Statistics</em> 19 (5): 872–88.</p>
+</div>
+<div id="ref-KENWARD2015">
+<p>———. 2015. “A Perspective and Historical Overview on Selection, Pattern-Mixture and Shared Parameter Models.” In <em>Handbook of Missing Data Methodology</em>, edited by G. Molenberghs, G. M. Fitzmaurice, M. G. Kenward, A. A. Tsiatis, and G. Verbeke, 53–89. Boca Raton, FL: Chapman &amp; Hall/CRC Press.</p>
+</div>
+<div id="ref-KHARE1993">
+<p>Khare, M., R. J. A. Little, D. B. Rubin, and J. L. Schafer. 1993. “Multiple Imputation of NHANES III.” In <em>ASA 1993 Proceedings of the Survey Research Methods Section</em>, 1:297–302. Alexandria, VA.</p>
+</div>
+<div id="ref-KIM2013">
+<p>Kim, J. K., and J. Shao. 2013. <em>Statistical Methods for Handling Incomplete Data</em>. Boca Raton, FL: Chapman &amp; Hall/CRC Press.</p>
+</div>
+<div id="ref-KIM2006">
+<p>Kim, J. K., J. M. Brick, W. A. Fuller, and G. Kalton. 2006. “On the Bias of the Multiple-Imputation Variance Estimator in Survey Sampling.” <em>Journal of the Royal Statistical Society B</em> 68 (3): 509–21.</p>
+</div>
+<div id="ref-KIM2015">
+<p>Kim, S., C.A. Sugar, and T. R. Belin. 2015. “Evaluating Model-Based Imputation Methods for Missing Covariates in Regression Models with Interactions.” <em>Statistics in Medicine</em> 34 (11): 1876–88.</p>
+</div>
+<div id="ref-KING2001">
+<p>King, G., J. Honaker, A. Joseph, and K. Scheve. 2001. “Analyzing Incomplete Political Science Data: An Alternative Algorithm for Multiple Imputation.” <em>American Political Science Review</em> 95 (1): 49–69.</p>
+</div>
+<div id="ref-KING2004">
+<p>King, G., C. J. L. Murray, J. A. Salomon, and A. Tandon. 2004. “Enhancing the Validity and Cross-Cultural Comparability of Measurement in Survey Research.” <em>American Political Science Review</em> 98 (1): 191–207.</p>
+</div>
+<div id="ref-KLEBANOFF2008">
+<p>Klebanoff, M. A., and S. R. Cole. 2008. “Use of Multiple Imputation in the Epidemiologic Literature.” <em>American Journal of Epidemiology</em> 168 (4): 355–57.</p>
+</div>
+<div id="ref-KLEINBAUM2005">
+<p>Kleinbaum, D. G., and M. B. Klein. 2005. <em>Survival Analysis: A Self-Learning Text</em>. 2nd ed. New York: Springer-Verlag.</p>
+</div>
+<div id="ref-KLEINKE2017">
+<p>Kleinke, K. 2017. “Multiple Imputation Under Violated Distributional Assumptions: A Systematic Evaluation of the Assumed Robustness of Predictive Mean Matching.” <em>Journal of Educational and Behavioral Statistics</em> 42 (4): 371–404.</p>
+</div>
+<div id="ref-KLEINKE2013">
+<p>Kleinke, K., and J. Reinecke. 2013. “Multiple Imputation of Incomplete Zero-Inflated Count Data.” <em>Statistica Neerlandica</em> 67 (3): 311–36.</p>
+</div>
+<div id="ref-KLEINKE2015">
+<p>———. 2015. “Multiple Imputation of Multilevel Count Data.” In <em>Improving Survey Methods: Lessons from Recent Research</em>, edited by Uwe Engel, Ben Jann, Peter Lynn, Annette Scherpenzeel, and Patrick Sturgis, 381–96. New York: Routledge.</p>
+</div>
+<div id="ref-KNOL2010">
+<p>Knol, M. J., K. J. M. Janssen, A. R. T. Donders, A. C. G. Egberts, E. R. Heerdink, D. E. Grobbee, K. G. M. Moons, and M. I. Geerlings. 2010. “Unpredictable Bias When Using the Missing Indicator Method or Complete Case Analysis for Missing Confounder Values: An Empirical Example.” <em>Journal of Clinical Epidemiology</em> 63: 728–36.</p>
+</div>
+<div id="ref-KOLEN1995">
+<p>Kolen, M. J., and R. L. Brennan. 1995. <em>Test Equating: Methods and Practices</em>. New York: Springer.</p>
+</div>
+<div id="ref-KOLLER2009">
+<p>Koller-Meinfelder, F. 2009. “Analysis of Incomplete Survey Data – Multiple Imputation via Bayesian Bootstrap Predictive Mean Matching.” PhD thesis, Bamberg, Germany: University of Bamberg.</p>
+</div>
+<div id="ref-KREFT1995">
+<p>Kreft, I. G., J. De Leeuw, and L. S. Aiken. 1995. “The Effect of Different Forms of Centering in Hierarchical Linear Models.” <em>Multivariate Behavioral Research</em> 30 (1): 1–21.</p>
+</div>
+<div id="ref-KROPKO2014">
+<p>Kropko, J., B. Goodrich, A. Gelman, and J. Hill. 2014. “Multiple Imputation for Continuous and Categorical Data: Comparing Joint Multivariate Normal and Conditional Approaches.” <em>Political Analysis</em> 22 (4): 497–519.</p>
+</div>
+<div id="ref-KRUL2010">
+<p>Krul, A., H. A. M. Daanen, and H. Choi. 2010. “Self-Reported and Measured Weight, Height and Body Mass Index (BMI) in Italy, The Netherlands and North America.” <em>European Journal of Public Health</em> 21 (4): 414–19.</p>
+</div>
+<div id="ref-KUNKEL2017">
+<p>Kunkel, D., and E. E. Kaizar. 2017. “A Comparison of Existing Methods for Multiple Imputation in Individual Participant Data Meta-Analysis.” <em>Statistics in Medicine</em> 36 (22). Department of Statistics, Ohio State University, 1958 Neil Avenue, Cockins Hall, Room 404, Columbus, OH, United States: 3507–32.</p>
+</div>
+<div id="ref-KUO2017">
+<p>Kuo, K-L., C-C. Song, and T. J. Jiang. 2017. “Exactly and Almost Compatible Joint Distributions for High-Dimensional Discrete Conditional Distributions.” <em>Journal of Multivariate Analysis</em> 157: 115–23.</p>
+</div>
+<div id="ref-LAGAAY1992">
+<p>Lagaay, A. M., J. C. Van der Meij, and W. Hijmans. 1992. “Validation of Medical History Taking as Part of a Population Based Survey in Subjects Aged 85 and over.” <em>British Medical Journal</em> 304 (6834): 1091–2.</p>
+</div>
+<div id="ref-LAIRD1982">
+<p>Laird, N. M., and J. H. Ware. 1982. “Random-Effects Models for Longitudinal Data.” <em>Biometrics</em> 38 (4): 963–74.</p>
+</div>
+<div id="ref-LAM2005">
+<p>Lam, K. F., O. Y. Tang, and D. Y. T. Fong. 2005. “Estimating the Proportion of Cured Patients in a Censored Sample.” <em>Statistics in Medicine</em> 24 (12): 1865–79.</p>
+</div>
+<div id="ref-LAM2013">
+<p>Lam, P. K. 2013. “Estimating Individual Causal Effects.” PhD thesis, Cambridge MA: Harvard University.</p>
+</div>
+<div id="ref-LANGE1989">
+<p>Lange, K. L., R. J. A. Little, and J. M. G. Taylor. 1989. “Robust Statistical Modeling Using the <span class="math inline">\(t\)</span> Distribution.” <em>Journal of the American Statistical Association</em> 84 (408): 881–96.</p>
+</div>
+<div id="ref-LEE1994">
+<p>Lee, H., E. Rancourt, and C. E. Särndal. 1994. “Experiments with Variance Estimation from Survey Data with Imputed Values.” <em>Journal of Official Statistics</em> 10 (3): 231–43.</p>
+</div>
+<div id="ref-LEE2010">
+<p>Lee, K. J., and J. B. Carlin. 2010. “Multiple Imputation for Missing Data: Fully Conditional Specification Versus Multivariate Normal Imputation.” <em>American Journal of Epidemiology</em> 171 (5): 624–32.</p>
+</div>
+<div id="ref-LEE2012">
+<p>Lee, K. J., J. C. Galati, J. A. Simpson, and J. B. Carlin. 2012. “Comparison of Methods for Imputing Ordinal Data Using Multivariate Normal Imputation: A Case Study of Non‐linear Effects in a Large Cohort Study.” <em>Statistics in Medicine</em> 31 (30): 4164–74.</p>
+</div>
+<div id="ref-LEE2018">
+<p>Lee, M., M. H. Rahbar, M. Brown, L. Gensler, M. Weisman, L. Diekman, and J. D. Reveille. 2018. “A Multiple Imputation Method Based on Weighted Quantile Regression Models for Longitudinal Censored Biomarker Data with Missing Values at Early Visits.” <em>BMC Medical Research Methodology</em> 18 (1): 8.</p>
+</div>
+<div id="ref-LESAFFRE1989">
+<p>Lesaffre, E. M., and A. Albert. 1989. “Partial Separation in Logistic Discrimination.” <em>Journal of the Royal Statistical Society B</em> 51 (1): 109–16.</p>
+</div>
+<div id="ref-LI2014">
+<p>Li, F., M. Baccini, F. Mealli, E. R. Zell, C. E. Frangakis, and D. B. Rubin. 2014. “Multiple Imputation by Ordered Monotone Blocks with Application to the Anthrax Vaccine Research Program.” <em>Journal of Computational and Graphical Statistics</em> 23 (3): 877–92.</p>
+</div>
+<div id="ref-LI2012">
+<p>Li, F., Y. Yu, and D. B. Rubin. 2012. “Imputing Missing Data by Fully Conditional Models: Some Cautionary Examples and Guideline.” <em>Duke University Department of Statistical Science Discussion Paper</em> 11-24.</p>
+</div>
+<div id="ref-LI1988">
+<p>Li, K-H. 1988. “Imputation Using Markov Chains.” <em>Journal of Statistical Computation and Simulation</em> 30 (1): 57–79.</p>
+</div>
+<div id="ref-LI1991">
+<p>Li, K. H., X. L. Meng, T. E. Raghunathan, and D. B. Rubin. 1991. “Significance Levels from Repeated <span class="math inline">\(p\)</span>-Values with Multiply-Imputed Data.” <em>Statistica Sinica</em> 1 (1): 65–92.</p>
+</div>
+<div id="ref-LI1991B">
+<p>Li, K. H., T. E. Raghunathan, and D. B. Rubin. 1991. “Large-Sample Significance Levels from Multiply Imputed Data Using Moment-Based Statistics and an F Reference Distribution.” <em>Journal of the American Statistical Association</em> 86 (416): 1065–73.</p>
+</div>
+<div id="ref-LIAW2002">
+<p>Liaw, A., and M. Wiener. 2002. “Classification and Regression by RandomForest.” <em>R News</em> 2 (3): 18–22. <a href="http://CRAN.R-project.org/doc/Rnews/" class="uri">http://CRAN.R-project.org/doc/Rnews/</a>.</p>
+</div>
+<div id="ref-LICHT2010">
+<p>Licht, C. 2010. “New Methods for Generating Significance Levels from Multiply-Imputed Data.” PhD thesis, Bamberg, Germany: University of Bamberg.</p>
+</div>
+<div id="ref-LIPSITZ2002">
+<p>Lipsitz, S. R., M. Parzen, and L. P. Zhao. 2002. “A Degrees-of-Freedom Approximation in Multiple Imputation.” <em>Journal of Statistical Computation and Simulation</em> 72 (4): 309–18.</p>
+</div>
+<div id="ref-LITTLE1988">
+<p>Little, R. J. A. 1988. “Missing-Data Adjustments in Large Surveys (with Discussion).” <em>Journal of Business Economics and Statistics</em> 6 (3): 287–301.</p>
+</div>
+<div id="ref-LITTLE1992">
+<p>———. 1992. “Regression with Missing X’s: A Review.” <em>Journal of the American Statistical Association</em> 87 (420): 1227–37.</p>
+</div>
+<div id="ref-LITTLE1993">
+<p>———. 1993. “Pattern-Mixture Models for Multivariate Incomplete Data.” <em>Journal of the American Statistical Association</em> 88 (421): 125–34.</p>
+</div>
+<div id="ref-LITTLE1995">
+<p>———. 1995. “Modeling the Drop-Out Mechanism in Repeated-Measures Studies.” <em>Journal of the American Statistical Association</em> 90 (431): 1112–21.</p>
+</div>
+<div id="ref-LITTLE2009">
+<p>———. 2009. “Selection and Pattern-Mixture Models.” In <em>Longitudinal Data Analysis</em>, edited by G. M. Fitzmaurice, M. Davidian, G. Verbeke, and G. Molenberghs, 409–31. Boca Raton, FL: CRC Press.</p>
+</div>
+<div id="ref-LITTLE2013">
+<p>———. 2013. “In Praise of Simplicity Not Mathematistry! Ten Simple Powerful Ideas for the Statistical Scientist.” <em>Journal of the American Statistical Association</em> 108 (502): 359–69.</p>
+</div>
+<div id="ref-LITTLE1987">
+<p>Little, R. J. A., and D. B. Rubin. 1987. <em>Statistical Analysis with Missing Data</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-LITTLE2002">
+<p>———. 2002. <em>Statistical Analysis with Missing Data</em>. 2nd ed. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-LITTLE2017">
+<p>Little, R. J. A., D. B. Rubin, and S. Z. Zangeneh. 2017. “Conditions for Ignoring the Missing-Data Mechanism in Likelihood Inferences for Parameter Subsets.” <em>Journal of the American Statistical Association</em> 112 (517): 314–20.</p>
+</div>
+<div id="ref-TODDLITTLE2013">
+<p>Little, T. D., and M. Rhemtulla. 2013. “Planned Missing Data Designs for Developmental Researchers.” <em>Child Development Perspectives</em> 7 (4): 199–204.</p>
+</div>
+<div id="ref-LIU1993">
+<p>Liu, C. 1993. “Barlett’s Decomposition of the Posterior Distribution of the Covariance for Normal Monotone Ignorable Missing Data.” <em>Journal of Multivariate Analysis</em> 46 (2): 198–206.</p>
+</div>
+<div id="ref-LIU1995">
+<p>———. 1995. “Missing Data Imputation Using the Multivariate <span class="math inline">\(t\)</span> Distribution.” <em>Journal of Multivariate Analysis</em> 53 (1): 139–58.</p>
+</div>
+<div id="ref-LIU1998">
+<p>Liu, C., and D. B. Rubin. 1998. “Ellipsoidally Symmetric Extensions of the General Location Model for Mixed Categorical and Continuous Data.” <em>Biometrika</em> 85 (3): 673–88.</p>
+</div>
+<div id="ref-LIU2013">
+<p>Liu, J., A. Gelman, J. Hill, Y. S. Su, and J. Kropko. 2013. “On the Stationary Distribution of Iterative Imputations.” <em>Biometrika</em> 101 (1): 155–73.</p>
+</div>
+<div id="ref-LIU2011">
+<p>Liu, L. X., S. Murray, and A. Tsodikov. 2011. “Multiple Imputation Based on Restricted Mean Model for Censored Data.” <em>Statistics in Medicine</em> 30 (12): 1339–50.</p>
+</div>
+<div id="ref-LIU2017">
+<p>Liu, Y., and C. K. Enders. 2017. “Evaluation of Multi-Parameter Test Statistics for Multiple Imputation.” <em>Multivariate Behavioral Research</em> 53 (3): 371–90.</p>
+</div>
+<div id="ref-LIU2016">
+<p>Liu, Y., Y. Wang, Y. Feng, and M. M. Wall. 2016. “Variable Selection and Prediction with Incomplete High-Dimensional Data.” <em>The Annals of Applied Statistics</em> 10 (1): 418.</p>
+</div>
+<div id="ref-LIUBLINSKA2014">
+<p>Liublinska, V., and D. B. Rubin. 2014. “Sensitivity Analysis for a Partially Missing Binary Outcome in a Two-Arm Randomized Clinical Trial.” <em>Statistics in Medicine</em> 33 (24): 4170–85.</p>
+</div>
+<div id="ref-LLOYD2010">
+<p>Lloyd, L. J., S. C. Langley-Evans, and S. McMullen. 2010. “Childhood Obesity and Adult Cardiovascular Disease Risk: A Systematic Review.” <em>International Journal of Obesity</em> 34 (1): 18–28.</p>
+</div>
+<div id="ref-LONG2015">
+<p>Long, Q., and B. A. Johnson. 2015. “Variable Selection in the Presence of Missing Data: Resampling and Imputation.” <em>Biostatistics</em> 16 (3): 596–610.</p>
+</div>
+<div id="ref-LOONG2017">
+<p>Loong, B., and D. B. Rubin. 2017. “Multiply-Imputed Synthetic Data: Advice to the Imputer.” <em>Journal of Official Statistics</em> 33 (4): 1005–19.</p>
+</div>
+<div id="ref-LUDTKE2008">
+<p>Lüdtke, O., H. W. Marsh, A. Robitzsch, U. Trautwein, T. Asparouhov, and B. O. Muthén. 2008. “The Multilevel Latent Covariate Model: A New, More Reliable Approach to Group-Level Effects in Contextual Studies.” <em>Psychological Methods</em> 13 (3): 203.</p>
+</div>
+<div id="ref-LUDTKE2017">
+<p>Lüdtke, O., A. Robitzsch, and S. Grund. 2017. “Multiple Imputation of Missing Data in Multilevel Designs: A Comparison of Different Strategies.” <em>Psychological Methods</em> 22 (1). Leibniz Institute for Science; Mathematics Education (IPN), Kiel, Germany; Centre for International Student Assessment, Frankfurt, Germany: 141–65.</p>
+</div>
+<div id="ref-LYLES2001">
+<p>Lyles, R. H., D. Fan, and R. Chuachoowong. 2001. “Correlation Coefficient Estimation Involving a Left Censored Laboratory Assay Variable.” <em>Statistics in Medicine</em> 20 (19): 2921–33.</p>
+</div>
+<div id="ref-LYNN2001">
+<p>Lynn, H. S. 2001. “Maximum Likelihood Inference for Left-Censored HIV RNA Data.” <em>Statistics in Medicine</em> 20 (1): 33–45.</p>
+</div>
+<div id="ref-MACKAY2003">
+<p>MacKay, D. J. C. 2003. <em>Information Theory, Inference, and Learning Algorithms</em>. Cambridge: Cambridge University Press.</p>
+</div>
+<div id="ref-MACKINNON2010">
+<p>Mackinnon, A. 2010. “The Use and Reporting of Multiple Imputation in Medical Research – A Review.” <em>Journal of Internal Medicine</em> 268 (6): 586–93.</p>
+</div>
+<div id="ref-MADOW1983B">
+<p>Madow, W. G., I. Olkin, and D. B. Rubin, eds. 1983. <em>Incomplete Data in Sample Surveys</em>. Vol. 2. New York: Academic Press.</p>
+</div>
+<div id="ref-MALLINCKROTH2013">
+<p>Mallinckroth, C. H. 2013. <em>Preventing and Treating Missing Data in Longitudinal Clinical Trials: A Practical Guide</em>. Cambridge, UK: Cambridge University Press.</p>
+</div>
+<div id="ref-MARINO2017">
+<p>Marino, M., O. M. Buxton, and Y. Li. 2017. “Covariate Selection for Multilevel Models with Missing Data.” <em>Stat</em> 6 (1): 31–46.</p>
+</div>
+<div id="ref-MARKER2002">
+<p>Marker, D. A., D. R. Judkins, and M. Winglee. 2002. “Large-Scale Imputation for Complex Surveys.” In <em>Survey Nonresponse</em>, edited by R. M. Groves, D. A. Dillman, J. L. Eltinge, and R. J. A. Little, 329–41. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-MARSH1998">
+<p>Marsh, H. W. 1998. “Pairwise Deletion for Missing Data in Structural Equation Models: Nonpositive Definite Matrices, Parameter Estimates, Goodness of Fit, and Adjusted Sample Sizes.” <em>Structural Equation Modeling</em> 5 (1): 22–36.</p>
+</div>
+<div id="ref-MARSHALL2010">
+<p>Marshall, A., D. G. Altman, and R. L. Holder. 2010. “Comparison of Imputation Methods for Handling Missing Covariate Data When Fitting a Cox Proportional Hazards Model: A Resampling Study.” <em>BMC Medical Research Methodology</em> 10: 112.</p>
+</div>
+<div id="ref-MARSHALL2010B">
+<p>Marshall, A., D. G. Altman, P. Royston, and R. L. Holder. 2010. “Comparison of Techniques for Handling Missing Covariate Data Within Prognostic Modelling Studies: A Simulation Study.” <em>BMC Medical Research Methodology</em> 10: 7.</p>
+</div>
+<div id="ref-MARSHALL2009">
+<p>Marshall, A., L. J. Billingham, and S. Bryan. 2009. “Can We Afford to Ignore Missing Data in Cost-Effectiveness Analyses?” <em>European Journal of Health Economics</em> 10 (1): 1–3.</p>
+</div>
+<div id="ref-MATSUMOTO2010">
+<p>Matsumoto, D., and F. J. R. Van de Vijver, eds. 2010. <em>Cross-Cultural Research Methods in Psychology</em>. Cambridge: Cambridge University Press.</p>
+</div>
+<div id="ref-MCCULLAGH1989">
+<p>McCullagh, P., and J. A. Nelder. 1989. <em>Generalized Linear Models</em>. 2nd ed. New York: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-MCCULLOCH2001">
+<p>McCulloch, C. E., and S. R. Searle. 2001. <em>Generalized, Linear, and Mixed Models</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-MCKNIGHT2007">
+<p>McKnight, P. E., K. M. McKnight, S. Sidani, and A. J. Figueredo. 2007. <em>Missing Data: A Gentle Introduction</em>. New York: Guilford Press.</p>
+</div>
+<div id="ref-MENG1994">
+<p>Meng, X. L. 1994. “Multiple Imputation with Uncongenial Sources of Input (with Discusson).” <em>Statistical Science</em> 9 (4): 538–73.</p>
+</div>
+<div id="ref-MENG1992">
+<p>Meng, X. L., and D. B. Rubin. 1992. “Performing Likelihood Ratio Tests with Multiply-Imputed Data Sets.” <em>Biometrika</em> 79 (1): 103–11.</p>
+</div>
+<div id="ref-MIETTINEN1985">
+<p>Miettinen, O. S. 1985. <em>Theoretical Epidemiology: Principles of Occurence Research in Medicine</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-MISLEVY1991">
+<p>Mislevy, R. J. 1991. “Randomization-Based Inferences About Latent Variables from Complex Samples.” <em>Psychometrika</em> 1991 (2): 177–96.</p>
+</div>
+<div id="ref-MISTLER2017">
+<p>Mistler, S. A., and C. K. Enders. 2017. “A Comparison of Joint Model and Fully Conditional Specification Imputation for Multilevel Missing Data.” <em>Journal of Educational and Behavioral Statistics</em> 42 (4): 432–66.</p>
+</div>
+<div id="ref-MOLENBERGHS2007">
+<p>Molenberghs, G., and M. G. Kenward. 2007. <em>Missing Data in Clinical Studies</em>. Chichester: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-MOLENBERGHS2005">
+<p>Molenberghs, G., and G. Verbeke. 2005. <em>Models for Discrete Longitudinal Data</em>. New York: Springer.</p>
+</div>
+<div id="ref-MOLENBERGHS2015">
+<p>Molenberghs, G., G. M. Fitzmaurice, M. G. Kenward, A. A. Tsiatis, and G. Verbeke. 2015. <em>Handbook of Missing Data Methodology</em>. Baco Raton, FL: Chapman &amp; Hall/CRC Press.</p>
+</div>
+<div id="ref-MOONS2006">
+<p>Moons, K. G. M., A. R. T. Donders, T. Stijnen, and F. E. Harrell. 2006. “Using the Outcome for Imputation of Missing Predictor Values Was Preferred.” <em>Journal of Clinical Epidemiology</em> 59 (10): 1092–1101.</p>
+</div>
+<div id="ref-MORGAN2006">
+<p>Morgan, S. L., and D. J. Harding. 2006. “Matching Estimators of Causal Effects Prospects and Pitfalls in Theory and Practice.” <em>Sociological Methods &amp; Research</em> 35 (1): 3–60.</p>
+</div>
+<div id="ref-MORIARITY2003">
+<p>Moriarity, C., and F. J. Scheuren. 2003. “Note on Rubin’s Statistical Matching Using File Concatenation with Adjusted Weights and Multiple Imputations.” <em>Journal of Business Economics and Statistics</em> 21 (1): 65–73.</p>
+</div>
+<div id="ref-MORRIS2014">
+<p>Morris, T. P., I. R. White, and P. Royston. 2014. “Tuning Multiple Imputation by Predictive Mean Matching and Local Residual Draws.” <em>BMC Medical Research Methodology</em> 14: 75.</p>
+</div>
+<div id="ref-MUSORO2014">
+<p>Musoro, J. Z., A. H. Zwinderman, M. A. Puhan, G. Ter Riet, and R. B. Geskus. 2014. “Validation of Prediction Models Based on Lasso Regression with Multiply Imputed Data.” <em>BMC Medical Research Methodology</em> 14 (1): 116.</p>
+</div>
+<div id="ref-MUTHEN2016">
+<p>Muthén, B. O., L. K. Muthén, and T. Asparouhov. 2016. <em>Regression and Mediation Analysis Using M<span style="font-style:normal;">plus</span></em>. Los Angeles, CA: Muthén &amp; Muthén.</p>
+</div>
+<div id="ref-NAAKTGEBOREN2016">
+<p>Naaktgeboren, C. A., J. A. H. De Groot, A. W. S. Rutjes, P. M. M. Bossuyt, J. B. Reitsma, and K. G. M. Moons. 2016. “Anticipating Missing Reference Standard Data When Planning Diagnostic Accuracy Studies.” <em>British Medical Journal</em> 352: i402.</p>
+</div>
+<div id="ref-NRC2010">
+<p>National Research Council. 2010. <em>The Prevention and Treatment of Missing Data in Clinical Trials</em>. Washington, D.C.: The National Academies Press.</p>
+</div>
+<div id="ref-NETTEN2017">
+<p>Netten, A. P., F. W. Dekker, C. Rieffe, W. Soede, J. J. Briaire, and J. H. Frijns. 2017. “Missing Data in the Field of Otorhinolaryngology and Head &amp; Neck Surgery: Need for Improvement.” <em>Ear and Hearing</em> 38 (1). 1Department of Otorhinolaryngology; Head &amp; Neck Surgery, 2Department of Epidemiology, Leiden University Medical Center, Leiden, The Netherlands; 3Department of Developmental Psychology, Leiden University, Leiden, The Netherlands; 4Dutch Foundation for the Deaf; Hard of Hearing Child, Amsterdam, The Netherlands;; 5Leiden Institute for Brain; Cognition, Leiden, The Netherlands.: 1–6.</p>
+</div>
+<div id="ref-NEYMAN1923">
+<p>Neyman, J. 1923. “On the Application of Probability Theory to Agricultural Experiments. Essay on Principles. Section 9.” <em>Annals of Agricultural Sciences</em>, 1–51.</p>
+</div>
+<div id="ref-NEYMAN1935">
+<p>———. 1935. “Statistical Problems in Agricultural Experimentation (with Discussion).” <em>Journal of the Royal Statistical Society, Series B</em> Suppl. (2): 107–80.</p>
+</div>
+<div id="ref-NGUYEN2017">
+<p>Nguyen, C. D., J. B. Carlin, and K. J. Lee. 2017. “Model Checking in Multiple Imputation: An Overview and Case Study.” <em>Emerging Themes in Epidemiology</em> 14 (1): 8.</p>
+</div>
+<div id="ref-NIELSEN2003">
+<p>Nielsen, S. F. 2003. “Proper and Improper Multiple Imputation.” <em>International Statistical Review</em> 71 (3): 593–627.</p>
+</div>
+<div id="ref-OLKIN1961">
+<p>Olkin, I., and R. F. Tate. 1961. “Multivariate Correlation Models with Discrete and Continuous Variables.” <em>Annals of Mathematical Statistics</em> 32 (2): 448–65.</p>
+</div>
+<div id="ref-OLSEN2001">
+<p>Olsen, M. K., and J. L. Schafer. 2001. “A Two-Part Random Effects Model for Semicontinuous Longitudinal Data.” <em>Journal of the American Statistical Association</em> 96 (454): 730–45.</p>
+</div>
+<div id="ref-ORCHARD1972">
+<p>Orchard, T., and M. A. Woodbury. 1972. “A Missing Information Principle: Theory and Applications.” In <em>Proceedings of the Sixth Berkeley Symposium on Mathematical Statistics and Probability</em>, 1:697–715.</p>
+</div>
+<div id="ref-OKELLY2014">
+<p>O’Kelly, M., and B. Ratitch. 2014. <em>Clinical Trials with Missing Data: A Guide for Practitioners</em>. Chichester, UK: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-PALMER2017">
+<p>Palmer, M. J., R. Mercieca-Bebber, M. King, M. Calvert, H. Richardson, and M. Brundage. 2018. “A Systematic Review and Development of a Classification Framework for Factors Associated with Missing Patient-Reported Outcome Data.” <em>Clinical Trials</em> 15 (1): 95–106.</p>
+</div>
+<div id="ref-PAN2000">
+<p>Pan, W. 2000. “A Multiple Imputation Approach to Cox Regression with Interval-Censored Data.” <em>Biometrics</em> 56 (1): 199–203.</p>
+</div>
+<div id="ref-PAN2001">
+<p>———. 2001. “A Multiple Imputation Approach to Regression Analysis for Doubly Censored Data with Application to AIDS Studies.” <em>Biometrics</em> 57 (4): 1245–50.</p>
+</div>
+<div id="ref-PARKER2010">
+<p>Parker, R. 2010. <em>Missing Data Problems in Machine Learning</em>. Saarbrücken, Germany: VDM Verlag Dr. Müller.</p>
+</div>
+<div id="ref-PENG2004">
+<p>Peng, Y., R. J. A. Little, and T. E. Raghunathan. 2004. “An Extended General Location Model for Causal Inferences from Data Subject to Noncompliance and Missing Values.” <em>Biometrics</em> 60 (3): 598–607.</p>
+</div>
+<div id="ref-PERMUTT2016">
+<p>Permutt, T. 2016. “Sensitivity Analysis for Missing Data in Regulatory Submissions.” <em>Statistics in Medicine</em> 35 (17): 2876–9.</p>
+</div>
+<div id="ref-PEUGH2004">
+<p>Peugh, J. L., and C. K. Enders. 2004. “Missing Data in Educational Research: A Review of Reporting Practices and Suggestions for Improvement.” <em>Review of Educational Research</em> 74 (4): 525–56.</p>
+</div>
+<div id="ref-PIESSE2010">
+<p>Piesse, A., L. Alvarez-Rojas, D. R. Judkins, and W. R. Shadish. 2010. “Causal Inference Using Semi-Parametric Imputation.” In <em>Section on Survey Research Methods - Jsm 2010</em>, 1085–96. Alexandria, VA: American Statistical Association.</p>
+</div>
+<div id="ref-PINHEIRO2000">
+<p>Pinheiro, J. C., and D. M. Bates. 2000. <em>Mixed-Effects Models in S and S-Plus</em>. New York: Spinger.</p>
+</div>
+<div id="ref-PLUMPTON2016">
+<p>Plumpton, C. O., T. P. Morris, D. A. Hughes, and I. R. White. 2016. “Multiple Imputation of Multiple Multi-Item Scales When a Full Imputation Model Is Infeasible.” <em>BMC Research Notes</em> 9 (1): 45.</p>
+</div>
+<div id="ref-POTTHOFF1964">
+<p>Potthoff, R. F., and S. N. Roy. 1964. “A Generalized Multivariate Analysis of Variance Model Usefully Especially for Growth Curve Problems.” <em>Biometrika</em> 51 (3): 313–26.</p>
+</div>
+<div id="ref-POWNEY2014">
+<p>Powney, M., P. Williamson, J. Kirkham, and R. Kolamunnage-Dona. 2014. “A Review of the Handling of Missing Longitudinal Outcome Data in Clinical Trials.” <em>Trials</em> 15. Institute of Translational Medicine, University of Liverpool, Crown Street, L69 3GS Liverpool, UK. M.Powney@liv.ac.uk.: 237.</p>
+</div>
+<div id="ref-QUARTAGNO2016">
+<p>Quartagno, M., and J. R. Carpenter. 2016. “Multiple Imputation for Ipd Meta‐analysis: Allowing for Heterogeneity and Studies with Missing Covariates.” <em>Statistics in Medicine</em> 35 (17): 2938–54.</p>
+</div>
+<div id="ref-QUARTAGNO2017">
+<p>———. 2017. <em>jomo: A Package for Multilevel Joint Modelling Multiple Imputation</em>. <a href="https://CRAN.R-project.org/package=jomo" class="uri">https://CRAN.R-project.org/package=jomo</a>.</p>
+</div>
+<div id="ref-RABE2002">
+<p>Rabe-Hesketh, S., A. Skrondal, and A. Pickles. 2002. “Reliable Estimation of Generalized Linear Mixed Models Using Adaptive Quadrature.” <em>The Stata Journal</em> 2 (1): 1–21.</p>
+</div>
+<div id="ref-RAGHU2015">
+<p>Raghunathan, T. E. 2015. <em>Missing Data Analysis in Practice</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.</p>
+</div>
+<div id="ref-RAGHUNATHAN1995">
+<p>Raghunathan, T. E., and J. E. Grizzle. 1995. “A Split Questionnaire Survey Design.” <em>Journal of the American Statistical Association</em> 90 (429): 54–63.</p>
+</div>
+<div id="ref-RAGHUNATHAN2001">
+<p>Raghunathan, T. E., J. M. Lepkowski, J. Van Hoewyk, and P. W. Solenberger. 2001. “A Multivariate Technique for Multiply Imputing Missing Values Using a Sequence of Regression Models.” <em>Survey Methodology</em> 27 (1): 85–95.</p>
+</div>
+<div id="ref-RAGHUNATHAN2003">
+<p>Raghunathan, T. E., J. P. Reiter, and D. B. Rubin. 2003. “Multiple Imputation for Statistical Disclosure Limitation.” <em>Journal of Official Statistics</em> 19 (1): 1–16.</p>
+</div>
+<div id="ref-RAO1996">
+<p>Rao, J. N. K. 1996. “On Variance Estimation with Imputed Survey Data.” <em>Journal of the American Statistical Association</em> 91 (434): 499–505.</p>
+</div>
+<div id="ref-RAUDENBUSH2002">
+<p>Raudenbush, S. W., and A. S. Bryk. 2002. <em>Hierarchical Linear Models: Applications and Data Analysis Methods. Second Edition.</em> Vol. 1. Thousand Oaks, CA: Sage.</p>
+</div>
+<div id="ref-RASSLER2002">
+<p>Rässler, S. 2002. <em>Statistical Matching. a Frequentist Theory, Practical Applications, and Alternative Bayesian Approaches</em>. New York: Springer.</p>
+</div>
+<div id="ref-REITER2005">
+<p>Reiter, J. P. 2005a. “Releasing Multiply Imputed, Synthetic Public Use Microdata: An Illustration and Empirical Study.” <em>Journal of the Royal Statistical Society A</em> 168 (1): 185–205.</p>
+</div>
+<div id="ref-REITER2005B">
+<p>———. 2005b. “Using CART to Generate Partially Synthetic Public Use Microdata.” <em>Journal of Official Statistics</em> 21 (3): 7–30.</p>
+</div>
+<div id="ref-REITER2007">
+<p>———. 2007. “Small-Sample Degrees of Freedom for Multi-Component Significance Tests with Multiple Imputation for Missing Data.” <em>Biometrika</em> 94 (2): 502–8.</p>
+</div>
+<div id="ref-REITER2009">
+<p>———. 2009. “Using Multiple Imputation to Integrate and Disseminate Confidential Microdata.” <em>International Statistical Review</em> 77 (2): 179–95.</p>
+</div>
+<div id="ref-REITER2014">
+<p>Reiter, J. P., Q. Wang, and B. Zhang. 2014. “Bayesian Estimation of Disclosure Risks for Multiply Imputed, Synthetic Data.” <em>Journal of Privacy and Confidentiality</em> 6 (1): 2.</p>
+</div>
+<div id="ref-RENN2005">
+<p>Renn, S. D. 2005. <em>Expository Dictionary of Bible Words: Word Studies for Key English Bilble Words Based on the Hebrew and Greek Texts</em>. Peabody, MA: Hendrickson Publishers.</p>
+</div>
+<div id="ref-RESCHE2016">
+<p>Resche-Rigon, M., and I. R. White. 2018. “Multiple Imputation by Chained Equations for Systematically and Sporadically Missing Multilevel Data.” <em>Statistical Methods in Medical Research</em> doi.org/10.1177/0962280216666564.</p>
+</div>
+<div id="ref-RESVAN2015">
+<p>Rezvan, H. P., K. J. Lee, and J. A. Simpson. 2015. “The Rise of Multiple Imputation: A Review of the Reporting and Implementation of the Method in Medical Research.” <em>BMC Medical Research Methodology</em> 15: 30.</p>
+</div>
+<div id="ref-RHEMTULLA2016">
+<p>Rhemtulla, M., and G. R. Hancock. 2016. “Planned Missing Data Designs in Educational Psychology Research.” <em>Educational Psychologist</em> 51 (3-4): 305–16.</p>
+</div>
+<div id="ref-RIGBY2005">
+<p>Rigby, R. A., and D. M. Stasinopoulos. 2005. “Generalized Additive Models for Location, Scale and Shape,(with Discussion).” <em>Applied Statistics</em> 54.3: 507–54.</p>
+</div>
+<div id="ref-RIGBY2006">
+<p>———. 2006. “Using the Box–Cox <span class="math inline">\(t\)</span> Distribution in GAMLSS to Model Skewness and Kurtosis.” <em>Statistical Modelling</em> 6 (3): 209–29.</p>
+</div>
+<div id="ref-ROBERTS1996">
+<p>Roberts, G. O. 1996. “Markov Chain Concepts Related to Sampling Algorithms.” In <em>Markov Chain Monte Carlo in Practice</em>, edited by W. R. Gilks, S. Richardson, and D. J. Spiegelhalter, 45–57. London: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-ROBINS2000">
+<p>Robins, J. M., and N. Wang. 2000. “Inference for Imputation Estimators.” <em>Biometrika</em> 87 (1): 113–24.</p>
+</div>
+<div id="ref-ROBINSON2017">
+<p>Robinson, D. 2017. “‘Broom 0.4.2‘: Convert Statistical Analysis Objects into Tidy Data Frames.” <em>R Package</em>. CRAN.</p>
+</div>
+<div id="ref-ROBITZSCH2018">
+<p>Robitzsch, A., and O. Lüdtke. 2018. <em>‘Mdmb‘: Model Based Treatment of Missing Data</em>. <a href="https://CRAN.R-project.org/package=mdmb" class="uri">https://CRAN.R-project.org/package=mdmb</a>.</p>
+</div>
+<div id="ref-MICEADDS">
+<p>Robitzsch, A., S. Grund, and T. Henke. 2017. <em>‘Miceadds‘: Some Additional Multiple Imputation Functions, Especially for ‘Mice‘</em>. <a href="https://CRAN.R-project.org/package=miceadds" class="uri">https://CRAN.R-project.org/package=miceadds</a>.</p>
+</div>
+<div id="ref-ROGOSA1985">
+<p>Rogosa, D. R., and J. B. Willett. 1985. “Understanding Correlates of Change by Modeling Individual Differences in Growth.” <em>Psychometrika</em> 50 (2): 203–28.</p>
+</div>
+<div id="ref-ROSSEEL2012">
+<p>Rosseel, Y. 2012. “‘Lavaan‘: An ‘R‘ Package for Structural Equation Modeling.” <em>Journal of Statistical Software</em> 48 (2): 1–36. doi:<a href="https://doi.org/10.18637/jss.v048.i02">10.18637/jss.v048.i02</a>.</p>
+</div>
+<div id="ref-ROTHWELL2005">
+<p>Rothwell, P. M. 2005. “Subgroup Analysis in Randomised Controlled Trials: Importance, Indications, and Interpretation.” <em>The Lancet</em> 365 (9454): 176–86.</p>
+</div>
+<div id="ref-ROYSTON2004B">
+<p>Royston, P. 2004. “Multiple Imputation of Missing Values.” <em>Stata Journal</em> 4 (3): 227–41.</p>
+</div>
+<div id="ref-ROYSTON2007">
+<p>———. 2007. “Multiple Imputation of Missing Values: Further Update of Ice, with an Emphasis on Interval Censoring.” <em>Stata Journal</em> 7 (4): 445–64.</p>
+</div>
+<div id="ref-ROYSTON2009">
+<p>———. 2009. “Multiple Imputation of Missing Values: Further Update of Ice, with an Emphasis on Categorical Variables.” <em>Stata Journal</em> 9 (3): 466–77.</p>
+</div>
+<div id="ref-RUBIN1974">
+<p>Rubin, D. B. 1974. “Estimating Causal Effects of Treatments in Randomized and Nonrandomized Studies.” <em>Journal of Educational Psychology</em> 66 (5): 688–701.</p>
+</div>
+<div id="ref-RUBIN1976">
+<p>———. 1976. “Inference and Missing Data.” <em>Biometrika</em> 63 (3): 581–90.</p>
+</div>
+<div id="ref-RUBIN1986A">
+<p>———. 1986. “Statistical Matching Using File Concatenation with Adjusted Weights and Multiple Imputations.” <em>Journal of Business Economics and Statistics</em> 4 (1): 87–94.</p>
+</div>
+<div id="ref-RUBIN1987B">
+<p>———. 1987a. “A Noniterative Sample/Importance Resampling Alternative to the Data Augmentation Algorithm for Creating a Few Imputations When the Fractions of Missing Information Are Modest.” <em>Journal of the American Statistical Association</em> 82 (398): 543–46.</p>
+</div>
+<div id="ref-RUBIN1987">
+<p>———. 1987b. <em>Multiple Imputation for Nonresponse in Surveys</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-RUBIN1993">
+<p>———. 1993. “Discussion: Statistical Disclosure Limitation.” <em>Journal of Official Statistics</em> 9 (2): 461–68.</p>
+</div>
+<div id="ref-RUBIN1994">
+<p>———. 1994. “Comments on ‘Missing Data, Imputation, and the Bootstrap’ by Bradley Efron.” <em>Journal of the American Statistical Association</em> 89 (426): 485–88.</p>
+</div>
+<div id="ref-RUBIN1996">
+<p>———. 1996. “Multiple Imputation After 18+ Years.” <em>Journal of the American Statistical Association</em> 91 (434): 473–89.</p>
+</div>
+<div id="ref-RUBIN2000">
+<p>———. 2000. “Causal Inference Without Counterfactuals: Comment.” <em>Journal of the American Statistical Association</em> 95 (450): 435–38.</p>
+</div>
+<div id="ref-RUBIN2003">
+<p>———. 2003. “Nested Multiple Imputation of NMES via Partially Incompatible MCMC.” <em>Statistica Neerlandica</em> 57 (1): 3–18.</p>
+</div>
+<div id="ref-RUBIN2004B">
+<p>———. 2004a. “Direct and Indirect Causal Effects via Potential Outcomes.” <em>Scandinavian Journal of Statistics</em> 31 (2): 161–70.</p>
+</div>
+<div id="ref-RUBIN2004">
+<p>———. 2004b. “The Design of a General and Flexible System for Handling Nonresponse in Sample Surveys.” <em>The American Statistician</em> 58 (4): 298–302.</p>
+</div>
+<div id="ref-RUBIN2005">
+<p>———. 2005. “Causal Inference Using Potential Outcomes: Design, Modeling, Decisions.” <em>Journal of the American Statistical Association</em> 100 (469): 322–31.</p>
+</div>
+<div id="ref-RUBIN1990">
+<p>Rubin, D. B., and J. L. Schafer. 1990. “Efficiently Creating Multiple Imputations for Incomplete Multivariate Normal Data.” In <em>ASA 1990 Proceedings of the Statistical Computing Section</em>, 83–88. Alexandria, VA.</p>
+</div>
+<div id="ref-RUBIN1986">
+<p>Rubin, D. B., and N. Schenker. 1986a. “Efficiently Simulating the Coverage Properties of Interval Estimates.” <em>Journal of the Royal Statistical Society C</em> 35 (2): 159–67.</p>
+</div>
+<div id="ref-RUBIN1986B">
+<p>———. 1986b. “Multiple Imputation for Interval Estimation from Simple Random Samples with Ignorable Nonresponse.” <em>Journal of the American Statistical Association</em> 81 (394): 366–74.</p>
+</div>
+<div id="ref-RUPPERT2003">
+<p>Ruppert, D., M. P. Wand, and R. J. Carroll. 2003. <em>Semiparametric Regression</em>. Cambridge: Cambridge University Press.</p>
+</div>
+<div id="ref-SAAR2007">
+<p>Saar-Tsechansky, M., and F. Provost. 2007. “Handling Missing Values When Applying Classification Models.” <em>Journal of Machine Learning Research</em> 8: 1625–57.</p>
+</div>
+<div id="ref-SABBAGHI2014">
+<p>Sabbaghi, A., and D. B. Rubin. 2014. “Comments on the Neyman-Fisher Controversy and Its Consequences.” <em>Statistical Science</em> 29 (2): 267–84.</p>
+</div>
+<div id="ref-SALFRAN2017">
+<p>Salfran, D., and M. Spiess. 2017. <em>ImputeRobust: Robust Multiple Imputation with Generalized Additive Models for Location Scale and Shape</em>. <a href="https://CRAN.R-project.org/package=ImputeRobust" class="uri">https://CRAN.R-project.org/package=ImputeRobust</a>.</p>
+</div>
+<div id="ref-SALOMON2004">
+<p>Salomon, J. A., A. Tandon, and C. J. L. Murray. 2004. “Comparability of Self Rated Health: Cross Sectional Multi-Country Survey Using Anchoring Vignettes.” <em>British Medical Journal</em> 328 (7434): 258.</p>
+</div>
+<div id="ref-SAUERBREI1992">
+<p>Sauerbrei, W., and M. Schumacher. 1992. “A Bootstrap Resampling Procedure for Model Building: Application to the Cox Regression Model.” <em>Statistics in Medicine</em> 11 (16): 2093–2109.</p>
+</div>
+<div id="ref-SARNDAL2005">
+<p>Särndal, C. E., and S. Lundström. 2005. <em>Estimation in Surveys with Nonresponse</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-SARNDAL1992">
+<p>Särndal, C. E., B. Swensson, and J. Wretman. 1992. <em>Model Assisted Survey Sampling</em>. New York: Springer-Verlag.</p>
+</div>
+<div id="ref-SCHAFER1997">
+<p>Schafer, J. L. 1997. <em>Analysis of Incomplete Multivariate Data</em>. London: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-SCHAFER2003">
+<p>———. 2003. “Multiple Imputation in Multivariate Problems When the Imputation and Analysis Models Differ.” <em>Statistica Neerlandica</em> 57 (1): 19–35.</p>
+</div>
+<div id="ref-SCHAFER2002">
+<p>Schafer, J. L., and J. W. Graham. 2002. “Missing Data: Our View of the State of the Art.” <em>Psychological Methods</em> 7 (2): 147–77.</p>
+</div>
+<div id="ref-SCHAFER1998">
+<p>Schafer, J. L., and M. K. Olsen. 1998. “Multiple Imputation for Multivariate Missing-Data Problems: A Data Analyst’s Perspective.” <em>Multivariate Behavioral Research</em> 33 (4): 545–71.</p>
+</div>
+<div id="ref-SCHAFER2000">
+<p>Schafer, J. L., and N. Schenker. 2000. “Inference with Imputed Conditional Means.” <em>Journal of the American Statistical Association</em> 95 (449): 144–54.</p>
+</div>
+<div id="ref-SCHAFER2002A">
+<p>Schafer, J. L., and R. M. Yucel. 2002. “Computational Strategies for Multivariate Linear Mixed-Effects Models with Missing Values.” <em>Journal of Computational and Graphical Statistics</em> 11 (2): 437–57.</p>
+</div>
+<div id="ref-SCHAFER1996">
+<p>Schafer, J. L., T. M. Ezzati-Rice, W. Johnson, M. Khare, R. J. A. Little, and D. B. Rubin. 1996. “The NHANES III Multiple Imputation Project.” In <em>ASA 1996 Proceedings of the Survey Research Methods Section</em>, 28–37. Alexandria, VA.</p>
+</div>
+<div id="ref-SCHARFSTEIN1999">
+<p>Scharfstein, D. O., A. Rotnitzky, and J. M. Robins. 1999. “Adjusting for Nonignorable Drop-Out Using Semiparametric Nonresponse Models (with Discussion).” <em>Journal of the American Statistical Association</em> 94 (448): 1096–1120.</p>
+</div>
+<div id="ref-SCHENKER1996">
+<p>Schenker, N., and J. M. G. Taylor. 1996. “Partially Parametric Techniques for Multiple Imputation.” <em>Computational Statistics &amp; Data Analysis</em> 22 (4): 425–46.</p>
+</div>
+<div id="ref-SCHENKER2010">
+<p>Schenker, N., T. E. Raghunathan, and I. Bondarenko. 2010. “Improving on Analyses of Self-Reported Data in a Large-Scale Health Survey by Using Information from an Examination-Based Survey.” <em>Statistics in Medicine</em> 29 (5): 533–45.</p>
+</div>
+<div id="ref-SCHEUREN2004">
+<p>Scheuren, F. J. 2004. “Introduction to History Corner.” <em>The American Statistician</em> 58 (4): 290–91.</p>
+</div>
+<div id="ref-SCHEUREN2005">
+<p>———. 2005. “Multiple Imputation: How It Began and Continues.” <em>The American Statistician</em> 59 (4): 315–19.</p>
+</div>
+<div id="ref-SCHOUTEN2017">
+<p>Schouten, R. M., and G. Vink. 2017. “Wrapper Function ‘parlMICE‘,” https://gerkovink.github.io/parlMICE/Vignette_parlMICE.html.</p>
+</div>
+<div id="ref-SCHOUTEN2018">
+<p>Schouten, R. M., P. L. Lugtig, and G. Vink. 2018. “Generating Missing Values for Simulation Purposes: A Multivariate Amputation Procedure” Working paper, University of Utrecht.</p>
+</div>
+<div id="ref-SCHONBECK2013">
+<p>Schönbeck, Y., H. Talma, P. Van Dommelen, B. Bakker, S. E. Buitendijk, R. A. HiraSing, and S. Van Buuren. 2013. “The World’s Tallest Nation Has Stopped Growing Taller: The Height of Dutch Children from 1955 to 2009.” <em>Pediatric Research</em> 73 (3): 371–77.</p>
+</div>
+<div id="ref-SCHULZ2010">
+<p>Schulz, K. F., D. G. Altman, and D. Moher. 2010. “CONSORT 2010 Statement: Updated Guidelines for Reporting Parallel Group Randomised Trials.” <em>British Medical Journal</em> 340. Family Health International, Research Triangle Park, NC 27709, USA. kschulz@fhi.org: c332.</p>
+</div>
+<div id="ref-SCOTTLONG1997">
+<p>Scott Long, J. 1997. <em>Regression Models for Categorical and Limited Dependent Variables</em>. Thousand Oaks, CA: Sage.</p>
+</div>
+<div id="ref-SCOTT2013A">
+<p>Scott, M. A., P. E. Shrout, and S. L. Weinberg. 2013. “Multilevel Model Notation - Establishing the Commonalities.” In <em>The Sage Handbook of Multilevel Modeling</em>, edited by M. A. Scott, J. A. Simonoff, and B. D. Marx, 21–38. Los Angeles, CA: SAGE.</p>
+</div>
+<div id="ref-SEAMAN2016">
+<p>Seaman, S. R., and R. A. Hughes. 2018. “Relative Efficiency of Joint-Model and Full-Conditional-Specification Multiple Imputation When Conditional Models Are Compatible: The General Location Model.” <em>Statistical Methods in Medical Research</em> doi.org/10.1177/0962280216665872.</p>
+</div>
+<div id="ref-SEAMAN2012">
+<p>Seaman, S. R., J. W. Bartlett, and I. R. White. 2012. “Multiple Imputation of Missing Covariates with Non-Linear Effects and Interactions: An Evaluation of Statistical Methods.” <em>BMC Medical Research Methodology</em> 12 (1): 46.</p>
+</div>
+<div id="ref-SHADISH2001">
+<p>Shadish, W. R., T. D. Cook, and D. T. Campbell. 2001. <em>Experimental and Quasi-Experimental Designs for Generalized Causal Inference</em>. 2nd ed. Florence, KY: Wadsworth Publishing.</p>
+</div>
+<div id="ref-SHAH2014">
+<p>Shah, A. D., J. W. Bartlett, J. R. Carpenter, O. Nicholas, and H. Hemingway. 2014. “Comparison of Random Forest and Parametric Imputation Models for Imputing Missing Data Using MICE: A CALIBER Study.” <em>American Journal of Epidemiology</em> 179 (6): 764–74.</p>
+</div>
+<div id="ref-SHAPIRO2001">
+<p>Shapiro, F. 2001. <em>EMDR: Eye Movement Desensitization of Reprocessing: Basic Principles, Protocols and Procedures</em>. 2nd ed. New York: Guilford Press.</p>
+</div>
+<div id="ref-SHEN2000">
+<p>Shen, Z. 2000. “Nested Multiple Imputation.” PhD thesis, Cambridge, MA: Department of Statistics, Harvard University.</p>
+</div>
+<div id="ref-SHORTREED2014">
+<p>Shortreed, S. M., E. Laber, T. Scott Stroup, J. Pineau, and S. A. Murphy. 2014. “A Multiple Imputation Strategy for Sequential Multiple Assignment Randomized Trials.” <em>Statistics in Medicine</em> 33 (24): 4202–14.</p>
+</div>
+<div id="ref-SI2013">
+<p>Si, Y., and J. P. Reiter. 2013. “Nonparametric Bayesian Multiple Imputation for Incomplete Categorical Variables in Large-Scale Assessment Surveys.” <em>Journal of Educational and Behavioral Statistics</em> 38 (5): 499–521.</p>
+</div>
+<div id="ref-SICILIANO2006">
+<p>Siciliano, R., M. Aria, and A. D’Ambrosio. 2006. “Boosted Incremental Tree-Based Imputation of Missing Data.” In <em>Data Analysis, Classification and the Forward Search</em>, edited by S. Zani, A. Cerioli, M. Riani, and M. Vichi, 271–78. Springer, Berlin.</p>
+</div>
+<div id="ref-SIDDEQUE2008">
+<p>Siddique, J., and T. R. Belin. 2008. “Multiple Imputation Using an Iterative Hot-Deck with Distance-Based Donor Selection.” <em>Statistics in Medicine</em> 27 (1): 83–102.</p>
+</div>
+<div id="ref-SINGER2003">
+<p>Singer, J. D., and J. B. Willett. 2003. <em>Applied Longitudinal Data Analysis: Modeling Change and Event Occurrence</em>. Oxford: Oxford University Press.</p>
+</div>
+<div id="ref-SMINK2016">
+<p>Smink, W. 2016. <em>Towards Estimation of Individual Causal Effects: The Use of a Prior for the Correlation Between Potential Outcomes</em>. Utrecht: Master thesis. University of Utrecht.</p>
+</div>
+<div id="ref-SNIJDERS2012">
+<p>Snijders, T. A. B., and R. J. Bosker. 2012. <em>Multilevel Analysis. an Introduction to Basic and Advanced Multilevel Modeling. Second Edition</em>. London: Sage Publications Ltd.</p>
+</div>
+<div id="ref-SONG2004">
+<p>Song, J., and T. R. Belin. 2004. “Imputation for Incomplete High-Dimensional Multivariate Normal Data Using a Common Factor Model.” <em>Statistics in Medicine</em> 23 (18): 2827–43.</p>
+</div>
+<div id="ref-SOVILJ2016">
+<p>Sovilj, D., E. Eirola, Y. Miche, K-M. Björk, R. Nian, A. Akusok, and A. Lendasse. 2016. “Extreme Learning Machine for Missing Data Using Multiple Imputations.” <em>Neurocomputing</em> 174: 220–31.</p>
+</div>
+<div id="ref-SPEIDEL2017">
+<p>Speidel, M., J. Drechsler, and J. W. Sakshaug. 2017. “Biases in Multilevel Analyses Caused by Cluster-Specific Fixed-Effects Imputation.” <em>Behavior Research Methods</em>, 1–17.</p>
+</div>
+<div id="ref-STALLARD2006">
+<p>Stallard, P. 2006. “Psychological Interventions for Post-Traumatic Reactions in Children and Young People: A Review of Randomised Controlled Trials.” <em>Clinical Psycholological Review</em> 26 (7): 895–911.</p>
+</div>
+<div id="ref-STASINOPOULOS2007">
+<p>Stasinopoulos, D. M., and R. A. Rigby. 2007. “Generalized Additive Models for Location Scale and Shape (GAMLSS) in R.” <em>Journal of Statistical Software</em> 23 (7): 1–46. <a href="http://www.jstatsoft.org/v23/i07" class="uri">http://www.jstatsoft.org/v23/i07</a>.</p>
+</div>
+<div id="ref-STASINOPOULOS2017">
+<p>Stasinopoulos, D. M., R. A. Rigby, G. Z. Heller, V. Voudouris, and F. De Bastiani. 2017. <em>Flexible Regression and Smoothing</em>. Boca Raton, FL: CRC Press.</p>
+</div>
+<div id="ref-STEELE2010">
+<p>Steel, R. J., N. Wang, and A. E. Raftery. 2010. “Inference from Multiple Imputation for Missing Data Using Mixtures of Normals.” <em>Statistical Methodology</em> 7 (10): 351–65.</p>
+</div>
+<div id="ref-STEINBERG2004">
+<p>Steinberg, A. M., M. J. Brymer, K. B. Decker, and R. S. Pynoos. 2004. “The University of California at Los Angeles Post-Traumatic Stress Disorder Reaction Index.” <em>Current Psychiatry Reports</em> 6 (2): 96–100.</p>
+</div>
+<div id="ref-STEKHOVEN2011">
+<p>Stekhoven, D. J., and P. Bühlmann. 2011. “‘MissForest‘: Non-Parametric Missing Value Imputation for Mixed-Type Data.” <em>Bioinformatics</em> 28 (1): 112–18.</p>
+</div>
+<div id="ref-STERNE2009">
+<p>Sterne, J. A. C., I. R. White, J. B. Carlin, M. Spratt, P. Royston, M. G. Kenward, A. M. Wood, and J. R. Carpenter. 2009. “Multiple Imputation for Missing Data in Epidemiological and Clinical Research: Potential and Pitfalls.” <em>British Medical Journal</em> 338: b2393.</p>
+</div>
+<div id="ref-STEYERBERG2009">
+<p>Steyerberg, E. W. 2009. <em>Clinical Prediction Models</em>. New York: Springer.</p>
+</div>
+<div id="ref-SU2011">
+<p>Su, Y. S., A. Gelman, J. Hill, and M. Yajimi. 2011. “Multiple Imputation with Diagnostics (Mi) in R: Opening Windows into the Black Box.” <em>Journal of Statistical Software</em> 45 (2).</p>
+</div>
+<div id="ref-SUBRAMANIAN2009">
+<p>Subramanian, S. 2009. “The Multiple Imputations Based Kaplan–Meier Estimator.” <em>Statistics and Probability Letters</em> 79 (18): 1906–14.</p>
+</div>
+<div id="ref-SUBRAMANIAN2011">
+<p>———. 2011. “Multiple Imputations and the Missing Censoring Indicator Model.” <em>Journal of Multivariate Analysis</em> 102 (1): 105–17.</p>
+</div>
+<div id="ref-SULLIVAN2016">
+<p>Sullivan, T. R., I. R. White, A. B. Salter, P. Ryan, and K. J. Lee. 2018. “Should Multiple Imputation Be the Method of Choice for Handling Missing Data in Randomized Trials?” <em>Statistical Methods in Medical Research</em> doi.org/10.1177/0962280216683570.</p>
+</div>
+<div id="ref-TALJAARD2008">
+<p>Taljaard, M., A. Donner, and N. Klar. 2008. “Imputation Strategies for Missing Continuous Outcomes in Cluster Randomized Trials.” <em>Biometrical Journal</em> 50 (3): 329–45.</p>
+</div>
+<div id="ref-TANG2005">
+<p>Tang, L., J. Unüntzer, J. Song, and T. R. Belin. 2005. “A Comparison of Imputation Methods in a Longitudinal Randomized Clinical Trial.” <em>Statistics in Medicine</em> 24 (14): 2111–28.</p>
+</div>
+<div id="ref-TANNERWONG1987">
+<p>Tanner, M. A., and W. H. Wong. 1987. “The Calculation of Posterior Distributions by Data Augmentation (with Discussion).” <em>Journal of the American Statistical Association</em> 82 (398): 528–50.</p>
+</div>
+<div id="ref-TAYLOR2002">
+<p>Taylor, J. M. G., K. L. Cooper, J. T. Wei, A. V. Sarma, T. E. Raghunathan, and S. G. Heeringa. 2002. “Use of Multiple Imputation to Correct for Nonresponse Bias in a Survey of Urologic Symptoms Among African-American Men.” <em>American Journal of Epidemiology</em> 156 (8): 774–82.</p>
+</div>
+<div id="ref-TEMPELMAN2007">
+<p>Tempelman, D. C. G. 2007. “Imputation of Restricted Data.” PhD thesis, Groningen: University of Groningen.</p>
+</div>
+<div id="ref-TEMPL2011B">
+<p>Templ, M., K. Hron, and P. Filzmoser. 2011. “RobCompositions: An R‐package for Robust Statistical Analysis of Compositional Data.” In <em>Compositional Data Analysis</em>, 341–55. Wiley-Blackwell.</p>
+</div>
+<div id="ref-TEMPL2011">
+<p>Templ, M., A. Kowarik, and P. Filzmoser. 2011. “Iterative Stepwise Regression Imputation Using Standard and Robust Methods.” <em>Computational Statistics &amp; Data Analysis</em> 55 (10): 2793–2806.</p>
+</div>
+<div id="ref-THERNEAU2017">
+<p>Therneau, T. M., B. Atkinson, and B. D. Ripley. 2017. <em>‘Rpart‘: Recursive Partitioning and Regression Trees</em>. <a href="https://CRAN.R-project.org/package=rpart" class="uri">https://CRAN.R-project.org/package=rpart</a>.</p>
+</div>
+<div id="ref-TIAN2009">
+<p>Tian, G-L., M. T. Tan, K. W. Ng, and M-L. Tang. 2009. “A Unified Method for Checking Compatibility and Uniqueness for Finite Discrete Conditional Distributions.” <em>Communications in Statistics - Theory and Methods</em> 38 (1): 115–29.</p>
+</div>
+<div id="ref-TIBSHIRANI1996">
+<p>Tibshirani, R. J. 1996. “Regression Shrinkage and Selection via the Lasso.” <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, 267–88.</p>
+</div>
+<div id="ref-TIERNEY1996">
+<p>Tierney, L. 1996. “Introduction to General State-Space Markov Chain Theory.” In <em>Markov Chain Monte Carlo in Practice</em>, edited by W. R. Gilks, S. Richardson, and D. J. Spiegelhalter, 59–74. London: Chapman &amp; Hall.</p>
+</div>
+<div id="ref-TUTZ2015">
+<p>Tutz, G., and S. Ramzan. 2015. “Improved Methods for the Imputation of Missing Data by Nearest Neighbor Methods.” <em>Computational Statistics &amp; Data Analysis</em> 90: 84–99.</p>
+</div>
+<div id="ref-USCENSUS1957">
+<p>US Bureau of the Census. 1957. <em>United States Census of Manufactures, 1954, Vol Ii, Industry Statistics, Part 1, General Summary and Major Groups 20 to 28</em>. Washington, D.C.: US Bureau of the Census.</p>
+</div>
+<div id="ref-VACH1994">
+<p>Vach, W. 1994. <em>Logistic Regression with Missing Values in the Covariates</em>. Berlin: Springer-Verlag.</p>
+</div>
+<div id="ref-VACH1991">
+<p>Vach, W., and M. Blettner. 1991. “Biased Estimation of the Odds Ratio in Case-Control Studies Due to the Use of Ad Hoc Methods of Correcting for Missing Values for Confounding Variables.” <em>American Journal of Epidemiology</em> 134 (8): 895–907.</p>
+</div>
+<div id="ref-BELLE2002">
+<p>Van Belle, G. 2002. <em>Statistical Rules of Thumb</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-VANBEMMEL2006">
+<p>Van Bemmel, T., J. Gussekloo, R. G. J. Westendorp, and G. J. Blauw. 2006. “In a Population-Based Prospective Study, No Association Between High Blood Pressure and Mortality After Age 85 Years.” <em>Journal of Hypertension</em> 24 (2): 287–92.</p>
+</div>
+<div id="ref-VANBUUREN2007">
+<p>Van Buuren, S. 2007a. “Multiple Imputation of Discrete and Continuous Data by Fully Conditional Specification.” <em>Statistical Methods in Medical Research</em> 16 (3): 219–42. <a href="http://www.stefvanbuuren.nl/publications/MI%20by%20FCS%20-%20SMMR%202007.pdf">http://www.stefvanbuuren.nl/publications/MI%20by%20FCS%20-%20SMMR%202007.pdf</a>.</p>
+</div>
+<div id="ref-VANBUUREN2007A">
+<p>———. 2007b. “Worm Plot to Diagnose Fit in Quantile Regression.” <em>Statistical Modelling</em> 7 (4): 363–76.</p>
+</div>
+<div id="ref-VANBUUREN2010">
+<p>———. 2010. “Item Imputation Without Specifying Scale Structure.” <em>Methodology</em> 6 (1): 31–36.</p>
+</div>
+<div id="ref-VANBUUREN2011">
+<p>———. 2011. “Multiple Imputation of Multilevel Data.” In <em>The Handbook of Advanced Multilevel Analysis</em>, edited by J.J. Hox and J.K. Roberts, 173–96. Milton Park, UK: Routledge.</p>
+</div>
+<div id="ref-VANBUUREN2012">
+<p>———. 2012. <em>Flexible Imputation of Missing Data</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.</p>
+</div>
+<div id="ref-VANBUUREN2001">
+<p>Van Buuren, S., and A. M. Fredriks. 2001. “Worm Plot: A Simple Diagnostic Device for Modelling Growth Reference Curves.” <em>Statistics in Medicine</em> 20 (8): 1259–77.</p>
+</div>
+<div id="ref-VANBUUREN1999B">
+<p>Van Buuren, S., and C. G. M. Groothuis-Oudshoorn. 1999. “Flexible Multivariate Imputation by MICE.” PG/VGZ/99.054. Leiden: TNO Prevention; Health.</p>
+</div>
+<div id="ref-VANBUUREN2000">
+<p>———. 2000. “Multivariate Imputation by Chained Equations: MICE V1.0 User’s Manual.” PG/VGZ/00.038. Leiden: TNO Prevention; Health.</p>
+</div>
+<div id="ref-VANBUUREN2011B">
+<p>———. 2011. “‘Mice‘: Multivariate Imputation by Chained Equations in R.” <em>Journal of Statistical Software</em> 45 (3): 1–67.</p>
+</div>
+<div id="ref-VANBUUREN2009A">
+<p>Van Buuren, S., and J. C. L. Ooms. 2009. “Stage Line Diagram: An Age-Conditional Reference Diagram for Tracking Development.” <em>Statistics in Medicine</em> 28 (11): 1569–79.</p>
+</div>
+<div id="ref-VANBUUREN2004D">
+<p>Van Buuren, S., and A. Tennant, eds. 2004. <em>Response Conversion for the Health Monitoring Program</em>. Vol. 04 145. Leiden: TNO Quality of Life; TNO Quality of Life.</p>
+</div>
+<div id="ref-VANBUUREN1999">
+<p>Van Buuren, S., H. C. Boshuizen, and D. L. Knook. 1999. “Multiple Imputation of Missing Blood Pressure Covariates in Survival Analysis.” <em>Statistics in Medicine</em> 18 (6): 681–94.</p>
+</div>
+<div id="ref-VANBUUREN2006">
+<p>Van Buuren, S., J. P. L. Brand, C. G. M. Groothuis-Oudshoorn, and D. B. Rubin. 2006. “Fully Conditional Specification in Multivariate Imputation.” <em>Journal of Statistical Computation and Simulation</em> 76 (12): 1049–64.</p>
+</div>
+<div id="ref-VANBUUREN2003">
+<p>Van Buuren, S., S. Eyres, A. Tennant, and M. Hopman-Rock. 2003. “Assessing Comparability of Dressing Disability in Different Countries by Response Conversion.” <em>European Journal of Public Health</em> 13 (3 SUPPL.): 15–19.</p>
+</div>
+<div id="ref-VANBUUREN2005">
+<p>———. 2005. “Improving Comparability of Existing Data by Response Conversion.” <em>Journal of Official Statistics</em> 21 (1): 53–72.</p>
+</div>
+<div id="ref-VANDERPALM2016A">
+<p>Van der Palm, D. W., L. A. Van der Ark, and J. K. Vermunt. 2016a. “A Comparison of Incomplete-Data Methods for Categorical Data.” <em>Statistical Methods in Medical Research</em> 25 (2): 754–74.</p>
+</div>
+<div id="ref-VANDERPALM2016">
+<p>———. 2016b. “Divisive Latent Class Modeling as a Density Estimation Method for Categorical Data.” <em>Journal of Classification</em> 33: 52–72.</p>
+</div>
+<div id="ref-VANDETH1998">
+<p>Van Deth, J. W., ed. 1998. <em>Comparative Politics. the Problem of Equivalence</em>. London: Routledge.</p>
+</div>
+<div id="ref-VANGINKEL2014">
+<p>Van Ginkel, J. R., and P. M. Kroonenberg. 2014. “Analysis of Variance of Multiply Imputed Data.” <em>Multivariate Behavioral Research</em> 49 (1): 78–91.</p>
+</div>
+<div id="ref-VANGINKEL2007">
+<p>Van Ginkel, J. R., L. A. Van der Ark, and K. Sijtsma. 2007. “Multiple Imputation for Item Scores When Test Data Are Factorially Complex.” <em>British Journal of Mathematical and Statistical Psychology</em> 60 (2): 315–37.</p>
+</div>
+<div id="ref-VANPRAAG1985">
+<p>Van Praag, B. M. S., T. K. Dijkstra, and J. Van Velzen. 1985. “Least-Squares Theory Based on General Distributional Assumptions with an Application to the Incomplete Observations Problem.” <em>Psychometrika</em> 50 (1): 25–36.</p>
+</div>
+<div id="ref-VANWOUWE2009">
+<p>Van Wouwe, J. P., C. I. Lanting, P. Van Dommelen, P. E. Treffers, and S. Van Buuren. 2009. “Breastfeeding Duration Related to Practised Contraception in The Netherlands.” <em>Acta Paediatrica</em> 98 (1): 86–90.</p>
+</div>
+<div id="ref-VANDENBROUCKE2007">
+<p>Vandenbroucke, J. P., E. Von Elm, D. G. Altman, P. C. Gotzsche, C. D. Mulrow, S. J. Pocock, C. Poole, J. J. Schlesselman, and M. Egger. 2007. “Strengthening the Reporting of Observational Studies in Epidemiology (STROBE): Explanation and Elaboration.” <em>Annals of Internal Medicine</em> 147 (8). Leiden University Medical Center, Leiden, The Netherlands.: W163–94.</p>
+</div>
+<div id="ref-VATEEKUL2009">
+<p>Vateekul, P., and K. Sarinnapakorn. 2009. “Tree-Based Approach to Missing Data Imputation.” In <em>2009 Ieee International Conference on Data Mining Workshops</em>, 70–75. IEEE Computer Society.</p>
+</div>
+<div id="ref-VENABLES2002">
+<p>Venables, W. N., and B. D. Ripley. 2002. <em>Modern Applied Statistics with S</em>. 4th ed. New York: Springer-Verlag.</p>
+</div>
+<div id="ref-VERBEKE2000">
+<p>Verbeke, G., and G. Molenberghs. 2000. <em>Linear Mixed Models for Longitudinal Data</em>. New York: Springer.</p>
+</div>
+<div id="ref-VERGOUWE2010">
+<p>Vergouwe, Y., P. Royston, K. G. M. Moons, and D. G. Altman. 2010. “Development and Validation of a Prediction Model with Missing Predictor Data: A Practical Approach.” <em>Journal of Clinical Epidemiology</em> 63 (2): 205–14.</p>
+</div>
+<div id="ref-VERLOOVE1986">
+<p>Verloove-Vanhorick, S. P., R. A. Verwey, R. Brand, J. Bennebroek Gravenhorst, M. J. N. C. Keirse, and J. H. Ruys. 1986. “Neonatal Mortality Risk in Relation to Gestational Age and Birthweight: Results of a National Survey of Preterm and Very-Low-Birthweight Infants in The Netherlands.” <em>Lancet</em> 1 (8472): 55–57.</p>
+</div>
+<div id="ref-VERMUNT2008">
+<p>Vermunt, J. K., J. R. Van Ginkel, L. A. Van der Ark, and K. Sijtsma. 2008. “Multiple Imputation of Incomplete Categorical Data Using Latent Class Analysis.” <em>Sociological Methodology</em> 38 (1): 369–97.</p>
+</div>
+<div id="ref-VIALLEFONT2001">
+<p>Viallefont, V., A. E. Raftery, and S. Richardson. 2001. “Variable Selection and Bayesian Model Averaging in Case-Control Studies.” <em>Statistics in Medicine</em> 20 (21): 3215–30.</p>
+</div>
+<div id="ref-VIDOTTO2018">
+<p>Vidotto, D. 2018. “Bayesian Latent Class Models for the Multiple Imputation of Cross-Sectional, Multilevel and Longitudinal Categorical Data.” PhD thesis, Tilburg, The Netherlands: Tilburg University.</p>
+</div>
+<div id="ref-VIDOTTO2015">
+<p>Vidotto, D., J. K. Vermunt, and M. C. Kaptein. 2015. “Multiple Imputation of Missing Categorical Data Using Latent Class Models: State of Art.” <em>Psychological Test and Assessment Modelling</em> 57 (4): 542–76.</p>
+</div>
+<div id="ref-VINK2015B">
+<p>Vink, G. 2015. “Restrictive Imputation of Incomplete Survey Data.” PhD thesis, Utrecht University.</p>
+</div>
+<div id="ref-VINK2013">
+<p>Vink, G., and S. Van Buuren. 2013. “Multiple Imputation of Squared Terms.” <em>Sociological Methods &amp; Research</em> 42 (4): 598–607.</p>
+</div>
+<div id="ref-VINK2014">
+<p>———. 2014. “Pooling Multiple Imputations When the Sample Happens to Be the Population.” <em>arXiv:1409.8542</em>.</p>
+</div>
+<div id="ref-VINK2014B">
+<p>Vink, G., L. E. Frank, J. Pannekoek, and S. Van Buuren. 2014. “Predictive Mean Matching Imputation of Semicontinuous Variables.” <em>Statistica Neerlandica</em> 68 (1): 61–90.</p>
+</div>
+<div id="ref-VINK2015">
+<p>Vink, G., G. Lazendic, and S. Van Buuren. 2015. “Partioned Predictive Mean Matching as a Large Data Multilevel Imputation Technique.” <em>Psychological Test and Assessment Modeling</em> 57 (4): 577–94.</p>
+</div>
+<div id="ref-VISSCHER2006">
+<p>Visscher, T. L. S., A. L. Viet, H. T. Kroesbergen, and J. C. Seidell. 2006. “Underreporting of BMI in Adults and Its Effect on Obesity Prevalence Estimations in the Period 1998 to 2001.” <em>Obesity</em> 14 (11): 2054–63.</p>
+</div>
+<div id="ref-VONHIPPEL2007">
+<p>Von Hippel, P. T. 2007. “Regression with Missing <span class="math inline">\(Y\)</span>’S: An Improved Strategy for Analyzing Multiply Imputed Data.” <em>Sociological Methodology</em> 37 (1): 83–117.</p>
+</div>
+<div id="ref-VONHIPPEL2009">
+<p>———. 2009. “How to Impute Interactions, Squares, and Other Transformed Variables.” <em>Sociological Methodology</em> 39 (1): 265–91.</p>
+</div>
+<div id="ref-VONHIPPEL2013">
+<p>———. 2013. “Should a Normal Imputation Model Be Modified to Impute Skewed Variables?” <em>Sociological Methods &amp; Research</em> 42 (1): 105–38.</p>
+</div>
+<div id="ref-VONHIPPEL2018">
+<p>———. 2018. “How Many Imputations Do You Need? A Two-Stage Calculation Using a Quadratic Rule.” <em>Sociological Methods &amp; Research</em> doi.org/10.1177/0049124117747303.</p>
+</div>
+<div id="ref-VROOMEN2016">
+<p>Vroomen, J. M., I. Eekhout, M. G. Dijkgraaf, H. Van Hout, S. E. De Rooij, M. W. Heymans, and J. E. Bosmans. 2016. “Multiple Imputation Strategies for Zero-Inflated Cost Data in Economic Evaluations: Which Method Works Best.” <em>The European Journal of Health Economics</em> 17 (8): 939–50.</p>
+</div>
+<div id="ref-WAGSTAFF2011">
+<p>Wagstaff, D. A., and O. Harel. 2011. “A Closer Examination of Three Small-Sample Approximations to the Multiple-Imputation Degrees of Freedom.” <em>Stata Journal</em> 11 (3): 403–19.</p>
+</div>
+<div id="ref-WALJEE2013">
+<p>Waljee, A. K., A. Mukherjee, A. G. Singal, Y. Zhang, J. Warren, U. Balis, J. Marrero, J. Zhu, and P. D. R. Higgins. 2013. “Comparison of Imputation Methods for Missing Laboratory Data in Medicine.” <em>BMJ Open</em> 3 (8): e002847.</p>
+</div>
+<div id="ref-WALLACE2010">
+<p>Wallace, M. L., S. J. Anderson, and S. Mazumdar. 2010. “A Stochastic Multiple Imputation Algorithm for Missing Covariate Data in Tree-Structured Survival Analysis.” <em>Statistics in Medicine</em> 29 (29): 3004–16.</p>
+</div>
+<div id="ref-WALLS2006">
+<p>Walls, T. A., and J. L. Schafer, eds. 2006. <em>Models for Intensive Longitudinal Data</em>. Oxford: Oxford University Press.</p>
+</div>
+<div id="ref-WANG1998">
+<p>Wang, N., and J. M. Robins. 1998. “Large-Sample Theory for Parametric Multiple Imputation Procedures.” <em>Biometrika</em> 85 (4): 935–48.</p>
+</div>
+<div id="ref-WANG2010">
+<p>Wang, Q., and G. E. Dinse. 2010. “Linear Regression Analysis of Survival Data with Missing Censoring Indicators.” <em>Lifetime Data Analysis</em> 17 (2): 256–79.</p>
+</div>
+<div id="ref-WANG2010A">
+<p>Wang, Y. J., and K-L. Kuo. 2010. “Compatibility of Discrete Conditional Distributions with Structural Zeros.” <em>Journal of Multivariate Analysis</em> 101 (1): 191–99.</p>
+</div>
+<div id="ref-WEI1991">
+<p>Wei, G. C. G., and M. A. Tanner. 1991. “Applications of Multiple Imputation to the Analysis of Censored Regression Data.” <em>Biometrics</em> 47 (4): 1297–1309.</p>
+</div>
+<div id="ref-WEISBERG2010">
+<p>Weisberg, H. I. 2010. <em>Bias and Causation: Models and Judgment for Valid Comparisons</em>. Hoboken, NJ: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-WHITE2010C">
+<p>White, I. R., and J. B. Carlin. 2010. “Bias and Efficiency of Multiple Imputation Compared with Complete-Case Analysis for Missing Covariate Values.” <em>Statistics in Medicine</em> 29 (28): 2920–31.</p>
+</div>
+<div id="ref-WHITE2009B">
+<p>White, I. R., and P. Royston. 2009. “Imputing Missing Covariate Values for the Cox Model.” <em>Statistics in Medicine</em> 28 (15): 1982–98.</p>
+</div>
+<div id="ref-WHITE2005">
+<p>White, I. R., and S. G. Thompson. 2005. “Adjusting for Partially Missing Baseline Measurements in Randomized Trials.” <em>Statistics in Medicine</em> 24 (7): 993–1007.</p>
+</div>
+<div id="ref-WHITE2010B">
+<p>White, I. R., R. Daniel, and P. Royston. 2010. “Avoiding Bias Due to Perfect Prediction in Multiple Imputation of Incomplete Categorical Variables.” <em>Computational Statistics &amp; Data Analysis</em> 54 (10): 2267–75. <a href="http://dx.doi.org/10.1016/j.csda.2010.04.005" class="uri">http://dx.doi.org/10.1016/j.csda.2010.04.005</a>.</p>
+</div>
+<div id="ref-WHITE2011B">
+<p>White, I. R., N. J. Horton, J. R. Carpenter, and S. J. Pocock. 2011. “Strategy for Intention to Treat Analysis in Randomised Trials with Missing Outcome Data.” <em>British Medical Journal</em> 342: d40.</p>
+</div>
+<div id="ref-WHITE2011">
+<p>White, I. R., P. Royston, and A. M. Wood. 2011. “Multiple Imputation Using Chained Equations: Issues and Guidance for Practice.” <em>Statistics in Medicine</em> 30 (4): 377–99.</p>
+</div>
+<div id="ref-WICKHAM2017">
+<p>Wickham, H., and G. Grolemund. 2017. <em>R for Data Science</em>. Sebastopol, CA: O’Reilly Media, Inc.</p>
+</div>
+<div id="ref-WILLETT1989">
+<p>Willett, J. B. 1989. “Some Results on Reliability for the Longitudinal Measurement of Change: Implications for the Design of Studies of Individual Growth.” <em>Educational and Psychological Measurement</em> 49: 587–602.</p>
+</div>
+<div id="ref-WOOD2008">
+<p>Wood, A. M., I. R. White, and P. Royston. 2008. “How Should Variable Selection Be Performed with Multiply Imputed Data?” <em>Statistics in Medicine</em> 27 (17): 3227–46.</p>
+</div>
+<div id="ref-WOOD2004">
+<p>Wood, A. M., I. R. White, and S. G. Thompson. 2004. “Are Missing Outcome Data Adequately Handled? A Review of Published Randomized Controlled Trials in Major Medical Journals.” <em>Clinical Trials</em> 1 (4): 368–76.</p>
+</div>
+<div id="ref-WU2010">
+<p>Wu, L. 2010. <em>Mixed Effects Models for Complex Data</em>. Boca Raton, FL: Chapman &amp; Hall /CRC.</p>
+</div>
+<div id="ref-WU2015">
+<p>Wu, W., F. Jia, and C. K. Enders. 2015. “A Comparison of Imputation Strategies for Ordinal Missing Data on Likert Scale Variables.” <em>Multivariate Behavioral Research</em> 50 (5): 484–503.</p>
+</div>
+<div id="ref-YANG2005">
+<p>Yang, X., T. R. Belin, and W. J. Boscardin. 2005. “Imputation and Variable Selection in Linear Regression Models with Missing Covariates.” <em>Biometrics</em> 61 (2): 498–506.</p>
+</div>
+<div id="ref-YAO2014">
+<p>Yao, Y., S-C. Chen, and S-H. Wang. 2014. “On Compatibility of Discrete Full Conditional Distributions: A Graphical Representation Approach.” <em>Journal of Multivariate Analysis</em> 124: 1–9.</p>
+</div>
+<div id="ref-YATES1933">
+<p>Yates, F. 1933. “The Analysis of Replicated Experiments When the Field Results Are Incomplete.” <em>Empirical Journal of Experimental Agriculture</em> 1 (2): 129–42.</p>
+</div>
+<div id="ref-YU2007">
+<p>Yu, L-M., A. Burton, and O. Rivero-Arias. 2007. “Evaluation of Software for Multiple Imputation of Semi-Continuous Data.” <em>Statistical Methods in Medical Research</em> 16 (3): 243–58.</p>
+</div>
+<div id="ref-YU2017">
+<p>Yu, M., J. P. Reiter, L. Zhu, B. Liu, K. A. Cronin, and E. J. Feuer. 2017. “Protecting Confidentiality in Cancer Registry Data with Geographic Identifiers.” <em>American Journal of Epidemiology</em> 186 (1): 83–91.</p>
+</div>
+<div id="ref-YUCEL2008">
+<p>Yucel, R. M. 2008. “Multiple Imputation Inference for Multivariate Multilevel Continuous Data with Ignorable Non-Response.” <em>Philosophical Transactions of the Royal Society A</em> 366 (1874): 2389–2403.</p>
+</div>
+<div id="ref-YUCEL2011">
+<p>———. 2011. “Random Covariances and Mixed-Effects Models for Imputing Multivariate Multilevel Continuous Data.” <em>Statistical Modelling</em> 11 (4): 351–70.</p>
+</div>
+<div id="ref-YUCEL2017">
+<p>———. 2017. “Impact of the Non-Distinctness and Non-Ignorability on the Inference by Multiple Imputation in Multivariate Multilevel Data: A Simulation Assessment.” <em>Journal of Statistical Computation and Simulation</em> 87 (9). Department of Epidemiology; Biostatistics, State University of New York, Albany, NY, United States: 1813–26.</p>
+</div>
+<div id="ref-YUCEL2005">
+<p>Yucel, R. M., and A. M. Zaslavsky. 2005. “Imputation of Binary Treatment Variables with Measurement Error in Administrative Data.” <em>Journal of the American Statistical Association</em> 100 (472): 1123–32.</p>
+</div>
+<div id="ref-YUCEL2008b">
+<p>Yucel, R. M., Y. He, and A. M. Zaslavsky. 2008. “Using Calibration to Improve Rounding in Imputation.” <em>The American Statistician</em> 62 (2): 125–29.</p>
+</div>
+<div id="ref-YUSUF1994">
+<p>Yusuf, S., D. Zucker, E. Passamani, P. Peduzzi, T. Takaro, L.D. Fisher, J. W. Kennedy, K. Davis, T. Killip, and R. Norris. 1994. “Effect of Coronary Artery Bypass Graft Surgery on Survival: Overview of 10-Year Results from Randomised Trials by the Coronary Artery Bypass Graft Surgery Trialists Collaboration.” <em>The Lancet</em> 344 (8922): 563–70.</p>
+</div>
+<div id="ref-YUVAL2014">
+<p>Yuval, N.H. 2014. <em>Sapiens</em>. New York: Random House.</p>
+</div>
+<div id="ref-ZHANG2017">
+<p>Zhang, Q., and L. Wang. 2017. “Moderation Analysis with Missing Data in the Predictors.” <em>Psychological Methods</em> 22 (4): 649–66.</p>
+</div>
+<div id="ref-ZHANG2009">
+<p>Zhang, W., Y. Zhang, K. Chaloner, and J. T. Stapleton. 2009. “Imputation Methods for Doubly Censored HIV Data.” <em>Journal of Statistical Computation and Simulation</em> 79 (10): 1245–57.</p>
+</div>
+<div id="ref-ZHAO2016">
+<p>Zhao, J. H., and J. L. Schafer. 2016. <em>‘Pan‘: Multiple Imputation for Multivariate Panel or Clustered Data</em>.</p>
+</div>
+<div id="ref-ZHAO2017">
+<p>Zhao, Y., and Q. Long. 2017. “Variable Selection in the Presence of Missing Data: Imputation-Based Methods.” <em>Wiley Interdisciplinary Reviews: Computational Statistics</em> 9 (5).</p>
+</div>
+<div id="ref-ZHOU2014">
+<p>Zhou, X. H., C. Zhou, D. Lui, and X. Ding. 2014. <em>Applied Missing Data Analysis in the Health Sciences</em>. Chichester, UK: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-ZHU2016">
+<p>Zhu, J. 2016. “Assessment and Improvement of a Sequential Regression Multivariate Imputation Algorithm.” PhD thesis, University of Michigan.</p>
+</div>
+<div id="ref-ZHU2015">
+<p>Zhu, J., and T. E. Raghunathan. 2015. “Convergence Properties of a Sequential Regression Multiple Imputation Algorithm.” <em>Journal of the American Statistical Association</em> 110 (511): 1112–24.</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="technical-information.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

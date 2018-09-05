@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Flexible Imputation of Missing Data, Second Edition">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="sec-pooling.html">
+<link rel="next" href="sec-stepwise.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://stefvanbuuren.name/fimd/"> Flexible Imputation of Missing Data</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="want-the-hardcopy.html"><a href="want-the-hardcopy.html"><i class="fa fa-check"></i>Want the hardcopy?</a></li>
+<li class="chapter" data-level="" data-path="foreword.html"><a href="foreword.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="chapter" data-level="" data-path="preface-to-second-edition.html"><a href="preface-to-second-edition.html"><i class="fa fa-check"></i>Preface to second edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-first-edition.html"><a href="preface-to-first-edition.html"><i class="fa fa-check"></i>Preface to first edition</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a></li>
+<li class="chapter" data-level="" data-path="symbol-description.html"><a href="symbol-description.html"><i class="fa fa-check"></i>Symbol Description</a></li>
+<li class="part"><span><b>I Part I: Basics</b></span></li>
+<li class="chapter" data-level="1" data-path="ch-introduction.html"><a href="ch-introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="sec-problem.html"><a href="sec-problem.html"><i class="fa fa-check"></i><b>1.1</b> The problem of missing data</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-problem.html"><a href="sec-problem.html#sec:current"><i class="fa fa-check"></i><b>1.1.1</b> Current practice</a></li>
+<li class="chapter" data-level="1.1.2" data-path="sec-problem.html"><a href="sec-problem.html#sec:changingperspective"><i class="fa fa-check"></i><b>1.1.2</b> Changing perspective on missing data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-MCAR.html"><a href="sec-MCAR.html"><i class="fa fa-check"></i><b>1.2</b> Concepts of MCAR, MAR and MNAR</a></li>
+<li class="chapter" data-level="1.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html"><i class="fa fa-check"></i><b>1.3</b> Ad-hoc solutions</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:listwise"><i class="fa fa-check"></i><b>1.3.1</b> Listwise deletion</a></li>
+<li class="chapter" data-level="1.3.2" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:pairwise"><i class="fa fa-check"></i><b>1.3.2</b> Pairwise deletion</a></li>
+<li class="chapter" data-level="1.3.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:meanimp"><i class="fa fa-check"></i><b>1.3.3</b> Mean imputation</a></li>
+<li class="chapter" data-level="1.3.4" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:regimp"><i class="fa fa-check"></i><b>1.3.4</b> Regression imputation</a></li>
+<li class="chapter" data-level="1.3.5" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:sri"><i class="fa fa-check"></i><b>1.3.5</b> Stochastic regression imputation</a></li>
+<li class="chapter" data-level="1.3.6" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:locf"><i class="fa fa-check"></i><b>1.3.6</b> LOCF and BOCF</a></li>
+<li class="chapter" data-level="1.3.7" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:indicator"><i class="fa fa-check"></i><b>1.3.7</b> Indicator method</a></li>
+<li class="chapter" data-level="1.3.8" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:simplesummary"><i class="fa fa-check"></i><b>1.3.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="sec-nutshell.html"><a href="sec-nutshell.html"><i class="fa fa-check"></i><b>1.4</b> Multiple imputation in a nutshell</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-nutshell.html"><a href="sec-nutshell.html#procedure"><i class="fa fa-check"></i><b>1.4.1</b> Procedure</a></li>
+<li class="chapter" data-level="1.4.2" data-path="sec-nutshell.html"><a href="sec-nutshell.html#reasons-to-use-multiple-imputation"><i class="fa fa-check"></i><b>1.4.2</b> Reasons to use multiple imputation</a></li>
+<li class="chapter" data-level="1.4.3" data-path="sec-nutshell.html"><a href="sec-nutshell.html#sec:miexample"><i class="fa fa-check"></i><b>1.4.3</b> Example of multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-goal.html"><a href="sec-goal.html"><i class="fa fa-check"></i><b>1.5</b> Goal of the book</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html"><i class="fa fa-check"></i><b>1.6</b> What the book does not cover</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:prevention"><i class="fa fa-check"></i><b>1.6.1</b> Prevention</a></li>
+<li class="chapter" data-level="1.6.2" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:weighting"><i class="fa fa-check"></i><b>1.6.2</b> Weighting procedures</a></li>
+<li class="chapter" data-level="1.6.3" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:likelihood"><i class="fa fa-check"></i><b>1.6.3</b> Likelihood-based approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="sec-structure.html"><a href="sec-structure.html"><i class="fa fa-check"></i><b>1.7</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.8" data-path="ex-ch1.html"><a href="ex-ch1.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-mi.html"><a href="ch-mi.html"><i class="fa fa-check"></i><b>2</b> Multiple imputation</a><ul>
+<li class="chapter" data-level="2.1" data-path="sec-historic.html"><a href="sec-historic.html"><i class="fa fa-check"></i><b>2.1</b> Historic overview</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="sec-historic.html"><a href="sec-historic.html#imputation"><i class="fa fa-check"></i><b>2.1.1</b> Imputation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="sec-historic.html"><a href="sec-historic.html#multiple-imputation"><i class="fa fa-check"></i><b>2.1.2</b> Multiple imputation</a></li>
+<li class="chapter" data-level="2.1.3" data-path="sec-historic.html"><a href="sec-historic.html#the-expanding-literature-on-multiple-imputation"><i class="fa fa-check"></i><b>2.1.3</b> The expanding literature on multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html"><i class="fa fa-check"></i><b>2.2</b> Concepts in incomplete data</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#incomplete-data-perspective"><i class="fa fa-check"></i><b>2.2.1</b> Incomplete-data perspective</a></li>
+<li class="chapter" data-level="2.2.2" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#causes-of-missing-data"><i class="fa fa-check"></i><b>2.2.2</b> Causes of missing data</a></li>
+<li class="chapter" data-level="2.2.3" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:notation"><i class="fa fa-check"></i><b>2.2.3</b> Notation</a></li>
+<li class="chapter" data-level="2.2.4" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:MCARreprise"><i class="fa fa-check"></i><b>2.2.4</b> MCAR, MAR and MNAR again</a></li>
+<li class="chapter" data-level="2.2.5" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:ignorable"><i class="fa fa-check"></i><b>2.2.5</b> Ignorable and nonignorable<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.2.6" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:ignorability"><i class="fa fa-check"></i><b>2.2.6</b> Implications of ignorability</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html"><i class="fa fa-check"></i><b>2.3</b> Why and when multiple imputation works</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:migoal"><i class="fa fa-check"></i><b>2.3.1</b> Goal of multiple imputation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:threesources"><i class="fa fa-check"></i><b>2.3.2</b> Three sources of variation<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.3" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:proper"><i class="fa fa-check"></i><b>2.3.3</b> Proper imputation</a></li>
+<li class="chapter" data-level="2.3.4" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#scope-of-the-imputation-model"><i class="fa fa-check"></i><b>2.3.4</b> Scope of the imputation model</a></li>
+<li class="chapter" data-level="2.3.5" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:varianceratios"><i class="fa fa-check"></i><b>2.3.5</b> Variance ratios<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.6" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:df"><i class="fa fa-check"></i><b>2.3.6</b> Degrees of freedom<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.7" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#numerical-example"><i class="fa fa-check"></i><b>2.3.7</b> Numerical example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="sec-inference.html"><a href="sec-inference.html"><i class="fa fa-check"></i><b>2.4</b> Statistical intervals and tests</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="sec-inference.html"><a href="sec-inference.html#scalar-or-multi-parameter-inference"><i class="fa fa-check"></i><b>2.4.1</b> Scalar or multi-parameter inference?</a></li>
+<li class="chapter" data-level="2.4.2" data-path="sec-inference.html"><a href="sec-inference.html#sec:singlepar"><i class="fa fa-check"></i><b>2.4.2</b> Scalar inference</a></li>
+<li class="chapter" data-level="2.4.3" data-path="sec-inference.html"><a href="sec-inference.html#numerical-example-1"><i class="fa fa-check"></i><b>2.4.3</b> Numerical example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="sec-evaluation.html"><a href="sec-evaluation.html"><i class="fa fa-check"></i><b>2.5</b> How to evaluate imputation methods</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="sec-evaluation.html"><a href="sec-evaluation.html#simulation-designs-and-performance-measures"><i class="fa fa-check"></i><b>2.5.1</b> Simulation designs and performance measures</a></li>
+<li class="chapter" data-level="2.5.2" data-path="sec-evaluation.html"><a href="sec-evaluation.html#sec:evaluationcriteria"><i class="fa fa-check"></i><b>2.5.2</b> Evaluation criteria</a></li>
+<li class="chapter" data-level="2.5.3" data-path="sec-evaluation.html"><a href="sec-evaluation.html#sec:quantifyingbias"><i class="fa fa-check"></i><b>2.5.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="sec-true.html"><a href="sec-true.html"><i class="fa fa-check"></i><b>2.6</b> Imputation is not prediction</a></li>
+<li class="chapter" data-level="2.7" data-path="sec-when.html"><a href="sec-when.html"><i class="fa fa-check"></i><b>2.7</b> When not to use multiple imputation</a></li>
+<li class="chapter" data-level="2.8" data-path="sec-howmany.html"><a href="sec-howmany.html"><i class="fa fa-check"></i><b>2.8</b> How many imputations?</a></li>
+<li class="chapter" data-level="2.9" data-path="sec-exmi.html"><a href="sec-exmi.html"><i class="fa fa-check"></i><b>2.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch-univariate.html"><a href="ch-univariate.html"><i class="fa fa-check"></i><b>3</b> Univariate missing data</a><ul>
+<li class="chapter" data-level="3.1" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html"><i class="fa fa-check"></i><b>3.1</b> How to generate multiple imputations</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#predict-method"><i class="fa fa-check"></i><b>3.1.1</b> Predict method</a></li>
+<li class="chapter" data-level="3.1.2" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#sec:meth2"><i class="fa fa-check"></i><b>3.1.2</b> Predict + noise method</a></li>
+<li class="chapter" data-level="3.1.3" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#sec:meth3"><i class="fa fa-check"></i><b>3.1.3</b> Predict + noise + parameter uncertainty</a></li>
+<li class="chapter" data-level="3.1.4" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#a-second-predictor"><i class="fa fa-check"></i><b>3.1.4</b> A second predictor</a></li>
+<li class="chapter" data-level="3.1.5" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#drawing-from-the-observed-data"><i class="fa fa-check"></i><b>3.1.5</b> Drawing from the observed data</a></li>
+<li class="chapter" data-level="3.1.6" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#conclusion"><i class="fa fa-check"></i><b>3.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html"><i class="fa fa-check"></i><b>3.2</b> Imputation under the normal linear normal</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:linearoverview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:linearalgorithm"><i class="fa fa-check"></i><b>3.2.2</b> Algorithms<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.2.3" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:perflin"><i class="fa fa-check"></i><b>3.2.3</b> Performance</a></li>
+<li class="chapter" data-level="3.2.4" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:generateuni"><i class="fa fa-check"></i><b>3.2.4</b> Generating MAR missing data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:generatemulti"><i class="fa fa-check"></i><b>3.2.5</b> MAR missing data generation in multivariate data</a></li>
+<li class="chapter" data-level="3.2.6" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#conclusion-1"><i class="fa fa-check"></i><b>3.2.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html"><i class="fa fa-check"></i><b>3.3</b> Imputation under non-normal distributions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html#overview"><i class="fa fa-check"></i><b>3.3.1</b> Overview</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html#sec:tdist"><i class="fa fa-check"></i><b>3.3.2</b> Imputation from the <span class="math inline">\(t\)</span>-distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="sec-pmm.html"><a href="sec-pmm.html"><i class="fa fa-check"></i><b>3.4</b> Predictive mean matching</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="sec-pmm.html"><a href="sec-pmm.html#overview-1"><i class="fa fa-check"></i><b>3.4.1</b> Overview</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sec-pmm.html"><a href="sec-pmm.html#sec:pmmcomputation"><i class="fa fa-check"></i><b>3.4.2</b> Computational details<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.4.3" data-path="sec-pmm.html"><a href="sec-pmm.html#number-of-donors"><i class="fa fa-check"></i><b>3.4.3</b> Number of donors</a></li>
+<li class="chapter" data-level="3.4.4" data-path="sec-pmm.html"><a href="sec-pmm.html#pitfalls"><i class="fa fa-check"></i><b>3.4.4</b> Pitfalls</a></li>
+<li class="chapter" data-level="3.4.5" data-path="sec-pmm.html"><a href="sec-pmm.html#conclusion-2"><i class="fa fa-check"></i><b>3.4.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="sec-cart.html"><a href="sec-cart.html"><i class="fa fa-check"></i><b>3.5</b> Classification and regression trees</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="sec-cart.html"><a href="sec-cart.html#sec:cartoverview"><i class="fa fa-check"></i><b>3.5.1</b> Overview</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="sec-categorical.html"><a href="sec-categorical.html"><i class="fa fa-check"></i><b>3.6</b> Categorical data</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="sec-categorical.html"><a href="sec-categorical.html#sec:categoricaloverview"><i class="fa fa-check"></i><b>3.6.1</b> Generalized linear model</a></li>
+<li class="chapter" data-level="3.6.2" data-path="sec-categorical.html"><a href="sec-categorical.html#perfect-predictionspadesuit"><i class="fa fa-check"></i><b>3.6.2</b> Perfect prediction<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.6.3" data-path="sec-categorical.html"><a href="sec-categorical.html#evaluation"><i class="fa fa-check"></i><b>3.6.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="other-data-types.html"><a href="other-data-types.html"><i class="fa fa-check"></i><b>3.7</b> Other data types</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="other-data-types.html"><a href="other-data-types.html#sec:count"><i class="fa fa-check"></i><b>3.7.1</b> Count data</a></li>
+<li class="chapter" data-level="3.7.2" data-path="other-data-types.html"><a href="other-data-types.html#sec:semi"><i class="fa fa-check"></i><b>3.7.2</b> Semi-continuous data</a></li>
+<li class="chapter" data-level="3.7.3" data-path="other-data-types.html"><a href="other-data-types.html#sec:censored"><i class="fa fa-check"></i><b>3.7.3</b> Censored, truncated and rounded data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html"><i class="fa fa-check"></i><b>3.8</b> Nonignorable missing data</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:nonignorableoverview"><i class="fa fa-check"></i><b>3.8.1</b> Overview</a></li>
+<li class="chapter" data-level="3.8.2" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:selectionmodel"><i class="fa fa-check"></i><b>3.8.2</b> Selection model</a></li>
+<li class="chapter" data-level="3.8.3" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:patternmixturemodel"><i class="fa fa-check"></i><b>3.8.3</b> Pattern-mixture model</a></li>
+<li class="chapter" data-level="3.8.4" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:convert"><i class="fa fa-check"></i><b>3.8.4</b> Converting selection and pattern-mixture models</a></li>
+<li class="chapter" data-level="3.8.5" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:ch3sensitivity"><i class="fa fa-check"></i><b>3.8.5</b> Sensitivity analysis</a></li>
+<li class="chapter" data-level="3.8.6" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#role-of-sensitivity-analysis"><i class="fa fa-check"></i><b>3.8.6</b> Role of sensitivity analysis</a></li>
+<li class="chapter" data-level="3.8.7" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#recent-developments"><i class="fa fa-check"></i><b>3.8.7</b> Recent developments</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="ex-ch-univariate.html"><a href="ex-ch-univariate.html"><i class="fa fa-check"></i><b>3.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-multivariate.html"><a href="ch-multivariate.html"><i class="fa fa-check"></i><b>4</b> Multivariate missing data</a><ul>
+<li class="chapter" data-level="4.1" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html"><i class="fa fa-check"></i><b>4.1</b> Missing data pattern</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:patternoverview"><i class="fa fa-check"></i><b>4.1.1</b> Overview</a></li>
+<li class="chapter" data-level="4.1.2" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:mdpattern"><i class="fa fa-check"></i><b>4.1.2</b> Summary statistics</a></li>
+<li class="chapter" data-level="4.1.3" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:flux"><i class="fa fa-check"></i><b>4.1.3</b> Influx and outflux</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="sec-issues.html"><a href="sec-issues.html"><i class="fa fa-check"></i><b>4.2</b> Issues in multivariate imputation</a></li>
+<li class="chapter" data-level="4.3" data-path="sec-monotone.html"><a href="sec-monotone.html"><i class="fa fa-check"></i><b>4.3</b> Monotone data imputation</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="sec-monotone.html"><a href="sec-monotone.html#sec:monoverview"><i class="fa fa-check"></i><b>4.3.1</b> Overview</a></li>
+<li class="chapter" data-level="4.3.2" data-path="sec-monotone.html"><a href="sec-monotone.html#sec:monalgorithm"><i class="fa fa-check"></i><b>4.3.2</b> Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="sec-JM.html"><a href="sec-JM.html"><i class="fa fa-check"></i><b>4.4</b> Joint modeling</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="sec-JM.html"><a href="sec-JM.html#overview-2"><i class="fa fa-check"></i><b>4.4.1</b> Overview</a></li>
+<li class="chapter" data-level="4.4.2" data-path="sec-JM.html"><a href="sec-JM.html#continuous-data"><i class="fa fa-check"></i><b>4.4.2</b> Continuous data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="sec-JM.html"><a href="sec-JM.html#sec:jmcategorical"><i class="fa fa-check"></i><b>4.4.3</b> Categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="sec-FCS.html"><a href="sec-FCS.html"><i class="fa fa-check"></i><b>4.5</b> Fully conditional specification</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="sec-FCS.html"><a href="sec-FCS.html#overview-3"><i class="fa fa-check"></i><b>4.5.1</b> Overview</a></li>
+<li class="chapter" data-level="4.5.2" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:MICE"><i class="fa fa-check"></i><b>4.5.2</b> The MICE algorithm</a></li>
+<li class="chapter" data-level="4.5.3" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:compatibility"><i class="fa fa-check"></i><b>4.5.3</b> Compatibility<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="4.5.4" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:congeniality"><i class="fa fa-check"></i><b>4.5.4</b> Congeniality or compatibility?</a></li>
+<li class="chapter" data-level="4.5.5" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:modelbased"><i class="fa fa-check"></i><b>4.5.5</b> Model-based and data-based imputation</a></li>
+<li class="chapter" data-level="4.5.6" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:howlarget"><i class="fa fa-check"></i><b>4.5.6</b> Number of iterations</a></li>
+<li class="chapter" data-level="4.5.7" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:slowconvergence"><i class="fa fa-check"></i><b>4.5.7</b> Example of slow convergence</a></li>
+<li class="chapter" data-level="4.5.8" data-path="sec-FCS.html"><a href="sec-FCS.html#performance"><i class="fa fa-check"></i><b>4.5.8</b> Performance</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html"><i class="fa fa-check"></i><b>4.6</b> FCS and JM</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#relations-between-fcs-and-jm"><i class="fa fa-check"></i><b>4.6.1</b> Relations between FCS and JM</a></li>
+<li class="chapter" data-level="4.6.2" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#comparisons"><i class="fa fa-check"></i><b>4.6.2</b> Comparisons</a></li>
+<li class="chapter" data-level="4.6.3" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#illustration"><i class="fa fa-check"></i><b>4.6.3</b> Illustration</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="mice-extensions.html"><a href="mice-extensions.html"><i class="fa fa-check"></i><b>4.7</b> MICE extensions</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="mice-extensions.html"><a href="mice-extensions.html#skipping-imputations-and-overimputation"><i class="fa fa-check"></i><b>4.7.1</b> Skipping imputations and overimputation</a></li>
+<li class="chapter" data-level="4.7.2" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:blockvar"><i class="fa fa-check"></i><b>4.7.2</b> Blocks of variables, hybrid imputation</a></li>
+<li class="chapter" data-level="4.7.3" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:blockunit"><i class="fa fa-check"></i><b>4.7.3</b> Blocks of units, monotone blocks</a></li>
+<li class="chapter" data-level="4.7.4" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:tile"><i class="fa fa-check"></i><b>4.7.4</b> Tile imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="conclusion-3.html"><a href="conclusion-3.html"><i class="fa fa-check"></i><b>4.8</b> Conclusion</a></li>
+<li class="chapter" data-level="4.9" data-path="ex-ch-multivariate.html"><a href="ex-ch-multivariate.html"><i class="fa fa-check"></i><b>4.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-analysis.html"><a href="ch-analysis.html"><i class="fa fa-check"></i><b>5</b> Analysis of imputed data</a><ul>
+<li class="chapter" data-level="5.1" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>5.1</b> Workflow</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="workflow.html"><a href="workflow.html#sec:goodworkflows"><i class="fa fa-check"></i><b>5.1.1</b> Recommended workflows</a></li>
+<li class="chapter" data-level="5.1.2" data-path="workflow.html"><a href="workflow.html#sec:badworkflowa"><i class="fa fa-check"></i><b>5.1.2</b> Not recommended workflow: Averaging the data</a></li>
+<li class="chapter" data-level="5.1.3" data-path="workflow.html"><a href="workflow.html#sec:badworkflowb"><i class="fa fa-check"></i><b>5.1.3</b> Not recommended workflow: Stack imputed data</a></li>
+<li class="chapter" data-level="5.1.4" data-path="workflow.html"><a href="workflow.html#sec:repeated"><i class="fa fa-check"></i><b>5.1.4</b> Repeated analyses</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sec-pooling.html"><a href="sec-pooling.html"><i class="fa fa-check"></i><b>5.2</b> Parameter pooling</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-pooling.html"><a href="sec-pooling.html#scalar-inference-of-normal-quantities"><i class="fa fa-check"></i><b>5.2.1</b> Scalar inference of normal quantities</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pooling.html"><a href="sec-pooling.html#sec:poolnon"><i class="fa fa-check"></i><b>5.2.2</b> Scalar inference of non-normal quantities</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html"><i class="fa fa-check"></i><b>5.3</b> Multi-parameter inference</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:wald"><i class="fa fa-check"></i><b>5.3.1</b> <span class="math inline">\(D_1\)</span> Multivariate Wald test</a></li>
+<li class="chapter" data-level="5.3.2" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:chi"><i class="fa fa-check"></i><b>5.3.2</b> <span class="math inline">\(D_2\)</span> Combining test statistics<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="5.3.3" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:likelihoodratio"><i class="fa fa-check"></i><b>5.3.3</b> <span class="math inline">\(D_3\)</span> Likelihood ratio test<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="5.3.4" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#d_1-d_2-or-d_3"><i class="fa fa-check"></i><b>5.3.4</b> <span class="math inline">\(D_1\)</span>, <span class="math inline">\(D_2\)</span> or <span class="math inline">\(D_3\)</span>?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="sec-stepwise.html"><a href="sec-stepwise.html"><i class="fa fa-check"></i><b>5.4</b> Stepwise model selection</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="sec-stepwise.html"><a href="sec-stepwise.html#variable-selection-techniques"><i class="fa fa-check"></i><b>5.4.1</b> Variable selection techniques</a></li>
+<li class="chapter" data-level="5.4.2" data-path="sec-stepwise.html"><a href="sec-stepwise.html#computation"><i class="fa fa-check"></i><b>5.4.2</b> Computation</a></li>
+<li class="chapter" data-level="5.4.3" data-path="sec-stepwise.html"><a href="sec-stepwise.html#sec:optimism"><i class="fa fa-check"></i><b>5.4.3</b> Model optimism</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="parallel-computation.html"><a href="parallel-computation.html"><i class="fa fa-check"></i><b>5.5</b> Parallel computation</a></li>
+<li class="chapter" data-level="5.6" data-path="conclusion-4.html"><a href="conclusion-4.html"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.7" data-path="ex-ch-analysis.html"><a href="ex-ch-analysis.html"><i class="fa fa-check"></i><b>5.7</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II: Advanced techniques</b></span></li>
+<li class="chapter" data-level="6" data-path="ch-practice.html"><a href="ch-practice.html"><i class="fa fa-check"></i><b>6</b> Imputation in practice</a><ul>
+<li class="chapter" data-level="6.1" data-path="sec-choices.html"><a href="sec-choices.html"><i class="fa fa-check"></i><b>6.1</b> Overview of modeling choices</a></li>
+<li class="chapter" data-level="6.2" data-path="sec-whenignorable.html"><a href="sec-whenignorable.html"><i class="fa fa-check"></i><b>6.2</b> Ignorable or nonignorable?</a></li>
+<li class="chapter" data-level="6.3" data-path="sec-modelform.html"><a href="sec-modelform.html"><i class="fa fa-check"></i><b>6.3</b> Model form and predictors</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="sec-modelform.html"><a href="sec-modelform.html#model-form"><i class="fa fa-check"></i><b>6.3.1</b> Model form</a></li>
+<li class="chapter" data-level="6.3.2" data-path="sec-modelform.html"><a href="sec-modelform.html#sec:predictors"><i class="fa fa-check"></i><b>6.3.2</b> Predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="sec-knowledge.html"><a href="sec-knowledge.html"><i class="fa fa-check"></i><b>6.4</b> Derived variables</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:ratio"><i class="fa fa-check"></i><b>6.4.1</b> Ratio of two variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:interactions"><i class="fa fa-check"></i><b>6.4.2</b> Interaction terms</a></li>
+<li class="chapter" data-level="6.4.3" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:quadratic"><i class="fa fa-check"></i><b>6.4.3</b> Quadratic relations<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="6.4.4" data-path="sec-knowledge.html"><a href="sec-knowledge.html#compositional-dataspadesuit"><i class="fa fa-check"></i><b>6.4.4</b> Compositional data<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="6.4.5" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:sumscores"><i class="fa fa-check"></i><b>6.4.5</b> Sum scores</a></li>
+<li class="chapter" data-level="6.4.6" data-path="sec-knowledge.html"><a href="sec-knowledge.html#conditional-imputation"><i class="fa fa-check"></i><b>6.4.6</b> Conditional imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="sec-algoptions.html"><a href="sec-algoptions.html"><i class="fa fa-check"></i><b>6.5</b> Algorithmic options</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="sec-algoptions.html"><a href="sec-algoptions.html#sec:visit"><i class="fa fa-check"></i><b>6.5.1</b> Visit sequence</a></li>
+<li class="chapter" data-level="6.5.2" data-path="sec-algoptions.html"><a href="sec-algoptions.html#sec:convergence"><i class="fa fa-check"></i><b>6.5.2</b> Convergence</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html"><i class="fa fa-check"></i><b>6.6</b> Diagnostics</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html#sec:fitversus"><i class="fa fa-check"></i><b>6.6.1</b> Model fit versus distributional discrepancy</a></li>
+<li class="chapter" data-level="6.6.2" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html#diagnostic-graphs"><i class="fa fa-check"></i><b>6.6.2</b> Diagnostic graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="conclusion-5.html"><a href="conclusion-5.html"><i class="fa fa-check"></i><b>6.7</b> Conclusion</a></li>
+<li class="chapter" data-level="6.8" data-path="ex-ch-practice.html"><a href="ex-ch-practice.html"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-multilevel.html"><a href="ch-multilevel.html"><i class="fa fa-check"></i><b>7</b> Multilevel multiple imputation</a><ul>
+<li class="chapter" data-level="7.1" data-path="sec-multi-intro.html"><a href="sec-multi-intro.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-threeformulations.html"><a href="sec-threeformulations.html"><i class="fa fa-check"></i><b>7.2</b> Notation for multilevel models</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-missmult.html"><a href="sec-missmult.html"><i class="fa fa-check"></i><b>7.3</b> Missing values in multilevel data</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="sec-missmult.html"><a href="sec-missmult.html#practical-issues-in-multilevel-imputation"><i class="fa fa-check"></i><b>7.3.1</b> Practical issues in multilevel imputation</a></li>
+<li class="chapter" data-level="7.3.2" data-path="sec-missmult.html"><a href="sec-missmult.html#ad-hoc-solutions-for-multilevel-data"><i class="fa fa-check"></i><b>7.3.2</b> Ad-hoc solutions for multilevel data</a></li>
+<li class="chapter" data-level="7.3.3" data-path="sec-missmult.html"><a href="sec-missmult.html#likelihood-solutions"><i class="fa fa-check"></i><b>7.3.3</b> Likelihood solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="sec-mljoint.html"><a href="sec-mljoint.html"><i class="fa fa-check"></i><b>7.4</b> Multilevel imputation by joint modeling</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html"><i class="fa fa-check"></i><b>7.5</b> Multilevel imputation by fully conditional specification</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html#sec:clustermeans"><i class="fa fa-check"></i><b>7.5.1</b> Add cluster means of predictors</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html#sec:hetero"><i class="fa fa-check"></i><b>7.5.2</b> Model cluster heterogeneity</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html"><i class="fa fa-check"></i><b>7.6</b> Continuous outcome</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#general-principle"><i class="fa fa-check"></i><b>7.6.1</b> General principle</a></li>
+<li class="chapter" data-level="7.6.2" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#methods"><i class="fa fa-check"></i><b>7.6.2</b> Methods</a></li>
+<li class="chapter" data-level="7.6.3" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#sec:contexam"><i class="fa fa-check"></i><b>7.6.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html"><i class="fa fa-check"></i><b>7.7</b> Discrete outcome</a><ul>
+<li class="chapter" data-level="7.7.1" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html#methods-1"><i class="fa fa-check"></i><b>7.7.1</b> Methods</a></li>
+<li class="chapter" data-level="7.7.2" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html#example"><i class="fa fa-check"></i><b>7.7.2</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="sec-level2pred.html"><a href="sec-level2pred.html"><i class="fa fa-check"></i><b>7.8</b> Imputation of level-2 variable</a></li>
+<li class="chapter" data-level="7.9" data-path="sec-comparative.html"><a href="sec-comparative.html"><i class="fa fa-check"></i><b>7.9</b> Comparative work</a></li>
+<li class="chapter" data-level="7.10" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html"><i class="fa fa-check"></i><b>7.10</b> Guidelines and advice</a><ul>
+<li class="chapter" data-level="7.10.1" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:emptymodel"><i class="fa fa-check"></i><b>7.10.1</b> Intercept-only model, missing outcomes</a></li>
+<li class="chapter" data-level="7.10.2" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:ri1pred"><i class="fa fa-check"></i><b>7.10.2</b> Random intercepts, missing level-1 predictor</a></li>
+<li class="chapter" data-level="7.10.3" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:wbg"><i class="fa fa-check"></i><b>7.10.3</b> Random intercepts, contextual model</a></li>
+<li class="chapter" data-level="7.10.4" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:ril2"><i class="fa fa-check"></i><b>7.10.4</b> Random intercepts, missing level-2 predictor</a></li>
+<li class="chapter" data-level="7.10.5" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:mlint"><i class="fa fa-check"></i><b>7.10.5</b> Random intercepts, interactions</a></li>
+<li class="chapter" data-level="7.10.6" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:randomslopes"><i class="fa fa-check"></i><b>7.10.6</b> Random slopes, missing outcomes and predictors</a></li>
+<li class="chapter" data-level="7.10.7" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:rsinteractions"><i class="fa fa-check"></i><b>7.10.7</b> Random slopes, interactions</a></li>
+<li class="chapter" data-level="7.10.8" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:recipes"><i class="fa fa-check"></i><b>7.10.8</b> Recipes</a></li>
+</ul></li>
+<li class="chapter" data-level="7.11" data-path="future-research.html"><a href="future-research.html"><i class="fa fa-check"></i><b>7.11</b> Future research</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ch-ice.html"><a href="ch-ice.html"><i class="fa fa-check"></i><b>8</b> Individual causal effects</a><ul>
+<li class="chapter" data-level="8.1" data-path="sec-whyice.html"><a href="sec-whyice.html"><i class="fa fa-check"></i><b>8.1</b> Need for individual causal effects</a></li>
+<li class="chapter" data-level="8.2" data-path="problem-of-causal-inference.html"><a href="problem-of-causal-inference.html"><i class="fa fa-check"></i><b>8.2</b> Problem of causal inference</a></li>
+<li class="chapter" data-level="8.3" data-path="sec-iceframework.html"><a href="sec-iceframework.html"><i class="fa fa-check"></i><b>8.3</b> Framework</a></li>
+<li class="chapter" data-level="8.4" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html"><i class="fa fa-check"></i><b>8.4</b> Generating imputations by FCS</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#naive-fcs"><i class="fa fa-check"></i><b>8.4.1</b> Naive FCS</a></li>
+<li class="chapter" data-level="8.4.2" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#sec:fcsprior"><i class="fa fa-check"></i><b>8.4.2</b> FCS with a prior for <span class="math inline">\(\rho\)</span></a></li>
+<li class="chapter" data-level="8.4.3" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#sec:iceextensions"><i class="fa fa-check"></i><b>8.4.3</b> Extensions</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="bibliographic-notes.html"><a href="bibliographic-notes.html"><i class="fa fa-check"></i><b>8.5</b> Bibliographic notes</a></li>
+</ul></li>
+<li class="part"><span><b>III Part III: Case studies</b></span></li>
+<li class="chapter" data-level="9" data-path="ch-measurement.html"><a href="ch-measurement.html"><i class="fa fa-check"></i><b>9</b> Measurement issues</a><ul>
+<li class="chapter" data-level="9.1" data-path="sec-toomany.html"><a href="sec-toomany.html"><i class="fa fa-check"></i><b>9.1</b> Too many columns</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:c85question"><i class="fa fa-check"></i><b>9.1.1</b> Scientific question</a></li>
+<li class="chapter" data-level="9.1.2" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:leiden85cohort"><i class="fa fa-check"></i><b>9.1.2</b> Leiden 85+ Cohort</a></li>
+<li class="chapter" data-level="9.1.3" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:exploration"><i class="fa fa-check"></i><b>9.1.3</b> Data exploration</a></li>
+<li class="chapter" data-level="9.1.4" data-path="sec-toomany.html"><a href="sec-toomany.html#c85:influx"><i class="fa fa-check"></i><b>9.1.4</b> Outflux</a></li>
+<li class="chapter" data-level="9.1.5" data-path="sec-toomany.html"><a href="sec-toomany.html#finding-problems-loggedevents"><i class="fa fa-check"></i><b>9.1.5</b> Finding problems: <code>loggedEvents</code></a></li>
+<li class="chapter" data-level="9.1.6" data-path="sec-toomany.html"><a href="sec-toomany.html#quick-predictor-selection-quickpred"><i class="fa fa-check"></i><b>9.1.6</b> Quick predictor selection: <code>quickpred</code></a></li>
+<li class="chapter" data-level="9.1.7" data-path="sec-toomany.html"><a href="sec-toomany.html#generating-the-imputations"><i class="fa fa-check"></i><b>9.1.7</b> Generating the imputations</a></li>
+<li class="chapter" data-level="9.1.8" data-path="sec-toomany.html"><a href="sec-toomany.html#a-further-improvement-survival-as-predictor-variable"><i class="fa fa-check"></i><b>9.1.8</b> A further improvement: Survival as predictor variable</a></li>
+<li class="chapter" data-level="9.1.9" data-path="sec-toomany.html"><a href="sec-toomany.html#some-guidance"><i class="fa fa-check"></i><b>9.1.9</b> Some guidance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html"><i class="fa fa-check"></i><b>9.2</b> Sensitivity analysis</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#sec:c85causes"><i class="fa fa-check"></i><b>9.2.1</b> Causes and consequences of missing data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#scenarios"><i class="fa fa-check"></i><b>9.2.2</b> Scenarios</a></li>
+<li class="chapter" data-level="9.2.3" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#generating-imputations-under-the-delta-adjustment"><i class="fa fa-check"></i><b>9.2.3</b> Generating imputations under the <span class="math inline">\(\delta\)</span>-adjustment</a></li>
+<li class="chapter" data-level="9.2.4" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#complete-data-model"><i class="fa fa-check"></i><b>9.2.4</b> Complete-data model</a></li>
+<li class="chapter" data-level="9.2.5" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#conclusion-6"><i class="fa fa-check"></i><b>9.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="sec-prevalence.html"><a href="sec-prevalence.html"><i class="fa fa-check"></i><b>9.3</b> Correct prevalence estimates from self-reported data</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="sec-prevalence.html"><a href="sec-prevalence.html#description-of-the-problem"><i class="fa fa-check"></i><b>9.3.1</b> Description of the problem</a></li>
+<li class="chapter" data-level="9.3.2" data-path="sec-prevalence.html"><a href="sec-prevalence.html#sec:dontcount"><i class="fa fa-check"></i><b>9.3.2</b> Don’t count on predictions</a></li>
+<li class="chapter" data-level="9.3.3" data-path="sec-prevalence.html"><a href="sec-prevalence.html#the-main-idea"><i class="fa fa-check"></i><b>9.3.3</b> The main idea</a></li>
+<li class="chapter" data-level="9.3.4" data-path="sec-prevalence.html"><a href="sec-prevalence.html#sec:srcdata"><i class="fa fa-check"></i><b>9.3.4</b> Data</a></li>
+<li class="chapter" data-level="9.3.5" data-path="sec-prevalence.html"><a href="sec-prevalence.html#application"><i class="fa fa-check"></i><b>9.3.5</b> Application</a></li>
+<li class="chapter" data-level="9.3.6" data-path="sec-prevalence.html"><a href="sec-prevalence.html#conclusion-7"><i class="fa fa-check"></i><b>9.3.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html"><i class="fa fa-check"></i><b>9.4</b> Enhancing comparability</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#description-of-the-problem-1"><i class="fa fa-check"></i><b>9.4.1</b> Description of the problem</a></li>
+<li class="chapter" data-level="9.4.2" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:equating"><i class="fa fa-check"></i><b>9.4.2</b> Full dependence: Simple equating</a></li>
+<li class="chapter" data-level="9.4.3" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:walkingimputation"><i class="fa fa-check"></i><b>9.4.3</b> Independence: Imputation without a bridge study</a></li>
+<li class="chapter" data-level="9.4.4" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:untenable"><i class="fa fa-check"></i><b>9.4.4</b> Fully dependent or independent?</a></li>
+<li class="chapter" data-level="9.4.5" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:impbridge"><i class="fa fa-check"></i><b>9.4.5</b> Imputation using a bridge study</a></li>
+<li class="chapter" data-level="9.4.6" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:walkinginterpretation"><i class="fa fa-check"></i><b>9.4.6</b> Interpretation</a></li>
+<li class="chapter" data-level="9.4.7" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#conclusion-8"><i class="fa fa-check"></i><b>9.4.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="ex-ch-measurement.html"><a href="ex-ch-measurement.html"><i class="fa fa-check"></i><b>9.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch-selection.html"><a href="ch-selection.html"><i class="fa fa-check"></i><b>10</b> Selection issues</a><ul>
+<li class="chapter" data-level="10.1" data-path="sec-selective.html"><a href="sec-selective.html"><i class="fa fa-check"></i><b>10.1</b> Correcting for selective drop-out</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="sec-selective.html"><a href="sec-selective.html#pops-study-19-years-follow-up"><i class="fa fa-check"></i><b>10.1.1</b> POPS study: 19 years follow-up</a></li>
+<li class="chapter" data-level="10.1.2" data-path="sec-selective.html"><a href="sec-selective.html#characterization-of-the-drop-out"><i class="fa fa-check"></i><b>10.1.2</b> Characterization of the drop-out</a></li>
+<li class="chapter" data-level="10.1.3" data-path="sec-selective.html"><a href="sec-selective.html#sec:popsmodel"><i class="fa fa-check"></i><b>10.1.3</b> Imputation model</a></li>
+<li class="chapter" data-level="10.1.4" data-path="sec-selective.html"><a href="sec-selective.html#sec:degenerate"><i class="fa fa-check"></i><b>10.1.4</b> A solution “that does not look good”</a></li>
+<li class="chapter" data-level="10.1.5" data-path="sec-selective.html"><a href="sec-selective.html#results"><i class="fa fa-check"></i><b>10.1.5</b> Results</a></li>
+<li class="chapter" data-level="10.1.6" data-path="sec-selective.html"><a href="sec-selective.html#conclusion-9"><i class="fa fa-check"></i><b>10.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html"><i class="fa fa-check"></i><b>10.2</b> Correcting for nonresponse</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#fifth-dutch-growth-study"><i class="fa fa-check"></i><b>10.2.1</b> Fifth Dutch Growth Study</a></li>
+<li class="chapter" data-level="10.2.2" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#nonresponse"><i class="fa fa-check"></i><b>10.2.2</b> Nonresponse</a></li>
+<li class="chapter" data-level="10.2.3" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#comparison-to-known-population-totals"><i class="fa fa-check"></i><b>10.2.3</b> Comparison to known population totals</a></li>
+<li class="chapter" data-level="10.2.4" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#sec:augmentsample"><i class="fa fa-check"></i><b>10.2.4</b> Augmenting the sample</a></li>
+<li class="chapter" data-level="10.2.5" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#imputation-model"><i class="fa fa-check"></i><b>10.2.5</b> Imputation model</a></li>
+<li class="chapter" data-level="10.2.6" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#sec:finalheight"><i class="fa fa-check"></i><b>10.2.6</b> Influence of nonresponse on final height</a></li>
+<li class="chapter" data-level="10.2.7" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#discussion"><i class="fa fa-check"></i><b>10.2.7</b> Discussion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="ex-ch-selection.html"><a href="ex-ch-selection.html"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ch-longitudinal.html"><a href="ch-longitudinal.html"><i class="fa fa-check"></i><b>11</b> Longitudinal data</a><ul>
+<li class="chapter" data-level="11.1" data-path="sec-longandwide.html"><a href="sec-longandwide.html"><i class="fa fa-check"></i><b>11.1</b> Long and wide format</a></li>
+<li class="chapter" data-level="11.2" data-path="sec-fdd.html"><a href="sec-fdd.html"><i class="fa fa-check"></i><b>11.2</b> SE Fireworks Disaster Study</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="sec-fdd.html"><a href="sec-fdd.html#intention-to-treat"><i class="fa fa-check"></i><b>11.2.1</b> Intention to treat</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sec-fdd.html"><a href="sec-fdd.html#imputation-model-1"><i class="fa fa-check"></i><b>11.2.2</b> Imputation model</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sec-fdd.html"><a href="sec-fdd.html#inspecting-imputations"><i class="fa fa-check"></i><b>11.2.3</b> Inspecting imputations</a></li>
+<li class="chapter" data-level="11.2.4" data-path="sec-fdd.html"><a href="sec-fdd.html#complete-data-model-1"><i class="fa fa-check"></i><b>11.2.4</b> Complete-data model</a></li>
+<li class="chapter" data-level="11.2.5" data-path="sec-fdd.html"><a href="sec-fdd.html#results-from-the-complete-data-model"><i class="fa fa-check"></i><b>11.2.5</b> Results from the complete-data model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sec-rastering.html"><a href="sec-rastering.html"><i class="fa fa-check"></i><b>11.3</b> Time raster imputation</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="sec-rastering.html"><a href="sec-rastering.html#change-score"><i class="fa fa-check"></i><b>11.3.1</b> Change score</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:tbcquestion"><i class="fa fa-check"></i><b>11.3.2</b> Scientific question: Critical periods</a></li>
+<li class="chapter" data-level="11.3.3" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:brokenstick"><i class="fa fa-check"></i><b>11.3.3</b> Broken stick model<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="11.3.4" data-path="sec-rastering.html"><a href="sec-rastering.html#terneuzen-birth-cohort"><i class="fa fa-check"></i><b>11.3.4</b> Terneuzen Birth Cohort</a></li>
+<li class="chapter" data-level="11.3.5" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:shrinkage"><i class="fa fa-check"></i><b>11.3.5</b> Shrinkage and the change score<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="11.3.6" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:tbcimpute"><i class="fa fa-check"></i><b>11.3.6</b> Imputation</a></li>
+<li class="chapter" data-level="11.3.7" data-path="sec-rastering.html"><a href="sec-rastering.html#complete-data-model-2"><i class="fa fa-check"></i><b>11.3.7</b> Complete-data model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="conclusion-10.html"><a href="conclusion-10.html"><i class="fa fa-check"></i><b>11.4</b> Conclusion</a></li>
+<li class="chapter" data-level="11.5" data-path="ex-ch-longitudinal.html"><a href="ex-ch-longitudinal.html"><i class="fa fa-check"></i><b>11.5</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>IV Part IV: Extensions</b></span></li>
+<li class="chapter" data-level="12" data-path="ch-conclusion.html"><a href="ch-conclusion.html"><i class="fa fa-check"></i><b>12</b> Conclusion</a><ul>
+<li class="chapter" data-level="12.1" data-path="sec-limitations.html"><a href="sec-limitations.html"><i class="fa fa-check"></i><b>12.1</b> Some dangers, some do’s and some don’ts</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="sec-limitations.html"><a href="sec-limitations.html#some-dangers"><i class="fa fa-check"></i><b>12.1.1</b> Some dangers</a></li>
+<li class="chapter" data-level="12.1.2" data-path="sec-limitations.html"><a href="sec-limitations.html#sec:dos"><i class="fa fa-check"></i><b>12.1.2</b> Some do’s</a></li>
+<li class="chapter" data-level="12.1.3" data-path="sec-limitations.html"><a href="sec-limitations.html#sec:donts"><i class="fa fa-check"></i><b>12.1.3</b> Some don’ts</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="sec-reporting.html"><a href="sec-reporting.html"><i class="fa fa-check"></i><b>12.2</b> Reporting</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="sec-reporting.html"><a href="sec-reporting.html#sec:guidelines"><i class="fa fa-check"></i><b>12.2.1</b> Reporting guidelines</a></li>
+<li class="chapter" data-level="12.2.2" data-path="sec-reporting.html"><a href="sec-reporting.html#sec:template"><i class="fa fa-check"></i><b>12.2.2</b> Template</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="sec-otherapps.html"><a href="sec-otherapps.html"><i class="fa fa-check"></i><b>12.3</b> Other applications</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="sec-otherapps.html"><a href="sec-otherapps.html#synthetic-datasets-for-data-protection"><i class="fa fa-check"></i><b>12.3.1</b> Synthetic datasets for data protection</a></li>
+<li class="chapter" data-level="12.3.2" data-path="sec-otherapps.html"><a href="sec-otherapps.html#analysis-of-coarsened-data"><i class="fa fa-check"></i><b>12.3.2</b> Analysis of coarsened data</a></li>
+<li class="chapter" data-level="12.3.3" data-path="sec-otherapps.html"><a href="sec-otherapps.html#file-matching-of-multiple-datasets"><i class="fa fa-check"></i><b>12.3.3</b> File matching of multiple datasets</a></li>
+<li class="chapter" data-level="12.3.4" data-path="sec-otherapps.html"><a href="sec-otherapps.html#planned-missing-data-for-efficient-designs"><i class="fa fa-check"></i><b>12.3.4</b> Planned missing data for efficient designs</a></li>
+<li class="chapter" data-level="12.3.5" data-path="sec-otherapps.html"><a href="sec-otherapps.html#adjusting-for-verification-bias"><i class="fa fa-check"></i><b>12.3.5</b> Adjusting for verification bias</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="sec-future.html"><a href="sec-future.html"><i class="fa fa-check"></i><b>12.4</b> Future developments</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="sec-future.html"><a href="sec-future.html#derived-variables"><i class="fa fa-check"></i><b>12.4.1</b> Derived variables</a></li>
+<li class="chapter" data-level="12.4.2" data-path="sec-future.html"><a href="sec-future.html#algorithms-for-blocks-and-batches"><i class="fa fa-check"></i><b>12.4.2</b> Algorithms for blocks and batches</a></li>
+<li class="chapter" data-level="12.4.3" data-path="sec-future.html"><a href="sec-future.html#nested-imputation"><i class="fa fa-check"></i><b>12.4.3</b> Nested imputation</a></li>
+<li class="chapter" data-level="12.4.4" data-path="sec-future.html"><a href="sec-future.html#better-trials-with-dynamic-treatment-regimes"><i class="fa fa-check"></i><b>12.4.4</b> Better trials with dynamic treatment regimes</a></li>
+<li class="chapter" data-level="12.4.5" data-path="sec-future.html"><a href="sec-future.html#sec:free"><i class="fa fa-check"></i><b>12.4.5</b> Distribution-free pooling rules</a></li>
+<li class="chapter" data-level="12.4.6" data-path="sec-future.html"><a href="sec-future.html#improved-diagnostic-techniques"><i class="fa fa-check"></i><b>12.4.6</b> Improved diagnostic techniques</a></li>
+<li class="chapter" data-level="12.4.7" data-path="sec-future.html"><a href="sec-future.html#building-block-in-modular-statistics"><i class="fa fa-check"></i><b>12.4.7</b> Building block in modular statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="ex-ch-conclusion.html"><a href="ex-ch-conclusion.html"><i class="fa fa-check"></i><b>12.5</b> Exercises</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="technical-information.html"><a href="technical-information.html"><i class="fa fa-check"></i><b>A</b> Technical information</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org/yihui/bookdown/" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec:multiparameter" class="section level2">
+<h2><span class="header-section-number">5.3</span> Multi-parameter inference</h2>
+<p>There are many situations where we need to test whether a set of parameters is significantly different from zero. For example, if a categorical variable enters the analysis through a set of dummy variables, all parameters related to this set should be tested simultaneously. More generally, ANOVA type of designs can be formulated and tested as a multi-parameter inference regression problem. <span class="citation">Van Ginkel and Kroonenberg (<a href="references.html#ref-VANGINKEL2014">2014</a>)</span> provide many practical examples with missing data.</p>
+<p><span class="citation">Schafer (<a href="references.html#ref-SCHAFER1997">1997</a>)</span> distinguished three types of statistics in multi-parameter tests: <span class="math inline">\(D_1\)</span> (multivariate Wald test), <span class="math inline">\(D_2\)</span> (combining test statistics) and <span class="math inline">\(D_3\)</span> (likelihood ratio test). The next sections outline the idea of each approach, and demonstrate how these tests can be performed as part of the repeated data analyses .</p>
+<div id="sec:wald" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> <span class="math inline">\(D_1\)</span> Multivariate Wald test</h3>
+<p>The multivariate Wald test is an extension of the procedure for scalar quantities as described in Section <a href="sec-inference.html#sec:singlepar">2.4.2</a>. The procedure tests whether <span class="math inline">\(Q = Q_0\)</span>, where <span class="math inline">\(Q_0\)</span> is a <span class="math inline">\(k\)</span>-vector of values under the null hypothesis (typically all zeros). The multivariate Wald test requires an estimate of the variance-covariance matrix <span class="math inline">\(U\)</span> of <span class="math inline">\(\bar Q\)</span>. We could use <span class="math inline">\(T\)</span> from Equation <a href="sec-whyandwhen.html#eq:poolT">(2.20)</a>, but this estimate can be unreliable. The problem is that for small <span class="math inline">\(m\)</span>, the estimate of the between-imputation variance <span class="math inline">\(B\)</span> is unstable, and if <span class="math inline">\(m\leq k\)</span>, it is not even full rank. Thus <span class="math inline">\(T\)</span> can be unreliable if <span class="math inline">\(B\)</span> is a substantial component of <span class="math inline">\(T\)</span>.</p>
+<p><span class="citation">Li, Raghunathan, and Rubin (<a href="references.html#ref-LI1991B">1991</a>)</span> proposed an estimate of <span class="math inline">\(T\)</span> in which <span class="math inline">\(B\)</span> and <span class="math inline">\(\bar U\)</span> are assumed to be proportional to each other. A more stable estimate of the total variance is then <span class="math inline">\(\tilde T = (1+r_1)\bar U\)</span>, where <span class="math inline">\(r_1 = \bar r\)</span> (from Equation <a href="sec-whyandwhen.html#eq:barrm">(2.29)</a>) is the average fraction of missing information.</p>
+<p>Under the assumption that <span class="math inline">\((Q_0 - \bar Q)\)</span> is sufficiently close to a normal distribution, the <span class="math inline">\(D_1\)</span>-statistic</p>
+<p><span class="math display" id="eq:d1">\[
+D_1 = (\bar Q-Q_0)&#39;\tilde T^{-1}(\bar Q-Q_0)/k \tag{5.3}
+\]</span></p>
+<p>follows an <span class="math inline">\(F\)</span>-distribution <span class="math inline">\(F_{k,\nu_w}\)</span> with <span class="math inline">\(k\)</span> and <span class="math inline">\(\nu_1\)</span> degrees of freedom, where</p>
+<p><span class="math display" id="eq:dfwald">\[
+\nu_1 = \left\{\begin{array}
+      {l@{\quad}l}
+    4 + (t-4)[1+(1-2t^{-1})r_1^{-1}]^2 &amp; \mathrm{if} \quad t = k(m-1) &gt; 4\\
+    t(1+k^{-1})(1+r_1^{-1})^2/2 &amp; \mathrm{otherwise}\tag{5.4}
+  \end{array} \right.
+\]</span></p>
+<p>The <span class="math inline">\(p\)</span>-value for <span class="math inline">\(D_1\)</span> is</p>
+<p><span class="math display" id="eq:waldp">\[
+P_1 = \Pr[F_{k,\nu_1}&gt;D_1]  \tag{5.5}
+\]</span></p>
+<p>The assumption that the fraction of missing information is the same across all variables and statistics is unlikely to hold in practice. However, <span class="citation">Li, Raghunathan, and Rubin (<a href="references.html#ref-LI1991B">1991</a>)</span> provide encouraging simulation results for situations where this assumption is violated. Except for some extreme cases, the level of the procedure was close to the nominal level, while the loss of power from such violations was modest.</p>
+<p>The work of <span class="citation">Li, Raghunathan, and Rubin (<a href="references.html#ref-LI1991B">1991</a>)</span> is based on large samples. <span class="citation">Reiter (<a href="references.html#ref-REITER2007">2007</a>)</span> developed a small-sample version for the degrees of freedom using ideas similar to <span class="citation">Barnard and Rubin (<a href="references.html#ref-BARNARD1999A">1999</a>)</span>. Reiter’s <span class="math inline">\(\nu_f\)</span> spans several lines of text, and is not given here. A simulation study conducted by Reiter showed marked improvements over the earlier formulation, especially in smaller samples. Simulation work by <span class="citation">Grund, Lüdtke, and Robitzsch (<a href="references.html#ref-GRUND2016a">2016</a><a href="references.html#ref-GRUND2016a">b</a>)</span> and <span class="citation">Liu and Enders (<a href="references.html#ref-LIU2017">2017</a>)</span> confirmed that for small samples (say <span class="math inline">\(n &lt; 50\)</span>) <span class="math inline">\(\nu_f\)</span> is more conservative than <span class="math inline">\(\nu_1\)</span>, and produced type I errors rates closer to their nomimal value. <span class="citation">Raghunathan (<a href="references.html#ref-RAGHU2015">2015</a>)</span> recently provided an elegant alternative based on Equation <a href="sec-whyandwhen.html#eq:newnu">(2.32)</a> with <span class="math inline">\(\nu_\mathrm{obs}\)</span> substituted as <span class="math inline">\(\nu_\mathrm{obs} = (\nu_\mathrm{com}+1)\nu_\mathrm{com}/(\nu_\mathrm{com}+3)(1+\bar r)\)</span>. It is not yet known how this correction compares to <span class="math inline">\(\nu_1\)</span> and <span class="math inline">\(\nu_f\)</span>.</p>
+<p>The <code>mice</code> package implements the multivariate Wald test as the <code>D1()</code> function. Let us impute the <code>nhanes2</code> data, and fit the linear regression of <code>chl</code> on <code>age</code> and <code>bmi</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imp &lt;-<span class="st"> </span><span class="kw">mice</span>(nhanes2, <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>, <span class="dt">seed =</span> <span class="dv">71242</span>)
+m2 &lt;-<span class="st"> </span><span class="kw">with</span>(imp, <span class="kw">lm</span>(chl <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi))
+<span class="kw">pool</span>(m2)</code></pre></div>
+<pre><code>Class: mipo    m = 10 
+            estimate    ubar       b       t dfcom    df   riv
+(Intercept)    -2.98 2896.71 1266.44 4289.79    21 11.28 0.481
+age40-59       45.73  296.37  152.46  464.07    21 10.43 0.566
+age60-99       65.62  342.71  229.04  594.66    21  9.08 0.735
+bmi             6.40    3.26    1.41    4.81    21 11.32 0.477
+            lambda   fmi
+(Intercept)  0.325 0.419
+age40-59     0.361 0.456
+age60-99     0.424 0.519
+bmi          0.323 0.418</code></pre>
+<p>We want to simplify the model by testing for <code>age</code>. Since <code>age</code> is a categorical variable with three categories, removing it involves deleting two columns at the same time, hence the univariate Wald test does not apply. The solution is to fit the model without <code>age</code>, and run the multivariate Wald statistic to test whether the model estimates are different.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">with</span>(imp, <span class="kw">lm</span>(chl <span class="op">~</span><span class="st"> </span>bmi))
+<span class="kw">summary</span>(<span class="kw">D1</span>(m2, m1))</code></pre></div>
+<pre><code>
+Models:
+ model         formula
+     1 chl ~ age + bmi
+     2       chl ~ bmi
+
+Comparisons:
+   test statistic df1  df2 df.com p.value  riv
+ 1 ~~ 2      4.23   2 14.4     21   0.036 0.63
+
+Number of imputations:  10   Method D1</code></pre>
+<p>Since the Wald test is significant, removing <code>age</code> from the model reduces its predictive power.</p>
+</div>
+<div id="sec:chi" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> <span class="math inline">\(D_2\)</span> Combining test statistics<span class="math inline">\(^\spadesuit\)</span></h3>
+<p>The multivariate Wald test may become cumbersome when <span class="math inline">\(k\)</span> is large, or when many tests are to be done. Some analytic models may not produce an estimate of <span class="math inline">\(Q\)</span>, or of its variance-covariance matrix. For example, nonparametric tests like the sign test or Wilcoxon-Mann-Whitney produce a <span class="math inline">\(p\)</span>-value, and no estimate of <span class="math inline">\(Q\)</span>. In cases like these, we can still calculate a combined significance test using the <span class="math inline">\(m\)</span> test statistics (e.g., <span class="math inline">\(p\)</span>-values, <span class="math inline">\(Z\)</span>-values, <span class="math inline">\(\chi^2\)</span>-values, <span class="math inline">\(t\)</span>-values) as input.</p>
+<p><span class="citation">Rubin (<a href="references.html#ref-RUBIN1987">1987</a><a href="references.html#ref-RUBIN1987">b</a>, 87)</span> and <span class="citation">Li et al. (<a href="references.html#ref-LI1991">1991</a>)</span> describe a procedure for pooling the values of the test statistics. Suppose that <span class="math inline">\(d_\ell\)</span> is the test statistic obtained from the analysis of the <span class="math inline">\(\ell^\mathrm{th}\)</span> imputed dataset <span class="math inline">\(Y_\ell\)</span>, <span class="math inline">\(\ell=1,\dots,m\)</span>. Let <span class="math inline">\(\bar d = m^{-1}\sum_\ell d_\ell\)</span> be the average test statistic. The statistic for the combined test is</p>
+<p><span class="math display" id="eq:D2">\[
+D_2 = \frac{\bar dk^{-1}-(m+1)(m-1)^{-1}r_2}{1+r_2}  \tag{5.6}
+\]</span></p>
+<p>where the relative increase of the variance is calculated as</p>
+<p><span class="math display" id="eq:r2">\[
+r_2 = \left(1+\frac{1}{m}\right)\frac{1}{m-1}\sum_{\ell=1}^m\left(\sqrt{d_\ell}-\overline{\sqrt{d}}\right)^2 \tag{5.7}
+\]</span></p>
+<p>with <span class="math inline">\(\overline{\sqrt{d}} = m^{-1}\sum_\ell \sqrt{d_\ell}\)</span>, so that <span class="math inline">\(r_2\)</span> equals the sample variance of <span class="math inline">\(\sqrt{d_1}\)</span>, <span class="math inline">\(\sqrt{d_2}\)</span>, …, <span class="math inline">\(\sqrt{d_m}\)</span> multiplied by <span class="math inline">\((1 + 1/m)\)</span>. The <span class="math inline">\(p\)</span>-value for testing the null hypothesis is</p>
+<p><span class="math display" id="eq:p2">\[
+P_2 = \Pr[F_{k,\nu_2} &gt; D_2] \tag{5.8}
+\]</span></p>
+<p>where</p>
+<p><span class="math display" id="eq:nu2">\[
+\nu_2 = k^{-3/m}(m-1)(1+r_2^{-1})^2  \tag{5.9}
+\]</span></p>
+<p>The procedure assumes that the test statistic is approximately normally distributed. This is clearly not the case for <span class="math inline">\(p\)</span>-values, which follow a uniform distribution under the null. One may transform the <span class="math inline">\(p\)</span>-values to approximate normality, combine and back-transform afterwards. Based on this idea, <span class="citation">Licht (<a href="references.html#ref-LICHT2010">2010</a>, 40–43)</span> proposed a method for obtaining significance levels from repeated <span class="math inline">\(p\)</span>-values similar to Equation <a href="sec-multiparameter.html#eq:D2">(5.6)</a> with custom <span class="math inline">\(r_2\)</span> and <span class="math inline">\(\nu_2\)</span>.</p>
+<p>In context of significance testing for logistic regression, <span class="citation">Eekhout, Wiel, and Heymans (<a href="references.html#ref-EEKHOUT2017">2017</a>)</span> suggest taking the median of the <span class="math inline">\(m\)</span> <span class="math inline">\(p\)</span>-values as the combined <span class="math inline">\(p\)</span>-value, an exceedingly simple method. It nevertheless appears to outperform more sophisticated techniques if the variable to be tested is categorical with more than two categories. It would be useful to explore whether this <em>median <span class="math inline">\(P\)</span> rule</em> has wider validity.</p>
+<p>Let us continue with the previous example. Suppose that our software cannot export the variance-covariance matrix in each repeated analysis, but it does provide a table with the Wald statistics for testing <code>age</code>. The <code>D2</code> function calculates the <span class="math inline">\(D_2\)</span>-statistic and its degrees of freedom as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">D2</span>(m2, m1)</code></pre></div>
+<pre><code>   test statistic df1  df2 df.com p.value  riv
+ 1 ~~ 2      2.26   2 17.6     NA   0.134 1.81</code></pre>
+<p>In contrast to the previous analysis, observe that the <span class="math inline">\(D_2\)</span>-statistic is not significant at an <span class="math inline">\(\alpha\)</span>-level of 0.05. The reason is that the <span class="math inline">\(D_2\)</span> test is less informed by the data, and hence less powerful than the <span class="math inline">\(D_1\)</span> test.</p>
+</div>
+<div id="sec:likelihoodratio" class="section level3">
+<h3><span class="header-section-number">5.3.3</span> <span class="math inline">\(D_3\)</span> Likelihood ratio test<span class="math inline">\(^\spadesuit\)</span></h3>
+<p>The likelihood ratio test <span class="citation">(Meng and Rubin <a href="references.html#ref-MENG1992">1992</a>)</span> is designed to handle situations where one cannot obtain the covariance matrices of the complete-data estimates. This could be the case if the dimensionality of <span class="math inline">\(Q\)</span> is high, which can occur with partially classified contingency tables. For large <span class="math inline">\(n\)</span> the procedure is equivalent to the method of Section <a href="sec-multiparameter.html#sec:wald">5.3.1</a>. The likelihood ratio test is the preferred method for testing random effects <span class="citation">(Singer and Willett <a href="references.html#ref-SINGER2003">2003</a>)</span>, and connects to global model fit statistics in structural equation models <span class="citation">(Enders and Mansolf <a href="references.html#ref-ENDERS2016a">2018</a>)</span>.</p>
+<p>Let the vector <span class="math inline">\(Q\)</span> contain the parameters of interest. We wish to test the hypothesis <span class="math inline">\(Q=Q_0\)</span> for some given <span class="math inline">\(Q_0\)</span>. The usual scenario is that we compare two models, one where <span class="math inline">\(Q\)</span> can vary freely and one more restrictive model that constrains <span class="math inline">\(Q=Q_0\)</span>.</p>
+<p>The procedure for calculating the likelihood ratio test is as follows. First, estimate <span class="math inline">\(\bar Q\)</span> (for the full model) and <span class="math inline">\(\bar Q_0\)</span> (for the restricted model) from the <span class="math inline">\(m\)</span> datasets by Rubin’s rules. Calculate the value of the log-likelihood functions <span class="math inline">\(l(\hat Q_\ell)\)</span> (for the full model) and <span class="math inline">\(l(\hat Q_{0,\ell})\)</span> (for the restricted model), and determine the average of the likelihood ratio tests across the <span class="math inline">\(m\)</span> datasets, i.e.,</p>
+<p><span class="math display" id="eq:hatd">\[
+\hat d = m^{-1} \sum_\ell -2(l(\hat Q_{0,\ell}) - l(\hat Q_\ell))\tag{5.10}
+\]</span></p>
+<p>Then re-estimate the full and restricted models, with their model parameters fixed to <span class="math inline">\(\bar Q\)</span> and <span class="math inline">\(\bar Q_0\)</span>, respectively, and average the corresponding likelihood ratio tests as</p>
+<p><span class="math display" id="eq:bard">\[
+\bar d = m^{-1} \sum_\ell -2(l(\bar Q_{0,\ell}) - l(\bar Q_\ell))\tag{5.11}
+\]</span></p>
+<p>The test statistic proposed by <span class="citation">Meng and Rubin (<a href="references.html#ref-MENG1992">1992</a>)</span> is</p>
+<p><span class="math display" id="eq:D3">\[
+D_3 = \frac{\bar d}{k(1+r_3)}  \tag{5.12}
+\]</span></p>
+<p>where</p>
+<p><span class="math display" id="eq:r3">\[
+r_3 = \frac{m+1}{k(m-1)}(\hat d-\bar d)\tag{5.13}
+\]</span></p>
+<p>estimates the average relative increase in variance due to nonresponse. The quantity <span class="math inline">\(r_3\)</span> is asymptotically equivalent to <span class="math inline">\(\bar r\)</span> from Equation <a href="sec-whyandwhen.html#eq:barrm">(2.29)</a>. The <span class="math inline">\(p\)</span>-value for <span class="math inline">\(D_3\)</span> is equal to</p>
+<p><span class="math display" id="eq:p3">\[
+P_3 = \Pr[F_{k,\nu_3} &gt; D_3]\tag{5.14}
+\]</span></p>
+<p>where <span class="math inline">\(\nu_3=\nu_1\)</span>, or equal Reiter’s correction for small samples.</p>
+<p>The likelihood ratio test does not require normality. For complete data, the likelihood ratio test is invariant to scale changes, which is the reason that many prefer the likelihood ratio scale over the Wald test. However, <span class="citation">Schafer (<a href="references.html#ref-SCHAFER1997">1997</a>, 118)</span> observed that the invariance property is lost in multiple imputation because the averaging operations in Equations <a href="sec-multiparameter.html#eq:hatd">(5.10)</a> and <a href="sec-multiparameter.html#eq:bard">(5.11)</a> may yield somewhat different results under nonlinear transformations of <span class="math inline">\(l(Q)\)</span>. He advised that the best results will be obtained if the distribution of <span class="math inline">\(Q\)</span> is approximately normal. One may transform the parameters to achieve normality, provided that appropriate care is taken to infer that the result is still within the allowable parameter space.</p>
+<p><span class="citation">Liu and Enders (<a href="references.html#ref-LIU2017">2017</a>)</span> found in their simulations that <span class="math inline">\(D_3\)</span> can become negative, a nonsensical value, in some scenarios. They suggest that a value of <span class="math inline">\(r_3 &gt; 10\)</span> or a 1000% increase in sampling variance due to missing data may act as warning signals for this anomaly.</p>
+<p>Routine use of the likelihood ratio statistic has long been hampered by difficulties in calculating the likelihood ratio tests for the models with fixed parameters <span class="math inline">\(\bar Q\)</span> and <span class="math inline">\(\bar Q_0\)</span>. With the advent of the <code>broom</code> package <span class="citation">(Robinson <a href="references.html#ref-ROBINSON2017">2017</a>)</span>, the calculations have become feasible for a wide class of models. The <code>D3()</code> function in <code>mice</code> can be used to calculate the likelihood ratio test. We apply it to the data from previous examples by</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">D3</span>(m2, m1)</code></pre></div>
+<pre><code>   test statistic df1 df2 df.com p.value riv
+ 1 ~~ 2      9.57   2  18    Inf 0.00147 766</code></pre>
+<p>The <span class="math inline">\(D_3\)</span>-statistic strongly indicates that <code>age</code> is a significant predictor. Note however the extremely large value for <span class="math inline">\(r_3\)</span> (column <code>riv</code>), so the result must be taken with a grain of salt. The likely cause for this anomaly could well be the lack of a small-sample correction for this test.</p>
+</div>
+<div id="d_1-d_2-or-d_3" class="section level3">
+<h3><span class="header-section-number">5.3.4</span> <span class="math inline">\(D_1\)</span>, <span class="math inline">\(D_2\)</span> or <span class="math inline">\(D_3\)</span>?</h3>
+<p>If the estimates are approximately normal and if the software can produce the required variance-covariance matrices, we recommend using <span class="math inline">\(D_1\)</span> with an adjustment for small samples if <span class="math inline">\(n &lt; 100\)</span>. <span class="math inline">\(D_1\)</span> is a direct extension of Rubin’s rules to multi-parameter problems, theoretically convincing, mature and widely applied. <span class="math inline">\(D_1\)</span> is insensitive to the assumption of equal fractions of missing information, is well calibrated, works well with small <span class="math inline">\(m\)</span> (unless the fractions of information are large and variable) and suffers only modest loss of power. The relevant literature <span class="citation">(Rubin <a href="references.html#ref-RUBIN1987">1987</a><a href="references.html#ref-RUBIN1987">b</a>; Li, Raghunathan, and Rubin <a href="references.html#ref-LI1991B">1991</a>; Reiter <a href="references.html#ref-REITER2007">2007</a>; Grund, Lüdtke, and Robitzsch <a href="references.html#ref-GRUND2016a">2016</a><a href="references.html#ref-GRUND2016a">b</a>; Liu and Enders <a href="references.html#ref-LIU2017">2017</a>)</span> is quite consistent.</p>
+<p>If only the test statistics are available for pooling, then the <span class="math inline">\(D_2\)</span>-statistic is a good option, provided that the number of imputations <span class="math inline">\(m &gt; 20\)</span>. The test is easy to calculate and applies to different test statistics. For <span class="math inline">\(m &lt; 20\)</span>, the power may be low. <span class="math inline">\(D_2\)</span> tends to become optimistic for high fractions of missing information <span class="math inline">\((&gt; 0.3)\)</span>, and this effect unfortunately increases with sample size <span class="citation">(Grund, Lüdtke, and Robitzsch <a href="references.html#ref-GRUND2016a">2016</a><a href="references.html#ref-GRUND2016a">b</a>)</span>. Thus, careless application of <span class="math inline">\(D_2\)</span> to large datasets with many missing values may yield high rates of false positives.</p>
+<p>The likelihood ratio statistic <span class="math inline">\(D_3\)</span> is theoretically sound. Calculation of <span class="math inline">\(D_3\)</span> requires refitting the repeated analysis models with the estimates constrained to their pooled values. This was once an issue, but probably less so in the future. <span class="math inline">\(D_3\)</span> is asymptotically equivalent to <span class="math inline">\(D_1\)</span>, and may be preferred for theoretical reasons: it does not require normality in the complete-data model, it is often more powerful and it may be more stable than if <span class="math inline">\(k\)</span> is large (as <span class="math inline">\(\bar U\)</span> need not be inverted). <span class="citation">Grund, Lüdtke, and Robitzsch (<a href="references.html#ref-GRUND2016a">2016</a><a href="references.html#ref-GRUND2016a">b</a>)</span>, <span class="citation">Liu and Enders (<a href="references.html#ref-LIU2017">2017</a>)</span> and <span class="citation">Eekhout, Wiel, and Heymans (<a href="references.html#ref-EEKHOUT2017">2017</a>)</span> found that <span class="math inline">\(D_3\)</span> produces Type 1 error rates that were comparable to <span class="math inline">\(D_1\)</span>. <span class="math inline">\(D_3\)</span> tends to be somewhat conservative in smaller samples, especially with high fractions of missing information and with high <span class="math inline">\(k\)</span>. Also, <span class="math inline">\(D_3\)</span> has lower statistical power in some of the extreme scenarios. For small samples, <span class="math inline">\(D_1\)</span> has a slight edge over <span class="math inline">\(D_3\)</span>, so given the current available evidence <span class="math inline">\(D_1\)</span> is the better option for <span class="math inline">\(n &lt; 200\)</span>. In larger samples (<span class="math inline">\(n \geq 200\)</span>) <span class="math inline">\(D_1\)</span> and <span class="math inline">\(D_3\)</span> appear equally good, so the choice between them is mostly a matter of convenience.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-pooling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-stepwise.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

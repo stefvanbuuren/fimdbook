@@ -27,8 +27,8 @@ rmd_files: ["index.Rmd",
             "Rmd/appendix.Rmd",
             "Rmd/references.Rmd"]
 before_chapter_script: "R/before_chapter_script.R"
-url: https\://stefvanbuuren.name/fimd/
-output_dir: "fimd"
+url: https\://stefvanbuuren.github.io/fimd/
+output_dir: "docs"
 github-repo: "stefvanbuuren/fimd"
 cover-image: "fig/tempcover.png"
 

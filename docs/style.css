@@ -1,0 +1,36 @@
+h1 {
+    color: #006CC2B3;
+}
+h2 {
+    color: #006CC2B3;
+}
+h3 {
+    color: #006CC2B3;
+}
+blockquote {
+    color: #B61A51B3;
+}
+caption {
+  color: #006CC2B3;
+  margin-top: 10px;
+}
+
+.part {
+    color: #B61A51B3;
+}
+.caption {
+  color: #006CC2B3;
+  margin-top: 10px;
+}
+
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+

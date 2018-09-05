@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Flexible Imputation of Missing Data, Second Edition">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Flexible Imputation of Missing Data, Second Edition" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="sec-comparative.html">
+<link rel="next" href="future-research.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://stefvanbuuren.name/fimd/"> Flexible Imputation of Missing Data</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="want-the-hardcopy.html"><a href="want-the-hardcopy.html"><i class="fa fa-check"></i>Want the hardcopy?</a></li>
+<li class="chapter" data-level="" data-path="foreword.html"><a href="foreword.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="chapter" data-level="" data-path="preface-to-second-edition.html"><a href="preface-to-second-edition.html"><i class="fa fa-check"></i>Preface to second edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-first-edition.html"><a href="preface-to-first-edition.html"><i class="fa fa-check"></i>Preface to first edition</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a></li>
+<li class="chapter" data-level="" data-path="symbol-description.html"><a href="symbol-description.html"><i class="fa fa-check"></i>Symbol Description</a></li>
+<li class="part"><span><b>I Part I: Basics</b></span></li>
+<li class="chapter" data-level="1" data-path="ch-introduction.html"><a href="ch-introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="sec-problem.html"><a href="sec-problem.html"><i class="fa fa-check"></i><b>1.1</b> The problem of missing data</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-problem.html"><a href="sec-problem.html#sec:current"><i class="fa fa-check"></i><b>1.1.1</b> Current practice</a></li>
+<li class="chapter" data-level="1.1.2" data-path="sec-problem.html"><a href="sec-problem.html#sec:changingperspective"><i class="fa fa-check"></i><b>1.1.2</b> Changing perspective on missing data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-MCAR.html"><a href="sec-MCAR.html"><i class="fa fa-check"></i><b>1.2</b> Concepts of MCAR, MAR and MNAR</a></li>
+<li class="chapter" data-level="1.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html"><i class="fa fa-check"></i><b>1.3</b> Ad-hoc solutions</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:listwise"><i class="fa fa-check"></i><b>1.3.1</b> Listwise deletion</a></li>
+<li class="chapter" data-level="1.3.2" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:pairwise"><i class="fa fa-check"></i><b>1.3.2</b> Pairwise deletion</a></li>
+<li class="chapter" data-level="1.3.3" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:meanimp"><i class="fa fa-check"></i><b>1.3.3</b> Mean imputation</a></li>
+<li class="chapter" data-level="1.3.4" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:regimp"><i class="fa fa-check"></i><b>1.3.4</b> Regression imputation</a></li>
+<li class="chapter" data-level="1.3.5" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:sri"><i class="fa fa-check"></i><b>1.3.5</b> Stochastic regression imputation</a></li>
+<li class="chapter" data-level="1.3.6" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:locf"><i class="fa fa-check"></i><b>1.3.6</b> LOCF and BOCF</a></li>
+<li class="chapter" data-level="1.3.7" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:indicator"><i class="fa fa-check"></i><b>1.3.7</b> Indicator method</a></li>
+<li class="chapter" data-level="1.3.8" data-path="sec-simplesolutions.html"><a href="sec-simplesolutions.html#sec:simplesummary"><i class="fa fa-check"></i><b>1.3.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="sec-nutshell.html"><a href="sec-nutshell.html"><i class="fa fa-check"></i><b>1.4</b> Multiple imputation in a nutshell</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-nutshell.html"><a href="sec-nutshell.html#procedure"><i class="fa fa-check"></i><b>1.4.1</b> Procedure</a></li>
+<li class="chapter" data-level="1.4.2" data-path="sec-nutshell.html"><a href="sec-nutshell.html#reasons-to-use-multiple-imputation"><i class="fa fa-check"></i><b>1.4.2</b> Reasons to use multiple imputation</a></li>
+<li class="chapter" data-level="1.4.3" data-path="sec-nutshell.html"><a href="sec-nutshell.html#sec:miexample"><i class="fa fa-check"></i><b>1.4.3</b> Example of multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-goal.html"><a href="sec-goal.html"><i class="fa fa-check"></i><b>1.5</b> Goal of the book</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html"><i class="fa fa-check"></i><b>1.6</b> What the book does not cover</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:prevention"><i class="fa fa-check"></i><b>1.6.1</b> Prevention</a></li>
+<li class="chapter" data-level="1.6.2" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:weighting"><i class="fa fa-check"></i><b>1.6.2</b> Weighting procedures</a></li>
+<li class="chapter" data-level="1.6.3" data-path="sec-doesnotcover.html"><a href="sec-doesnotcover.html#sec:likelihood"><i class="fa fa-check"></i><b>1.6.3</b> Likelihood-based approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="sec-structure.html"><a href="sec-structure.html"><i class="fa fa-check"></i><b>1.7</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.8" data-path="ex-ch1.html"><a href="ex-ch1.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-mi.html"><a href="ch-mi.html"><i class="fa fa-check"></i><b>2</b> Multiple imputation</a><ul>
+<li class="chapter" data-level="2.1" data-path="sec-historic.html"><a href="sec-historic.html"><i class="fa fa-check"></i><b>2.1</b> Historic overview</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="sec-historic.html"><a href="sec-historic.html#imputation"><i class="fa fa-check"></i><b>2.1.1</b> Imputation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="sec-historic.html"><a href="sec-historic.html#multiple-imputation"><i class="fa fa-check"></i><b>2.1.2</b> Multiple imputation</a></li>
+<li class="chapter" data-level="2.1.3" data-path="sec-historic.html"><a href="sec-historic.html#the-expanding-literature-on-multiple-imputation"><i class="fa fa-check"></i><b>2.1.3</b> The expanding literature on multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html"><i class="fa fa-check"></i><b>2.2</b> Concepts in incomplete data</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#incomplete-data-perspective"><i class="fa fa-check"></i><b>2.2.1</b> Incomplete-data perspective</a></li>
+<li class="chapter" data-level="2.2.2" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#causes-of-missing-data"><i class="fa fa-check"></i><b>2.2.2</b> Causes of missing data</a></li>
+<li class="chapter" data-level="2.2.3" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:notation"><i class="fa fa-check"></i><b>2.2.3</b> Notation</a></li>
+<li class="chapter" data-level="2.2.4" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:MCARreprise"><i class="fa fa-check"></i><b>2.2.4</b> MCAR, MAR and MNAR again</a></li>
+<li class="chapter" data-level="2.2.5" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:ignorable"><i class="fa fa-check"></i><b>2.2.5</b> Ignorable and nonignorable<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.2.6" data-path="sec-idconcepts.html"><a href="sec-idconcepts.html#sec:ignorability"><i class="fa fa-check"></i><b>2.2.6</b> Implications of ignorability</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html"><i class="fa fa-check"></i><b>2.3</b> Why and when multiple imputation works</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:migoal"><i class="fa fa-check"></i><b>2.3.1</b> Goal of multiple imputation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:threesources"><i class="fa fa-check"></i><b>2.3.2</b> Three sources of variation<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.3" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:proper"><i class="fa fa-check"></i><b>2.3.3</b> Proper imputation</a></li>
+<li class="chapter" data-level="2.3.4" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#scope-of-the-imputation-model"><i class="fa fa-check"></i><b>2.3.4</b> Scope of the imputation model</a></li>
+<li class="chapter" data-level="2.3.5" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:varianceratios"><i class="fa fa-check"></i><b>2.3.5</b> Variance ratios<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.6" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#sec:df"><i class="fa fa-check"></i><b>2.3.6</b> Degrees of freedom<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="2.3.7" data-path="sec-whyandwhen.html"><a href="sec-whyandwhen.html#numerical-example"><i class="fa fa-check"></i><b>2.3.7</b> Numerical example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="sec-inference.html"><a href="sec-inference.html"><i class="fa fa-check"></i><b>2.4</b> Statistical intervals and tests</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="sec-inference.html"><a href="sec-inference.html#scalar-or-multi-parameter-inference"><i class="fa fa-check"></i><b>2.4.1</b> Scalar or multi-parameter inference?</a></li>
+<li class="chapter" data-level="2.4.2" data-path="sec-inference.html"><a href="sec-inference.html#sec:singlepar"><i class="fa fa-check"></i><b>2.4.2</b> Scalar inference</a></li>
+<li class="chapter" data-level="2.4.3" data-path="sec-inference.html"><a href="sec-inference.html#numerical-example-1"><i class="fa fa-check"></i><b>2.4.3</b> Numerical example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="sec-evaluation.html"><a href="sec-evaluation.html"><i class="fa fa-check"></i><b>2.5</b> How to evaluate imputation methods</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="sec-evaluation.html"><a href="sec-evaluation.html#simulation-designs-and-performance-measures"><i class="fa fa-check"></i><b>2.5.1</b> Simulation designs and performance measures</a></li>
+<li class="chapter" data-level="2.5.2" data-path="sec-evaluation.html"><a href="sec-evaluation.html#sec:evaluationcriteria"><i class="fa fa-check"></i><b>2.5.2</b> Evaluation criteria</a></li>
+<li class="chapter" data-level="2.5.3" data-path="sec-evaluation.html"><a href="sec-evaluation.html#sec:quantifyingbias"><i class="fa fa-check"></i><b>2.5.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="sec-true.html"><a href="sec-true.html"><i class="fa fa-check"></i><b>2.6</b> Imputation is not prediction</a></li>
+<li class="chapter" data-level="2.7" data-path="sec-when.html"><a href="sec-when.html"><i class="fa fa-check"></i><b>2.7</b> When not to use multiple imputation</a></li>
+<li class="chapter" data-level="2.8" data-path="sec-howmany.html"><a href="sec-howmany.html"><i class="fa fa-check"></i><b>2.8</b> How many imputations?</a></li>
+<li class="chapter" data-level="2.9" data-path="sec-exmi.html"><a href="sec-exmi.html"><i class="fa fa-check"></i><b>2.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch-univariate.html"><a href="ch-univariate.html"><i class="fa fa-check"></i><b>3</b> Univariate missing data</a><ul>
+<li class="chapter" data-level="3.1" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html"><i class="fa fa-check"></i><b>3.1</b> How to generate multiple imputations</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#predict-method"><i class="fa fa-check"></i><b>3.1.1</b> Predict method</a></li>
+<li class="chapter" data-level="3.1.2" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#sec:meth2"><i class="fa fa-check"></i><b>3.1.2</b> Predict + noise method</a></li>
+<li class="chapter" data-level="3.1.3" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#sec:meth3"><i class="fa fa-check"></i><b>3.1.3</b> Predict + noise + parameter uncertainty</a></li>
+<li class="chapter" data-level="3.1.4" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#a-second-predictor"><i class="fa fa-check"></i><b>3.1.4</b> A second predictor</a></li>
+<li class="chapter" data-level="3.1.5" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#drawing-from-the-observed-data"><i class="fa fa-check"></i><b>3.1.5</b> Drawing from the observed data</a></li>
+<li class="chapter" data-level="3.1.6" data-path="how-to-generate-multiple-imputations.html"><a href="how-to-generate-multiple-imputations.html#conclusion"><i class="fa fa-check"></i><b>3.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html"><i class="fa fa-check"></i><b>3.2</b> Imputation under the normal linear normal</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:linearoverview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:linearalgorithm"><i class="fa fa-check"></i><b>3.2.2</b> Algorithms<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.2.3" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:perflin"><i class="fa fa-check"></i><b>3.2.3</b> Performance</a></li>
+<li class="chapter" data-level="3.2.4" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:generateuni"><i class="fa fa-check"></i><b>3.2.4</b> Generating MAR missing data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#sec:generatemulti"><i class="fa fa-check"></i><b>3.2.5</b> MAR missing data generation in multivariate data</a></li>
+<li class="chapter" data-level="3.2.6" data-path="sec-linearnormal.html"><a href="sec-linearnormal.html#conclusion-1"><i class="fa fa-check"></i><b>3.2.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html"><i class="fa fa-check"></i><b>3.3</b> Imputation under non-normal distributions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html#overview"><i class="fa fa-check"></i><b>3.3.1</b> Overview</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sec-nonnormal.html"><a href="sec-nonnormal.html#sec:tdist"><i class="fa fa-check"></i><b>3.3.2</b> Imputation from the <span class="math inline">\(t\)</span>-distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="sec-pmm.html"><a href="sec-pmm.html"><i class="fa fa-check"></i><b>3.4</b> Predictive mean matching</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="sec-pmm.html"><a href="sec-pmm.html#overview-1"><i class="fa fa-check"></i><b>3.4.1</b> Overview</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sec-pmm.html"><a href="sec-pmm.html#sec:pmmcomputation"><i class="fa fa-check"></i><b>3.4.2</b> Computational details<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.4.3" data-path="sec-pmm.html"><a href="sec-pmm.html#number-of-donors"><i class="fa fa-check"></i><b>3.4.3</b> Number of donors</a></li>
+<li class="chapter" data-level="3.4.4" data-path="sec-pmm.html"><a href="sec-pmm.html#pitfalls"><i class="fa fa-check"></i><b>3.4.4</b> Pitfalls</a></li>
+<li class="chapter" data-level="3.4.5" data-path="sec-pmm.html"><a href="sec-pmm.html#conclusion-2"><i class="fa fa-check"></i><b>3.4.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="sec-cart.html"><a href="sec-cart.html"><i class="fa fa-check"></i><b>3.5</b> Classification and regression trees</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="sec-cart.html"><a href="sec-cart.html#sec:cartoverview"><i class="fa fa-check"></i><b>3.5.1</b> Overview</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="sec-categorical.html"><a href="sec-categorical.html"><i class="fa fa-check"></i><b>3.6</b> Categorical data</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="sec-categorical.html"><a href="sec-categorical.html#sec:categoricaloverview"><i class="fa fa-check"></i><b>3.6.1</b> Generalized linear model</a></li>
+<li class="chapter" data-level="3.6.2" data-path="sec-categorical.html"><a href="sec-categorical.html#perfect-predictionspadesuit"><i class="fa fa-check"></i><b>3.6.2</b> Perfect prediction<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="3.6.3" data-path="sec-categorical.html"><a href="sec-categorical.html#evaluation"><i class="fa fa-check"></i><b>3.6.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="other-data-types.html"><a href="other-data-types.html"><i class="fa fa-check"></i><b>3.7</b> Other data types</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="other-data-types.html"><a href="other-data-types.html#sec:count"><i class="fa fa-check"></i><b>3.7.1</b> Count data</a></li>
+<li class="chapter" data-level="3.7.2" data-path="other-data-types.html"><a href="other-data-types.html#sec:semi"><i class="fa fa-check"></i><b>3.7.2</b> Semi-continuous data</a></li>
+<li class="chapter" data-level="3.7.3" data-path="other-data-types.html"><a href="other-data-types.html#sec:censored"><i class="fa fa-check"></i><b>3.7.3</b> Censored, truncated and rounded data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html"><i class="fa fa-check"></i><b>3.8</b> Nonignorable missing data</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:nonignorableoverview"><i class="fa fa-check"></i><b>3.8.1</b> Overview</a></li>
+<li class="chapter" data-level="3.8.2" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:selectionmodel"><i class="fa fa-check"></i><b>3.8.2</b> Selection model</a></li>
+<li class="chapter" data-level="3.8.3" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:patternmixturemodel"><i class="fa fa-check"></i><b>3.8.3</b> Pattern-mixture model</a></li>
+<li class="chapter" data-level="3.8.4" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:convert"><i class="fa fa-check"></i><b>3.8.4</b> Converting selection and pattern-mixture models</a></li>
+<li class="chapter" data-level="3.8.5" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#sec:ch3sensitivity"><i class="fa fa-check"></i><b>3.8.5</b> Sensitivity analysis</a></li>
+<li class="chapter" data-level="3.8.6" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#role-of-sensitivity-analysis"><i class="fa fa-check"></i><b>3.8.6</b> Role of sensitivity analysis</a></li>
+<li class="chapter" data-level="3.8.7" data-path="sec-nonignorable.html"><a href="sec-nonignorable.html#recent-developments"><i class="fa fa-check"></i><b>3.8.7</b> Recent developments</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="ex-ch-univariate.html"><a href="ex-ch-univariate.html"><i class="fa fa-check"></i><b>3.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-multivariate.html"><a href="ch-multivariate.html"><i class="fa fa-check"></i><b>4</b> Multivariate missing data</a><ul>
+<li class="chapter" data-level="4.1" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html"><i class="fa fa-check"></i><b>4.1</b> Missing data pattern</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:patternoverview"><i class="fa fa-check"></i><b>4.1.1</b> Overview</a></li>
+<li class="chapter" data-level="4.1.2" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:mdpattern"><i class="fa fa-check"></i><b>4.1.2</b> Summary statistics</a></li>
+<li class="chapter" data-level="4.1.3" data-path="missing-data-pattern.html"><a href="missing-data-pattern.html#sec:flux"><i class="fa fa-check"></i><b>4.1.3</b> Influx and outflux</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="sec-issues.html"><a href="sec-issues.html"><i class="fa fa-check"></i><b>4.2</b> Issues in multivariate imputation</a></li>
+<li class="chapter" data-level="4.3" data-path="sec-monotone.html"><a href="sec-monotone.html"><i class="fa fa-check"></i><b>4.3</b> Monotone data imputation</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="sec-monotone.html"><a href="sec-monotone.html#sec:monoverview"><i class="fa fa-check"></i><b>4.3.1</b> Overview</a></li>
+<li class="chapter" data-level="4.3.2" data-path="sec-monotone.html"><a href="sec-monotone.html#sec:monalgorithm"><i class="fa fa-check"></i><b>4.3.2</b> Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="sec-JM.html"><a href="sec-JM.html"><i class="fa fa-check"></i><b>4.4</b> Joint modeling</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="sec-JM.html"><a href="sec-JM.html#overview-2"><i class="fa fa-check"></i><b>4.4.1</b> Overview</a></li>
+<li class="chapter" data-level="4.4.2" data-path="sec-JM.html"><a href="sec-JM.html#continuous-data"><i class="fa fa-check"></i><b>4.4.2</b> Continuous data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="sec-JM.html"><a href="sec-JM.html#sec:jmcategorical"><i class="fa fa-check"></i><b>4.4.3</b> Categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="sec-FCS.html"><a href="sec-FCS.html"><i class="fa fa-check"></i><b>4.5</b> Fully conditional specification</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="sec-FCS.html"><a href="sec-FCS.html#overview-3"><i class="fa fa-check"></i><b>4.5.1</b> Overview</a></li>
+<li class="chapter" data-level="4.5.2" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:MICE"><i class="fa fa-check"></i><b>4.5.2</b> The MICE algorithm</a></li>
+<li class="chapter" data-level="4.5.3" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:compatibility"><i class="fa fa-check"></i><b>4.5.3</b> Compatibility<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="4.5.4" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:congeniality"><i class="fa fa-check"></i><b>4.5.4</b> Congeniality or compatibility?</a></li>
+<li class="chapter" data-level="4.5.5" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:modelbased"><i class="fa fa-check"></i><b>4.5.5</b> Model-based and data-based imputation</a></li>
+<li class="chapter" data-level="4.5.6" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:howlarget"><i class="fa fa-check"></i><b>4.5.6</b> Number of iterations</a></li>
+<li class="chapter" data-level="4.5.7" data-path="sec-FCS.html"><a href="sec-FCS.html#sec:slowconvergence"><i class="fa fa-check"></i><b>4.5.7</b> Example of slow convergence</a></li>
+<li class="chapter" data-level="4.5.8" data-path="sec-FCS.html"><a href="sec-FCS.html#performance"><i class="fa fa-check"></i><b>4.5.8</b> Performance</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html"><i class="fa fa-check"></i><b>4.6</b> FCS and JM</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#relations-between-fcs-and-jm"><i class="fa fa-check"></i><b>4.6.1</b> Relations between FCS and JM</a></li>
+<li class="chapter" data-level="4.6.2" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#comparisons"><i class="fa fa-check"></i><b>4.6.2</b> Comparisons</a></li>
+<li class="chapter" data-level="4.6.3" data-path="fcs-and-jm.html"><a href="fcs-and-jm.html#illustration"><i class="fa fa-check"></i><b>4.6.3</b> Illustration</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="mice-extensions.html"><a href="mice-extensions.html"><i class="fa fa-check"></i><b>4.7</b> MICE extensions</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="mice-extensions.html"><a href="mice-extensions.html#skipping-imputations-and-overimputation"><i class="fa fa-check"></i><b>4.7.1</b> Skipping imputations and overimputation</a></li>
+<li class="chapter" data-level="4.7.2" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:blockvar"><i class="fa fa-check"></i><b>4.7.2</b> Blocks of variables, hybrid imputation</a></li>
+<li class="chapter" data-level="4.7.3" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:blockunit"><i class="fa fa-check"></i><b>4.7.3</b> Blocks of units, monotone blocks</a></li>
+<li class="chapter" data-level="4.7.4" data-path="mice-extensions.html"><a href="mice-extensions.html#sec:tile"><i class="fa fa-check"></i><b>4.7.4</b> Tile imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="conclusion-3.html"><a href="conclusion-3.html"><i class="fa fa-check"></i><b>4.8</b> Conclusion</a></li>
+<li class="chapter" data-level="4.9" data-path="ex-ch-multivariate.html"><a href="ex-ch-multivariate.html"><i class="fa fa-check"></i><b>4.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-analysis.html"><a href="ch-analysis.html"><i class="fa fa-check"></i><b>5</b> Analysis of imputed data</a><ul>
+<li class="chapter" data-level="5.1" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>5.1</b> Workflow</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="workflow.html"><a href="workflow.html#sec:goodworkflows"><i class="fa fa-check"></i><b>5.1.1</b> Recommended workflows</a></li>
+<li class="chapter" data-level="5.1.2" data-path="workflow.html"><a href="workflow.html#sec:badworkflowa"><i class="fa fa-check"></i><b>5.1.2</b> Not recommended workflow: Averaging the data</a></li>
+<li class="chapter" data-level="5.1.3" data-path="workflow.html"><a href="workflow.html#sec:badworkflowb"><i class="fa fa-check"></i><b>5.1.3</b> Not recommended workflow: Stack imputed data</a></li>
+<li class="chapter" data-level="5.1.4" data-path="workflow.html"><a href="workflow.html#sec:repeated"><i class="fa fa-check"></i><b>5.1.4</b> Repeated analyses</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sec-pooling.html"><a href="sec-pooling.html"><i class="fa fa-check"></i><b>5.2</b> Parameter pooling</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-pooling.html"><a href="sec-pooling.html#scalar-inference-of-normal-quantities"><i class="fa fa-check"></i><b>5.2.1</b> Scalar inference of normal quantities</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pooling.html"><a href="sec-pooling.html#sec:poolnon"><i class="fa fa-check"></i><b>5.2.2</b> Scalar inference of non-normal quantities</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html"><i class="fa fa-check"></i><b>5.3</b> Multi-parameter inference</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:wald"><i class="fa fa-check"></i><b>5.3.1</b> <span class="math inline">\(D_1\)</span> Multivariate Wald test</a></li>
+<li class="chapter" data-level="5.3.2" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:chi"><i class="fa fa-check"></i><b>5.3.2</b> <span class="math inline">\(D_2\)</span> Combining test statistics<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="5.3.3" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#sec:likelihoodratio"><i class="fa fa-check"></i><b>5.3.3</b> <span class="math inline">\(D_3\)</span> Likelihood ratio test<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="5.3.4" data-path="sec-multiparameter.html"><a href="sec-multiparameter.html#d_1-d_2-or-d_3"><i class="fa fa-check"></i><b>5.3.4</b> <span class="math inline">\(D_1\)</span>, <span class="math inline">\(D_2\)</span> or <span class="math inline">\(D_3\)</span>?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="sec-stepwise.html"><a href="sec-stepwise.html"><i class="fa fa-check"></i><b>5.4</b> Stepwise model selection</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="sec-stepwise.html"><a href="sec-stepwise.html#variable-selection-techniques"><i class="fa fa-check"></i><b>5.4.1</b> Variable selection techniques</a></li>
+<li class="chapter" data-level="5.4.2" data-path="sec-stepwise.html"><a href="sec-stepwise.html#computation"><i class="fa fa-check"></i><b>5.4.2</b> Computation</a></li>
+<li class="chapter" data-level="5.4.3" data-path="sec-stepwise.html"><a href="sec-stepwise.html#sec:optimism"><i class="fa fa-check"></i><b>5.4.3</b> Model optimism</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="parallel-computation.html"><a href="parallel-computation.html"><i class="fa fa-check"></i><b>5.5</b> Parallel computation</a></li>
+<li class="chapter" data-level="5.6" data-path="conclusion-4.html"><a href="conclusion-4.html"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.7" data-path="ex-ch-analysis.html"><a href="ex-ch-analysis.html"><i class="fa fa-check"></i><b>5.7</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II: Advanced techniques</b></span></li>
+<li class="chapter" data-level="6" data-path="ch-practice.html"><a href="ch-practice.html"><i class="fa fa-check"></i><b>6</b> Imputation in practice</a><ul>
+<li class="chapter" data-level="6.1" data-path="sec-choices.html"><a href="sec-choices.html"><i class="fa fa-check"></i><b>6.1</b> Overview of modeling choices</a></li>
+<li class="chapter" data-level="6.2" data-path="sec-whenignorable.html"><a href="sec-whenignorable.html"><i class="fa fa-check"></i><b>6.2</b> Ignorable or nonignorable?</a></li>
+<li class="chapter" data-level="6.3" data-path="sec-modelform.html"><a href="sec-modelform.html"><i class="fa fa-check"></i><b>6.3</b> Model form and predictors</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="sec-modelform.html"><a href="sec-modelform.html#model-form"><i class="fa fa-check"></i><b>6.3.1</b> Model form</a></li>
+<li class="chapter" data-level="6.3.2" data-path="sec-modelform.html"><a href="sec-modelform.html#sec:predictors"><i class="fa fa-check"></i><b>6.3.2</b> Predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="sec-knowledge.html"><a href="sec-knowledge.html"><i class="fa fa-check"></i><b>6.4</b> Derived variables</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:ratio"><i class="fa fa-check"></i><b>6.4.1</b> Ratio of two variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:interactions"><i class="fa fa-check"></i><b>6.4.2</b> Interaction terms</a></li>
+<li class="chapter" data-level="6.4.3" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:quadratic"><i class="fa fa-check"></i><b>6.4.3</b> Quadratic relations<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="6.4.4" data-path="sec-knowledge.html"><a href="sec-knowledge.html#compositional-dataspadesuit"><i class="fa fa-check"></i><b>6.4.4</b> Compositional data<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="6.4.5" data-path="sec-knowledge.html"><a href="sec-knowledge.html#sec:sumscores"><i class="fa fa-check"></i><b>6.4.5</b> Sum scores</a></li>
+<li class="chapter" data-level="6.4.6" data-path="sec-knowledge.html"><a href="sec-knowledge.html#conditional-imputation"><i class="fa fa-check"></i><b>6.4.6</b> Conditional imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="sec-algoptions.html"><a href="sec-algoptions.html"><i class="fa fa-check"></i><b>6.5</b> Algorithmic options</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="sec-algoptions.html"><a href="sec-algoptions.html#sec:visit"><i class="fa fa-check"></i><b>6.5.1</b> Visit sequence</a></li>
+<li class="chapter" data-level="6.5.2" data-path="sec-algoptions.html"><a href="sec-algoptions.html#sec:convergence"><i class="fa fa-check"></i><b>6.5.2</b> Convergence</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html"><i class="fa fa-check"></i><b>6.6</b> Diagnostics</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html#sec:fitversus"><i class="fa fa-check"></i><b>6.6.1</b> Model fit versus distributional discrepancy</a></li>
+<li class="chapter" data-level="6.6.2" data-path="sec-diagnostics.html"><a href="sec-diagnostics.html#diagnostic-graphs"><i class="fa fa-check"></i><b>6.6.2</b> Diagnostic graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="conclusion-5.html"><a href="conclusion-5.html"><i class="fa fa-check"></i><b>6.7</b> Conclusion</a></li>
+<li class="chapter" data-level="6.8" data-path="ex-ch-practice.html"><a href="ex-ch-practice.html"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-multilevel.html"><a href="ch-multilevel.html"><i class="fa fa-check"></i><b>7</b> Multilevel multiple imputation</a><ul>
+<li class="chapter" data-level="7.1" data-path="sec-multi-intro.html"><a href="sec-multi-intro.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-threeformulations.html"><a href="sec-threeformulations.html"><i class="fa fa-check"></i><b>7.2</b> Notation for multilevel models</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-missmult.html"><a href="sec-missmult.html"><i class="fa fa-check"></i><b>7.3</b> Missing values in multilevel data</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="sec-missmult.html"><a href="sec-missmult.html#practical-issues-in-multilevel-imputation"><i class="fa fa-check"></i><b>7.3.1</b> Practical issues in multilevel imputation</a></li>
+<li class="chapter" data-level="7.3.2" data-path="sec-missmult.html"><a href="sec-missmult.html#ad-hoc-solutions-for-multilevel-data"><i class="fa fa-check"></i><b>7.3.2</b> Ad-hoc solutions for multilevel data</a></li>
+<li class="chapter" data-level="7.3.3" data-path="sec-missmult.html"><a href="sec-missmult.html#likelihood-solutions"><i class="fa fa-check"></i><b>7.3.3</b> Likelihood solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="sec-mljoint.html"><a href="sec-mljoint.html"><i class="fa fa-check"></i><b>7.4</b> Multilevel imputation by joint modeling</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html"><i class="fa fa-check"></i><b>7.5</b> Multilevel imputation by fully conditional specification</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html#sec:clustermeans"><i class="fa fa-check"></i><b>7.5.1</b> Add cluster means of predictors</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-mlfcs.html"><a href="sec-mlfcs.html#sec:hetero"><i class="fa fa-check"></i><b>7.5.2</b> Model cluster heterogeneity</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html"><i class="fa fa-check"></i><b>7.6</b> Continuous outcome</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#general-principle"><i class="fa fa-check"></i><b>7.6.1</b> General principle</a></li>
+<li class="chapter" data-level="7.6.2" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#methods"><i class="fa fa-check"></i><b>7.6.2</b> Methods</a></li>
+<li class="chapter" data-level="7.6.3" data-path="sec-multioutcome.html"><a href="sec-multioutcome.html#sec:contexam"><i class="fa fa-check"></i><b>7.6.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html"><i class="fa fa-check"></i><b>7.7</b> Discrete outcome</a><ul>
+<li class="chapter" data-level="7.7.1" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html#methods-1"><i class="fa fa-check"></i><b>7.7.1</b> Methods</a></li>
+<li class="chapter" data-level="7.7.2" data-path="sec-catoutcome.html"><a href="sec-catoutcome.html#example"><i class="fa fa-check"></i><b>7.7.2</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="sec-level2pred.html"><a href="sec-level2pred.html"><i class="fa fa-check"></i><b>7.8</b> Imputation of level-2 variable</a></li>
+<li class="chapter" data-level="7.9" data-path="sec-comparative.html"><a href="sec-comparative.html"><i class="fa fa-check"></i><b>7.9</b> Comparative work</a></li>
+<li class="chapter" data-level="7.10" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html"><i class="fa fa-check"></i><b>7.10</b> Guidelines and advice</a><ul>
+<li class="chapter" data-level="7.10.1" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:emptymodel"><i class="fa fa-check"></i><b>7.10.1</b> Intercept-only model, missing outcomes</a></li>
+<li class="chapter" data-level="7.10.2" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:ri1pred"><i class="fa fa-check"></i><b>7.10.2</b> Random intercepts, missing level-1 predictor</a></li>
+<li class="chapter" data-level="7.10.3" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:wbg"><i class="fa fa-check"></i><b>7.10.3</b> Random intercepts, contextual model</a></li>
+<li class="chapter" data-level="7.10.4" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:ril2"><i class="fa fa-check"></i><b>7.10.4</b> Random intercepts, missing level-2 predictor</a></li>
+<li class="chapter" data-level="7.10.5" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:mlint"><i class="fa fa-check"></i><b>7.10.5</b> Random intercepts, interactions</a></li>
+<li class="chapter" data-level="7.10.6" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:randomslopes"><i class="fa fa-check"></i><b>7.10.6</b> Random slopes, missing outcomes and predictors</a></li>
+<li class="chapter" data-level="7.10.7" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:rsinteractions"><i class="fa fa-check"></i><b>7.10.7</b> Random slopes, interactions</a></li>
+<li class="chapter" data-level="7.10.8" data-path="sec-mlguidelines.html"><a href="sec-mlguidelines.html#sec:recipes"><i class="fa fa-check"></i><b>7.10.8</b> Recipes</a></li>
+</ul></li>
+<li class="chapter" data-level="7.11" data-path="future-research.html"><a href="future-research.html"><i class="fa fa-check"></i><b>7.11</b> Future research</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ch-ice.html"><a href="ch-ice.html"><i class="fa fa-check"></i><b>8</b> Individual causal effects</a><ul>
+<li class="chapter" data-level="8.1" data-path="sec-whyice.html"><a href="sec-whyice.html"><i class="fa fa-check"></i><b>8.1</b> Need for individual causal effects</a></li>
+<li class="chapter" data-level="8.2" data-path="problem-of-causal-inference.html"><a href="problem-of-causal-inference.html"><i class="fa fa-check"></i><b>8.2</b> Problem of causal inference</a></li>
+<li class="chapter" data-level="8.3" data-path="sec-iceframework.html"><a href="sec-iceframework.html"><i class="fa fa-check"></i><b>8.3</b> Framework</a></li>
+<li class="chapter" data-level="8.4" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html"><i class="fa fa-check"></i><b>8.4</b> Generating imputations by FCS</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#naive-fcs"><i class="fa fa-check"></i><b>8.4.1</b> Naive FCS</a></li>
+<li class="chapter" data-level="8.4.2" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#sec:fcsprior"><i class="fa fa-check"></i><b>8.4.2</b> FCS with a prior for <span class="math inline">\(\rho\)</span></a></li>
+<li class="chapter" data-level="8.4.3" data-path="generating-imputations-by-fcs.html"><a href="generating-imputations-by-fcs.html#sec:iceextensions"><i class="fa fa-check"></i><b>8.4.3</b> Extensions</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="bibliographic-notes.html"><a href="bibliographic-notes.html"><i class="fa fa-check"></i><b>8.5</b> Bibliographic notes</a></li>
+</ul></li>
+<li class="part"><span><b>III Part III: Case studies</b></span></li>
+<li class="chapter" data-level="9" data-path="ch-measurement.html"><a href="ch-measurement.html"><i class="fa fa-check"></i><b>9</b> Measurement issues</a><ul>
+<li class="chapter" data-level="9.1" data-path="sec-toomany.html"><a href="sec-toomany.html"><i class="fa fa-check"></i><b>9.1</b> Too many columns</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:c85question"><i class="fa fa-check"></i><b>9.1.1</b> Scientific question</a></li>
+<li class="chapter" data-level="9.1.2" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:leiden85cohort"><i class="fa fa-check"></i><b>9.1.2</b> Leiden 85+ Cohort</a></li>
+<li class="chapter" data-level="9.1.3" data-path="sec-toomany.html"><a href="sec-toomany.html#sec:exploration"><i class="fa fa-check"></i><b>9.1.3</b> Data exploration</a></li>
+<li class="chapter" data-level="9.1.4" data-path="sec-toomany.html"><a href="sec-toomany.html#c85:influx"><i class="fa fa-check"></i><b>9.1.4</b> Outflux</a></li>
+<li class="chapter" data-level="9.1.5" data-path="sec-toomany.html"><a href="sec-toomany.html#finding-problems-loggedevents"><i class="fa fa-check"></i><b>9.1.5</b> Finding problems: <code>loggedEvents</code></a></li>
+<li class="chapter" data-level="9.1.6" data-path="sec-toomany.html"><a href="sec-toomany.html#quick-predictor-selection-quickpred"><i class="fa fa-check"></i><b>9.1.6</b> Quick predictor selection: <code>quickpred</code></a></li>
+<li class="chapter" data-level="9.1.7" data-path="sec-toomany.html"><a href="sec-toomany.html#generating-the-imputations"><i class="fa fa-check"></i><b>9.1.7</b> Generating the imputations</a></li>
+<li class="chapter" data-level="9.1.8" data-path="sec-toomany.html"><a href="sec-toomany.html#a-further-improvement-survival-as-predictor-variable"><i class="fa fa-check"></i><b>9.1.8</b> A further improvement: Survival as predictor variable</a></li>
+<li class="chapter" data-level="9.1.9" data-path="sec-toomany.html"><a href="sec-toomany.html#some-guidance"><i class="fa fa-check"></i><b>9.1.9</b> Some guidance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html"><i class="fa fa-check"></i><b>9.2</b> Sensitivity analysis</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#sec:c85causes"><i class="fa fa-check"></i><b>9.2.1</b> Causes and consequences of missing data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#scenarios"><i class="fa fa-check"></i><b>9.2.2</b> Scenarios</a></li>
+<li class="chapter" data-level="9.2.3" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#generating-imputations-under-the-delta-adjustment"><i class="fa fa-check"></i><b>9.2.3</b> Generating imputations under the <span class="math inline">\(\delta\)</span>-adjustment</a></li>
+<li class="chapter" data-level="9.2.4" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#complete-data-model"><i class="fa fa-check"></i><b>9.2.4</b> Complete-data model</a></li>
+<li class="chapter" data-level="9.2.5" data-path="sec-sensitivity.html"><a href="sec-sensitivity.html#conclusion-6"><i class="fa fa-check"></i><b>9.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="sec-prevalence.html"><a href="sec-prevalence.html"><i class="fa fa-check"></i><b>9.3</b> Correct prevalence estimates from self-reported data</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="sec-prevalence.html"><a href="sec-prevalence.html#description-of-the-problem"><i class="fa fa-check"></i><b>9.3.1</b> Description of the problem</a></li>
+<li class="chapter" data-level="9.3.2" data-path="sec-prevalence.html"><a href="sec-prevalence.html#sec:dontcount"><i class="fa fa-check"></i><b>9.3.2</b> Don’t count on predictions</a></li>
+<li class="chapter" data-level="9.3.3" data-path="sec-prevalence.html"><a href="sec-prevalence.html#the-main-idea"><i class="fa fa-check"></i><b>9.3.3</b> The main idea</a></li>
+<li class="chapter" data-level="9.3.4" data-path="sec-prevalence.html"><a href="sec-prevalence.html#sec:srcdata"><i class="fa fa-check"></i><b>9.3.4</b> Data</a></li>
+<li class="chapter" data-level="9.3.5" data-path="sec-prevalence.html"><a href="sec-prevalence.html#application"><i class="fa fa-check"></i><b>9.3.5</b> Application</a></li>
+<li class="chapter" data-level="9.3.6" data-path="sec-prevalence.html"><a href="sec-prevalence.html#conclusion-7"><i class="fa fa-check"></i><b>9.3.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html"><i class="fa fa-check"></i><b>9.4</b> Enhancing comparability</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#description-of-the-problem-1"><i class="fa fa-check"></i><b>9.4.1</b> Description of the problem</a></li>
+<li class="chapter" data-level="9.4.2" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:equating"><i class="fa fa-check"></i><b>9.4.2</b> Full dependence: Simple equating</a></li>
+<li class="chapter" data-level="9.4.3" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:walkingimputation"><i class="fa fa-check"></i><b>9.4.3</b> Independence: Imputation without a bridge study</a></li>
+<li class="chapter" data-level="9.4.4" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:untenable"><i class="fa fa-check"></i><b>9.4.4</b> Fully dependent or independent?</a></li>
+<li class="chapter" data-level="9.4.5" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:impbridge"><i class="fa fa-check"></i><b>9.4.5</b> Imputation using a bridge study</a></li>
+<li class="chapter" data-level="9.4.6" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#sec:walkinginterpretation"><i class="fa fa-check"></i><b>9.4.6</b> Interpretation</a></li>
+<li class="chapter" data-level="9.4.7" data-path="sec-codingsystems.html"><a href="sec-codingsystems.html#conclusion-8"><i class="fa fa-check"></i><b>9.4.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="ex-ch-measurement.html"><a href="ex-ch-measurement.html"><i class="fa fa-check"></i><b>9.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch-selection.html"><a href="ch-selection.html"><i class="fa fa-check"></i><b>10</b> Selection issues</a><ul>
+<li class="chapter" data-level="10.1" data-path="sec-selective.html"><a href="sec-selective.html"><i class="fa fa-check"></i><b>10.1</b> Correcting for selective drop-out</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="sec-selective.html"><a href="sec-selective.html#pops-study-19-years-follow-up"><i class="fa fa-check"></i><b>10.1.1</b> POPS study: 19 years follow-up</a></li>
+<li class="chapter" data-level="10.1.2" data-path="sec-selective.html"><a href="sec-selective.html#characterization-of-the-drop-out"><i class="fa fa-check"></i><b>10.1.2</b> Characterization of the drop-out</a></li>
+<li class="chapter" data-level="10.1.3" data-path="sec-selective.html"><a href="sec-selective.html#sec:popsmodel"><i class="fa fa-check"></i><b>10.1.3</b> Imputation model</a></li>
+<li class="chapter" data-level="10.1.4" data-path="sec-selective.html"><a href="sec-selective.html#sec:degenerate"><i class="fa fa-check"></i><b>10.1.4</b> A solution “that does not look good”</a></li>
+<li class="chapter" data-level="10.1.5" data-path="sec-selective.html"><a href="sec-selective.html#results"><i class="fa fa-check"></i><b>10.1.5</b> Results</a></li>
+<li class="chapter" data-level="10.1.6" data-path="sec-selective.html"><a href="sec-selective.html#conclusion-9"><i class="fa fa-check"></i><b>10.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html"><i class="fa fa-check"></i><b>10.2</b> Correcting for nonresponse</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#fifth-dutch-growth-study"><i class="fa fa-check"></i><b>10.2.1</b> Fifth Dutch Growth Study</a></li>
+<li class="chapter" data-level="10.2.2" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#nonresponse"><i class="fa fa-check"></i><b>10.2.2</b> Nonresponse</a></li>
+<li class="chapter" data-level="10.2.3" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#comparison-to-known-population-totals"><i class="fa fa-check"></i><b>10.2.3</b> Comparison to known population totals</a></li>
+<li class="chapter" data-level="10.2.4" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#sec:augmentsample"><i class="fa fa-check"></i><b>10.2.4</b> Augmenting the sample</a></li>
+<li class="chapter" data-level="10.2.5" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#imputation-model"><i class="fa fa-check"></i><b>10.2.5</b> Imputation model</a></li>
+<li class="chapter" data-level="10.2.6" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#sec:finalheight"><i class="fa fa-check"></i><b>10.2.6</b> Influence of nonresponse on final height</a></li>
+<li class="chapter" data-level="10.2.7" data-path="sec-nonresponse.html"><a href="sec-nonresponse.html#discussion"><i class="fa fa-check"></i><b>10.2.7</b> Discussion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="ex-ch-selection.html"><a href="ex-ch-selection.html"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ch-longitudinal.html"><a href="ch-longitudinal.html"><i class="fa fa-check"></i><b>11</b> Longitudinal data</a><ul>
+<li class="chapter" data-level="11.1" data-path="sec-longandwide.html"><a href="sec-longandwide.html"><i class="fa fa-check"></i><b>11.1</b> Long and wide format</a></li>
+<li class="chapter" data-level="11.2" data-path="sec-fdd.html"><a href="sec-fdd.html"><i class="fa fa-check"></i><b>11.2</b> SE Fireworks Disaster Study</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="sec-fdd.html"><a href="sec-fdd.html#intention-to-treat"><i class="fa fa-check"></i><b>11.2.1</b> Intention to treat</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sec-fdd.html"><a href="sec-fdd.html#imputation-model-1"><i class="fa fa-check"></i><b>11.2.2</b> Imputation model</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sec-fdd.html"><a href="sec-fdd.html#inspecting-imputations"><i class="fa fa-check"></i><b>11.2.3</b> Inspecting imputations</a></li>
+<li class="chapter" data-level="11.2.4" data-path="sec-fdd.html"><a href="sec-fdd.html#complete-data-model-1"><i class="fa fa-check"></i><b>11.2.4</b> Complete-data model</a></li>
+<li class="chapter" data-level="11.2.5" data-path="sec-fdd.html"><a href="sec-fdd.html#results-from-the-complete-data-model"><i class="fa fa-check"></i><b>11.2.5</b> Results from the complete-data model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sec-rastering.html"><a href="sec-rastering.html"><i class="fa fa-check"></i><b>11.3</b> Time raster imputation</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="sec-rastering.html"><a href="sec-rastering.html#change-score"><i class="fa fa-check"></i><b>11.3.1</b> Change score</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:tbcquestion"><i class="fa fa-check"></i><b>11.3.2</b> Scientific question: Critical periods</a></li>
+<li class="chapter" data-level="11.3.3" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:brokenstick"><i class="fa fa-check"></i><b>11.3.3</b> Broken stick model<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="11.3.4" data-path="sec-rastering.html"><a href="sec-rastering.html#terneuzen-birth-cohort"><i class="fa fa-check"></i><b>11.3.4</b> Terneuzen Birth Cohort</a></li>
+<li class="chapter" data-level="11.3.5" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:shrinkage"><i class="fa fa-check"></i><b>11.3.5</b> Shrinkage and the change score<span class="math inline">\(^\spadesuit\)</span></a></li>
+<li class="chapter" data-level="11.3.6" data-path="sec-rastering.html"><a href="sec-rastering.html#sec:tbcimpute"><i class="fa fa-check"></i><b>11.3.6</b> Imputation</a></li>
+<li class="chapter" data-level="11.3.7" data-path="sec-rastering.html"><a href="sec-rastering.html#complete-data-model-2"><i class="fa fa-check"></i><b>11.3.7</b> Complete-data model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="conclusion-10.html"><a href="conclusion-10.html"><i class="fa fa-check"></i><b>11.4</b> Conclusion</a></li>
+<li class="chapter" data-level="11.5" data-path="ex-ch-longitudinal.html"><a href="ex-ch-longitudinal.html"><i class="fa fa-check"></i><b>11.5</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>IV Part IV: Extensions</b></span></li>
+<li class="chapter" data-level="12" data-path="ch-conclusion.html"><a href="ch-conclusion.html"><i class="fa fa-check"></i><b>12</b> Conclusion</a><ul>
+<li class="chapter" data-level="12.1" data-path="sec-limitations.html"><a href="sec-limitations.html"><i class="fa fa-check"></i><b>12.1</b> Some dangers, some do’s and some don’ts</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="sec-limitations.html"><a href="sec-limitations.html#some-dangers"><i class="fa fa-check"></i><b>12.1.1</b> Some dangers</a></li>
+<li class="chapter" data-level="12.1.2" data-path="sec-limitations.html"><a href="sec-limitations.html#sec:dos"><i class="fa fa-check"></i><b>12.1.2</b> Some do’s</a></li>
+<li class="chapter" data-level="12.1.3" data-path="sec-limitations.html"><a href="sec-limitations.html#sec:donts"><i class="fa fa-check"></i><b>12.1.3</b> Some don’ts</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="sec-reporting.html"><a href="sec-reporting.html"><i class="fa fa-check"></i><b>12.2</b> Reporting</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="sec-reporting.html"><a href="sec-reporting.html#sec:guidelines"><i class="fa fa-check"></i><b>12.2.1</b> Reporting guidelines</a></li>
+<li class="chapter" data-level="12.2.2" data-path="sec-reporting.html"><a href="sec-reporting.html#sec:template"><i class="fa fa-check"></i><b>12.2.2</b> Template</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="sec-otherapps.html"><a href="sec-otherapps.html"><i class="fa fa-check"></i><b>12.3</b> Other applications</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="sec-otherapps.html"><a href="sec-otherapps.html#synthetic-datasets-for-data-protection"><i class="fa fa-check"></i><b>12.3.1</b> Synthetic datasets for data protection</a></li>
+<li class="chapter" data-level="12.3.2" data-path="sec-otherapps.html"><a href="sec-otherapps.html#analysis-of-coarsened-data"><i class="fa fa-check"></i><b>12.3.2</b> Analysis of coarsened data</a></li>
+<li class="chapter" data-level="12.3.3" data-path="sec-otherapps.html"><a href="sec-otherapps.html#file-matching-of-multiple-datasets"><i class="fa fa-check"></i><b>12.3.3</b> File matching of multiple datasets</a></li>
+<li class="chapter" data-level="12.3.4" data-path="sec-otherapps.html"><a href="sec-otherapps.html#planned-missing-data-for-efficient-designs"><i class="fa fa-check"></i><b>12.3.4</b> Planned missing data for efficient designs</a></li>
+<li class="chapter" data-level="12.3.5" data-path="sec-otherapps.html"><a href="sec-otherapps.html#adjusting-for-verification-bias"><i class="fa fa-check"></i><b>12.3.5</b> Adjusting for verification bias</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="sec-future.html"><a href="sec-future.html"><i class="fa fa-check"></i><b>12.4</b> Future developments</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="sec-future.html"><a href="sec-future.html#derived-variables"><i class="fa fa-check"></i><b>12.4.1</b> Derived variables</a></li>
+<li class="chapter" data-level="12.4.2" data-path="sec-future.html"><a href="sec-future.html#algorithms-for-blocks-and-batches"><i class="fa fa-check"></i><b>12.4.2</b> Algorithms for blocks and batches</a></li>
+<li class="chapter" data-level="12.4.3" data-path="sec-future.html"><a href="sec-future.html#nested-imputation"><i class="fa fa-check"></i><b>12.4.3</b> Nested imputation</a></li>
+<li class="chapter" data-level="12.4.4" data-path="sec-future.html"><a href="sec-future.html#better-trials-with-dynamic-treatment-regimes"><i class="fa fa-check"></i><b>12.4.4</b> Better trials with dynamic treatment regimes</a></li>
+<li class="chapter" data-level="12.4.5" data-path="sec-future.html"><a href="sec-future.html#sec:free"><i class="fa fa-check"></i><b>12.4.5</b> Distribution-free pooling rules</a></li>
+<li class="chapter" data-level="12.4.6" data-path="sec-future.html"><a href="sec-future.html#improved-diagnostic-techniques"><i class="fa fa-check"></i><b>12.4.6</b> Improved diagnostic techniques</a></li>
+<li class="chapter" data-level="12.4.7" data-path="sec-future.html"><a href="sec-future.html#building-block-in-modular-statistics"><i class="fa fa-check"></i><b>12.4.7</b> Building block in modular statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="ex-ch-conclusion.html"><a href="ex-ch-conclusion.html"><i class="fa fa-check"></i><b>12.5</b> Exercises</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="technical-information.html"><a href="technical-information.html"><i class="fa fa-check"></i><b>A</b> Technical information</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org/yihui/bookdown/" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec:mlguidelines" class="section level2">
+<h2><span class="header-section-number">7.10</span> Guidelines and advice</h2>
+<p>Many new multilevel methods have seen the light in the last five years. The comparative work as summarized above spawned a wealth of information. This section provides advice, guidelines and worked examples aimed to assist the applied statistician in solving practical multilevel imputation problems. The field moves rapidly, so the recommendations given here may change as more detailed comparative works become available in the future.</p>
+<p>The advice given here builds upon the recommendations and code examples given in Table 6 in <span class="citation">Grund, Lüdtke, and Robitzsch (<a href="references.html#ref-GRUND2018">2018</a><a href="references.html#ref-GRUND2018">b</a>)</span>, supplemented by some of my personal biases.</p>
+<p>There is not yet a fully satisfactory strategy for handling interactions with FCS. In this section, I will use passive imputation <span class="citation">(Van Buuren and Groothuis-Oudshoorn <a href="references.html#ref-VANBUUREN2000">2000</a>)</span>, a technique that allows the user to specify deterministic relations between variables, which, amongst others, is useful for calculating interaction effects within the MICE algorithm. I will use passive imputation to enrich univariate imputation models with two-order interactions, in an attempt to preserve higher-order relations in the data. Passive imputation works reasonably well, and it is easy to apply in standard software, but it is only an approximate solution. In general, the joint distribution of the dependent and explanatory variables tends to become complex when the substantive model contains interactions <span class="citation">(Seaman, Bartlett, and White <a href="references.html#ref-SEAMAN2012">2012</a>; Kim, Sugar, and Belin <a href="references.html#ref-KIM2015">2015</a>)</span>.</p>
+<p>We revisit the <code>brandsma</code> data use in Chapters 4 and 5 of <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span>. For reasons of clarity, the code examples are restricted to a subset of six variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;brandsma&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;mice&quot;</span>)
+dat &lt;-<span class="st"> </span>brandsma[, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;pup&quot;</span>, <span class="st">&quot;lpo&quot;</span>,
+                    <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;ses&quot;</span>, <span class="st">&quot;ssi&quot;</span>)]</code></pre></div>
+<p>There is one cluster variable (<code>sch</code>), one administrative variable (<code>pup</code>), one outcome variable at the pupil level (<code>lpo</code>), two explanatory variables at the pupil level (<code>iqv</code>, <code>ses</code>) and one explanatory variable at the school level (<code>ssi</code>). The cluster variable and pupil number are complete, whereas the others contain missing values.</p>
+<div class="figure"><span id="fig:mdp"></span>
+<img src="fig/ch7-mdp-1.png" alt="Missing data pattern of subset of brandsma data." width="672" />
+<p class="caption">
+Figure 7.5: Missing data pattern of subset of <code>brandsma</code> data.
+</p>
+</div>
+
+<p>Figure <a href="sec-mlguidelines.html#fig:mdp">7.5</a>, with the missing data patterns, reveals that there are 3183 (out of 4016) pupils without missing values. For the remaining sample, most have a missing value in just one variable: 583 pupils have only missing <code>ssi</code>, 175 pupils have only missing <code>lpo</code>, 104 pupils have only missing <code>ses</code> and 11 pupils have only missing <code>lpo</code>. The remaining 50 pupils have two or three missing values. The challenge is to perform the analyses from <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span> using the full set with 4016 pupils.</p>
+<div id="sec:emptymodel" class="section level3">
+<h3><span class="header-section-number">7.10.1</span> Intercept-only model, missing outcomes</h3>
+<p>The intercept-only (or empty) model is the simplest multilevel model. We have already imputed the data according to this model in Section <a href="sec-multioutcome.html#sec:contexam">7.6.3</a>. Here we select the imputations according to the <code>2l.pmm</code> method for further analysis.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>brandsma[, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;lpo&quot;</span>)]
+pred &lt;-<span class="st"> </span><span class="kw">make.predictorMatrix</span>(d)
+pred[<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;sch&quot;</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">2</span>
+imp &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">pred =</span> pred, <span class="dt">meth =</span> <span class="st">&quot;2l.pmm&quot;</span>, <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">maxit =</span> <span class="dv">1</span>,
+            <span class="dt">print =</span> <span class="ot">FALSE</span>, <span class="dt">seed =</span> <span class="dv">152</span>)</code></pre></div>
+<p>The empty model is fitted to the imputed datasets, and the estimates are pooled as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lme4)
+fit &lt;-<span class="st"> </span><span class="kw">with</span>(imp, <span class="kw">lmer</span>(lpo <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>sch), <span class="dt">REML =</span> <span class="ot">FALSE</span>))
+<span class="kw">summary</span>(<span class="kw">pool</span>(fit))</code></pre></div>
+<pre><code>            estimate std.error statistic   df p.value
+(Intercept)     40.9     0.322       127 3368       0</code></pre>
+<p>We may obtain the variance components by the <code>testEstimates()</code> function from <code>mitml</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mitml)
+<span class="kw">testEstimates</span>(<span class="kw">as.mitml.result</span>(fit), <span class="dt">var.comp =</span> <span class="ot">TRUE</span>)<span class="op">$</span>var.comp</code></pre></div>
+<pre><code>                         Estimate
+Intercept~~Intercept|sch   18.021
+Residual~~Residual         63.306
+ICC|sch                     0.222</code></pre>
+<p>See Example 4.1 in <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span> for the interpretation of the estimates from this model.</p>
+</div>
+<div id="sec:ri1pred" class="section level3">
+<h3><span class="header-section-number">7.10.2</span> Random intercepts, missing level-1 predictor</h3>
+<p>Let’s now extend the model in order to quantify the impact of IQ on the language score. This random intercepts model with one explanatory variable is defined by</p>
+<p><span class="math display" id="eq:ril1p">\[
+{{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{10} {{\texttt{iqv}}}_{ic} + u_{0c} + \epsilon_{ic}. \tag{7.10}
+\]</span></p>
+<p>In level notation, the model reads as</p>
+<span class="math display" id="eq:ril1pc" id="eq:ril1pb" id="eq:ril1pa">\[\begin{align}
+{{\texttt{lpo}}}_{ic} &amp; = \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic} \tag{7.11}\\
+\beta_{0c}     &amp; = \gamma_{00} + u_{0c} \tag{7.12}\\
+\beta_{1c}     &amp; = \gamma_{10} \tag{7.13}
+\end{align}\]</span>
+<p>There are missing data in both <code>lpo</code> and <code>iqv</code>. Imputation can be done with both FCS and JM. For FCS my advice is to impute <code>lpo</code> and <code>iqv</code> by <code>2l.pmm</code> with added cluster means. Adding the cluster means is done here to improve compatibility among the conditional specified imputation models (cf. Section <a href="sec-mlfcs.html#sec:clustermeans">7.5.1</a>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>brandsma[, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>)]
+pred &lt;-<span class="st"> </span><span class="kw">make.predictorMatrix</span>(d)
+pred[<span class="st">&quot;lpo&quot;</span>, ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">3</span>)
+pred[<span class="st">&quot;iqv&quot;</span>, ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>)
+imp &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">pred =</span> pred, <span class="dt">meth =</span> <span class="st">&quot;2l.pmm&quot;</span>, <span class="dt">seed =</span> <span class="dv">919</span>,
+            <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>An entry of <code>-2</code> in the predictor matrix signals the cluster variable, whereas an entry of <code>3</code> indicates that the cluster means of the covariates are added as a predictor to the imputation model. Thus, <code>lpo</code> is imputed from <code>iqv</code> <em>and</em> the cluster means of <code>iqv</code>, while <code>iqv</code> is imputed from <code>lpo</code> <em>and</em> the cluster means of <code>lpo</code>. If the residuals are close to normal and the within-cluster error variances are similar, then <code>2l.pan</code> is also a good choice.</p>
+<p>Rescaling the variables as deviations from their mean often helps to improve stability of the estimates. We may rescale <code>lpo</code> to zero-mean by</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d<span class="op">$</span>lpo &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">scale</span>(d<span class="op">$</span>lpo, <span class="dt">scale =</span> <span class="ot">FALSE</span>))</code></pre></div>
+<p>The imputations will also adopt that scale, so we must back-transform the data if we want to analyze the data in the original scale. For the multilevel model with only random intercepts and fixed slopes, rescaling the data to the origin presents no issues since the model is invariant to linear transformations. This is not true when there are random slopes <span class="citation">(Hox, Moerbeek, and Van de Schoot <a href="references.html#ref-HOX2018">2018</a>, 48)</span>. We return to this point in Section <a href="sec-mlguidelines.html#sec:randomslopes">7.10.6</a>.</p>
+<p>The JM can create multivariate imputations by the <code>jomoImpute</code> or <code>panImpute</code> methods. We use <code>panImpute</code> here.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fm1 &lt;-<span class="st"> </span>lpo <span class="op">+</span><span class="st"> </span>iqv <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>sch)
+mit &lt;-<span class="st"> </span>mitml<span class="op">::</span><span class="kw">panImpute</span>(<span class="dt">data =</span> d, <span class="dt">formula =</span> fm1, <span class="dt">m =</span> <span class="dv">5</span>,
+                        <span class="dt">silent =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>which returns as object of class <code>mitml</code>. The <code>panImpute</code> method can also be called from <code>mice</code> by creating one block for all variables as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">blk &lt;-<span class="st"> </span><span class="kw">make.blocks</span>(d, <span class="st">&quot;collect&quot;</span>)
+fm2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">collect =</span> fm1)
+imp2 &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">meth =</span> <span class="st">&quot;panImpute&quot;</span>, <span class="dt">blocks =</span> blk, <span class="dt">form =</span> fm2,
+             <span class="dt">print =</span> <span class="ot">FALSE</span>, <span class="dt">seed =</span> <span class="dv">711</span>)</code></pre></div>
+<p>This uses a new facility in <code>mice</code> that allows imputation of blocks of variables (cf. Section <a href="mice-extensions.html#sec:blockvar">4.7.2</a>). The final estimates on the multiply imputed data under model <a href="#eq:r1">(<strong>??</strong>)</a> can be calculated (from the <code>2l.pmm</code> method) as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">with</span>(imp, <span class="kw">lmer</span>(lpo <span class="op">~</span><span class="st">  </span>iqv <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>sch), <span class="dt">REML =</span> <span class="ot">FALSE</span>))
+<span class="kw">summary</span>(<span class="kw">pool</span>(fit))</code></pre></div>
+<pre><code>            estimate std.error statistic   df p.value
+(Intercept)    40.96    0.2381       172 3305       0
+iqv             2.52    0.0525        48 2119       0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">testEstimates</span>(<span class="kw">as.mitml.result</span>(fit), <span class="dt">var.comp =</span> <span class="ot">TRUE</span>)<span class="op">$</span>var.comp</code></pre></div>
+<pre><code>                         Estimate
+Intercept~~Intercept|sch    9.505
+Residual~~Residual         40.819
+ICC|sch                     0.189</code></pre>
+<p>which produces the estimates for the random intercept model with an effect for IQ with imputed IQ and language scores. See Example 4.2 in <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span> for the interpretation of the parameters.</p>
+</div>
+<div id="sec:wbg" class="section level3">
+<h3><span class="header-section-number">7.10.3</span> Random intercepts, contextual model</h3>
+<p>The ordinary least squares estimator does not distinguish between regressions within groups and between group. This section shows how we can allow for differences in the within- and between-group regressions. The models here parallel Example 4.3 and Table 4.4 in <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span>, and row 1 in Table 6 of <span class="citation">Grund, Lüdtke, and Robitzsch (<a href="references.html#ref-GRUND2018">2018</a><a href="references.html#ref-GRUND2018">b</a>)</span>.</p>
+<p>We continue with the analysis of Section <a href="sec-mlguidelines.html#sec:ri1pred">7.10.2</a>. We extend the complete-data multilevel model by an extra term, as follows:</p>
+<p><span class="math display" id="eq:r2b">\[
+{{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{01} {{\overline{\texttt{iqv}}}}_{c} + \gamma_{10} {{\texttt{iqv}}}_{ic} + u_{0c} + \epsilon_{ic}.\tag{7.14}
+\]</span></p>
+<p>In level notation, we get</p>
+<span class="math display" id="eq:r2levelc" id="eq:r2levelb" id="eq:r2level">\[\begin{align}
+{{\texttt{lpo}}}_{ic} &amp; = \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic} \tag{7.15}\\
+\beta_{0c}            &amp; = \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_{c} + u_{0c} \tag{7.16}\\
+\beta_{1c}            &amp; = \gamma_{10} \tag{7.17}
+\end{align}\]</span>
+<p>where the variable <span class="math inline">\({{\overline{\texttt{iqv}}}}_c\)</span> stands for the cluster means of <code>iqv</code>. The model decomposes the contribution of IQ to the regression into a within-group component with parameter <span class="math inline">\(\gamma_{10}\)</span>, and a between-group component with parameter <span class="math inline">\(\gamma_{01}\)</span>. The interest in contextual analysis lies in testing the null hypothesis that <span class="math inline">\(\gamma_{01} = 0\)</span>. Because of this decomposition we need to add the cluster means of <code>lpo</code> and <code>iqv</code> to the imputation model. Remember however that we just did that in the FCS imputation model of Section <a href="sec-mlguidelines.html#sec:ri1pred">7.10.2</a>. Thus, we may use the same set of imputations to perform the within- and between-group regressions.</p>
+<p>The following code block adds the cluster means to the imputed data, estimates the model parameters on each set, stores the results in a list, and pools the estimated parameters from the fitted models to get the combined results.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span>mice<span class="op">::</span><span class="kw">complete</span>(imp, <span class="st">&quot;long&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(sch, .imp) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">iqm =</span> <span class="kw">mean</span>(iqv)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(.imp) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">do</span>(<span class="dt">model =</span> <span class="kw">lmer</span>(lpo <span class="op">~</span><span class="st"> </span>iqv <span class="op">+</span><span class="st"> </span>iqm <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>sch),
+                  <span class="dt">REML =</span> <span class="ot">FALSE</span>, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as.list</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[[<span class="op">-</span><span class="dv">1</span>]]
+<span class="kw">summary</span>(<span class="kw">pool</span>(res))</code></pre></div>
+<pre><code>            estimate std.error statistic   df    p.value
+(Intercept)    41.02    0.2279    180.04 3056 0.00000000
+iqv             2.47    0.0535     46.20 2392 0.00000000
+iqm             1.17    0.2571      4.55  667 0.00000562</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">testEstimates</span>(res, <span class="dt">var.comp =</span> <span class="ot">TRUE</span>)<span class="op">$</span>var.comp</code></pre></div>
+<pre><code>                         Estimate
+Intercept~~Intercept|sch    8.430
+Residual~~Residual         40.800
+ICC|sch                     0.171</code></pre>
+<p>An alternative could have been to use the <code>imp2</code> object with the imputations under the joint imputation model.</p>
+<p>Binary level-1 predictors can be imputed in the same way using one of the methods listed in Table <a href="sec-level2pred.html#tab:funcmixed">7.4</a>. It is not yet clear which of the methods should be preferred. No univariate methods yet exist for multi-category variables, but <code>2l.pmm</code> may be a workable alternative. Categorical variables can be imputed by <code>jomo</code> <span class="citation">(Quartagno and Carpenter <a href="references.html#ref-QUARTAGNO2017">2017</a>)</span>, <code>jomoImpute</code> <span class="citation">(Grund, Robitzsch, and Lüdtke <a href="references.html#ref-MITML">2018</a>)</span>, by latent class analysis <span class="citation">(Vidotto <a href="references.html#ref-VIDOTTO2018">2018</a>)</span>, or by <code>Blimp</code> <span class="citation">(Keller and Enders <a href="references.html#ref-BLIMP">2017</a>)</span>.</p>
+</div>
+<div id="sec:ril2" class="section level3">
+<h3><span class="header-section-number">7.10.4</span> Random intercepts, missing level-2 predictor</h3>
+<p>The previous section extended the substantive model by the cluster means. Another extension is to add a measured level-2 predictor. For the sake of illustration we add another variable, religious denomination of the school, as a level-2 predictor. The corresponding complete-data model looks very similar:</p>
+<p><span class="math display" id="eq:r3level0">\[
+{{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{01} {{\texttt{den}}}_{c} + \gamma_{10}{{\texttt{iqv}}}_{ic} + u_{0c} + \epsilon_{ic}. \tag{7.18}
+\]</span></p>
+<p>In level notation, we get</p>
+<span class="math display" id="eq:r3levelc" id="eq:r3levelb" id="eq:r3level">\[\begin{align}
+{{\texttt{lpo}}}_{ic} &amp; = \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic} \tag{7.19}\\
+\beta_{0c}     &amp; = \gamma_{00} + \gamma_{01}{{\texttt{den}}}_{c} + u_{0c} \tag{7.20}\\
+\beta_{1c}     &amp; = \gamma_{10} \tag{7.21}
+\end{align}\]</span>
+<p>The missing values occur in <code>lpo</code>, <code>iqv</code> and <code>den</code>. The difference with model <a href="sec-mlguidelines.html#eq:r2b">(7.14)</a> is that <code>den</code> is a measured variable, so the value is identical for all members of the same cluster. If <code>den</code> is missing, it is missing for the entire cluster. Imputing a missing level-2 predictor is done by forming an imputation model at the cluster level.</p>
+<p>Imputation can be done with both FCS and JM (cf. Table 6, row 3 in <span class="citation">Grund, Lüdtke, and Robitzsch (<a href="references.html#ref-GRUND2018">2018</a><a href="references.html#ref-GRUND2018">b</a>)</span>). For FCS, the advice is to include aggregates of all level-1 variables into the cluster level imputation model. Methods <code>2lonly.norm</code> and <code>2lonly.pmm</code> add the means of all level-1 variables as predictors, and subsequently follow the rules for single-level imputation at level-2.</p>
+<p>The following code block imputes missing values in the 2-level predictor <code>den</code>. For reasons of simplicity, I have used <code>2lonly.pmm</code>, so imputations adhere to original four-point scale. This use of predictive mean matching rests on the assumption that the relative frequency of the denomination categories changes with a linear function. Alternatively, one might opt for a true categorical method to impute <code>den</code>, which would introduce additional parameters into the imputation model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>brandsma[, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;den&quot;</span>)]
+meth &lt;-<span class="st"> </span><span class="kw">make.method</span>(d)
+meth[<span class="kw">c</span>(<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;den&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;2l.pmm&quot;</span>, <span class="st">&quot;2l.pmm&quot;</span>,
+                                  <span class="st">&quot;2lonly.pmm&quot;</span>)
+pred &lt;-<span class="st"> </span><span class="kw">make.predictorMatrix</span>(d)
+pred[<span class="st">&quot;lpo&quot;</span>, ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>)
+pred[<span class="st">&quot;iqv&quot;</span>, ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">1</span>)
+pred[<span class="st">&quot;den&quot;</span>, ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)
+imp &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">pred =</span> pred, <span class="dt">meth =</span> meth, <span class="dt">seed =</span> <span class="dv">418</span>,
+            <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>The following statements address the same imputation task as a joint model by <code>jomoImpute</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d<span class="op">$</span>den &lt;-<span class="st"> </span><span class="kw">as.factor</span>(d<span class="op">$</span>den)
+fml &lt;-<span class="st"> </span><span class="kw">list</span>(lpo <span class="op">+</span><span class="st"> </span>iqv <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>sch), den <span class="op">~</span><span class="st"> </span><span class="dv">1</span>)
+mit &lt;-<span class="st"> </span>mitml<span class="op">::</span><span class="kw">jomoImpute</span>(<span class="dt">data =</span> d, <span class="dt">formula =</span> fml, <span class="dt">m =</span> <span class="dv">10</span>,
+                         <span class="dt">silent =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>An alternative is to call <code>jomoImpute()</code> from <code>mice</code>, as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">blk &lt;-<span class="st"> </span><span class="kw">make.blocks</span>(d, <span class="st">&quot;collect&quot;</span>)
+fm2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">collect =</span> fml)
+imp2 &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">meth =</span> <span class="st">&quot;jomoImpute&quot;</span>, <span class="dt">blocks =</span> blk, <span class="dt">form =</span> fm2,
+             <span class="dt">print =</span> <span class="ot">FALSE</span>, <span class="dt">seed =</span> <span class="dv">418</span>, <span class="dt">maxit =</span> <span class="dv">1</span>,
+             <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">n.burn =</span> <span class="dv">100</span>)</code></pre></div>
+<p>Because <code>mice</code> calls <code>jomoImpute</code> per replication, the latter method can be slow because the entire burn-in sequence is re-run for every call. Inspection of the trace lines revealed that autocorrelations were low and convergence was quick. To improve speed, the number of burn-in iterations was lowered from <code>n.burn = 5000</code> (default) to <code>n.burn = 100</code>. The total number of iterations was set as <code>maxit = 1</code>, since all variables were members of the same block.</p>
+<div class="figure"><span id="fig:mladens"></span>
+<img src="fig/ch7-mladens-1.png" alt="Density plots for language score and denomination after jomoImpute (top) and 2l.pmm (bottom)." width="672" />
+<p class="caption">
+Figure 7.6: Density plots for language score and denomination after <code>jomoImpute</code> (top) and <code>2l.pmm</code> (bottom).
+</p>
+</div>
+
+<p>Figure <a href="sec-mlguidelines.html#fig:mladens">7.6</a> shows the density plots of the observed and imputed data after applying the joint mixed normal/categorical model, and after predictive mean matching. Both methods handle categorical data, so the figures for <code>den</code> have multiple modes. The imputations of <code>lpo</code> under JM and FCS are very similar, with <code>jomoImpute</code> slightly closer to normality. The complete-data analysis on the multiply imputed data can be fitted as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">with</span>(imp, <span class="kw">lmer</span>(lpo <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>iqv <span class="op">+</span><span class="st"> </span><span class="kw">as.factor</span>(den)
+                      <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>sch), <span class="dt">REML =</span> <span class="ot">FALSE</span>))
+<span class="kw">summary</span>(<span class="kw">pool</span>(fit))</code></pre></div>
+<pre><code>                estimate std.error statistic   df  p.value
+(Intercept)       40.071    0.4549     88.09  187 0.000000
+iqv                2.516    0.0532     47.34 1242 0.000000
+as.factor(den)2    2.041    0.5925      3.45  430 0.000589
+as.factor(den)3    0.234    0.6519      0.36  285 0.719226
+as.factor(den)4    1.843    1.1642      1.58 1041 0.113706</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">testEstimates</span>(<span class="kw">as.mitml.result</span>(fit), <span class="dt">var.comp =</span> <span class="ot">TRUE</span>)<span class="op">$</span>var.comp</code></pre></div>
+<pre><code>                         Estimate
+Intercept~~Intercept|sch    8.621
+Residual~~Residual         40.761
+ICC|sch                     0.175</code></pre>
+</div>
+<div id="sec:mlint" class="section level3">
+<h3><span class="header-section-number">7.10.5</span> Random intercepts, interactions</h3>
+<p>The random intercepts model may have predictors at level-1, at level-2, and possibly interactions within and/or across levels. A level-2 variable can be a level-1 aggregate (e.g., as in Section <a href="sec-mlguidelines.html#sec:wbg">7.10.3</a>), or a measured level-2 variable (as in Section <a href="sec-mlguidelines.html#sec:ril2">7.10.4</a>). Missing values in the measured variables will propagate through the interaction terms. This section suggests imputation methods for the model with random intercepts and interactions.</p>
+<p>We continue with the <code>brandsma</code> data, and include three types of multiplicative interactions among the predictors into the model:</p>
+<ul>
+<li><p>a level-1 interaction, e.g., <span class="math inline">\({{\texttt{iqv}}}_{ic} \times {{\texttt{sex}}}_{ic}\)</span>;</p></li>
+<li><p>a cross-level interaction, e.g., <span class="math inline">\({{\texttt{sex}}}_{ic} \times {{\texttt{den}}}_c\)</span>;</p></li>
+<li><p>a level-2 interaction, e.g., <span class="math inline">\({{\overline{\texttt{iqv}}}}_c \times {{\texttt{den}}}_c\)</span>.</p></li>
+</ul>
+<p>The extended model in composite notation is defined by:</p>
+<span class="math display">\[\begin{align}
+{{\texttt{lpo}}}_{ic} = &amp; \gamma_{00} + \gamma_{10}{{\texttt{iqv}}}_{ic} + \gamma_{20}{{\texttt{sex}}}_{ic} + \gamma_{30}{{\texttt{iqv}}}_{ic}{{\texttt{sex}}}_{ic} + \gamma_{40}{{\texttt{sex}}}_{ic}{{\texttt{den}}}_c + \\
+ &amp; \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\texttt{den}}}_c + \gamma_{03}{{\overline{\texttt{iqv}}}}_c{{\texttt{den}}}_c + u_{0c} + \epsilon_{ic}.
+ \end{align}\]</span>
+<p>In level notation, the model is</p>
+<span class="math display">\[\begin{align}
+{{\texttt{lpo}}}_{ic} &amp; = \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \beta_{2c}{{\texttt{sex}}}_{ic} + \beta_{3c}{{\texttt{iqv}}}_{ic}{{\texttt{sex}}}_{ic} + \beta_{4c}{{\texttt{sex}}}_{ic}{{\texttt{den}}}_c + \epsilon_{ic}\\
+\beta_{0c}     &amp; = \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\texttt{den}}}_c + \gamma_{03}{{\overline{\texttt{iqv}}}}_c{{\overline{\texttt{den}}}}_c + u_{0c}\\
+\beta_{1c}     &amp; = \gamma_{10}\\
+\beta_{2c}     &amp; = \gamma_{20}\\
+\beta_{3c}     &amp; = \gamma_{30}\\
+\beta_{4c}     &amp; = \gamma_{40}\\
+\end{align}\]</span>
+<p>How should we impute the missing values in <code>lpo</code>, <code>iqv</code>, <code>sex</code> and <code>den</code>, and obtain valid estimates for the interaction term? <span class="citation">Grund, Lüdtke, and Robitzsch (<a href="references.html#ref-GRUND2018">2018</a><a href="references.html#ref-GRUND2018">b</a>)</span> recommend FCS with passive imputation of the interaction terms. As a first step, we initialize a number of derived variables. ` `</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>brandsma[, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;den&quot;</span>)]
+d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(d, <span class="dt">lpm =</span> <span class="ot">NA</span>, <span class="dt">iqm =</span> <span class="ot">NA</span>, <span class="dt">sxm =</span> <span class="ot">NA</span>,
+                <span class="dt">iqd =</span> <span class="ot">NA</span>, <span class="dt">lpd =</span> <span class="ot">NA</span>,
+                <span class="dt">iqd.sex =</span> <span class="ot">NA</span>, <span class="dt">lpd.sex =</span> <span class="ot">NA</span>, <span class="dt">iqd.lpd =</span> <span class="ot">NA</span>,
+                <span class="dt">iqd.den =</span> <span class="ot">NA</span>, <span class="dt">sex.den =</span> <span class="ot">NA</span>, <span class="dt">lpd.den =</span> <span class="ot">NA</span>,
+                <span class="dt">iqm.den =</span> <span class="ot">NA</span>, <span class="dt">sxm.den =</span> <span class="ot">NA</span>, <span class="dt">lpm.den =</span> <span class="ot">NA</span>)</code></pre></div>
+<p>The new variables <code>lpm</code>, <code>iqm</code> and <code>sxm</code> will hold the cluster means of <code>lpo</code>, <code>iqv</code> and <code>sex</code>, respectively. Variables <code>iqd</code> and <code>lpd</code> will hold the values of <code>iqv</code> and <code>lpo</code> in deviations from their cluster means. Variables <code>iqd.sex</code>, <code>lpd.sex</code> and <code>iqd.lpd</code> are two-way interactions of level-1 variables scaled as deviations from the cluster means. Variables <code>iqd.den</code>, <code>sex.den</code> and <code>lpd.den</code> are cross-level interactions. Finally, <code>iqm.den</code>, <code>sxm.den</code> and <code>lpm.den</code> are interactions at level-2. For simplicity, we ignore further level-2 interactions between <code>iqm</code>, <code>sxm</code> and <code>lpm</code>.</p>
+<p>The idea is that we impute <code>lpo</code>, <code>iqv</code>, <code>sex</code> and <code>den</code>, and update the other variables accordingly. Level-1 variables are imputed by two-level predictive mean matching, and include as predictor the other level-1 variables, the two-way interactions between the other level-1 variables (in deviations from their group means), level-2 variables, and cross-level interactions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># level-1 variables</span>
+meth &lt;-<span class="st"> </span><span class="kw">make.method</span>(d)
+meth[<span class="kw">c</span>(<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;sex&quot;</span>)] &lt;-<span class="st"> &quot;2l.pmm&quot;</span>
+
+pred &lt;-<span class="st"> </span><span class="kw">make.predictorMatrix</span>(d)
+pred[,] &lt;-<span class="st"> </span><span class="dv">0</span>
+pred[, <span class="st">&quot;sch&quot;</span>] &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">2</span>
+codes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">6</span>))
+pred[<span class="st">&quot;lpo&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;iqd.sex&quot;</span>, <span class="st">&quot;sex.den&quot;</span>, <span class="st">&quot;iqd.den&quot;</span>,
+              <span class="st">&quot;den&quot;</span>, <span class="st">&quot;iqm.den&quot;</span>, <span class="st">&quot;sxm.den&quot;</span>)] &lt;-<span class="st"> </span>codes
+pred[<span class="st">&quot;iqv&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;lpd.sex&quot;</span>, <span class="st">&quot;sex.den&quot;</span>, <span class="st">&quot;lpd.den&quot;</span>,
+              <span class="st">&quot;den&quot;</span>, <span class="st">&quot;lpm.den&quot;</span>, <span class="st">&quot;sxm.den&quot;</span>)] &lt;-<span class="st"> </span>codes
+pred[<span class="st">&quot;sex&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;iqd.lpd&quot;</span>, <span class="st">&quot;lpd.den&quot;</span>, <span class="st">&quot;iqd.den&quot;</span>,
+              <span class="st">&quot;den&quot;</span>, <span class="st">&quot;iqm.den&quot;</span>, <span class="st">&quot;lpm.den&quot;</span>)] &lt;-<span class="st"> </span>codes</code></pre></div>
+<p>Level-2 variables are imputed by predictive mean matching on level 2, using as predictors the aggregated level-1 variables, and the aggregated two-way interactions of the level-1 variables, and - if available - other level-2 variables and their two-way interactions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># level-2 variables</span>
+meth[<span class="st">&quot;den&quot;</span>] &lt;-<span class="st"> &quot;2lonly.pmm&quot;</span>
+pred[<span class="st">&quot;den&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;sex&quot;</span>,
+              <span class="st">&quot;iqd.sex&quot;</span>, <span class="st">&quot;lpd.sex&quot;</span>, <span class="st">&quot;iqd.lpd&quot;</span>)] &lt;-<span class="st"> </span><span class="dv">1</span></code></pre></div>
+<p>The <em>transpose</em> of the relevant entries of the predictor matrix illustrates the symmetric structure of the imputation model.</p>
+<pre><code>        lpo iqv sex den
+sch      -2  -2  -2  -2
+lpo       0   3   3   1
+iqv       3   0   3   1
+sex       3   3   0   1
+den       1   1   1   0
+iqd.sex   1   0   0   1
+lpd.sex   0   1   0   1
+iqd.lpd   0   0   1   1
+iqd.den   1   0   1   0
+sex.den   1   1   0   0
+lpd.den   0   1   1   0
+iqm.den   1   0   1   0
+sxm.den   1   1   0   0
+lpm.den   0   1   1   0</code></pre>
+<p>The entries corresponding to the level-1 predictors are coded with a <code>3</code>, indicating that both the original values as well as the cluster means of the predictor are included into the imputation model. Interactions are coded with a <code>1</code>. One could also code these with a <code>3</code>, in order to improve compatibility, but this is not done here because the imputation model becomes too heavy. Because we cannot have the same variable appearing at both sides of the equation, any interaction terms involving the target have been deleted from the conditional imputation models.</p>
+<p>The specification above defines the imputation model for the variables in the data. All other variables (e.g., cluster means, interactions) are calculated on-the-fly by passive imputation. The code below centers <code>iqm</code> and <code>lpo</code> relative to their cluster means.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># derive group means</span>
+meth[<span class="kw">c</span>(<span class="st">&quot;iqm&quot;</span>, <span class="st">&quot;sxm&quot;</span>, <span class="st">&quot;lpm&quot;</span>)] &lt;-<span class="st"> &quot;2l.groupmean&quot;</span>
+pred[<span class="kw">c</span>(<span class="st">&quot;iqm&quot;</span>, <span class="st">&quot;sxm&quot;</span>, <span class="st">&quot;lpm&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;lpo&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="dv">3</span>)
+
+<span class="co"># derive deviations from cluster mean</span>
+meth[<span class="st">&quot;iqd&quot;</span>] &lt;-<span class="st"> &quot;~ I(iqv - iqm)&quot;</span>
+meth[<span class="st">&quot;lpd&quot;</span>] &lt;-<span class="st"> &quot;~ I(lpo - lpm)&quot;</span></code></pre></div>
+<p>The <code>2l.groupmean</code> method from the <code>miceadds</code> package returns the cluster mean pertaining to each observation. Centering on the cluster means is widely practiced, but significantly alters the multilevel model. In the context of imputation, centering on the cluster means often enhances stability and robustness of models to generate imputations, especially if interactions are involved. When the complete-data model uses cluster centering, then the imputation model should also do so. See Section <a href="sec-mlfcs.html#sec:clustermeans">7.5.1</a> for more details.</p>
+<p>The next block of code specifies the interaction effects, by means of passive imputation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># derive interactions</span>
+meth[<span class="st">&quot;iqd.sex&quot;</span>] &lt;-<span class="st"> &quot;~ I(iqd * sex)&quot;</span>
+meth[<span class="st">&quot;lpd.sex&quot;</span>] &lt;-<span class="st"> &quot;~ I(lpd * sex)&quot;</span>
+meth[<span class="st">&quot;iqd.lpd&quot;</span>] &lt;-<span class="st"> &quot;~ I(iqd * lpd)&quot;</span>
+meth[<span class="st">&quot;iqd.den&quot;</span>] &lt;-<span class="st"> &quot;~ I(iqd * den)&quot;</span>
+meth[<span class="st">&quot;sex.den&quot;</span>] &lt;-<span class="st"> &quot;~ I(sex * den)&quot;</span>
+meth[<span class="st">&quot;lpd.den&quot;</span>] &lt;-<span class="st"> &quot;~ I(lpd * den)&quot;</span>
+meth[<span class="st">&quot;iqm.den&quot;</span>] &lt;-<span class="st"> &quot;~ I(iqm * den)&quot;</span>
+meth[<span class="st">&quot;sxm.den&quot;</span>] &lt;-<span class="st"> &quot;~ I(sxm * den)&quot;</span>
+meth[<span class="st">&quot;lpm.den&quot;</span>] &lt;-<span class="st"> &quot;~ I(lpm * den)&quot;</span></code></pre></div>
+<p>The visit sequence specified below updates the relevant derived variables after any of the measured variables is imputed, so that interactions are always in sync. The specification of the imputation model is now complete, so it can be run with <code>mice()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">visit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;lpm&quot;</span>, <span class="st">&quot;lpd&quot;</span>,
+           <span class="st">&quot;lpd.sex&quot;</span>, <span class="st">&quot;iqd.lpd&quot;</span>, <span class="st">&quot;lpd.den&quot;</span>, <span class="st">&quot;lpm.den&quot;</span>,
+           <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;iqm&quot;</span>, <span class="st">&quot;iqd&quot;</span>,
+           <span class="st">&quot;iqd.sex&quot;</span>, <span class="st">&quot;iqd.lpd&quot;</span>, <span class="st">&quot;iqd.den&quot;</span>, <span class="st">&quot;iqm.den&quot;</span>,
+           <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;sxm&quot;</span>,
+           <span class="st">&quot;iqd.sex&quot;</span>, <span class="st">&quot;lpd.sex&quot;</span>, <span class="st">&quot;sex.den&quot;</span>, <span class="st">&quot;sxm.den&quot;</span>,
+           <span class="st">&quot;den&quot;</span>, <span class="st">&quot;iqd.den&quot;</span>, <span class="st">&quot;sex.den&quot;</span>, <span class="st">&quot;lpd.den&quot;</span>,
+           <span class="st">&quot;iqm.den&quot;</span>, <span class="st">&quot;sxm.den&quot;</span>, <span class="st">&quot;lpm.den&quot;</span>)
+
+imp &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">pred =</span> pred, <span class="dt">meth =</span> meth, <span class="dt">seed =</span> <span class="dv">188</span>,
+            <span class="dt">visit =</span> visit, <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>,
+            <span class="dt">allow.na =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>The analysis of the imputed data according to the specified model first transforms <code>den</code> into a categorical variable, and then fits and pools the mixed model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">long &lt;-<span class="st"> </span>mice<span class="op">::</span><span class="kw">complete</span>(imp, <span class="st">&quot;long&quot;</span>, <span class="dt">include =</span> <span class="ot">TRUE</span>)
+long<span class="op">$</span>den &lt;-<span class="st"> </span><span class="kw">as.factor</span>(long<span class="op">$</span>den)
+imp2 &lt;-<span class="st"> </span><span class="kw">as.mids</span>(long)
+fit &lt;-<span class="st"> </span><span class="kw">with</span>(imp2, <span class="kw">lmer</span>(lpo <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>iqv<span class="op">*</span>sex <span class="op">+</span><span class="st"> </span>iqm<span class="op">*</span>den <span class="op">+</span><span class="st"> </span>sex<span class="op">*</span>den
+                      <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>sch), <span class="dt">REML =</span> <span class="ot">FALSE</span>))
+<span class="kw">summary</span>(<span class="kw">pool</span>(fit))</code></pre></div>
+<pre><code>            estimate std.error statistic   df  p.value
+(Intercept)   39.371    0.4620    85.228  660 0.00e+00
+iqv            2.540    0.0742    34.222  391 0.00e+00
+sex            2.503    0.3785     6.613  873 4.95e-11
+iqm            1.497    0.4336     3.453  271 5.68e-04
+den2           1.795    0.6245     2.875  444 4.09e-03
+den3          -0.613    0.6742    -0.909  391 3.63e-01
+den4           1.935    1.4749     1.312  823 1.90e-01
+iqv:sex       -0.139    0.1084    -1.284  192 1.99e-01
+iqm:den2      -0.400    0.6503    -0.615  304 5.39e-01
+iqm:den3      -0.757    0.5757    -1.315  968 1.89e-01
+iqm:den4      -1.841    1.4083    -1.307 1403 1.91e-01
+sex:den2      -0.653    0.5014    -1.302 1372 1.93e-01
+sex:den3       0.787    0.5742     1.371  433 1.71e-01
+sex:den4      -0.370    1.0052    -0.368 1811 7.13e-01</code></pre>
+</div>
+<div id="sec:randomslopes" class="section level3">
+<h3><span class="header-section-number">7.10.6</span> Random slopes, missing outcomes and predictors</h3>
+<p>So far our examples were restricted to models with random intercepts. We continue here with the contextual model that includes random slopes for IQ (cf. Example 5.1 in <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span>). Section <a href="sec-mlguidelines.html#sec:wbg">7.10.3</a> showed how to impute the contextual model. Including random slopes extends the complete-data model as</p>
+<p><span class="math display" id="eq:rs1">\[
+{{\texttt{lpo}}}_{ic} = \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_{c} + \gamma_{10}{{\texttt{iqv}}}_{ic} + u_{0c} + u_{1c} {{\texttt{iqv}}}_{ic} + \epsilon_{ic} \tag{7.22}
+\]</span></p>
+<p>When expressed in level notation, the model is</p>
+<span class="math display" id="eq:rs1levelc" id="eq:rs1levelb" id="eq:rs1level">\[\begin{align}
+{{\texttt{lpo}}}_{ic} &amp; = \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \epsilon_{ic} \tag{7.23}\\
+\beta_{0c}     &amp; = \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_{c} + u_{0c} \tag{7.24}\\
+\beta_{1c}     &amp; = \gamma_{10} + u_{1c} \tag{7.25}
+\end{align}\]</span>
+<p>The addition of the term <span class="math inline">\(u_{1c}\)</span> to the equation for <span class="math inline">\(\beta_{1c}\)</span> allows for <span class="math inline">\(\beta_{1c}\)</span> to vary over clusters, hence the name “random slopes”.</p>
+<p>Missing data may occur in <code>lpo</code> and <code>iqv</code>. <span class="citation">Enders, Mistler, and Keller (<a href="references.html#ref-ENDERS2016">2016</a>)</span> and <span class="citation">Grund, Lüdtke, and Robitzsch (<a href="references.html#ref-GRUND2018">2018</a><a href="references.html#ref-GRUND2018">b</a>)</span> recommend FCS for this problem. The procedure is almost identical to that in Section <a href="sec-mlguidelines.html#sec:ri1pred">7.10.2</a>, but now including both the cluster means and random slopes into the imputation model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>brandsma[, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>)]
+d<span class="op">$</span>lpo &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">scale</span>(d<span class="op">$</span>lpo, <span class="dt">scale =</span> <span class="ot">FALSE</span>))
+pred &lt;-<span class="st"> </span><span class="kw">make.predictorMatrix</span>(d)
+pred[<span class="st">&quot;lpo&quot;</span>, ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">4</span>)
+pred[<span class="st">&quot;iqv&quot;</span>, ] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">0</span>)
+pred</code></pre></div>
+<pre><code>    sch lpo iqv
+sch   0   1   1
+lpo  -2   0   4
+iqv  -2   4   0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imp &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">pred =</span> pred, <span class="dt">meth =</span> <span class="st">&quot;2l.pmm&quot;</span>, <span class="dt">seed =</span> <span class="dv">441</span>,
+            <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>, <span class="dt">maxit =</span> <span class="dv">20</span>)</code></pre></div>
+<p>The entry of <code>4</code> at cell (<code>lpo</code>, <code>iqv</code>) in the predictor matrix adds three variables to the imputation model for <code>lpo</code>: the value of <code>iqv</code>, the cluster means of <code>iqv</code> and the random slopes of <code>iqv</code>. Conversely, imputing <code>iqv</code> adds the three covariates: the values of <code>lpo</code>, the cluster means of <code>lpo</code> and the random slopes of <code>lpo</code>.</p>
+<p>The <code>iqv</code> variable had zero mean in the data, so this could be imputed right away, but <code>lpo</code> needs to be centered around the grand mean in order to reduce the large number of warnings about unstable estimates. It is known that the random slopes model is not invariant to a shift in origin in the predictors <span class="citation">(Hox, Moerbeek, and Van de Schoot <a href="references.html#ref-HOX2018">2018</a>)</span>, so we may wonder what the effect of centering on the grand mean will be on the quality of the imputations. See <span class="citation">Kreft, De Leeuw, and Aiken (<a href="references.html#ref-KREFT1995">1995</a>)</span> and <span class="citation">Enders and Tofighi (<a href="references.html#ref-ENDERS2007">2007</a>)</span> for discussions on the effects of centering in multilevel models. In imputation, we generally have no desire to attach a meaning to the parameters of the imputation model, so centering on the grand mean is often beneficial. Grand-mean centering implies a little extra work because we must back-transform the data if we want the values in the original scale. What remains is that rescaling improves speed and stability, so for the purpose of imputation I recommend to scale level-1 variables in deviations from their means.</p>
+<p>The following code block unfolds the <code>mids</code> object, adds the IQ cluster means, restores the rescaling of <code>lpo</code>, and estimates and combines the parameters of the random slopes model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imp2 &lt;-<span class="st"> </span>mice<span class="op">::</span><span class="kw">complete</span>(imp, <span class="st">&quot;long&quot;</span>, <span class="dt">include =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(sch) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">iqm =</span> <span class="kw">mean</span>(iqv, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
+         <span class="dt">lpo =</span> lpo <span class="op">+</span><span class="st"> </span><span class="kw">mean</span>(brandsma<span class="op">$</span>lpo, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as.mids</span>()
+fit &lt;-<span class="st"> </span><span class="kw">with</span>(imp2, <span class="kw">lmer</span>(lpo <span class="op">~</span><span class="st">  </span>iqv <span class="op">+</span><span class="st"> </span>iqm <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>iqv <span class="op">|</span><span class="st"> </span>sch),
+                       <span class="dt">REML =</span> <span class="ot">FALSE</span>))
+<span class="kw">summary</span>(<span class="kw">pool</span>(fit))</code></pre></div>
+<pre><code>            estimate std.error statistic   df  p.value
+(Intercept)   41.061     0.228    179.85 3508 0.000000
+iqv            2.495     0.063     39.63 1511 0.000000
+iqm            0.975     0.261      3.74  620 0.000185</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">testEstimates</span>(<span class="kw">as.mitml.result</span>(fit), <span class="dt">var.comp =</span> <span class="ot">TRUE</span>)<span class="op">$</span>var.comp</code></pre></div>
+<pre><code>                         Estimate
+Intercept~~Intercept|sch    8.591
+Intercept~~iqv|sch         -0.781
+iqv~~iqv|sch                0.188
+Residual~~Residual         39.791
+ICC|sch                     0.178</code></pre>
+<p>See Example 5.1 in <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span> for the interpretation of these model parameters. Interestingly, if we don’t restore the mean of <code>lpo</code>, the estimated intercept represents the average difference between the observed and imputed language scores. Its value here is <code>-0.271</code> (not shown), so on average pupils without a language test score a little lower than pupils with a score. The difference is not statistically significant (<span class="math inline">\(p = 0.23\)</span>).</p>
+</div>
+<div id="sec:rsinteractions" class="section level3">
+<h3><span class="header-section-number">7.10.7</span> Random slopes, interactions</h3>
+<p>Random slopes models may also include interactions among level-1 predictors, among level-2 predictors, and between level-1 and level-2 predictor (cross-level interactions). This section concentrates on imputation under the model described in Example 5.3 of <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span>. This is a fairly elaborate model that can best be understood in level notation:</p>
+<span class="math display" id="eq:rs2levele" id="eq:rs2leveld" id="eq:rs2levelc" id="eq:rs2levelb" id="eq:rs2levela">\[\begin{align}
+{{\texttt{lpo}}}_{ic} &amp; = \beta_{0c} + \beta_{1c}{{\texttt{iqv}}}_{ic} + \beta_{2c}{{\texttt{ses}}}_{ic} + \beta_{3c}{{\texttt{iqv}}}_{ic}{{\texttt{ses}}}_{ic} + \epsilon_{ic} \tag{7.26}\\
+\beta_{0c}     &amp; = \gamma_{00} + \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\overline{\texttt{ses}}}}_c + \gamma_{03}{{\overline{\texttt{iqv}}}}_c{{\overline{\texttt{ses}}}}_c + u_{0c} \tag{7.27}\\
+\beta_{1c}     &amp; = \gamma_{10} + \gamma_{11}{{\overline{\texttt{iqv}}}}_c + \gamma_{12}{{\overline{\texttt{ses}}}}_c + u_{1c} \tag{7.28}\\
+\beta_{2c}     &amp; = \gamma_{20} + \gamma_{21}{{\overline{\texttt{iqv}}}}_c + \gamma_{22}{{\overline{\texttt{ses}}}}_c + u_{2c} \tag{7.29}\\
+\beta_{3c}     &amp; = \gamma_{30} \tag{7.30}
+\end{align}\]</span>
+<p>which can be reorganized into composite notation as:</p>
+<span class="math display">\[\begin{align}
+{{\texttt{lpo}}}_{ic} = &amp; \gamma_{00} + \gamma_{10}{{\texttt{iqv}}}_{ic} + \gamma_{20}{{\texttt{ses}}}_{ic} + \gamma_{30}{{\texttt{iqv}}}_{ic}{{\texttt{ses}}}_{ic} + \\
+ &amp; \gamma_{01}{{\overline{\texttt{iqv}}}}_c + \gamma_{02}{{\overline{\texttt{ses}}}}_c + \\
+ &amp; \gamma_{11}{{\texttt{iqv}}}_{ic}{{\overline{\texttt{iqv}}}}_c + \gamma_{12}{{\texttt{iqv}}}_{ic}{{\overline{\texttt{ses}}}}_c + \gamma_{21}{{\texttt{ses}}}_{ic}{{\overline{\texttt{iqv}}}}_c + \gamma_{22}{{\texttt{ses}}}_{ic}{{\overline{\texttt{ses}}}}_c + \\
+ &amp; \gamma_{03}{{\overline{\texttt{iqv}}}}_c{{\overline{\texttt{ses}}}}_c + \\
+ &amp; u_{0c} + u_{1c} {{\texttt{iqv}}}_{ic} + u_{2c} {{\texttt{ses}}}_{ic} + \\
+ &amp; \epsilon_{ic}.
+\end{align}\]</span>
+<p>Although this expression may look somewhat horrible, it clarifies that the expected value of <code>lpo</code> depends on the following terms:</p>
+<ul>
+<li><p>the level-1 variables <span class="math inline">\({{\texttt{iqv}}}_{ic}\)</span> and <span class="math inline">\({{\texttt{ses}}}_{ic}\)</span>;</p></li>
+<li><p>the level-1 interaction <span class="math inline">\({{\texttt{iqv}}}_{ic}{{\texttt{ses}}}_{ic}\)</span>;</p></li>
+<li><p>the cluster means <span class="math inline">\({{\overline{\texttt{iqv}}}}_c\)</span> and <span class="math inline">\({{\overline{\texttt{ses}}}}_c\)</span>;</p></li>
+<li><p>the within-variable cross-level interactions <span class="math inline">\({{\texttt{iqv}}}_{ic}{{\overline{\texttt{iqv}}}}_c\)</span> and <span class="math inline">\({{\texttt{ses}}}_{ic}{{\overline{\texttt{ses}}}}_c\)</span>;</p></li>
+<li><p>the between-variable cross-level interactions <span class="math inline">\({{\texttt{iqv}}}_{ic}{{\overline{\texttt{ses}}}}_c\)</span> and <span class="math inline">\({{\texttt{ses}}}_{ic}{{\overline{\texttt{iqv}}}}_c\)</span>;</p></li>
+<li><p>the level-2 interaction <span class="math inline">\({{\overline{\texttt{iqv}}}}_c{{\overline{\texttt{ses}}}}_c\)</span>;</p></li>
+<li><p>the random intercepts;</p></li>
+<li><p>the random slopes for <code>iqv</code> and <code>ses</code>.</p></li>
+</ul>
+<p>All terms need to be included into the imputation model for <code>lpo</code>. Univariate imputation models for <code>iqv</code> and <code>ses</code> can be specified along the same principles by reversing the roles of outcome and predictor. As a first step, let us pad the data with the set of all relevant interactions from model <a href="#eq:rs2level">(<strong>??</strong>)</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>brandsma[, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;ses&quot;</span>)]
+d<span class="op">$</span>lpo &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">scale</span>(d<span class="op">$</span>lpo, <span class="dt">scale =</span> <span class="ot">FALSE</span>))
+d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(d,
+                <span class="dt">iqv.ses =</span> <span class="ot">NA</span>, <span class="dt">ses.lpo =</span> <span class="ot">NA</span>, <span class="dt">iqv.lpo =</span> <span class="ot">NA</span>,
+                <span class="dt">lpm =</span> <span class="ot">NA</span>, <span class="dt">iqm =</span> <span class="ot">NA</span>, <span class="dt">sem =</span> <span class="ot">NA</span>,
+                <span class="dt">iqv.iqm =</span> <span class="ot">NA</span>, <span class="dt">ses.sem =</span> <span class="ot">NA</span>, <span class="dt">lpo.lpm =</span> <span class="ot">NA</span>,
+                <span class="dt">iqv.sem =</span> <span class="ot">NA</span>, <span class="dt">iqv.lpm =</span> <span class="ot">NA</span>,
+                <span class="dt">ses.iqm =</span> <span class="ot">NA</span>, <span class="dt">ses.lpm =</span> <span class="ot">NA</span>,
+                <span class="dt">lpo.iqm =</span> <span class="ot">NA</span>, <span class="dt">lpo.sem =</span> <span class="ot">NA</span>,
+                <span class="dt">iqm.sem =</span> <span class="ot">NA</span>, <span class="dt">lpm.sem =</span> <span class="ot">NA</span>, <span class="dt">iqm.lpm =</span> <span class="ot">NA</span>)</code></pre></div>
+<p>Here <code>iqv.ses</code> represents the multiplicative interaction term for <code>iqv</code> and <code>ses</code>, and <code>lpm</code> represents the cluster means of <code>lpo</code>, and so on. Imputation models for <code>lpo</code>, <code>iqv</code> and <code>ses</code> are specified by setting the relevant entries in the <em>transformed</em> predictor matrix as follows:</p>
+<pre><code>        lpo iqv ses
+sch      -2  -2  -2
+lpo       0   3   3
+iqv       3   0   3
+ses       3   3   0
+iqv.ses   1   0   0
+ses.lpo   0   1   0
+iqv.lpo   0   0   1
+iqv.iqm   1   0   1
+ses.sem   1   1   0
+lpo.lpm   0   1   1
+iqv.sem   1   0   0
+iqv.lpm   0   0   1
+ses.iqm   1   0   0
+ses.lpm   0   1   0
+lpo.iqm   0   0   1
+lpo.sem   0   1   0
+iqm.sem   1   0   0
+lpm.sem   0   1   0
+iqm.lpm   0   0   1</code></pre>
+<p>The model for <code>lpo</code> is almost equivalent to model <a href="#eq:rs2level">(<strong>??</strong>)</a>. According to the model, both cluster means and random effects should be included, thus values <code>pred[lpo, c(iqv, ses)]</code> should be coded as a <code>4</code>, and not as a <code>3</code>. However, the cluster means and random effects are almost linearly dependent, which causes slow convergence and unstable estimates in the imputation model. These problems disappear when only the cluster means are included as covariates. An alternative is to scale the predictors in deviations from the cluster means, as was done in Section <a href="sec-mlguidelines.html#sec:mlint">7.10.5</a>. This circumvents many of the computational issues of raw-scored variables, and the parameters are easier to interpret.</p>
+<p>The specifications for <code>iqv</code> and <code>ses</code> correspond to the inverted models. Inverting the random slope model produces reasonable estimates for the fixed effect and the intercept variance, but estimates of the slope variance can be unstable and biased, especially in small samples <span class="citation">(Grund, Lüdtke, and Robitzsch <a href="references.html#ref-GRUND2016">2016</a><a href="references.html#ref-GRUND2016">a</a>)</span>. Unless the interest is in the slope variance (for which listwise deletion appears to be better), using FCS by inverting the random slope model is the currently preferred method to account for differences in slopes between clusters.</p>
+<p>Next, we need to specify the derived variables. The cluster means are updated by the <code>2l.groupmean</code> method.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">meth[<span class="kw">c</span>(<span class="st">&quot;iqm&quot;</span>, <span class="st">&quot;sem&quot;</span>, <span class="st">&quot;lpm&quot;</span>)] &lt;-<span class="st"> &quot;2l.groupmean&quot;</span>
+pred[<span class="kw">c</span>(<span class="st">&quot;iqm&quot;</span>, <span class="st">&quot;sem&quot;</span>, <span class="st">&quot;lpm&quot;</span>), ] &lt;-<span class="st"> </span><span class="dv">0</span>
+pred[<span class="st">&quot;iqm&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;iqv&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>)
+pred[<span class="st">&quot;sem&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;ses&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>)
+pred[<span class="st">&quot;lpm&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;sch&quot;</span>, <span class="st">&quot;lpo&quot;</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>)</code></pre></div>
+<p>The level-1 interactions are updated by passive imputation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">meth[<span class="st">&quot;iqv.ses&quot;</span>] &lt;-<span class="st"> &quot;~ I(iqv * ses)&quot;</span>
+meth[<span class="st">&quot;iqv.lpo&quot;</span>] &lt;-<span class="st"> &quot;~ I(iqv * lpo)&quot;</span>
+meth[<span class="st">&quot;ses.lpo&quot;</span>] &lt;-<span class="st"> &quot;~ I(ses * lpo)&quot;</span></code></pre></div>
+<p>The remaining interactions are updated by passive imputation in an analogous way (code not shown).</p>
+<p>The visit sequence updates the derived variables that depend on the target variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">visit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;lpo&quot;</span>, <span class="st">&quot;iqv.lpo&quot;</span>, <span class="st">&quot;ses.lpo&quot;</span>,
+           <span class="st">&quot;lpm&quot;</span>, <span class="st">&quot;lpo.lpm&quot;</span>, <span class="st">&quot;iqv.lpm&quot;</span>, <span class="st">&quot;ses.lpm&quot;</span>,
+           <span class="st">&quot;lpo.iqm&quot;</span>, <span class="st">&quot;lpo.sem&quot;</span>, <span class="st">&quot;iqm.lpm&quot;</span>, <span class="st">&quot;lpm.sem&quot;</span>,
+           <span class="st">&quot;iqv&quot;</span>, <span class="st">&quot;iqv.ses&quot;</span>, <span class="st">&quot;iqv.lpo&quot;</span>,
+           <span class="st">&quot;iqm&quot;</span>, <span class="st">&quot;iqv.iqm&quot;</span>, <span class="st">&quot;iqv.sem&quot;</span>, <span class="st">&quot;iqv.lpm&quot;</span>,
+           <span class="st">&quot;ses.iqm&quot;</span>, <span class="st">&quot;lpo.iqm&quot;</span>, <span class="st">&quot;iqm.sem&quot;</span>, <span class="st">&quot;iqm.lpm&quot;</span>,
+           <span class="st">&quot;ses&quot;</span>, <span class="st">&quot;iqv.ses&quot;</span>, <span class="st">&quot;ses.lpo&quot;</span>,
+           <span class="st">&quot;sem&quot;</span>, <span class="st">&quot;ses.sem&quot;</span>, <span class="st">&quot;iqv.sem&quot;</span>, <span class="st">&quot;ses.iqm&quot;</span>,
+           <span class="st">&quot;ses.lpm&quot;</span>, <span class="st">&quot;lpo.sem&quot;</span>, <span class="st">&quot;iqm.sem&quot;</span>, <span class="st">&quot;lpm.sem&quot;</span>)
+
+imp &lt;-<span class="st"> </span><span class="kw">mice</span>(d, <span class="dt">pred =</span> pred, <span class="dt">meth =</span> meth, <span class="dt">seed =</span> <span class="dv">211</span>,
+            <span class="dt">visit =</span> visit, <span class="dt">m =</span> <span class="dv">10</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>, <span class="dt">maxit =</span> <span class="dv">10</span>,
+            <span class="dt">allow.na =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>The model can now be fitted to the full data as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">with</span>(imp, <span class="kw">lmer</span>(lpo <span class="op">~</span><span class="st"> </span>iqv <span class="op">*</span><span class="st"> </span>ses <span class="op">+</span><span class="st"> </span>iqm <span class="op">*</span><span class="st"> </span>sem <span class="op">+</span>
+<span class="st">                  </span>iqv <span class="op">*</span><span class="st"> </span>iqm <span class="op">+</span><span class="st"> </span>iqv <span class="op">*</span><span class="st"> </span>sem <span class="op">+</span>
+<span class="st">                  </span>ses <span class="op">*</span><span class="st"> </span>iqm <span class="op">+</span><span class="st"> </span>ses <span class="op">*</span><span class="st"> </span>sem <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>ses <span class="op">+</span><span class="st"> </span>iqv <span class="op">|</span><span class="st"> </span>sch),
+                  <span class="dt">REML =</span> <span class="ot">FALSE</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">pool</span>(fit))</code></pre></div>
+<pre><code>              estimate std.error statistic   df p.value
+(Intercept)  0.1801828   0.25242    0.7138 2584 0.47538
+iqv          2.2421838   0.06205   36.1369 2619 0.00000
+ses          0.1709524   0.01238   13.8100  695 0.00000
+iqm          0.7675273   0.30994    2.4763  502 0.01332
+sem         -0.0921057   0.04372   -2.1066 2756 0.03522
+iqv:ses     -0.0172118   0.00631   -2.7261  370 0.00644
+iqm:sem     -0.1167091   0.03758   -3.1060  807 0.00191
+iqv:iqm     -0.0631837   0.07480   -0.8446 3675 0.39836
+iqv:sem      0.0045330   0.01371    0.3307  487 0.74086
+ses:iqm      0.0171123   0.01882    0.9095  268 0.36317
+ses:sem      0.0000898   0.00235    0.0382  470 0.96953</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">testEstimates</span>(<span class="kw">as.mitml.result</span>(fit), <span class="dt">var.comp =</span> <span class="ot">TRUE</span>)<span class="op">$</span>var.comp</code></pre></div>
+<pre><code>                         Estimate
+Intercept~~Intercept|sch  7.93524
+Intercept~~ses|sch       -0.00920
+Intercept~~iqv|sch       -0.75078
+ses~~ses|sch              0.00114
+ses~~iqv|sch             -0.00830
+iqv~~iqv|sch              0.16489
+Residual~~Residual       37.78840
+ICC|sch                   0.17355</code></pre>
+<p>The estimates are quite close to Table 5.3 in <span class="citation">Snijders and Bosker (<a href="references.html#ref-SNIJDERS2012">2012</a>)</span>. These authors continue with simplifying the model. The same set of imputations can be used for these simpler models since the imputation model is more general than the substantive models.</p>
+</div>
+<div id="sec:recipes" class="section level3">
+<h3><span class="header-section-number">7.10.8</span> Recipes</h3>
+<p>The term “cookbook statistics” is sometimes used to refer to thoughtless and rigid applications of statistical procedures. Minute execution of a sequence of steps won’t earn you a Nobel Prize, but a good recipe will enable you to produce a decent meal from ingredients that you may not have seen before. The recipes given here are intended to assist you to create a decent set of imputations for multilevel data.</p>
+<table>
+<caption><span id="tab:recipe1">Table 7.5: </span> Recipe for imputing multilevel data for models with random intercepts and random slopes. Procedure for incomplete level-1 variables.</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Recipe for a level-1 target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.</td>
+<td align="left">Define the most general analytic model to be applied to imputed data</td>
+</tr>
+<tr class="even">
+<td>2.</td>
+<td align="left">Select a <code>2l</code> method that imputes close to the data</td>
+</tr>
+<tr class="odd">
+<td>3.</td>
+<td align="left">Include all level-1 variables</td>
+</tr>
+<tr class="even">
+<td>4.</td>
+<td align="left">Include the disaggregated cluster means of all level-1 variables</td>
+</tr>
+<tr class="odd">
+<td>5.</td>
+<td align="left">Include all level-1 interactions implied by the analytic model</td>
+</tr>
+<tr class="even">
+<td>6.</td>
+<td align="left">Include all level-2 predictors</td>
+</tr>
+<tr class="odd">
+<td>7.</td>
+<td align="left">Include all level-2 interactions implied by the analytic model</td>
+</tr>
+<tr class="even">
+<td>8.</td>
+<td align="left">Include all cross-level interactions implied by the analytic model</td>
+</tr>
+<tr class="odd">
+<td>9.</td>
+<td align="left">Include predictors related to the missingness and the target</td>
+</tr>
+<tr class="even">
+<td>10.</td>
+<td align="left">Exclude any terms involving the target</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:recipe2">Table 7.6: </span> Recipe for imputing multilevel data for models with random intercepts and random slopes. Procedure for incomplete level-2 variables.</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Recipe for a level-2 target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.</td>
+<td align="left">Define the most general analytic model to be applied to imputed</td>
+</tr>
+<tr class="even">
+<td>data</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td>2.</td>
+<td align="left">Select a <code>2lonly</code> method that imputes close to the data</td>
+</tr>
+<tr class="even">
+<td>3.</td>
+<td align="left">Include the cluster means of all level-1 variables</td>
+</tr>
+<tr class="odd">
+<td>4.</td>
+<td align="left">Include the cluster means of all level-1 interactions</td>
+</tr>
+<tr class="even">
+<td>5.</td>
+<td align="left">Include all level-2 predictors</td>
+</tr>
+<tr class="odd">
+<td>6.</td>
+<td align="left">Include all interactions of level-2 variables</td>
+</tr>
+<tr class="even">
+<td>7.</td>
+<td align="left">Include predictors related to the missingness and the target</td>
+</tr>
+<tr class="odd">
+<td>8.</td>
+<td align="left">Exclude any terms involving the target</td>
+</tr>
+</tbody>
+</table>
+<p>Tables <a href="sec-mlguidelines.html#tab:recipe1">7.5</a> and <a href="sec-mlguidelines.html#tab:recipe2">7.6</a> contains two recipes for imputing multilevel data. There are separate recipes for level-1 and level-2 data. The recipes follow the inclusive strategy advocated by <span class="citation">Collins, Schafer, and Kam (<a href="references.html#ref-COLLINS2001">2001</a>)</span>, and extend the predictor specification strategy in Section <a href="sec-modelform.html#sec:predictors">6.3.2</a> to multilevel data. Including all two-way (or higher-order) interactions may quickly inflate the number of parameters in the model, especially for categorical data, so some care is needed in selecting the interactions that seem most important to the application at hand.</p>
+<p>Sections <a href="sec-mlguidelines.html#sec:emptymodel">7.10.1</a> to <a href="sec-mlguidelines.html#sec:rsinteractions">7.10.7</a> demonstrated applications of these recipes for a variety of multilevel models. One very important source of information was not yet included. For clarity, all procedures were restricted to the subset of data that was actually used in the model. This strategy is not optimal in general because it fails to include potentially auxiliary information that is not modeled. For example, the <code>brandsma</code> data also contains the test scores from the same pupils taken one year before the outcome was measured. This score is highly correlated to the outcome, but it was not part of the model and hence not used for imputation. Of course, one could extend the substantive model (e.g., include the pre-test score as a covariate), but this affects the interpretation and may not correspond to the question of scientific interest. A better way is to include these variables only into the imputation model. This will decrease the between-imputation variability and hence lead to sharper statistical inferences. Including extra predictive variables is left as an exercise for the reader.</p>
+<p>The procedure in Section <a href="sec-mlguidelines.html#sec:rsinteractions">7.10.7</a> may be a daunting task when the number of variables grows, especially keeping track of all required interaction effects. The whole process can be automated, but currently there is no software that will perform these steps behind the screen. This may be a matter of time. In general, it is good to be aware of the steps taken, so specification by hand could also be considered an advantage.</p>
+<p>Monitoring convergence is especially important for models with many random slopes. Warnings from the underlying multilevel routines may indicate over-specification of the model, for example, with a too large number of parameters. The imputer should be attentive to such messages by reducing the complexity of imputation model in the light of the analytic model. In multilevel modeling, overparameterization occurs almost always in the variance part of the model. Reducing the number of random slopes, or simplifying the level-2 model structure could help to reduce computational complexity.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-comparative.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="future-research.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
