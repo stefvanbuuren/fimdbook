@@ -29,7 +29,7 @@ rmd_files: ["index.Rmd",
 before_chapter_script: "R/before_chapter_script.R"
 url: https\://stefvanbuuren.github.io/fimd/
 output_dir: "docs"
-github-repo: "stefvanbuuren/fimd"
+github-repo: "stefvanbuuren/fimdbook"
 cover-image: "fig/tempcover.png"
 
 
