@@ -13,5 +13,6 @@ RnwWeave: knitr
 LaTeX: pdfLaTeX
 
 StripTrailingWhitespace: Yes
+LineEndingConversion: Windows
 
 BuildType: Website

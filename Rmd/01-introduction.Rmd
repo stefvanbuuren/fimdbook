@@ -775,7 +775,7 @@ value to impute.
 The last step is to pool the $m$ parameter estimates into one estimate,
 and to estimate its variance. The variance combines the conventional
 sampling variance (within-imputation variance) and the extra variance
-caused by the missing data extra variance caused by the missing data
+caused by the missing data
 (between-imputation variance). Under the appropriate conditions, the
 pooled estimates are unbiased and have the correct statistical
 properties.
@@ -894,9 +894,9 @@ determine sensible imputed values that respect the relations between
 wind, temperature, sunshine and ozone.
 
 One final point. The `airquality` data is a
-time series of 153 days. It is well known that the standard error of the
-ordinary least squares (OLS) estimate is inefficient (too large) if the
-residuals have positive serial correlation [@HARVEY1981]. The first
+time series of 153 days. It is well known that the standard error
+associated with the ordinary least squares (OLS) estimate is too small 
+if the residuals have positive serial correlations [@HARVEY1981]. The first
 three autocorrelations of the `Ozone` are
 indeed large: 0.48, 0.31 and 0.29. The residual autocorrelations are
 however small and within the confidence interval: 0.13, $-0.02$ and
