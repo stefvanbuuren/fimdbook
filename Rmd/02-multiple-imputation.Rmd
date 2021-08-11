@@ -1020,7 +1020,7 @@ the data is missing. The “old” formula [@RUBIN1987 eq. 3.1.6] for the
 degrees of freedom can be written concisely as
 
 \begin{align}
-  \nu_\mathrm{old} &= (m-1)\left(1+\frac{1}{r^2}\right)  \nonumber\\
+  \nu_\mathrm{old} &= (m-1)\left(1+\frac{1}{r}\right)^2  \nonumber\\
   &= \frac{m-1}{\lambda^2} (\#eq:oldnu) \\
 \end{align}
 
