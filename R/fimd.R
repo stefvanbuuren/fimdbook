@@ -155,7 +155,7 @@ data <- complete(imp)
 Yobs <- airquality[, "Ozone"]
 Yimp <- data[, "Ozone"]
 mi.hist(Yimp, Yobs,
-        b = seq(-20, 200, 10), type = "continuous",
+        b = seq(-40, 200, 10), type = "continuous",
         gray = FALSE, lwd = lwd,
         obs.lwd = 1.5, mis.lwd = 1.5, imp.lwd = 1.5,
         obs.col = mdc(4),mis.col = mdc(5), imp.col = "transparent",
