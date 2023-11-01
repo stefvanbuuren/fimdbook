@@ -1555,7 +1555,7 @@ vis <- c("hgt", "wgt", "hc", "wgt.hc", "gen", "phb",
          "tv", "reg")
 expr <- expression((wgt - 40) * (hc - 50))
 boys$wgt.hc <- with(boys, eval(expr))
-imp.int2 <- mice(boys, m = 1, maxit = 1, visitSequence = vis,
+imp.int2 <- mice(boys, m = 1, maxit = 2, visitSequence = vis,
                  meth = imp.int$meth, pred = imp.int$pred,
                  seed = 23390)
 
@@ -1646,7 +1646,6 @@ pkg <- c("mice", "micemd", "lme4", "tidyr",
 loaded <- sapply(pkg, require, character.only = TRUE,
                  warn.conflicts = FALSE, quietly = TRUE)
 suppressPackageStartupMessages(library(miceadds, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(DPpackage, warn.conflicts = FALSE, quietly = TRUE))
 suppressPackageStartupMessages(library(mitml, warn.conflicts = FALSE, quietly = TRUE))
 
 
@@ -1778,7 +1777,7 @@ grid.arrange(p.pan, p.pmm)
 
 ## ----toenail.2l.3, cache=TRUE--------------------------------------------
 library(tidyr)
-data("toenail", package = "DPpackage")
+data("toenail", package = "mice")
 data <- tidyr::complete(toenail, ID, visit) %>%
   tidyr::fill(treatment) %>%
   dplyr::select(-month)

@@ -860,7 +860,7 @@ The `toenail` data were collected in a randomized parallel group trial
 comparing two treatments for a common toenail infection. A total of
 294 patients were seen at seven visits, and severity of infection was
 dichotomized as “not severe” (0) and “severe” (1). The version of the
-data in the `DPpackage` is all numeric and easy to analyze. The
+data in the `mice` is all numeric and easy to analyze. The
 following statements load the data, and expand the data to the full
 design with $7 \times 294 = 2058$ rows. There are in total 150 missed
 visits.
