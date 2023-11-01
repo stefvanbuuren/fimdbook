@@ -387,7 +387,7 @@ test.impute <- function(data, m = 5, method = "norm", ...) {
   imp <- mice(data, method = method, m = m, print = FALSE, ...)
   fit <- with(imp, lm(y ~ x))
   tab <- summary(pool(fit), "all", conf.int = TRUE)
-  as.numeric(tab["x", c("estimate", "2.5 %", "97.5 %")])
+  as.numeric(tab[2, c("estimate", "conf.low", "conf.high")])
 }
 
 ## ----lin.sim4------------------------------------------------------------
@@ -395,7 +395,7 @@ simulate <- function(runs = 10) {
   res <- array(NA, dim = c(2, runs, 3))
   dimnames(res) <- list(c("norm.predict", "norm.nob"),
                         as.character(1:runs),
-                        c("estimate", "2.5 %","97.5 %"))
+                        c("estimate", "conf.low", "conf.high"))
   for(run in 1:runs) {
     data <- create.data(run = run)
     data <- make.missing(data)
@@ -416,8 +416,8 @@ apply(res, c(1, 3), mean, na.rm = TRUE)
 true <- 1
 RB <- rowMeans(res[,, "estimate"]) - true
 PB <- 100 * abs((rowMeans(res[,, "estimate"]) - true)/ true)
-CR <- rowMeans(res[,, "2.5 %"] < true & true < res[,, "97.5 %"])
-AW <- rowMeans(res[,, "97.5 %"] - res[,, "2.5 %"])
+CR <- rowMeans(res[,, "conf.low"] < true & true < res[,, "conf.high"])
+AW <- rowMeans(res[,, "97.5 %"] - res[,, "conf.low"])
 RMSE <- sqrt(rowMeans((res[,, "estimate"] - true)^2))
 data.frame(RB, PB, CR, AW, RMSE)
 
