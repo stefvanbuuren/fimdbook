@@ -417,7 +417,7 @@ true <- 1
 RB <- rowMeans(res[,, "estimate"]) - true
 PB <- 100 * abs((rowMeans(res[,, "estimate"]) - true)/ true)
 CR <- rowMeans(res[,, "conf.low"] < true & true < res[,, "conf.high"])
-AW <- rowMeans(res[,, "97.5 %"] - res[,, "conf.low"])
+AW <- rowMeans(res[,, "conf.high"] - res[,, "conf.low"])
 RMSE <- sqrt(rowMeans((res[,, "estimate"] - true)^2))
 data.frame(RB, PB, CR, AW, RMSE)
 
