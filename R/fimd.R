@@ -1835,6 +1835,7 @@ print(tp1, newpage = FALSE)
 
 ## ----toenail.est, cache=TRUE---------------------------------------------
 library(purrr)
+library(broom.mixed)
 mice::complete(imp, "all") %>%
   purrr::map(lme4::glmer,
              formula = outcome ~ treatment * visit + (1 | ID),
