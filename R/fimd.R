@@ -1466,7 +1466,11 @@ imp1 <- mice(data, meth = meth, pred = pred, m = 10,
              print = FALSE)
 
 ## ----compos4-------------------------------------------------------------
-round(summary(pool(with(imp1, lm(Y3 ~ Y1 + Y2))))[, 1:2], 2)
+rapply(summary(pool(with(imp1, lm(Y3 ~ Y1 + Y2))))[, 1:2],
+       round,
+       classes = "numeric",
+       how = "replace",
+       digits = 2)
 
 ## ----composition, echo=FALSE, fig.width=7, fig.height=4---------------------
 meth <- make.method(data)
