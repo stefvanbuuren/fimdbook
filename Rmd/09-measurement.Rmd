@@ -459,17 +459,17 @@ to add log($T$) as an additional predictor. This strong relation may
 have been a consequence of the design, as the frail people were
 measured first.
 
-               $H_0(T)$     $T$   log($T$)     SBP     DBP
+               $H_0(T)$     $T$   $\log(T)$    SBP     DBP
   ---------- ---------- ------- ---------- ------- -------
   $H_0(T)$        1.000   0.997      0.830   0.169   0.137
   $T$             0.997   1.000      0.862   0.176   0.141
-  log($T$)        0.830   0.862      1.000   0.205   0.151
+  $\log(T)$       0.830   0.862      1.000   0.205   0.151
   SBP             0.169   0.176      0.205   1.000   0.592
   DBP             0.137   0.141      0.151   0.592   1.000
   ---------- ---------- ------- ---------- ------- -------
 
 : (\#tab:c85hazardcor) Pearson correlations between the cumulative
-death hazard $H_0(T)$, survival time $T$, log($T$), systolic and
+death hazard $H_0(T)$, survival time $T$, $\log(T)$, systolic and
 diastolic blood pressure.
 
 ### Some guidance
@@ -848,7 +848,7 @@ predict too low. This section explains why this happens.
 
 (ref:plotexplain) Illustration of the bias of predictive equations. In
 general, the combined region 2 + 3b will have fewer cases than region
-4a. Thiscauses a downward bias in the prevalence estimate.
+4a. This causes a downward bias in the prevalence estimate.
 
 Figure \@ref(fig:plotexplain) plots the data of Figure
 \@ref(fig:plotbmi) in a different way. The figure is centered around
@@ -1399,6 +1399,8 @@ first 20 iterations (where we impute $Y_\mathrm{A}$ from
 $Y_\mathrm{B}$ and vice versa) we add age and sex as covariates, and
 do another 20 iterations. This goes as follows:
 
+```{r walkingimpute9, cache = TRUE, echo = FALSE}
+```
 ```{r walkingimpute10, cache = TRUE}
 ```
 

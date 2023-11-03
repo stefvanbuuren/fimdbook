@@ -43,7 +43,7 @@ in the first 28 days, and another 67 children died between the ages of
 28 days and 19 years, leaving 959 survivors at the age of 19 years.
 Intermediate outcome measures from earlier follow-ups were available
 for 89% of the survivors at age 14 ($n$ = 854), 77% at age 10 ($n$ =
-712), 84% at age 9($n$ = 813), 96% at age 5 ($n$ = 927) and 97% at age
+712), 84% at age 9 ($n$ = 813), 96% at age 5 ($n$ = 927) and 97% at age
 2 ($n$ = 946).
 
 To study the effect of drop-out, @HILLE2005 divided the 959 survivors

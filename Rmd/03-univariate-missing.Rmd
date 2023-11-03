@@ -1198,7 +1198,7 @@ uncertainty that needs to be incorporated into the imputations.
 5. Calculate $\dot\beta = \hat\beta + \dot z_1 V^{1/2}$.
 
 6. Calculate $n_0$ predicted probabilities 
-   $\dot p = 1 / (1+ \exp(-\Xmis\dot\beta))$.
+   $\dot p = 1 / (1+ \exp(-X_\mathrm{mis}\dot\beta))$.
 
 7. Draw $n_0$ random variates from the uniform distribution
    $U(0,1)$ in the vector $u$.
@@ -1726,8 +1726,8 @@ The pattern-mixture model [@GLYNN1986B; @LITTLE1993] decomposes the
 joint distribution $P(Y,R)$ as
 
 \begin{align}
- P(Y,R)&=& P(Y|R)P(R) (\#eq:pmmod1)\\ 
-       &=& P(Y|R=1)P(R=1) + P(Y|R=0)P(R=0) (\#eq:pmmod2)
+ P(Y,R)&= P(Y|R)P(R) (\#eq:pmmod1)\\ 
+       &= P(Y|R=1)P(R=1) + P(Y|R=0)P(R=0) (\#eq:pmmod2)
 \end{align}
   
 Compared to Equation \@ref(eq:selection) this model only reverses the

@@ -155,7 +155,7 @@ data <- complete(imp)
 Yobs <- airquality[, "Ozone"]
 Yimp <- data[, "Ozone"]
 mi.hist(Yimp, Yobs,
-        b = seq(-20, 200, 10), type = "continuous",
+        b = seq(-40, 200, 10), type = "continuous",
         gray = FALSE, lwd = lwd,
         obs.lwd = 1.5, mis.lwd = 1.5, imp.lwd = 1.5,
         obs.col = mdc(4),mis.col = mdc(5), imp.col = "transparent",
@@ -387,7 +387,7 @@ test.impute <- function(data, m = 5, method = "norm", ...) {
   imp <- mice(data, method = method, m = m, print = FALSE, ...)
   fit <- with(imp, lm(y ~ x))
   tab <- summary(pool(fit), "all", conf.int = TRUE)
-  as.numeric(tab["x", c("estimate", "2.5 %", "97.5 %")])
+  as.numeric(tab[2, c("estimate", "conf.low", "conf.high")])
 }
 
 ## ----lin.sim4------------------------------------------------------------
@@ -395,7 +395,7 @@ simulate <- function(runs = 10) {
   res <- array(NA, dim = c(2, runs, 3))
   dimnames(res) <- list(c("norm.predict", "norm.nob"),
                         as.character(1:runs),
-                        c("estimate", "2.5 %","97.5 %"))
+                        c("estimate", "conf.low", "conf.high"))
   for(run in 1:runs) {
     data <- create.data(run = run)
     data <- make.missing(data)
@@ -416,8 +416,8 @@ apply(res, c(1, 3), mean, na.rm = TRUE)
 true <- 1
 RB <- rowMeans(res[,, "estimate"]) - true
 PB <- 100 * abs((rowMeans(res[,, "estimate"]) - true)/ true)
-CR <- rowMeans(res[,, "2.5 %"] < true & true < res[,, "97.5 %"])
-AW <- rowMeans(res[,, "97.5 %"] - res[,, "2.5 %"])
+CR <- rowMeans(res[,, "conf.low"] < true & true < res[,, "conf.high"])
+AW <- rowMeans(res[,, "conf.high"] - res[,, "conf.low"])
 RMSE <- sqrt(rowMeans((res[,, "estimate"] - true)^2))
 data.frame(RB, PB, CR, AW, RMSE)
 
@@ -1466,7 +1466,11 @@ imp1 <- mice(data, meth = meth, pred = pred, m = 10,
              print = FALSE)
 
 ## ----compos4-------------------------------------------------------------
-round(summary(pool(with(imp1, lm(Y3 ~ Y1 + Y2))))[, 1:2], 2)
+rapply(summary(pool(with(imp1, lm(Y3 ~ Y1 + Y2))))[, 1:2],
+       round,
+       classes = "numeric",
+       how = "replace",
+       digits = 2)
 
 ## ----composition, echo=FALSE, fig.width=7, fig.height=4---------------------
 meth <- make.method(data)
@@ -1551,7 +1555,7 @@ vis <- c("hgt", "wgt", "hc", "wgt.hc", "gen", "phb",
          "tv", "reg")
 expr <- expression((wgt - 40) * (hc - 50))
 boys$wgt.hc <- with(boys, eval(expr))
-imp.int2 <- mice(boys, m = 1, maxit = 1, visitSequence = vis,
+imp.int2 <- mice(boys, m = 1, maxit = 2, visitSequence = vis,
                  meth = imp.int$meth, pred = imp.int$pred,
                  seed = 23390)
 
@@ -1642,7 +1646,6 @@ pkg <- c("mice", "micemd", "lme4", "tidyr",
 loaded <- sapply(pkg, require, character.only = TRUE,
                  warn.conflicts = FALSE, quietly = TRUE)
 suppressPackageStartupMessages(library(miceadds, warn.conflicts = FALSE, quietly = TRUE))
-suppressPackageStartupMessages(library(DPpackage, warn.conflicts = FALSE, quietly = TRUE))
 suppressPackageStartupMessages(library(mitml, warn.conflicts = FALSE, quietly = TRUE))
 
 
@@ -1774,7 +1777,7 @@ grid.arrange(p.pan, p.pmm)
 
 ## ----toenail.2l.3, cache=TRUE--------------------------------------------
 library(tidyr)
-data("toenail", package = "DPpackage")
+data("toenail", package = "mice")
 data <- tidyr::complete(toenail, ID, visit) %>%
   tidyr::fill(treatment) %>%
   dplyr::select(-month)
@@ -1832,6 +1835,7 @@ print(tp1, newpage = FALSE)
 
 ## ----toenail.est, cache=TRUE---------------------------------------------
 library(purrr)
+library(broom.mixed)
 mice::complete(imp, "all") %>%
   purrr::map(lme4::glmer,
              formula = outcome ~ treatment * visit + (1 | ID),
@@ -2388,14 +2392,8 @@ xyplot(jitter(rrdiast, 10) ~ jitter(rrsyst, 10) | typ,
 dat <- cbind(data2, dead = 1 - data2$dwa)
 hazard <- nelsonaalen(dat, survda, dead)
 
-## ----c85nelsoncorrelation, eval=FALSE, echo=FALSE------------------------
-tmp <- data.frame(hazard, t = data2$survda,
-                  logt = log(data2$survda),
-                  SBP = data2$rrsyst, DBP = data2$rrdiast)
-round(cor(tmp, use = "pair"), 3)
-
 ## ----c85km, echo=FALSE, fig.height=4-------------------------------------
-library(survival)
+suppressPackageStartupMessages(library(survival))
 fit <- survfit(Surv(survda / 365, 1 - dwa) ~ is.na(rrsyst),
                data = data2)
 lwd <- 0.6
@@ -2541,21 +2539,6 @@ text(1:4, x = c(40, 28, 20, 32), y = c(4, 4, -4, -4), cex = 3)
 box(lwd = lwd)
 }
 
-## ----walkinginit, echo=FALSE---------------------------------------------
-library(mice)
-library(foreign)
-dataproject <- "Data/wad"
-.store <- file.path(dataproject,"R/store/")
-
-file <- file.path(dataproject, "original/walklink.sav")
-original <- read.spss(file=file, to.data.frame=TRUE)
-data <- original
-names(data) <- c("src","sex","age","sip1","haq8","grs9")
-data$src <- factor(data$src, levels=2:3, labels=c("Ergo","Euri"))
-data$sip1 <- as.factor(data$sip1)
-data$haq8 <- as.ordered(data$haq8)
-data$grs9 <- as.ordered(data$grs9)
-
 ## ----walkingimpute1------------------------------------------------------
 fA <- c(242, 43, 15, 0, 6)
 fB <- c(145, 110, 29, 8)
@@ -2633,16 +2616,10 @@ micemill <- function(n) {
                          as.numeric(YB[src=="A"]),
                          method="kendall"))
     tau <<- rbind(tau, ra(cors, s=TRUE))  # global assignment
-    means <- with(imp, mean(as.numeric(YA[src=="A"]), na.rm=TRUE))
-    thetaBA <<- rbind(thetaBA, ra(means, s=TRUE)-1)
     props <- with(imp, mean(YB[src=="A"]=='0'))
     thetaAB <<- rbind(thetaAB, ra(props, s=TRUE))
-    tabs <- with(imp, ftable(addmargins(
-                      table(YA[src=="A"],YB[src=="A"],
-                            useNA="ifany", dnn=c("YA","YB")))))
   }
 }
-thetaBA <- NULL
 
 ## ----walkingimpute10, cache = TRUE---------------------------------------
 tau <- NULL
@@ -2857,6 +2834,7 @@ imp <- mice(fdd, pred = fdd.pred, meth = meth, maxit = 20,
 
 ## ----fddreshape----------------------------------------------------------
 lowi <- mice::complete(imp, "long", inc=TRUE)
+lowi <- lowi[, c(ncol(lowi), ncol(lowi) - 1, 1:(ncol(lowi) - 2))]
 lowi <- data.frame(lowi,cbcl2=NA, cbin2=NA,cbex2=NA)
 lolo <- reshape(lowi, idvar = 'id',
                 varying = 11:ncol(lowi),
@@ -2919,52 +2897,6 @@ tp <- xyplot(yc~time|trt, data=means, type="o", pch=19,
        ylab="UCLA-RI Child Score", lwd=2,
        xlab="Time", xlim=c("T1","T2","T3"))
 print(tp)
-
-## ----tbcinit, echo=FALSE-------------------------------------------------
-load("data/tbc/imp.1745")
-load("data/tbc/fit.hgt")
-load("data/tbc/fit.wgt")
-load("data/tbc/fit.bmi")
-
-original <- read_spss(file = "data/tbc/long_spss2splus.sav")
-names(original) <- c("id", "age", "occ", "nocc", "sex",
-                    "hgt",  "wgt", "bmi",
-                    "hgt.z", "wgt.z", "bmi.z", "wfh.z", "sys140")
-broad <- read_spss(file = "data/tbc/broad_spss2splus.sav")
-broad <- as_factor(broad)
-names(broad) <- tolower(names(broad))
-target <- data.frame(id=broad$koppel, ao = broad$ovjv, bmi.z.jv = broad$b_sdjv)
-
-# merge the target variables
-original <- merge(original, target, all.x = TRUE)
-
-### define subsets
-subset <- !is.na(original$age) & !(is.na(original$hgt.z) & is.na(original$wgt.z) & is.na(original$bmi.z))
-tbc <- original[subset, c("id","occ","nocc","age","sex",
-                          "hgt.z","wgt.z","bmi.z","ao")]
-tbc <- tbc[order(tbc$id, tbc$age),]
-
-### define useful administrative variables
-ord <- tbc$id
-first <- diff(ord)>=1
-typ <- factor(rep("obs",nrow(tbc)),levels=c("obs","sup","pred"))
-tbc <- data.frame(tbc[,1:3],first=c(TRUE,first),typ,tbc[4:ncol(tbc)])
-
-### make small dataset
-six <- c(1259,7019,2447,7460,8046,7646)
-set.seed(23221)
-sample <- unique(c(six,sample(unique(tbc$id),300)))
-idx <- (tbc$id) %in% sample
-data <- tbc[idx,]
-
-### select all data
-data <- tbc
-
-### remove those with nocc 1 or 2 or 3
-data <- data[data$nocc >= 3,]
-
-### missing data heat map
-tbc <- data
 
 ## ----tbcspline-----------------------------------------------------------
 library(splines)
@@ -3043,15 +2975,17 @@ imp.1745 <- mice(data2, meth = meth, pred = pred, m = 10,
                  maxit = 10, seed = 52711, print = FALSE)
 
 ## ----tbcplotimp,  echo=FALSE---------------------------------------------
+imp.1745 <- mice(data2, meth = meth, pred = pred, m = 10,
+                 maxit = 10, seed = 52711, print = FALSE)
 cd <- mice::complete(imp.1745, "long")
 sup <- cd[cd$typ=="sup", ]
 # sup <- cd[cd$typ=="imp",-c(2,10:12)]
 # sup$ao <- NA
 data3 <- data.frame(.imp=0,data2)
-data3 <- rbind(data3, sup[,-2])
+data3 <- rbind(data3, sup[, -ncol(sup)])
 
 # prepare for plotting
-idx <- data3$id %in% six
+idx <- data3$id %in% c(1259,7019,2447,7460,8046,7646)
 pd  <- data3[idx,]
 pd$id <- as.factor(pd$id)
 pd$grp <- pd$.imp
@@ -3083,7 +3017,8 @@ print(tbcimp)
 ## ----tbchw, eval=TRUE,  echo=FALSE---------------------------------------
 ### prepare for plotting
 cd <- mice::complete(imp.1745, 1)
-idx <- (cd$id) %in% sample
+set.seed(23221)
+idx <- (cd$id) %in% unique(c(six,sample(unique(tbc$id),300)))
 cd <- cd[idx,]
 
 shingle <- cut(cd$age,breaks=c(brk,29.01),right=FALSE, inc=TRUE,
