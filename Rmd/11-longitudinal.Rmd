@@ -586,8 +586,6 @@ according to the broken stick model. The multiply imputed values are
 then used to estimate difference scores and regression models that
 throw light on the question of scientific interest.
 
-```{r tbcinit, echo = FALSE}
-```
 
 ### Broken stick model$^\spadesuit$ {#sec:brokenstick}
 
