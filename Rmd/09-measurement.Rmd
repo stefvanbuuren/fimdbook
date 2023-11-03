@@ -848,7 +848,7 @@ predict too low. This section explains why this happens.
 
 (ref:plotexplain) Illustration of the bias of predictive equations. In
 general, the combined region 2 + 3b will have fewer cases than region
-4a. Thiscauses a downward bias in the prevalence estimate.
+4a. This causes a downward bias in the prevalence estimate.
 
 Figure \@ref(fig:plotexplain) plots the data of Figure
 \@ref(fig:plotbmi) in a different way. The figure is centered around
