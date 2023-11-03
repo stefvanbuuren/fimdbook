@@ -1726,8 +1726,8 @@ The pattern-mixture model [@GLYNN1986B; @LITTLE1993] decomposes the
 joint distribution $P(Y,R)$ as
 
 \begin{align}
- P(Y,R)&=& P(Y|R)P(R) (\#eq:pmmod1)\\ 
-       &=& P(Y|R=1)P(R=1) + P(Y|R=0)P(R=0) (\#eq:pmmod2)
+ P(Y,R)&= P(Y|R)P(R) (\#eq:pmmod1)\\ 
+       &= P(Y|R=1)P(R=1) + P(Y|R=0)P(R=0) (\#eq:pmmod2)
 \end{align}
   
 Compared to Equation \@ref(eq:selection) this model only reverses the
