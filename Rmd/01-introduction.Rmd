@@ -775,10 +775,9 @@ value to impute.
 The last step is to pool the $m$ parameter estimates into one estimate,
 and to estimate its variance. The variance combines the conventional
 sampling variance (within-imputation variance) and the extra variance
-caused by the missing data extra variance caused by the missing data
-(between-imputation variance). Under the appropriate conditions, the
-pooled estimates are unbiased and have the correct statistical
-properties.
+caused by the missing data (between-imputation variance). Under the 
+appropriate conditions, the pooled estimates are unbiased and have the 
+correct statistical properties.
 
 ### Reasons to use multiple imputation
 
