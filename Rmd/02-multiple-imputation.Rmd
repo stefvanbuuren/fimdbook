@@ -656,7 +656,7 @@ unknown. Suppose we make an estimate $\hat Q$ of $Q$. The amount of
 uncertainty in $\hat Q$ about the true population value $Q$ depends on
 what we know about $Y_\mathrm{mis}$. If we would be able to re-create
 $Y_\mathrm{mis}$ perfectly, then we can calculate $Q$ with certainty.
-However, such perfect re-creation is almost never unachievable. In other
+However, such perfect re-creation is almost never achievable. In other
 cases, we need to summarize the distribution of $Q$ under varying
 $Y_\mathrm{mis}$. The possible values of $Q$ given our knowledge of the
 data $Y_\mathrm{obs}$ are captured by the posterior distribution
